@@ -42,9 +42,10 @@ jobs:
       - name: build docker image
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
         run: |
-          docker build -f docker/node/Dockerfile -t docker push gr0v1ty/nano-node .         
+          DOCKER_TAG=${{ steps.compare_hash.outputs.LATEST_COMMIT_SOURCE }}
+          docker build -f docker/node/Dockerfile -t gr0v1ty/nano-node:$DOCKER_TAG .
           docker login -u gr0v1ty -p ${{ secrets.DH_PWD }}
-          docker push gr0v1ty/nano-node:${{ steps.compare_hash.outputs.LATEST_COMMIT_SOURCE }}
+          docker push gr0v1ty/nano-node:$DOCKER_TAG
       
 
 
