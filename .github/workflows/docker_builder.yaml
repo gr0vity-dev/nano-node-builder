@@ -1,15 +1,15 @@
 name: Mirror
-on: [push, pull_request]
-# on:
-#   schedule:
-#     - cron: '0/5 * * * *'  # "every 30 minutes
+#on: [push, pull_request]
+on:
+  schedule:
+    - cron: '0/5 * * * *'  # "every 30 minutes
 
 
 # Ensures that only one mirror task will run at a time.
 concurrency:
   group: git-mirror
 jobs:
-  job1:
+  publish_docker_image_on_new_commit:
     runs-on: ubuntu-latest    
     steps:
       - name: checkout gr0vity-dev/nano-node-builder          
