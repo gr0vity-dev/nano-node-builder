@@ -1,0 +1,49 @@
+name: Mirror
+on: [push, pull_request]
+# on:
+#   schedule:
+#     - cron: '0/5 * * * *'  # "every 30 minutes
+
+
+# Ensures that only one mirror task will run at a time.
+concurrency:
+  group: git-mirror
+jobs:
+  job1:
+    runs-on: ubuntu-latest    
+    steps:
+      - name: checkout gr0vity-dev/nano-node-builder          
+          uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 #v3.1.0          
+      - name: Compare commit hash between source and mirror
+        id: compare_hash
+        run: |          
+          LATEST_COMMIT_BUILDER=$(cat ./docker_builds/latest_hash.txt)
+          LATEST_COMMIT_SOURCE=$(curl -s --location --request GET 'https://api.github.com/repos/nanocurrency/nano-node/commits/develop' | jq '.sha')
+          if [ $LATEST_COMMIT_MIRROR != $LATEST_COMMIT_SOURCE ]; then            
+            echo "continue='true'" >> $GITHUB_OUTPUT
+            echo "LATEST_COMMIT_SOURCE=$LATEST_COMMIT_SOURCE" >> $GITHUB_OUTPUT
+            
+            #Update nano-node-builder
+            echo $LATEST_COMMIT_SOURCE > ./docker_builds/latest_hash.txt
+            echo echo $(date +%s):$LATEST_COMMIT_SOURCE >> ./docker_builds/all_builds.txt
+            git add .
+            git commit -m "update docker builds"
+            git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/gr0vity-dev/nano-node-builder.git
+            git push 
+          fi   
+      - name: checkout nanocurrency/nano-node
+        if: ${{ steps.compare_hash.outputs.continue == 'true' }}
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 #v3.1.0
+        with:
+          repository: nanocurrency/nano-node
+          submodules: "recursive"
+          ref: develop
+      - name: build docker image
+        if: ${{ steps.compare_hash.outputs.continue == 'true' }}
+        run: |
+          docker build -f docker/node/Dockerfile -t docker push gr0v1ty/nano-node .         
+          docker login -u gr0v1ty -p ${{ secrets.DH_PWD }}
+          docker push gr0v1ty/nano-node:${{ steps.compare_hash.outputs.LATEST_COMMIT_SOURCE }}
+      
+
+
