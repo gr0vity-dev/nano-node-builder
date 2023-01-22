@@ -16,11 +16,11 @@ jobs:
         uses: actions/checkout@v2
       - name: Compare commit hash between source and mirror
         id: compare_hash
-        run: |          
+        run: |
           LATEST_COMMIT_BUILDER=$(cat ./docker_builds/latest_hash.txt)
-          LATEST_COMMIT_SOURCE=$(curl -s --location --request GET 'https://api.github.com/repos/nanocurrency/nano-node/commits/develop' | jq '.sha')
+          LATEST_COMMIT_SOURCE=$(curl -s --location --request GET 'https://api.github.com/repos/nanocurrency/nano-node/commits/develop' | jq -r '.sha')
           if [ "$LATEST_COMMIT_MIRROR" != "$LATEST_COMMIT_SOURCE" ]; then            
-            echo "continue='true'" >> $GITHUB_OUTPUT
+            echo "continue=1" >> $GITHUB_OUTPUT
             echo "LATEST_COMMIT_SOURCE=$LATEST_COMMIT_SOURCE" >> $GITHUB_OUTPUT
             
             #Update nano-node-builder
@@ -33,14 +33,14 @@ jobs:
             git push origin main
           fi   
       - name: checkout nanocurrency/nano-node
-        if: ${{ steps.compare_hash.outputs.continue == 'true' }}
+        if: ${{ steps.compare_hash.outputs.continue > 0 }}
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 #v3.1.0
         with:
           repository: nanocurrency/nano-node
           submodules: "recursive"
           ref: develop
       - name: build docker image
-        if: ${{ steps.compare_hash.outputs.continue == 'true' }}
+        if: ${{ steps.compare_hash.outputs.continue > 0 }}
         run: |
           docker build -f docker/node/Dockerfile -t docker push gr0v1ty/nano-node .         
           docker login -u gr0v1ty -p ${{ secrets.DH_PWD }}
