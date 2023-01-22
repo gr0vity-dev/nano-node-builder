@@ -30,8 +30,7 @@ jobs:
             git config user.email "<>"
             git add .
             git commit -m "update docker builds"
-            git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/gr0vity-dev/nano-node-builder.git
-            git push 
+            git push origin main
           fi   
       - name: checkout nanocurrency/nano-node
         if: ${{ steps.compare_hash.outputs.continue == 'true' }}
