@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest    
     steps:
       - name: checkout gr0vity-dev/nano-node-builder          
-        uses: actions/checkout@2
+        uses: actions/checkout@v2
       - name: Compare commit hash between source and mirror
         id: compare_hash
         run: |          
