@@ -13,7 +13,7 @@ jobs:
       - name: Compare commit hash between source and mirror
         id: compare_hash
         run: |
-          read -r LATEST_COMMIT_BUILDER<./docker_builds/latest_hash.txt
+          LATEST_COMMIT_BUILDER=$(cat ./docker_builds/latest_hash.txt)
           LATEST_COMMIT_SOURCE=$(curl -s --location --request GET 'https://api.github.com/repos/nanocurrency/nano-node/commits/develop' | jq -r '.sha')
           if [ "$LATEST_COMMIT_BUILDER" != "$LATEST_COMMIT_SOURCE" ]; then            
             echo "continue=1" >> $GITHUB_OUTPUT
