@@ -26,6 +26,8 @@ jobs:
             #Update nano-node-builder
             echo $LATEST_COMMIT_SOURCE > ./docker_builds/latest_hash.txt
             echo $(date +%s):$LATEST_COMMIT_SOURCE >> ./docker_builds/all_builds.txt
+            git config user.name "GitHub Actions Bot"
+            git config user.email "<>"
             git add .
             git commit -m "update docker builds"
             git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/gr0vity-dev/nano-node-builder.git
