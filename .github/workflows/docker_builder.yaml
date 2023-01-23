@@ -39,7 +39,13 @@ jobs:
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
         run: |
           DOCKER_TAG=${{ steps.compare_hash.outputs.LATEST_COMMIT_SOURCE }}
-          docker build -f docker/node/Dockerfile -t gr0v1ty/nano-node:$DOCKER_TAG .
-          docker login -u gr0v1ty -p ${{ secrets.DH_PWD }}
+          docker build -f docker/node/Dockerfile -t gr0v1ty/nano-node .
+          # LOGIN to dockerhub
+          echo ${{ secrets.DH_PWD }} | docker login -u gr0v1ty --password-stdin
+          docker tag gr0v1ty/nano-node gr0v1ty/nano-node:$DOCKER_TAG          
+          # Push as latest
+          docker push gr0v1ty/nano-node
+          docker push gr0v1ty/nano-node:latest
+          # Push with commit hash as version
           docker push gr0v1ty/nano-node:$DOCKER_TAG
       
