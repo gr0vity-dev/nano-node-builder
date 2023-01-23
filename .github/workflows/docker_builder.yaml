@@ -19,6 +19,10 @@ jobs:
             #github api request failed 
             exit 0
           fi
+          if [ "$LATEST_COMMIT_SOURCE" == "null" ];then
+            #github api request failed 
+            exit 0
+          fi
           if [ "$LATEST_COMMIT_BUILDER" != "$LATEST_COMMIT_SOURCE" ]; then            
             echo "continue=1" >> $GITHUB_OUTPUT
             echo "LATEST_COMMIT_SOURCE=$LATEST_COMMIT_SOURCE" >> $GITHUB_OUTPUT
