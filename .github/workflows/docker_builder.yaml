@@ -66,7 +66,7 @@ jobs:
               git pull
               git add .
               git commit -m "docker building"
-              git push origin testing/workflow_improve            
+              git push origin main           
             fi            
           fi
       - name: checkout nanocurrency/nano-node
@@ -114,7 +114,7 @@ jobs:
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
         working-directory: ./nano-node-builder
         run: |
-          git pull origin testing/workflow_improve
+          git pull origin main
           BUILD_STATUS=${{ steps.docker_build.outputs.BUILD_STATUS }}
           BUILD_AT=$(date -u +%FT%TZ)
           DOCKER_TAG=${{ steps.docker_build.outputs.DOCKER_TAG }}
@@ -126,4 +126,4 @@ jobs:
           
           git add .
           git commit -m "build $BUILD_STATUS ($DOCKER_TAG)"
-          git push origin testing/workflow_improve
+          git push origin main
