@@ -1,8 +1,8 @@
 name: Build and publish docker image for each commit in the officiala nanocurrency/nano-node repo
 #on: [push, pull_request]
-on:
-  schedule:
-    - cron: '0/5 * * * *'  # "every 30 minutes
+# on:
+#   schedule:
+#     - cron: '0/5 * * * *'  # "every 30 minutes
 
 jobs:
   publish_docker_image_on_new_commit:
