@@ -19,9 +19,8 @@ jobs:
           jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' docker_builder/builds.json $HOME/latest_commits.json > docker_builder/builds.json
 
           #get all pull requests
-          curl -s --location --request GET 'https://api.github.com/repos/nanocurrency/nano-node/pulls?state=open&per_page=100&page=1' | \
-                    jq '[.[] | {label: .head.label, ref: .head.ref, sha: .head.sha}]')
-                    jq 'map({hash: .head.sha, type: "pull_request", pull_request: .number, created_at: .created_at, built_at: null, build_status: null, docker_tag: null}) | [ .[] ]' > $HOME/all_prs.json
+          curl -s --location --request GET 'https://api.github.com/repos/nanocurrency/nano-node/pulls?state=open&per_page=100&page=1' | \                   
+                    jq 'map({hash: .head.sha, type: "pull_request", pull_request: .number, label: .head.label, created_at: .created_at, built_at: null, build_status: null, docker_tag: null}) | [ .[] ]' > $HOME/all_prs.json
           # append new commits to existing builds_file
           jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' docker_builder/builds.json $HOME/all_prs.json > docker_builder/builds.json
 
