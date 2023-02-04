@@ -46,13 +46,13 @@ jobs:
               #default repo for commits
               echo "owner=nanocurrency" >> $GITHUB_OUTPUT
               echo "branch=develop" >> $GITHUB_OUTPUT
+              echo "add_latest=1" >> $GITHUB_OUTPUT
             else
               #user repo for pull_requests
               owner=$(echo "$result" | jq -r '.owner')
-              branch=$(echo "$result" | jq -r '.branch')             
-
+              branch=$(echo "$result" | jq -r '.branch')
               echo "owner=$owner" >> $GITHUB_OUTPUT
-              echo "branch=$branch" >> $GITHUB_OUTPUT
+              echo "branch=$branch" >> $GITHUB_OUTPUT              
             fi
             
             
@@ -78,35 +78,41 @@ jobs:
           ref:  ${{ steps.compare_hash.outputs.branch }}
           path: nano-node
       - name: build docker image
+        continue-on-error: true
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
         working-directory: ./nano-node
         id: docker_build
         run: |
           DOCKER_TAG=${{ steps.compare_hash.outputs.COMMIT_TO_TEST }}
-          BUILD_AT=$(date -u +%FT%TZ)          
-          docker build -f docker/node/Dockerfile -t gr0v1ty/nano-node .
+          ADD_LATEST=${{ steps.compare_hash.outputs.add_latest}}
+          
+          #docker build -f docker/node/Dockerfile -t gr0v1ty/nano-node .
+          false
           if [ $? -ne 0 ]; then            
             Perform some action in case of failure
             echo "BUILD_STATUS='fail'" >> $GITHUB_OUTPUT
           else
             echo "BUILD_STATUS='pass'" >> $GITHUB_OUTPUT            
             echo "DOCKER_TAG=gr0v1ty/nano-node:${DOCKER_TAG}" >> $GITHUB_OUTPUT  
-          fi          
+          fi
 
-      #     # LOGIN to dockerhub
-      #     # echo ${{ secrets.DH_PWD }} | docker login -u gr0v1ty --password-stdin
-      #     # docker tag gr0v1ty/nano-node gr0v1ty/nano-node:$DOCKER_TAG
-      #     # Push as latest
-      #     # docker push gr0v1ty/nano-node
-      #     # docker push gr0v1ty/nano-node:latest
-      #     # Push with commit hash as version
-      #     # docker push gr0v1ty/nano-node:$DOCKER_TAG
+          # LOGIN to dockerhub
+          echo ${{ secrets.DH_PWD }} | docker login -u gr0v1ty --password-stdin
+          docker tag gr0v1ty/nano-node gr0v1ty/nano-node:$DOCKER_TAG
+          # Push with commit hash as version
+          docker push gr0v1ty/nano-node:$DOCKER_TAG
 
-      # - name: checkout gr0vity-dev/nano-node-builder
-      #   if: ${{ steps.compare_hash.outputs.continue > 0 }}
-      #   uses: actions/checkout@v3
-      #   with:
-      #     path: nano-node-builder
+          if [ "$ADD_LATEST" -eq 1 ]; then
+            # Push as latest
+            docker push gr0v1ty/nano-node
+            docker push gr0v1ty/nano-node:latest          
+          fi         
+    
+      - name: checkout gr0vity-dev/nano-node-builder
+        if: ${{ steps.compare_hash.outputs.continue > 0 }}
+        uses: actions/checkout@v3
+        with:
+          path: nano-node-builder
       - name: Compare commit hash between source and mirror
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
         working-directory: ./nano-node-builder
