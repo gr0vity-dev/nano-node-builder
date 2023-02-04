@@ -41,7 +41,7 @@ jobs:
             current_json_item=$(cat docker_builder/builds.json | jq --arg COMMIT_TO_TEST "$COMMIT_TO_TEST" 'map(select(.hash == $COMMIT_TO_TEST)) | .[0]')
 
             #Get current item
-            result=$(echo "$current_json_item" | jq 'if .type == "pull_request" then .label | split(":") as $pair | {owner: $pair[0], repo: $pair[1]} else empty end')
+            result=$(echo "$current_json_item" | jq 'if .type == "pull_request" then .label | split(":") as $pair | {owner: $pair[0], branch: $pair[1]} else empty end')
             if [ -z "$result" ]; then
               #default repo for commits
               echo "owner=nanocurrency" >> $GITHUB_OUTPUT
@@ -80,7 +80,6 @@ jobs:
       - name: build docker image
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
         id: docker_build
-        working-directory: ./nano-node
         run: |
           DOCKER_TAG=${{ steps.compare_hash.outputs.COMMIT_TO_TEST }}
           BUILD_AT=$(date -u +%FT%TZ)          
