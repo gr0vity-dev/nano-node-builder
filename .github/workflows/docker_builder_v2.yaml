@@ -34,21 +34,25 @@ jobs:
           if [ -z "$COMMIT_TO_TEST" ]; then
             echo "variable is empty"
             exit 0
-          else
-            #set file to building
+          else            
+            # Set "build_status" to building and write to build.json
             jq --arg COMMIT_TO_TEST "$COMMIT_TO_TEST" '[.[] | if .hash == $COMMIT_TO_TEST then .build_status = "building" else . end]' docker_builder/builds.json >  $HOME/temp.json && mv  $HOME/temp.json docker_builder/builds.json
-            result=$(echo "$json" | jq --arg COMMIT_TO_TEST "$COMMIT_TO_TEST" 'if .type == "pull_request" and .hash == $COMMIT_TO_TEST then .label | split(":") as $pair | {owner: $pair[0], branch: $pair[1], hash: .hash} else empty end')
+            # Get the current json item where hash matches COMMIT_TO_TEST
+            current_json_item=$(cat docker_builder/builds.json | jq --arg COMMIT_TO_TEST "$COMMIT_TO_TEST" 'map(select(.hash == $COMMIT_TO_TEST)) | .[0]')
 
-            if [ "$result" != "null" ]; then
+            #Get current item
+            result=$(echo "$current_json_item" | jq 'if .type == "pull_request" then .label | split(":") as $pair | {owner: $pair[0], repo: $pair[1]} else empty end')
+            if [ -z "$result" ]; then
+              #default repo for commits
+              echo "owner=nanocurrency" >> $GITHUB_OUTPUT
+              echo "branch=develop" >> $GITHUB_OUTPUT
+            else
+              #user repo for pull_requests
               owner=$(echo "$result" | jq -r '.owner')
-              branch=$(echo "$result" | jq -r '.branch')
-              hash=$(echo "$result" | jq -r '.hash')
+              branch=$(echo "$result" | jq -r '.branch')             
 
               echo "owner=$owner" >> $GITHUB_OUTPUT
               echo "branch=$branch" >> $GITHUB_OUTPUT
-            else
-              echo "owner=nanocurrency" >> $GITHUB_OUTPUT
-              echo "branch=develop" >> $GITHUB_OUTPUT
             fi
             
             
