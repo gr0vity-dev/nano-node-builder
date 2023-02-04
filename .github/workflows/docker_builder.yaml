@@ -1,59 +1,129 @@
 name: Build and publish docker image for each commit in the officiala nanocurrency/nano-node repo
-#on: [push, pull_request]
-# on:
-#   schedule:
-#     - cron: '0/5 * * * *'  # "every 30 minutes
+# on: [push, pull_request]
+on:
+  schedule:
+    - cron: '0/5 * * * *'  # "every 30 minutes
 
 jobs:
   publish_docker_image_on_new_commit:
     runs-on: ubuntu-latest    
     steps:
-      - name: checkout gr0vity-dev/nano-node-builder          
+      - name: checkout gr0vity-dev/nano-node-builder
         uses: actions/checkout@v3
+        with:
+          path: nano-node-builder
       - name: Compare commit hash between source and mirror
         id: compare_hash
+        working-directory: ./nano-node-builder
         run: |
-          LATEST_COMMIT_BUILDER=$(cat ./docker_builds/latest_hash.txt)
-          LATEST_COMMIT_SOURCE=$(curl -s --location --request GET 'https://api.github.com/repos/nanocurrency/nano-node/commits/develop' | jq -r '.sha')
-          if [ "$LATEST_COMMIT_SOURCE" == "" ];then
-            #github api request failed 
+          #get latest 10 commits and write to disk
+          curl -s "Accept: application/vnd.github+json" "https://api.github.com/repos/nanocurrency/nano-node/commits?sha=develop&per_page=10" | \
+                  jq 'map({hash: .sha, type: "commit", created_at: .commit.author.date,built_at: null, build_status: null, docker_tag: null}) | [ .[] ]' > $HOME/latest_commits.json
+          # append new commits to existing builds_file
+          jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' docker_builder/builds.json $HOME/latest_commits.json > temp.out && mv temp.out docker_builder/builds.json
+
+          #get all pull requests
+          curl -s  "Accept: application/vnd.github+json" 'https://api.github.com/repos/nanocurrency/nano-node/pulls?state=open&per_page=100&page=1' | \
+                jq 'map({hash: .head.sha, type: "pull_request", pull_request: .number, label: .head.label, created_at: .created_at, built_at: null, build_status: null, docker_tag: null}) | [ .[] ]' > $HOME/all_prs.json
+          # append new commits to existing builds_file
+          jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' docker_builder/builds.json $HOME/all_prs.json > temp.out && mv temp.out docker_builder/builds.json
+         
+          # get first hash that is not yet built
+          COMMIT_TO_TEST=$(jq -r '.[] | select(.build_status == null) | .hash' docker_builder/builds.json | head -n 1)
+
+          if [ -z "$COMMIT_TO_TEST" ]; then
+            echo "variable is empty"
             exit 0
-          fi
-          if [ "$LATEST_COMMIT_SOURCE" == "null" ];then
-            #github api request failed 
-            exit 0
-          fi
-          if [ "$LATEST_COMMIT_BUILDER" != "$LATEST_COMMIT_SOURCE" ]; then            
-            echo "continue=1" >> $GITHUB_OUTPUT
-            echo "LATEST_COMMIT_SOURCE=$LATEST_COMMIT_SOURCE" >> $GITHUB_OUTPUT
+          else            
+            # Set "build_status" to building and write to build.json
+            jq --arg COMMIT_TO_TEST "$COMMIT_TO_TEST" '[.[] | if .hash == $COMMIT_TO_TEST then .build_status = "building" else . end]' docker_builder/builds.json >  $HOME/temp.json && mv  $HOME/temp.json docker_builder/builds.json
+            # Get the current json item where hash matches COMMIT_TO_TEST
+            current_json_item=$(cat docker_builder/builds.json | jq --arg COMMIT_TO_TEST "$COMMIT_TO_TEST" 'map(select(.hash == $COMMIT_TO_TEST)) | .[0]')
+
+            #Get current item
+            result=$(echo "$current_json_item" | jq 'if .type == "pull_request" then .label | split(":") as $pair | {owner: $pair[0], branch: $pair[1]} else empty end')
+            if [ -z "$result" ]; then
+              #default repo for commits
+              echo "owner=nanocurrency" >> $GITHUB_OUTPUT
+              echo "branch=develop" >> $GITHUB_OUTPUT
+              echo "add_latest=1" >> $GITHUB_OUTPUT
+            else
+              #user repo for pull_requests
+              owner=$(echo "$result" | jq -r '.owner')
+              branch=$(echo "$result" | jq -r '.branch')
+              echo "owner=$owner" >> $GITHUB_OUTPUT
+              echo "branch=$branch" >> $GITHUB_OUTPUT              
+            fi
             
-            #Update nano-node-builder
-            echo $LATEST_COMMIT_SOURCE > ./docker_builds/latest_hash.txt
-            echo $(date +%s):$LATEST_COMMIT_SOURCE >> ./docker_builds/all_builds.txt
-            git config user.name "GitHub Actions Bot"
-            git config user.email "<>"
-            git add .
-            git commit -m "update docker builds"
-            git push origin main
-          fi   
+            
+            echo "continue=1" >> $GITHUB_OUTPUT
+            echo "COMMIT_TO_TEST=$COMMIT_TO_TEST" >> $GITHUB_OUTPUT
+
+            #ONLY COMMIT IF THERE IS A CHANGE (else git returns -1 and workflow fails)
+            if [ -n "$(git status --porcelain)" ]; then
+              git config user.name "GitHub Actions Bot"
+              git config user.email "<>"
+              git pull
+              git add .
+              git commit -m "docker building"
+              git push origin testing/workflow_improve            
+            fi            
+          fi
       - name: checkout nanocurrency/nano-node
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 #v3.1.0
         with:
-          repository: nanocurrency/nano-node
+          repository: ${{ steps.compare_hash.outputs.owner }}/nano-node
           submodules: "recursive"
-          ref: develop
+          ref:  ${{ steps.compare_hash.outputs.branch }}
+          path: nano-node
       - name: build docker image
+        continue-on-error: true
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
+        working-directory: ./nano-node
+        id: docker_build
         run: |
-          DOCKER_TAG=${{ steps.compare_hash.outputs.LATEST_COMMIT_SOURCE }}
-          docker build -f docker/node/Dockerfile -t gr0v1ty/nano-node .
-          # LOGIN to dockerhub
-          echo ${{ secrets.DH_PWD }} | docker login -u gr0v1ty --password-stdin
-          docker tag gr0v1ty/nano-node gr0v1ty/nano-node:$DOCKER_TAG          
-          # Push as latest
-          docker push gr0v1ty/nano-node
-          docker push gr0v1ty/nano-node:latest
-          # Push with commit hash as version
-          docker push gr0v1ty/nano-node:$DOCKER_TAG
-      
+          DOCKER_TAG=${{ steps.compare_hash.outputs.COMMIT_TO_TEST }}
+          ADD_LATEST=${{ steps.compare_hash.outputs.add_latest}}          
+          echo "BUILD_STATUS='fail'" >> $GITHUB_OUTPUT
+
+          #docker build -f docker/node/Dockerfile -t gr0v1ty/nano-node .
+          # If build fails, the following part is not executed but the next steps are executed!     
+
+          echo "BUILD_STATUS='pass'" >> $GITHUB_OUTPUT            
+          echo "DOCKER_TAG=gr0v1ty/nano-node:${DOCKER_TAG}" >> $GITHUB_OUTPUT
+          # # LOGIN to dockerhub
+          # echo ${{ secrets.DH_PWD }} | docker login -u gr0v1ty --password-stdin
+          # docker tag gr0v1ty/nano-node gr0v1ty/nano-node:$DOCKER_TAG
+          # # Push with commit hash as version
+          # docker push gr0v1ty/nano-node:$DOCKER_TAG
+
+          # if [ "$ADD_LATEST" -eq 1 ]; then
+          #   # Push as latest
+          #   docker push gr0v1ty/nano-node
+          #   docker push gr0v1ty/nano-node:latest          
+          # fi       
+           
+    
+      - name: checkout gr0vity-dev/nano-node-builder
+        if: ${{ steps.compare_hash.outputs.continue > 0 }}
+        uses: actions/checkout@v3
+        with:
+          path: nano-node-builder
+      - name: Compare commit hash between source and mirror
+        if: ${{ steps.compare_hash.outputs.continue > 0 }}
+        working-directory: ./nano-node-builder
+        run: |
+          git pull origin testing/workflow_improve
+          BUILD_STATUS=${{ steps.docker_build.outputs.BUILD_STATUS }}
+          BUILD_AT=$(date -u +%FT%TZ)
+          DOCKER_TAG=${{ steps.docker_build.outputs.DOCKER_TAG }}
+          hash_value=${{ steps.compare_hash.outputs.COMMIT_TO_TEST }}
+          #Update the builds.json
+          jq --arg build_status "$BUILD_STATUS" --arg DOCKER_TAG "$DOCKER_TAG" --arg build_at "$BUILD_AT" --arg hash_value "$hash_value" \
+              '[.[] | if .hash == $hash_value then .build_status = $build_status | .built_at = $build_at | .docker_tag = ($DOCKER_TAG | gsub("{hash}"; .hash)) else . end]' \
+               docker_builder/builds.json > $HOME/temp.json && mv  $HOME/temp.json docker_builder/builds.json
+          
+          git add .
+          git commit -m "build $BUILD_STATUS ($DOCKER_TAG)"
+          git push origin testing/workflow_improve
