@@ -23,7 +23,7 @@ jobs:
           jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' docker_builder/builds.json $HOME/latest_commits.json > docker_builder/builds.json
 
           # get first hash that is not yet built
-          COMMIT_TO_TEST=$(jq -r '.[] | select(.build_status == null) | .hash' file.json | head -n 1)
+          COMMIT_TO_TEST=$(jq -r '.[] | select(.build_status == null) | .hash' docker_builder/builds.json | head -n 1)
 
           if [ -z "$COMMIT_TO_TEST" ]; then
             echo "variable is empty"
