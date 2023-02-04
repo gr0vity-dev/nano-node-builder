@@ -79,6 +79,7 @@ jobs:
           path: nano-node
       - name: build docker image
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
+        working-directory: ./nano-node
         id: docker_build
         run: |
           DOCKER_TAG=${{ steps.compare_hash.outputs.COMMIT_TO_TEST }}
