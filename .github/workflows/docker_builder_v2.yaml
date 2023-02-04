@@ -68,10 +68,10 @@ jobs:
           #docker build -f docker/node/Dockerfile -t gr0v1ty/nano-node .
           #if [ $? -ne 0 ]; then            
             # Perform some action in case of failure
-            echo "BUILD_STATUS='fail'" >> $GITHUB_OUTPUT
+            #echo "BUILD_STATUS='fail'" >> $GITHUB_OUTPUT
           #else
-          #  echo "BUILD_STATUS='pass'" >> $GITHUB_OUTPUT            
-          #  echo "DOCKER_TAG=gr0v1ty/nano-node:${DOCKER_TAG}" >> $GITHUB_OUTPUT  
+            echo "BUILD_STATUS='pass'" >> $GITHUB_OUTPUT            
+            echo "DOCKER_TAG=gr0v1ty/nano-node:${DOCKER_TAG}" >> $GITHUB_OUTPUT  
           #fi          
 
       #     # LOGIN to dockerhub
