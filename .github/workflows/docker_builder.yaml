@@ -87,22 +87,22 @@ jobs:
           ADD_LATEST=${{ steps.compare_hash.outputs.add_latest}}          
           echo "BUILD_STATUS='fail'" >> $GITHUB_OUTPUT
 
-          #docker build -f docker/node/Dockerfile -t gr0v1ty/nano-node .
+          docker build -f docker/node/Dockerfile -t gr0v1ty/nano-node .
           # If build fails, the following part is not executed but the next steps are executed!     
 
           echo "BUILD_STATUS='pass'" >> $GITHUB_OUTPUT            
           echo "DOCKER_TAG=gr0v1ty/nano-node:${DOCKER_TAG}" >> $GITHUB_OUTPUT
-          # # LOGIN to dockerhub
-          # echo ${{ secrets.DH_PWD }} | docker login -u gr0v1ty --password-stdin
-          # docker tag gr0v1ty/nano-node gr0v1ty/nano-node:$DOCKER_TAG
-          # # Push with commit hash as version
-          # docker push gr0v1ty/nano-node:$DOCKER_TAG
+          # LOGIN to dockerhub
+          echo ${{ secrets.DH_PWD }} | docker login -u gr0v1ty --password-stdin
+          docker tag gr0v1ty/nano-node gr0v1ty/nano-node:$DOCKER_TAG
+          # Push with commit hash as version
+          docker push gr0v1ty/nano-node:$DOCKER_TAG
 
-          # if [ "$ADD_LATEST" -eq 1 ]; then
-          #   # Push as latest
-          #   docker push gr0v1ty/nano-node
-          #   docker push gr0v1ty/nano-node:latest          
-          # fi       
+          if [ "$ADD_LATEST" -eq 1 ]; then
+            # Push as latest
+            docker push gr0v1ty/nano-node
+            docker push gr0v1ty/nano-node:latest          
+          fi       
            
     
       - name: checkout gr0vity-dev/nano-node-builder
