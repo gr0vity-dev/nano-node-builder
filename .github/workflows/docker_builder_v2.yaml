@@ -61,7 +61,7 @@ jobs:
       - name: build docker image
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
         id: docker_build
-        #working-directory: ./nano-node
+        working-directory: ./nano-node
         run: |
           DOCKER_TAG=${{ steps.compare_hash.outputs.COMMIT_TO_TEST }}
           BUILD_AT=$(date -u +%FT%TZ)          
@@ -83,11 +83,11 @@ jobs:
       #     # Push with commit hash as version
       #     # docker push gr0v1ty/nano-node:$DOCKER_TAG
 
-      - name: checkout gr0vity-dev/nano-node-builder
-        if: ${{ steps.compare_hash.outputs.continue > 0 }}
-        uses: actions/checkout@v3
-        with:
-          path: nano-node-builder
+      # - name: checkout gr0vity-dev/nano-node-builder
+      #   if: ${{ steps.compare_hash.outputs.continue > 0 }}
+      #   uses: actions/checkout@v3
+      #   with:
+      #     path: nano-node-builder
       - name: Compare commit hash between source and mirror
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
         working-directory: ./nano-node-builder
@@ -96,7 +96,7 @@ jobs:
           BUILD_STATUS=${{ steps.docker_build.outputs.BUILD_STATUS }}
           BUILD_AT=${{ steps.compare_hash.outputs.COMMIT_TO_TEST }}
           DOCKER_TAG=${{ steps.docker_build.outputs.DOCKER_TAG }}
-          hash_value=${{ }}
+          hash_value=${{ steps.compare_hash.outputs.COMMIT_TO_TEST }}
           jq --arg build_status "$BUILD_STATUS" --arg DOCKER_TAG "$DOCKER_TAG" --arg build_at "$BUILD_AT" --arg hash_value "$hash_value" \
               '[.[] | if .hash == $hash_value then .build_status = $build_status | .built_at = $build_at | .docker_tag = ($DOCKER_TAG | gsub("{hash}"; .hash)) else . end]' \
                docker_builder/builds.json > $HOME/temp.json && mv  $HOME/temp.json docker_builder/builds.json
