@@ -83,11 +83,11 @@ jobs:
       #     # Push with commit hash as version
       #     # docker push gr0v1ty/nano-node:$DOCKER_TAG
 
-      # - name: checkout gr0vity-dev/nano-node-builder
-      #   if: ${{ steps.compare_hash.outputs.continue > 0 }}
-      #   uses: actions/checkout@v3
-      #   with:
-      #     path: nano-node-builder
+      - name: checkout gr0vity-dev/nano-node-builder
+        if: ${{ steps.compare_hash.outputs.continue > 0 }}
+        uses: actions/checkout@v3
+        with:
+          path: nano-node-builder
       - name: Compare commit hash between source and mirror
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
         working-directory: ./nano-node-builder
