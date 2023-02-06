@@ -45,7 +45,7 @@ jobs:
             if [ -z "$result" ]; then
               #default repo for commits
               echo "owner=nanocurrency" >> $GITHUB_OUTPUT
-              echo "branch=develop" >> $GITHUB_OUTPUT
+              echo "branch=$COMMIT_TO_TEST" >> $GITHUB_OUTPUT
               echo "add_latest=1" >> $GITHUB_OUTPUT
             else
               #user repo for pull_requests
