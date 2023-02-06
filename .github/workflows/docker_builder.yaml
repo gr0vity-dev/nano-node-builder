@@ -122,7 +122,7 @@ jobs:
           #Update the builds.json
           jq --arg build_status "$BUILD_STATUS" --arg DOCKER_TAG "$DOCKER_TAG" --arg build_at "$BUILD_AT" --arg hash_value "$hash_value" \
               '[.[] | if .hash == $hash_value then .build_status = $build_status | .built_at = $build_at | .docker_tag = ($DOCKER_TAG | gsub("{hash}"; .hash)) else . end]' \
-               docker_builder/builds.json | jq '. | sort_by(.built_at) | reverse' > $HOME/temp.json && mv  $HOME/temp.json docker_builder/builds.json
+               docker_builder/builds.json | jq '. | sort_by(.built_at)' > $HOME/temp.json && mv  $HOME/temp.json docker_builder/builds.json
           
           git add .
           git commit -m "build $BUILD_STATUS ($DOCKER_TAG)"
