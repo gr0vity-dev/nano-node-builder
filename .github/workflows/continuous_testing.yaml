@@ -1,9 +1,13 @@
 name: Continuous Testing of Docker Images
 
-on: [push]
-  # push:
-    # paths:
-    #   - 'docker_builder/builds.json'
+on: push
+# on:
+#   push:
+#     paths:
+#       - 'docker_builder/builds.json'
+# on:
+#   schedule:
+#     - cron: '0/5 * * * *'  # "every 5 minutes
 
 jobs:
   prepare_testing:
@@ -47,10 +51,16 @@ jobs:
             git commit -m "Start testing for build $HASH"
             git push origin main
 
+            echo "HASH=$HASH" >> $GITHUB_ENV
+            echo "TEST_BUILD=$TEST_BUILD" >> $GITHUB_ENV
+
             echo "COMMIT_HASH=$HASH" >> $GITHUB_OUTPUT
             echo "DOCKER_TAG=$(echo "$TEST_BUILD" | jq -r '.docker_tag')" >> $GITHUB_OUTPUT
-
           fi
+      - name: Debug outputs
+        run: |      
+          echo $HASH
+          echo $(echo "$TEST_BUILD" | jq -r '.docker_tag')
 
   get_testcases:
       runs-on: ubuntu-latest
@@ -67,9 +77,10 @@ jobs:
 
   testcases:
     needs: [prepare_testing, get_testcases]
-    #if: ${{ needs.prepare_testing.outputs.hash != '' }}
+    if: ${{ needs.prepare_testing.outputs.COMMIT_HASH != '' }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix: ${{ fromJson(needs.get_testcases.outputs.MATRIX) }}
     steps:
       - name: Checkout repository
@@ -96,7 +107,6 @@ jobs:
       - name: Run test case
         run: |
           DOCKER_TAG=${{ needs.prepare_testing.outputs.DOCKER_TAG }}
-          #DOCKER_TAG="gr0v1ty/nano-node:0f19fab2190b5908236083728f85a4b105a609d8"
           #nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited -i $DOCKER_TAG > out.txt
           nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited -i $DOCKER_TAG
           # PASS_COUNT=$(grep 'PASS' out.txt | wc -l)
@@ -130,9 +140,10 @@ jobs:
             --arg started_at "${{ env.STARTED_AT }}" \
             --arg completed_at "${{ env.COMPLETED_AT }}" \
             '{testcase: $testcase, status: $status, started_at: $started_at, completed_at: $completed_at}')
+        
 
           # Update the test file with the new entry
-          jq '.testcases += [$NEW_ENTRY]' $TEST_FILE > tmp.json && mv tmp.json $TEST_FILE
+          jq --argjson new_entry "$NEW_ENTRY" '.testcases += [$new_entry]' $TEST_FILE > tmp.json && mv tmp.json $TEST_FILE
 
           # Commit and push the changes
           git config user.name "GitHub Actions Bot"
@@ -142,7 +153,7 @@ jobs:
           git push origin main
 
   post_process:
-    needs: testcases
+    needs: [prepare_testing, testcases]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
