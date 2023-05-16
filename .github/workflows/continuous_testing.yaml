@@ -66,7 +66,7 @@ jobs:
 
   testcases:
     needs: [prepare_testing, get_testcases]
-    if: ${{ needs.prepare_testing.outputs.hash != '' }}
+    #if: ${{ needs.prepare_testing.outputs.hash != '' }}
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{fromJson(needs.get_testcases.outputs.matrix)}}
@@ -90,8 +90,9 @@ jobs:
 
       - name: Run test case
         run: |
-          #nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited -i ${{ env.DOCKER_TAG }} > out.txt
-          nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited -i ${{ env.DOCKER_TAG }}
+          DOCKER_TAG="gr0v1ty/nano-node:0f19fab2190b5908236083728f85a4b105a609d8"
+          #nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited -i $DOCKER_TAG > out.txt
+          nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited -i $DOCKER_TAG
           # PASS_COUNT=$(grep 'PASS' out.txt | wc -l)
           # if [[ "$PASS_COUNT" -gt 0 ]]; then
           #   STATUS='passed'
