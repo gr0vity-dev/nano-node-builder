@@ -47,6 +47,11 @@ jobs:
             echo "::set-output name=hash::$HASH"
             echo "::set-output name=docker_tag::$(echo "$TEST_BUILD" | jq -r '.docker_tag')"
           fi
+      - name: Debug output
+        run: echo "HASH=${{ steps.fetch-build.outputs.hash }}"
+    outputs:
+      hash: ${{ steps.fetch-build.outputs.hash }}
+      docker_tag: ${{ steps.fetch-build.outputs.docker_tag }}
 
   get_testcases:
       runs-on: ubuntu-latest
