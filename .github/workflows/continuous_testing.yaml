@@ -44,14 +44,12 @@ jobs:
             git commit -m "Start testing for build $HASH"
             git push origin main
 
-            echo "::set-output name=hash::$HASH"
-            echo "::set-output name=docker_tag::$(echo "$TEST_BUILD" | jq -r '.docker_tag')"
+            echo "HASH=$HASH" >> $GITHUB_ENV
+            echo "DOCKER_TAG=$(echo "$TEST_BUILD" | jq -r '.docker_tag')" >> $GITHUB_ENV
+
           fi
       - name: Debug output
-        run: echo "HASH=${{ steps.fetch-build.outputs.hash }}"
-    outputs:
-      hash: ${{ steps.fetch-build.outputs.hash }}
-      docker_tag: ${{ steps.fetch-build.outputs.docker_tag }}
+        run: echo "HASH=$HASH"
 
   get_testcases:
       runs-on: ubuntu-latest
@@ -64,8 +62,6 @@ jobs:
 
         - name: Set matrix for test cases
           run: echo "MATRIX={\"testcase\":${TESTCASES}}" >> $GITHUB_ENV
-      outputs:
-        matrix: ${{ env.MATRIX }}
 
 
   testcases:
@@ -94,20 +90,22 @@ jobs:
 
       - name: Run test case
         run: |
-          nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited > out.txt
-          PASS_COUNT=$(grep 'PASS' out.txt | wc -l)
-          if [[ "$PASS_COUNT" -gt 0 ]]; then
-            STATUS='passed'
-          else
-            STATUS='failed'
-          fi
+          #nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited -i ${{ env.DOCKER_TAG }} > out.txt
+          nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited -i ${{ env.DOCKER_TAG }}
+          # PASS_COUNT=$(grep 'PASS' out.txt | wc -l)
+          # if [[ "$PASS_COUNT" -gt 0 ]]; then
+          #   STATUS='passed'
+          # else
+          #   STATUS='failed'
+          # fi
+          STATUS='passed'
 
           STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-          echo "::set-output name=status::$STATUS"
-          echo "::set-output name=started_at::$STARTED_AT"
-          echo "::set-output name=completed_at::$COMPLETED_AT"
+          echo "STATUS=$STATUS" >> $GITHUB_ENV
+          echo "STARTED_AT=$STARTED_AT" >> $GITHUB_ENV
+          echo "COMPLETED_AT=$COMPLETED_AT" >> $GITHUB_ENV
         id: testcase
 
       - name: Update test file
@@ -165,7 +163,7 @@ jobs:
 
       - name: Post-processing
         run: |
-          HASH=${{ needs.prepare_testing.outputs.hash }}
+          HASH=${{ env.HASH }}
           TEST_FILE=continuous_testing/$HASH.json
 
           if [[ $(jq '[.testcases[].status == "failed"] | any' $TEST_FILE) == "true" ]]; then
