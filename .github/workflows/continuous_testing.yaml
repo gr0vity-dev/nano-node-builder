@@ -1,0 +1,183 @@
+name: Continuous Testing of Docker Images
+
+on: [push]
+  # push:
+    # paths:
+    #   - 'docker_builder/builds.json'
+
+jobs:
+  prepare_testing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Filter and create test file
+        id: filter
+        run: |          
+          # Filter entries with built_at > START_DATE, build_status = "pass", and no existing test file
+          #!/bin/bash
+          START_DATE=$(date -d '2023-05-15' +%s)
+          # Generate a list of all hashes in the continuous_testing directory
+          hashes=$(ls continuous_testing | sed 's/.json//g')
+          # Convert the list of hashes into a jq-friendly format
+          hash_list=$(echo $hashes | tr ' ' '\n' | jq -R . | jq -s .)
+          # Filter the JSON file using jq
+          TEST_BUILD=$(jq -r --argjson hash_list "$hash_list" --argjson START_DATE "$START_DATE" '.[] | select(.built_at? != null and (.built_at | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime) > $START_DATE and .build_status == "pass" and (.hash as $h | $hash_list | index($h) == null)) ' docker_builder/builds.json | jq --slurp 'sort_by(.built_at) | .[0]')
+
+          if [[ -z "$TEST_BUILD" ]]; then
+            echo "No build found to test"
+            exit 0
+          else
+            # Create new test file with initial status
+            HASH=$(echo "$TEST_BUILD" | jq -r '.hash')
+            echo "Creating test file for build: $HASH"
+            mkdir -p continuous_testing
+            echo '{"hash": "'$HASH'", "type": "'$(echo "$TEST_BUILD" | jq -r '.type')'", "testcases": [], "overall_status": "running", "started_at": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'", "completed_at": null, "grafana_link": null}' > continuous_testing/$HASH.json
+
+            git config user.name "GitHub Actions Bot"
+            git config user.email "<>"
+            git add continuous_testing/$HASH.json
+            git commit -m "Start testing for build $HASH"
+            git push origin main
+
+            echo "::set-output name=hash::$HASH"
+            echo "::set-output name=docker_tag::$(echo "$TEST_BUILD" | jq -r '.docker_tag')"
+          fi
+
+  get_testcases:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Fetch test case names
+          run: |
+            TESTCASES=$(curl -s 'https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/cpu_limited' | jq -r '[.[] | select(.name | endswith("json")) | select(.type == "file") | .name | rtrimstr(".json")]' | jq -c)
+            
+            echo "TESTCASES=$TESTCASES" >> $GITHUB_ENV
+
+        - name: Set matrix for test cases
+          run: echo "MATRIX={\"testcase\":${TESTCASES}}" >> $GITHUB_ENV
+      outputs:
+        matrix: ${{ env.MATRIX }}
+
+
+  testcases:
+    needs: [prepare_testing, get_testcases]
+    if: ${{ needs.prepare_testing.outputs.hash != '' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJson(needs.get_testcases.outputs.matrix)}}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker
+          # Install docker-compose v1.29 required for cpu limits to be applied in the testcases. docker-compose V2 ignores hardware limits
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          pip install nanolab bitmath websocket-client
+
+      - name: Run test case
+        run: |
+          nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited > out.txt
+          PASS_COUNT=$(grep 'PASS' out.txt | wc -l)
+          if [[ "$PASS_COUNT" -gt 0 ]]; then
+            STATUS='passed'
+          else
+            STATUS='failed'
+          fi
+
+          STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          echo "::set-output name=status::$STATUS"
+          echo "::set-output name=started_at::$STARTED_AT"
+          echo "::set-output name=completed_at::$COMPLETED_AT"
+        id: testcase
+
+      - name: Update test file
+        run: |
+          HASH=${{ needs.prepare_testing.outputs.hash }}
+          TEST_FILE=continuous_testing/$HASH.json
+
+          # Keep track of the original commit hash of the file
+          ORIGINAL_HASH=$(git log -n 1 --pretty=format:%H -- $TEST_FILE)
+
+          while true; do
+            # Pull the latest changes from the repository
+            git pull origin main
+
+            # Check if the file has been modified
+            CURRENT_HASH=$(git log -n 1 --pretty=format:%H -- $TEST_FILE)
+            if [[ $CURRENT_HASH == $ORIGINAL_HASH ]]; then
+              # The file hasn't been modified, so make your changes
+
+              # Create a new entry for this test case
+              NEW_ENTRY=$(jq -n \
+                --arg testcase "${{ matrix.testcase }}" \
+                --arg status "${{ steps.testcase.outputs.status }}" \
+                --arg started_at "${{ steps.testcase.outputs.started_at }}" \
+                --arg completed_at "${{ steps.testcase.outputs.completed_at }}" \
+                '{testcase: $testcase, status: $status, started_at: $started_at, completed_at: $completed_at}')
+
+              # Update the test file with the new entry
+              jq '.testcases += [$NEW_ENTRY]' $TEST_FILE > tmp.json && mv tmp.json $TEST_FILE
+
+              # Commit and push the changes
+              git config user.name "GitHub Actions Bot"
+              git config user.email "<>"
+              git add $TEST_FILE
+              git commit -m "Update test result for ${{ matrix.testcase }} in build $HASH"
+              git push origin main
+
+              # If the push was successful, exit the loop
+              if [[ $? -eq 0 ]]; then
+                break
+              fi
+            else
+              # The file has been modified, so wait for a short period of time and try again
+              sleep 1
+            fi
+          done
+
+
+  post_process:
+    needs: testcases
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Post-processing
+        run: |
+          HASH=${{ needs.prepare_testing.outputs.hash }}
+          TEST_FILE=continuous_testing/$HASH.json
+
+          if [[ $(jq '[.testcases[].status == "failed"] | any' $TEST_FILE) == "true" ]]; then
+            OVERALL_STATUS="failed"
+          else
+            OVERALL_STATUS="passed"
+          fi
+
+          COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          jq --arg overall_status "$OVERALL_STATUS" \
+            --arg completed_at "$COMPLETED_AT" \
+            '.overall_status = $overall_status | .completed_at = $completed_at' $TEST_FILE > tmp.json && mv tmp.json $TEST_FILE
+
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          git add $TEST_FILE
+          git commit -m "Post-processing for build $HASH"
+          git push origin main
+
