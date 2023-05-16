@@ -8,6 +8,9 @@ on: [push]
 jobs:
   prepare_testing:
     runs-on: ubuntu-latest
+    outputs:
+      COMMIT_HASH: ${{ steps.filter.outputs.COMMIT_HASH }}
+      DOCKER_TAG: ${{ steps.filter.outputs.DOCKER_TAG }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -44,24 +47,22 @@ jobs:
             git commit -m "Start testing for build $HASH"
             git push origin main
 
-            echo "HASH=$HASH" >> $GITHUB_ENV
-            echo "DOCKER_TAG=$(echo "$TEST_BUILD" | jq -r '.docker_tag')" >> $GITHUB_ENV
+            echo "COMMIT_HASH=$HASH" >> $GITHUB_OUTPUT
+            echo "DOCKER_TAG=$(echo "$TEST_BUILD" | jq -r '.docker_tag')" >> $GITHUB_OUTPUT
 
           fi
-      - name: Debug output
-        run: echo "HASH=$HASH"
 
   get_testcases:
       runs-on: ubuntu-latest
+      outputs:
+        MATRIX: ${{ steps.matrix.outputs.MATRIX }}       
       steps:
         - name: Fetch test case names
+          id: matrix
           run: |
             TESTCASES=$(curl -s 'https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/cpu_limited' | jq -r '[.[] | select(.name | endswith("json")) | select(.type == "file") | .name | rtrimstr(".json")]' | jq -c)
-            
-            echo "TESTCASES=$TESTCASES" >> $GITHUB_ENV
-
-        - name: Set matrix for test cases
-          run: echo "MATRIX={\"testcase\":${TESTCASES}}" >> $GITHUB_ENV
+                        
+            echo "MATRIX=$TESTCASES" >> $GITHUB_OUTPUT
 
 
   testcases:
@@ -69,7 +70,7 @@ jobs:
     #if: ${{ needs.prepare_testing.outputs.hash != '' }}
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{fromJson(needs.get_testcases.outputs.matrix)}}
+      matrix: ${{ fromJson(needs.get_testcases.outputs.MATRIX) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -90,7 +91,8 @@ jobs:
 
       - name: Run test case
         run: |
-          DOCKER_TAG="gr0v1ty/nano-node:0f19fab2190b5908236083728f85a4b105a609d8"
+          DOCKER_TAG=${{ needs.prepare_testing.outputs.DOCKER_TAG }}
+          #DOCKER_TAG="gr0v1ty/nano-node:0f19fab2190b5908236083728f85a4b105a609d8"
           #nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited -i $DOCKER_TAG > out.txt
           nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited -i $DOCKER_TAG
           # PASS_COUNT=$(grep 'PASS' out.txt | wc -l)
@@ -110,8 +112,8 @@ jobs:
         id: testcase
 
       - name: Update test file
-        run: |
-          HASH=${{ needs.prepare_testing.outputs.hash }}
+        run: |          
+          HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
           TEST_FILE=continuous_testing/$HASH.json
 
           # Keep track of the original commit hash of the file
@@ -164,7 +166,7 @@ jobs:
 
       - name: Post-processing
         run: |
-          HASH=${{ env.HASH }}
+          HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
           TEST_FILE=continuous_testing/$HASH.json
 
           if [[ $(jq '[.testcases[].status == "failed"] | any' $TEST_FILE) == "true" ]]; then
