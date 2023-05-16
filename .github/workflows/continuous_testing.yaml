@@ -62,7 +62,7 @@ jobs:
           run: |
             TESTCASES=$(curl -s 'https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/cpu_limited' | jq -r '[.[] | select(.name | endswith("json")) | select(.type == "file") | .name | rtrimstr(".json")]' | jq -c)
                         
-            echo "MATRIX=$TESTCASES" >> $GITHUB_OUTPUT
+            echo "MATRIX={\"testcase\":$TESTCASES}" >> $GITHUB_OUTPUT
 
 
   testcases:
