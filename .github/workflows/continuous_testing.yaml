@@ -83,7 +83,11 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker
+          sudo apt-get install apt-transport-https ca-certificates gnupg-agent software-properties-common --yes
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+          sudo apt-get install docker-ce=5:20.10.22~3-0~ubuntu-focal docker-ce-cli=5:20.10.22~3-0~ubuntu-focal docker-compose-plugin containerd.io --yes
+          
           # Install docker-compose v1.29 required for cpu limits to be applied in the testcases. docker-compose V2 ignores hardware limits
           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
@@ -115,47 +119,27 @@ jobs:
         run: |          
           HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
           TEST_FILE=continuous_testing/$HASH.json
+          
+          # Pull the latest changes from the repository
+          git pull origin main
 
-          # Keep track of the original commit hash of the file
-          ORIGINAL_HASH=$(git log -n 1 --pretty=format:%H -- $TEST_FILE)
+          # Create a new entry for this test case
+          NEW_ENTRY=$(jq -n \
+            --arg testcase "${{ matrix.testcase }}" \
+            --arg status "${{ env.STATUS }}" \
+            --arg started_at "${{ env.STARTED_AT }}" \
+            --arg completed_at "${{ env.COMPLETED_AT }}" \
+            '{testcase: $testcase, status: $status, started_at: $started_at, completed_at: $completed_at}')
 
-          while true; do
-            # Pull the latest changes from the repository
-            git pull origin main
+          # Update the test file with the new entry
+          jq '.testcases += [$NEW_ENTRY]' $TEST_FILE > tmp.json && mv tmp.json $TEST_FILE
 
-            # Check if the file has been modified
-            CURRENT_HASH=$(git log -n 1 --pretty=format:%H -- $TEST_FILE)
-            if [[ $CURRENT_HASH == $ORIGINAL_HASH ]]; then
-              # The file hasn't been modified, so make your changes
-
-              # Create a new entry for this test case
-              NEW_ENTRY=$(jq -n \
-                --arg testcase "${{ matrix.testcase }}" \
-                --arg status "${{ steps.testcase.outputs.status }}" \
-                --arg started_at "${{ steps.testcase.outputs.started_at }}" \
-                --arg completed_at "${{ steps.testcase.outputs.completed_at }}" \
-                '{testcase: $testcase, status: $status, started_at: $started_at, completed_at: $completed_at}')
-
-              # Update the test file with the new entry
-              jq '.testcases += [$NEW_ENTRY]' $TEST_FILE > tmp.json && mv tmp.json $TEST_FILE
-
-              # Commit and push the changes
-              git config user.name "GitHub Actions Bot"
-              git config user.email "<>"
-              git add $TEST_FILE
-              git commit -m "Update test result for ${{ matrix.testcase }} in build $HASH"
-              git push origin main
-
-              # If the push was successful, exit the loop
-              if [[ $? -eq 0 ]]; then
-                break
-              fi
-            else
-              # The file has been modified, so wait for a short period of time and try again
-              sleep 1
-            fi
-          done
-
+          # Commit and push the changes
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          git add $TEST_FILE
+          git commit -m "Update test result for ${{ matrix.testcase }} in build $HASH"
+          git push origin main
 
   post_process:
     needs: testcases
