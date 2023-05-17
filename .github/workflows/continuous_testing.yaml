@@ -118,6 +118,9 @@ jobs:
           TEST_FILE=continuous_testing/$HASH.json
           MAX_RETRIES=10
 
+          #reapply local changes on top of the changes pulled from the remote repository, avoiding divergence issues.
+          git config pull.rebase true
+
           for ((i=1; i<=MAX_RETRIES; i++)); do
             # Pull the latest changes from the repository
             git pull origin main
