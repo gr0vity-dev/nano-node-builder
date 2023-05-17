@@ -49,18 +49,14 @@ jobs:
             git config user.email "<>"
             git add continuous_testing/$HASH.json
             git commit -m "Start testing for build $HASH"
-            git push origin main
-
-            echo "HASH=$HASH" >> $GITHUB_ENV
-            echo "TEST_BUILD=$TEST_BUILD" >> $GITHUB_ENV
+            git push origin main           
 
             echo "COMMIT_HASH=$HASH" >> $GITHUB_OUTPUT
             echo "DOCKER_TAG=$(echo "$TEST_BUILD" | jq -r '.docker_tag')" >> $GITHUB_OUTPUT
+
+            echo $DOCKER_TAG
+            echo $COMMIT_HASH
           fi
-      - name: Debug outputs
-        run: |      
-          echo $HASH
-          echo $(echo "$TEST_BUILD" | jq -r '.docker_tag')
 
   get_testcases:
       runs-on: ubuntu-latest
