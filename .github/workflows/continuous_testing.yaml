@@ -61,14 +61,14 @@ jobs:
         - name: Fetch test case names
           id: matrix
           run: |
-            TESTCASES=$(curl -s 'https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/continuous_testing' | jq -r '[.[] | select(.name | endswith("json")) | select(.type == "file") | .name | rtrimstr(".json")]' | jq -c)
+            TESTCASES=$(curl -s 'https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing' | jq -r '[.[] | select(.name | endswith("json")) | select(.type == "file") | .name | rtrimstr(".json")]' | jq -c)
                         
             echo "MATRIX={\"testcase\":$TESTCASES}" >> $GITHUB_OUTPUT
 
 
   testcases:
     needs: [prepare_testing, get_testcases]
-    if: ${{ needs.prepare_testing.outputs.COMMIT_HASH != '' }}
+    if: ${{ needs.prepare_testing.outputs.COMMIT_HASH != 'null' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -98,7 +98,7 @@ jobs:
       - name: Run test case
         run: |
           DOCKER_TAG=${{ needs.prepare_testing.outputs.DOCKER_TAG }}
-          nanolab run -t ${{ matrix.testcase }} --gh-path continuous_testing -i $DOCKER_TAG > status.log
+          nanolab run -t ${{ matrix.testcase }} --gh-path quick_testing -i $DOCKER_TAG > status.log
           cat status.log
           STATUS=$(grep -E -q "FAIL|unconfirmed blocks" status.log && echo "FAIL" || echo "PASS")    
 
@@ -114,29 +114,44 @@ jobs:
       - name: Update test file
         run: |          
           HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
-          TEST_FILE=continuous_testing/$HASH.json          
-          
-          # Pull the latest changes from the repository
-          git pull origin main
+          TEST_FILE=continuous_testing/$HASH.json
+          MAX_RETRIES=10
 
-          # Create a new entry for this test case
-          NEW_ENTRY=$(jq -n \
-            --arg testcase "${{ matrix.testcase }}" \
-            --arg status "${{ env.STATUS }}" \
-            --arg started_at "${{ env.STARTED_AT }}" \
-            --arg completed_at "${{ env.COMPLETED_AT }}" \
-            '{testcase: $testcase, status: $status, started_at: $started_at, completed_at: $completed_at}')
-        
+          for ((i=1; i<=MAX_RETRIES; i++)); do
+            # Pull the latest changes from the repository
+            git pull origin main
 
-          # Update the test file with the new entry
-          jq --argjson new_entry "$NEW_ENTRY" '.testcases += [$new_entry]' $TEST_FILE > tmp.json && mv tmp.json $TEST_FILE
+            # Create a new entry for this test case
+            NEW_ENTRY=$(jq -n \
+              --arg testcase "${{ matrix.testcase }}" \
+              --arg status "${{ env.STATUS }}" \
+              --arg started_at "${{ env.STARTED_AT }}" \
+              --arg completed_at "${{ env.COMPLETED_AT }}" \
+              '{testcase: $testcase, status: $status, started_at: $started_at, completed_at: $completed_at}')
+            
 
-          # Commit and push the changes
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
-          git add $TEST_FILE
-          git commit -m "Update test result for ${{ matrix.testcase }} in build $HASH"
-          git push origin main
+            # Update the test file with the new entry
+            jq --argjson new_entry "$NEW_ENTRY" '.testcases += [$new_entry]' $TEST_FILE > tmp.json && mv tmp.json $TEST_FILE
+
+            # Commit and push the changes
+            git config user.name "GitHub Actions Bot"
+            git config user.email "<>"
+            git add $TEST_FILE
+            git commit -m "Update test result for ${{ matrix.testcase }} in build $HASH"
+            
+            if git push origin main; then
+              echo "Push successful!"
+              break
+            else
+              echo "Push failed, retrying..."
+              if [ $i -eq $MAX_RETRIES ]; then
+                echo "Failed to push after $MAX_RETRIES attempts, exiting."
+                exit 1
+              fi
+              sleep 5
+            fi
+          done
+
 
   post_process:
     needs: [prepare_testing, testcases]
@@ -165,6 +180,6 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
           git add $TEST_FILE
-          git commit -m "Post-processing for build $HASH"
+          git commit -m "Set overall status to $OVERALL_STATUS for build $HASH"
           git push origin main
 
