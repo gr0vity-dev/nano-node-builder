@@ -1,13 +1,11 @@
 name: Continuous Testing of Docker Images
 
-on: push
-# on:
-#   push:
-#     paths:
-#       - 'docker_builder/builds.json'
-# on:
-#   schedule:
-#     - cron: '0/5 * * * *'  # "every 5 minutes
+on:
+  push:
+    paths:
+      - 'docker_builder/builds.json'
+  schedule:
+    - cron: '0/5 * * * *'  # "every 5 minutes"
 
 jobs:
   prepare_testing:
@@ -101,7 +99,9 @@ jobs:
         run: |
           DOCKER_TAG=${{ needs.prepare_testing.outputs.DOCKER_TAG }}
           nanolab run -t ${{ matrix.testcase }} --gh-path continuous_testing -i $DOCKER_TAG > status.log
-          STATUS=$(grep -E -q "FAIL|unconfirmed blocks" status.log && echo "FAIL" || echo "PASS")          
+          cat status.log
+          STATUS=$(grep -E -q "FAIL|unconfirmed blocks" status.log && echo "FAIL" || echo "PASS")    
+
 
           STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -114,7 +114,7 @@ jobs:
       - name: Update test file
         run: |          
           HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
-          TEST_FILE=continuous_testing/$HASH.json
+          TEST_FILE=continuous_testing/$HASH.json          
           
           # Pull the latest changes from the repository
           git pull origin main
