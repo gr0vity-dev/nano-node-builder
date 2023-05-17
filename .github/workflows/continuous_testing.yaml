@@ -165,6 +165,8 @@ jobs:
           HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
           TEST_FILE=continuous_testing/$HASH.json
 
+          git pull origin main
+
           if [[ $(jq '[.testcases[].status == "FAIL"] | any' $TEST_FILE) == "true" ]]; then
             OVERALL_STATUS="FAIL"
           else
