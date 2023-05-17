@@ -37,6 +37,7 @@ jobs:
             echo "No build found to test"
             exit 0
           else
+            git pull origin main
             # Create new test file with initial status
             HASH=$(echo "$TEST_BUILD" | jq -r '.hash')
             echo "Creating test file for build: $HASH"
