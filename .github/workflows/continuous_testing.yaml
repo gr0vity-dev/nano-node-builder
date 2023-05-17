@@ -53,9 +53,6 @@ jobs:
 
             echo "COMMIT_HASH=$HASH" >> $GITHUB_OUTPUT
             echo "DOCKER_TAG=$(echo "$TEST_BUILD" | jq -r '.docker_tag')" >> $GITHUB_OUTPUT
-
-            echo $DOCKER_TAG
-            echo $COMMIT_HASH
           fi
 
   get_testcases:
@@ -66,7 +63,7 @@ jobs:
         - name: Fetch test case names
           id: matrix
           run: |
-            TESTCASES=$(curl -s 'https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/cpu_limited' | jq -r '[.[] | select(.name | endswith("json")) | select(.type == "file") | .name | rtrimstr(".json")]' | jq -c)
+            TESTCASES=$(curl -s 'https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/continuous_testing' | jq -r '[.[] | select(.name | endswith("json")) | select(.type == "file") | .name | rtrimstr(".json")]' | jq -c)
                         
             echo "MATRIX={\"testcase\":$TESTCASES}" >> $GITHUB_OUTPUT
 
@@ -103,15 +100,8 @@ jobs:
       - name: Run test case
         run: |
           DOCKER_TAG=${{ needs.prepare_testing.outputs.DOCKER_TAG }}
-          #nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited -i $DOCKER_TAG > out.txt
-          nanolab run -t ${{ matrix.testcase }} --gh-path cpu_limited -i $DOCKER_TAG
-          # PASS_COUNT=$(grep 'PASS' out.txt | wc -l)
-          # if [[ "$PASS_COUNT" -gt 0 ]]; then
-          #   STATUS='passed'
-          # else
-          #   STATUS='failed'
-          # fi
-          STATUS='passed'
+          nanolab run -t ${{ matrix.testcase }} --gh-path continuous_testing -i $DOCKER_TAG > status.log
+          STATUS=$(grep -E -q "FAIL|unconfirmed blocks" status.log && echo "FAIL" || echo "PASS")          
 
           STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -160,10 +150,10 @@ jobs:
           HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
           TEST_FILE=continuous_testing/$HASH.json
 
-          if [[ $(jq '[.testcases[].status == "failed"] | any' $TEST_FILE) == "true" ]]; then
-            OVERALL_STATUS="failed"
+          if [[ $(jq '[.testcases[].status == "FAIL"] | any' $TEST_FILE) == "true" ]]; then
+            OVERALL_STATUS="FAIL"
           else
-            OVERALL_STATUS="passed"
+            OVERALL_STATUS="PASS"
           fi
 
           COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
