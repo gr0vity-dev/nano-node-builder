@@ -5,7 +5,7 @@ on:
     paths:
       - 'docker_builder/builds.json'
   schedule:
-    - cron: '0/5 * * * *'  # "every 5 minutes"
+    - cron: '0/10 * * * *'  # "every 5 minutes"
 
 jobs:
   prepare_testing:
@@ -99,12 +99,11 @@ jobs:
       - name: Run test case
         run: |
           DOCKER_TAG=${{ needs.prepare_testing.outputs.DOCKER_TAG }}
+          STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
           nanolab run -t ${{ matrix.testcase }} --gh-path quick_testing -i $DOCKER_TAG > status.log
           cat status.log
-          STATUS=$(grep -E -q "FAIL|unconfirmed blocks" status.log && echo "FAIL" || echo "PASS")    
-
-
-          STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          STATUS=$(grep -E -q "FAIL|unconfirmed blocks" status.log && echo "FAIL" || echo "PASS")          
           COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
           echo "STATUS=$STATUS" >> $GITHUB_ENV
@@ -123,7 +122,8 @@ jobs:
 
           for ((i=1; i<=MAX_RETRIES; i++)); do
             # Pull the latest changes from the repository
-            git pull origin main
+            git fetch --all
+            git reset --hard origin/main
 
             # Create a new entry for this test case
             NEW_ENTRY=$(jq -n \
