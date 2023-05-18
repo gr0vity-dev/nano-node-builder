@@ -32,6 +32,7 @@ jobs:
           hash_list=$(echo $hashes | tr ' ' '\n' | jq -R . | jq -s .)
           # Filter the JSON file using jq
           TEST_BUILD=$(jq -r --argjson hash_list "$hash_list" --argjson START_DATE "$START_DATE" '.[] | select(.built_at? != null and (.built_at | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime) > $START_DATE and .build_status == "pass" and (.hash as $h | $hash_list | index($h) == null)) ' docker_builder/builds.json | jq --slurp 'sort_by(.built_at) | .[0]')
+          
 
           if [[ -z "$TEST_BUILD" ]]; then
             echo "No build found to test"
@@ -42,7 +43,7 @@ jobs:
             HASH=$(echo "$TEST_BUILD" | jq -r '.hash')
             echo "Creating test file for build: $HASH"
             mkdir -p continuous_testing
-            echo '{"hash": "'$HASH'", "type": "'$(echo "$TEST_BUILD" | jq -r '.type')'", "testcases": [], "overall_status": "running", "started_at": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'", "completed_at": null, "grafana_link": null}' > continuous_testing/$HASH.json
+            echo '{"hash": "'$HASH'", "type": "'$(echo "$TEST_BUILD" | jq -r '.type')'"'$(if [[ $(echo "$TEST_BUILD" | jq -r '.type') == "pull_request" ]]; then pull_request=$(echo "$TEST_BUILD" | jq -r '.pull_request'); echo ', "pull_request": "'$pull_request'"'; fi)$(echo ', "started_at": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'", "completed_at": null, "testcases": [], "overall_status": "running"}') > continuous_testing/$HASH.json
 
             git config user.name "GitHub Actions Bot"
             git config user.email "<>"
@@ -101,15 +102,31 @@ jobs:
           DOCKER_TAG=${{ needs.prepare_testing.outputs.DOCKER_TAG }}
           STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-          nanolab run -t ${{ matrix.testcase }} --gh-path quick_testing -i $DOCKER_TAG > status.log
-          cat status.log
-          STATUS=$(grep -E -q "FAIL|unconfirmed blocks" status.log && echo "FAIL" || echo "PASS")          
+          nanolab run -t ${{ matrix.testcase }} --gh-path quick_testing -i $DOCKER_TAG > $HOME/status.log          
+          STATUS=$(grep -E -q "FAIL|unconfirmed blocks" $HOME/status.log && echo "FAIL" || echo "PASS")          
           COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
           echo "STATUS=$STATUS" >> $GITHUB_ENV
           echo "STARTED_AT=$STARTED_AT" >> $GITHUB_ENV
           echo "COMPLETED_AT=$COMPLETED_AT" >> $GITHUB_ENV
         id: testcase
+
+      - name: Create and push log file on failure
+        if: ${{ env.STATUS == 'FAIL' }}
+        run: |
+          HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
+          TESTCASE=${{ matrix.testcase }}
+
+          # Rename and move the log file
+          mv $HOME/status.log "continuous_testing/${HASH}_${TESTCASE}.txt"
+
+          # Commit and push the changes
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          git add "continuous_testing/${HASH}_${TESTCASE}.txt"
+          git commit -m "Add log file for failed test ${TESTCASE} in build ${HASH}"
+          git push origin main
+
 
       - name: Update test file
         run: |          
