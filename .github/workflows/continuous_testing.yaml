@@ -117,25 +117,39 @@ jobs:
           HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
           TESTCASE=${{ matrix.testcase }}
 
-          # Rename and move the log file
-          mv $HOME/status.log "continuous_testing/${HASH}_${TESTCASE}.txt"
+          MAX_RETRIES=10          
+          for ((i=1; i<=MAX_RETRIES; i++)); do
+            git fetch --all
+            git reset --hard origin/main
 
-          # Commit and push the changes
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
-          git add "continuous_testing/${HASH}_${TESTCASE}.txt"
-          git commit -m "Add log file for failed test ${TESTCASE} in build ${HASH}"
-          git push origin main
+            # Rename and move the log file
+            mv $HOME/status.log "continuous_testing/${HASH}_${TESTCASE}.txt"
+
+            # Commit and push the changes
+            git config user.name "GitHub Actions Bot"
+            git config user.email "<>"
+            git add "continuous_testing/${HASH}_${TESTCASE}.txt"
+            git commit -m "Add log file for failed test ${TESTCASE} in build ${HASH}"
+            
+            if git push origin main; then
+              echo "Push successful!"
+              break
+            else
+              echo "Push failed, retrying..."
+              if [ $i -eq $MAX_RETRIES ]; then
+                echo "Failed to push after $MAX_RETRIES attempts, exiting."
+                exit 1
+              fi
+              sleep 5
+            fi
+          done
 
 
       - name: Update test file
         run: |          
           HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
           TEST_FILE=continuous_testing/$HASH.json
-          MAX_RETRIES=10
-
-          #reapply local changes on top of the changes pulled from the remote repository, avoiding divergence issues.
-          git config pull.rebase true
+          MAX_RETRIES=10          
 
           for ((i=1; i<=MAX_RETRIES; i++)); do
             # Pull the latest changes from the repository
@@ -176,6 +190,7 @@ jobs:
 
   post_process:
     needs: [prepare_testing, testcases]
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
