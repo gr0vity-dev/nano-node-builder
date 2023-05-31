@@ -1,0 +1,132 @@
+Start Fetching 'config_copy.json' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_send_dependant/config_copy.json'
+Done  Fetching 'config_copy.json' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_send_dependant/config_copy.json'
+Start Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_send_dependant/dowlnoads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Done  Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_send_dependant/dowlnoads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Start Fetching 'default_5n4pr.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_send_dependant/dowlnoads/default_5n4pr.toml'
+Done  Fetching 'default_5n4pr.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_send_dependant/dowlnoads/default_5n4pr.toml'
+[ -f nl_config.toml ] && nanomock down || true
+cp /home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_send_dependant/dowlnoads/default_5n4pr.toml nl_config.toml
+nanomock conf_edit --payload '{"path" : "remote_address",  "value" : "172.17.0.1"}'
+nanomock conf_edit --payload '{"path" : "representatives.docker_tag",  "value" : "gr0v1ty/nano-node:5050df88418c2db724591a42aa75e640c83005a6"}'
+INFO: nanomock data has been copied to your current working directory.
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: 
+SUCCESS: stop_containers
+SUCCESS: reset_nodes_data
+for i in nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4; do cp /home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_send_dependant/dowlnoads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb ./nano_nodes/$i/NanoTest/data.ldb; done
+nanomock conf_edit --payload '{"path" : "representatives.cpu",  "value" : "0.3"}'
+INFO: nanomock data has been copied to your current working directory.
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS:
+Error executing command: nanomock start && nanomock init_wallets
+Error: Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 33, in _run_command
+    subprocess_run_capture_output(base_command, True, None)
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 179, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/bin/nanomock", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/site-packages/nanomock/main.py", line 55, in main
+    manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 479, in execute_command
+    command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 55, in wrapper
+    result = func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 409, in start_containers
+    self.docker_interface.compose_start(nodes)
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 64, in compose_start
+    return self._run_command(cmd)
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 37, in _run_command
+    response = docker_healer.try_heal(e, True, None)
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/site-packages/nanomock/docker/autoheal.py", line 67, in try_heal
+    if self.is_healable(stderr):
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/site-packages/nanomock/docker/autoheal.py", line 38, in is_healable
+    healing_method(error_msg, stderr)
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/site-packages/nanomock/docker/autoheal.py", line 48, in _heal_address_in_use
+    subprocess_run_capture_output(
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 179, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+  File "/opt/hostedtoolcache/Python/3.8.16/x64/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker stop -t 0 nl_pr2 && sleep 5 && docker start nl_pr2' returned non-zero exit status 1.
+.DEBUG 2 unconfirmed blocks! e.g. A9F4948C5291E709AC1FDCA04F0427306C348EEA509B497C3F3B851B3EA39156
+.DEBUG 2 unconfirmed blocks! e.g. 4177FA8B4130363757DF1C5FDB4EE96B20D5CC688E6663BF8DDA22EC3BB89FA4
+.DEBUG 2 unconfirmed blocks! e.g. A577ECDD52EE9289F42E776266C0651A1F8D85BA7856755411E9B932500BB984
+.DEBUG 2 unconfirmed blocks! e.g. 83B3EB3F289941A23A08567C037D5B5C5484FF8F8596F0CD2C76EB9A5A5C882C
+.DEBUG 2 unconfirmed blocks! e.g. B492F199035A5A7220CB12E793A7C35F00ACD25F985518F4DB6669F008AF1F9C
+.DEBUG 2 unconfirmed blocks! e.g. 857E18A3C4B8FDD0D6BE47AEA564BFCDBFEFD621625EE5A3BB19CBE7D93B9BE8
+.DEBUG 2 unconfirmed blocks! e.g. 53AA8AE1021707EE4D218CFFAAC15353EC4C1AB0AA3A04EF42C85929480468BC
+.DEBUG 2 unconfirmed blocks! e.g. 805036E84C2A04C029426CEF3CB26F2B2C9F53310D3561D79849A238D98A260A
+.DEBUG 2 unconfirmed blocks! e.g. E8418A6C3EC2C5615AA5667ECC01FECF5D1834400F359CCF0F1186BAF5C19D56
+.DEBUG 2 unconfirmed blocks! e.g. 4F43D79E8AFB90FF3D28E99EAE9EF9020A5D3F8697CC19E40A9D2B9D7CAD45B8
+.DEBUG 2 unconfirmed blocks! e.g. A93070C3C1AC4F01C79617AEA3105F6AEF93248D2B4F2C70E5661EC81D4A80E6
+.DEBUG 2 unconfirmed blocks! e.g. 2420235BB151D1797456AF28408B2F3FA151DA4CC00175A0A676E8640612E516
+.DEBUG 2 unconfirmed blocks! e.g. C138734D7D8D2BB9702D5FB42225C34CD942A5C2AC5D725BAF72B270B950AB84
+.DEBUG 2 unconfirmed blocks! e.g. EF53A18084711F7EC4A81BDAF65C0C40AC3937FD35C2AB28B82BD62F83E256DA
+.DEBUG 2 unconfirmed blocks! e.g. A8757E92B13B9831B26180E6972437D4F1C1285F1357B3C368A863E54C3A7E34
+.DEBUG 2 unconfirmed blocks! e.g. BC5FEEDE787AF3FF930A90A772376E801E379C797FB168E7AD1CA941DADB0976
+.DEBUG 2 unconfirmed blocks! e.g. 2432CE0FE57892CEC9833EDC5B400009F4B777D2DD23E802E16E33ED49C360B2
+.DEBUG 2 unconfirmed blocks! e.g. 6FCBA5DCEDCD6FB9956DAA3DB83C2C471563E89C4F1F4CF2A9799BDB69337B26
+.DEBUG 2 unconfirmed blocks! e.g. 58C4FBAFC4DF0B76875A0C1422B09A07D64278C0698EA069E16F3A689B099BB6
+.DEBUG 2 unconfirmed blocks! e.g. 300109D21EA8DB4EA91F82F75896F0ACBBDB03324038D750C8B0A25429CDD647
+.DEBUG 2 unconfirmed blocks! e.g. AF6AC9F67B7F89BC87FDFB2F68718B9839BDAD02F094F4B7EB78F0FB8D55EEC3
+.DEBUG 2 unconfirmed blocks! e.g. 135DBF86DCB5079095C2ACD72CAF13694B220778F83A789D53CD07EE3F79DBC6
+.DEBUG 2 unconfirmed blocks! e.g. 0B2007D6FD3117AB511CD2C1E99B0CE779F182093CADEE2057C030DEC57E73DA
+.DEBUG 2 unconfirmed blocks! e.g. CC3B294D2413AA2B96EB34979E730E39B482DC0A58440C5E6A9E4BBAA85EC883
+.DEBUG 2 unconfirmed blocks! e.g. 945595FC02A149BF05273F050EE543CED048A2544AA9A43F221987AB90DE374E
+.DEBUG 2 unconfirmed blocks! e.g. E2BFB53F1AC63E34E7FEF1B45AD20FB47BC007F11D8E151A06E2FF59C58F6125
+.DEBUG 2 unconfirmed blocks! e.g. ADF1AA8DCBE45061EC6B10D0929C55A7C33BE4FAD676C6B89DD53E6EF02557AE
+.DEBUG 2 unconfirmed blocks! e.g. 9A2E9FFD07156CDC7E524515A638E0829EF1B2D59F3BBB7BD83B4BCDE39788C7
+.DEBUG 2 unconfirmed blocks! e.g. 47138392A00B9537914E01578EE488D180AE6DC1A8681345ACD6A7C7B8E846A9
+.DEBUG 2 unconfirmed blocks! e.g. B6E0D3C33A17FCF25201832531B0F5748565C5BD20345CA552DDF83522CCD14C
+.DEBUG 2 unconfirmed blocks! e.g. 241C4E11483DFAEF62005CFBDC1337980C800126681E18F65AFFABB74EE8B2F2
+.DEBUG 2 unconfirmed blocks! e.g. 249D79508BCA954F18B92E4DCD8EA967A27540FC2401F79F74ED19A29B9B7500
+.DEBUG 2 unconfirmed blocks! e.g. 3E532D48403ED6F5C91E6389099650975F4BCD3EB51CE173E8303B82D03CFDBB
+.DEBUG 2 unconfirmed blocks! e.g. 7A41A6A25D5F6D8A0BC3E534C10AA9A333AD89D2B21F3B43AFA32AEA0016DB66
+.DEBUG 2 unconfirmed blocks! e.g. EF8F753D4997EF55F18A181FA9B05C8845461F74A8203FE20FD95B8CB8068DC0
+.DEBUG 2 unconfirmed blocks! e.g. 27DB83DFCC0A10DFEAE00A71BB774D084AF9032C40637963CC77DC5476B50B9C
+.DEBUG 2 unconfirmed blocks! e.g. 1CF3EBFC6E23D47E8748E9EFC6150B5D7FC3B7C007186C3A765336ACA74AAA7C
+.DEBUG 2 unconfirmed blocks! e.g. C5EDFDD25C23121C5F3B4BD85C6CB12EEA9CD0F09DD62293C09BB2AC68AA353A
+.DEBUG 2 unconfirmed blocks! e.g. 0443379028D1A1AF760135E4746CD37F1DBD63D0CD92A4F30549EEB981CD41AB
+.DEBUG 2 unconfirmed blocks! e.g. 256213F7BE201F59A335019AB4062E613E6A538464E6B18D01A325F910249534
+.DEBUG 2 unconfirmed blocks! e.g. 2E68550F45BB8D2E9EF74379FF954226AF8BD7E22D7D4AC9C97BCC7EB026D9B4
+.DEBUG 2 unconfirmed blocks! e.g. 8D9656573731A9E2C89F6ABE958841D9314316C79C140CCC7AB59862C25C0ED2
+.DEBUG 2 unconfirmed blocks! e.g. 75440D6BB3BEE059663EFF1F10E18E3033A8FBBB0073403533A14A129298DBB7
+.DEBUG 2 unconfirmed blocks! e.g. 3F9E7B224EF8F4CCD684F6EFC58A2471833D792EAEF108E0553D94DC2985BCFF
+.DEBUG 2 unconfirmed blocks! e.g. C8448C646582B14E82F7FC375AA4B4747B0C49952CF7B54395EC670D91BA5426
+.DEBUG 2 unconfirmed blocks! e.g. C25E9D02DC1A55EBDC6633E9EDE6FA0F68413DEF65CD5F943B2C19678512CAB2
+.DEBUG 2 unconfirmed blocks! e.g. DEC66996DE1E9E89A74DF6BDAAF8CC742840695612EEE5BBB9C056D8522DF71E
+.DEBUG 2 unconfirmed blocks! e.g. 1E7C7E4DB28D7A5E5381706278BC0EDCECC7B235D03C9E82266B0579B218ACA1
+.DEBUG 2 unconfirmed blocks! e.g. 1BB6AFCE7A889A0412BE138F64A4B5EE2BAD0A50E9D961F148F4852FD2760FD0
+.DEBUG 2 unconfirmed blocks! e.g. 8C46A03764551696AE9017DDA8F43F2E00D23A2E50875C5C7A772BE75CCE801F
+
+
+14:08:29 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+14:08:29 0        | 100      | 0.39     | 0.0      | -1         | -1         | -1        | -1        | -1        | -1        | 5               | 253.22   | 100        | 0            |
