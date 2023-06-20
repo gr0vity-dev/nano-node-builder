@@ -1,0 +1,127 @@
+Start Fetching 'config_copy.json' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_10k_bintree/config_copy.json'
+Done  Fetching 'config_copy.json' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_10k_bintree/config_copy.json'
+Start Fetching '5n4pr_100k_bintree.json' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_10k_bintree/dowlnoads/5n4pr_100k_bintree.json'
+Done  Fetching '5n4pr_100k_bintree.json' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_10k_bintree/dowlnoads/5n4pr_100k_bintree.json'
+Start Fetching '5n4pr_init.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_10k_bintree/dowlnoads/5n4pr_init.ldb'
+Done  Fetching '5n4pr_init.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_10k_bintree/dowlnoads/5n4pr_init.ldb'
+Start Fetching 'default_5n4pr.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_10k_bintree/dowlnoads/default_5n4pr.toml'
+Done  Fetching 'default_5n4pr.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_10k_bintree/dowlnoads/default_5n4pr.toml'
+[ -f nl_config.toml ] && nanomock down || true
+cp /home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_10k_bintree/dowlnoads/default_5n4pr.toml nl_config.toml
+nanomock conf_edit --payload '{"path" : "remote_address",  "value" : "172.17.0.1"}'
+nanomock conf_edit --payload '{"path" : "representatives.docker_tag",  "value" : "gr0v1ty/nano-node:5a97e55bc77d146a87b3ad78d9622afe142545eb"}'
+INFO: nanomock data has been copied to your current working directory.
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: 
+SUCCESS: stop_containers
+SUCCESS: reset_nodes_data
+for i in nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4; do cp /home/runner/work/nano-node-builder/nano-node-builder/resources/5n4pr_conf_10k_bintree/dowlnoads/5n4pr_init.ldb ./nano_nodes/$i/NanoTest/data.ldb; done
+nanomock conf_edit --payload '{"path" : "representatives.cpu",  "value" : "0.3"}'
+The network 'nl_nano-local' already exists.
+INFO: Nodes ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4'] reachable
+INFO:nanomock.internal.utils:Nodes ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4'] reachable
+SUCCESS: start_containers
+SUCCESS:nanomock.internal.utils:start_containers
+INFO: WALLET 7DF75CE1D47797D7218C804613FDF4F26F0DD6AE5232DB4FBDC8204243264A3C CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p
+INFO: WALLET 28BD661AFC17AB4FE3A683B0E0C272F8E5639F9EB49A0CAFDC9270D264336565 CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub
+INFO: WALLET 24FCBED9955B2ECD8CBF74337E50FFBE61177195B19EC9684335A72A929863E4 CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6
+INFO: WALLET 5289F17EED3A2589B9F6D5078960ED258038F872660AA5D22E1A7A4BCE36734E CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h
+INFO: WALLET 796C31C315A86D3E133F8DEA5DF9D56E47B74772EF373D5D538855A566396F93 CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8
+SUCCESS: ['WALLET 7DF75CE1D47797D7218C804613FDF4F26F0DD6AE5232DB4FBDC8204243264A3C CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p', 'WALLET 28BD661AFC17AB4FE3A683B0E0C272F8E5639F9EB49A0CAFDC9270D264336565 CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub', 'WALLET 24FCBED9955B2ECD8CBF74337E50FFBE61177195B19EC9684335A72A929863E4 CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6', 'WALLET 5289F17EED3A2589B9F6D5078960ED258038F872660AA5D22E1A7A4BCE36734E CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h', 'WALLET 796C31C315A86D3E133F8DEA5DF9D56E47B74772EF373D5D538855A566396F93 CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8']
+Connecting to [::ffff:172.17.0.1]:44100
+Connecting to [::ffff:172.17.0.1]:44101
+Connecting to [::ffff:172.17.0.1]:44102
+2023-06-20 16:28:04     0 sec | nl_pr1           | Nano V26.0 5a97e55 |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.Connecting to [::ffff:172.17.0.1]:44103
+Connecting to [::ffff:172.17.0.1]:44104
+2023-06-20 16:28:06     1 sec | nl_pr1           | Nano V26.0 5a97e55 |      15/     21 @ CPS:     1.0 (avg    1.00) (  0.01%) | BPS:     7.0 (avg    7.00) (  0.07%)
+.2023-06-20 16:28:07     2 sec | nl_pr1           | Nano V26.0 5a97e55 |      16/     21 @ CPS:     1.0 (avg    1.00) (  0.02%) | BPS:     0.0 (avg    3.50) (  0.07%)
+.2023-06-20 16:28:08     3 sec | nl_pr1           | Nano V26.0 5a97e55 |      17/     21 @ CPS:     1.0 (avg    1.00) (  0.03%) | BPS:     0.0 (avg    2.33) (  0.07%)
+.2023-06-20 16:28:09     4 sec | nl_pr1           | Nano V26.0 5a97e55 |      18/     21 @ CPS:     1.0 (avg    1.00) (  0.04%) | BPS:     0.0 (avg    1.75) (  0.07%)
+.2023-06-20 16:28:10     5 sec | nl_pr1           | Nano V26.0 5a97e55 |      19/     21 @ CPS:     1.0 (avg    1.00) (  0.05%) | BPS:     0.0 (avg    1.40) (  0.07%)
+.2023-06-20 16:28:11     6 sec | nl_pr1           | Nano V26.0 5a97e55 |      20/     21 @ CPS:     1.0 (avg    1.00) (  0.06%) | BPS:     0.0 (avg    1.17) (  0.07%)
+.2023-06-20 16:28:12     7 sec | nl_pr1           | Nano V26.0 5a97e55 |      21/     21 @ CPS:     1.0 (avg    1.00) (  0.07%) | BPS:     0.0 (avg    1.00) (  0.07%)
+.2023-06-20 16:28:13     8 sec | nl_pr1           | Nano V26.0 5a97e55 |      21/     23 @ CPS:     0.0 (avg    0.88) (  0.07%) | BPS:     2.0 (avg    1.12) (  0.09%)
+.2023-06-20 16:28:15    10 sec | nl_pr1           | Nano V26.0 5a97e55 |      22/     23 @ CPS:     0.5 (avg    0.80) (  0.08%) | BPS:     0.0 (avg    0.90) (  0.09%)
+.2023-06-20 16:28:16    11 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     1.0 (avg    0.82) (  0.09%) | BPS:     0.0 (avg    0.82) (  0.09%)
+.2023-06-20 16:28:17    12 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.75) (  0.09%) | BPS:     0.0 (avg    0.75) (  0.09%)
+.2023-06-20 16:28:18    13 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.69) (  0.09%) | BPS:     0.0 (avg    0.69) (  0.09%)
+.2023-06-20 16:28:19    14 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.64) (  0.09%) | BPS:     0.0 (avg    0.64) (  0.09%)
+.2023-06-20 16:28:20    15 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.60) (  0.09%) | BPS:     0.0 (avg    0.60) (  0.09%)
+.2023-06-20 16:28:21    16 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.56) (  0.09%) | BPS:     0.0 (avg    0.56) (  0.09%)
+.2023-06-20 16:28:22    17 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.53) (  0.09%) | BPS:     0.0 (avg    0.53) (  0.09%)
+.2023-06-20 16:28:24    19 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.47) (  0.09%) | BPS:     0.0 (avg    0.47) (  0.09%)
+.2023-06-20 16:28:25    20 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.45) (  0.09%) | BPS:     0.0 (avg    0.45) (  0.09%)
+.2023-06-20 16:28:26    21 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.43) (  0.09%) | BPS:     0.0 (avg    0.43) (  0.09%)
+.2023-06-20 16:28:27    22 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.41) (  0.09%) | BPS:     0.0 (avg    0.41) (  0.09%)
+.2023-06-20 16:28:28    23 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.39) (  0.09%) | BPS:     0.0 (avg    0.39) (  0.09%)
+.2023-06-20 16:28:29    24 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.38) (  0.09%) | BPS:     0.0 (avg    0.38) (  0.09%)
+.2023-06-20 16:28:30    25 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.36) (  0.09%) | BPS:     0.0 (avg    0.36) (  0.09%)
+.2023-06-20 16:28:31    26 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.35) (  0.09%) | BPS:     0.0 (avg    0.35) (  0.09%)
+.2023-06-20 16:28:32    27 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     23 @ CPS:     0.0 (avg    0.33) (  0.09%) | BPS:     0.0 (avg    0.33) (  0.09%)
+.2023-06-20 16:28:34    29 sec | nl_pr1           | Nano V26.0 5a97e55 |      23/     24 @ CPS:     0.0 (avg    0.31) (  0.09%) | BPS:     0.5 (avg    0.34) (  0.10%)
+.2023-06-20 16:28:35    30 sec | nl_pr1           | Nano V26.0 5a97e55 |      24/     24 @ CPS:     1.0 (avg    0.33) (  0.10%) | BPS:     0.0 (avg    0.33) (  0.10%)
+.2023-06-20 16:28:36    31 sec | nl_pr1           | Nano V26.0 5a97e55 |      24/     24 @ CPS:     0.0 (avg    0.32) (  0.10%) | BPS:     0.0 (avg    0.32) (  0.10%)
+.2023-06-20 16:28:37    32 sec | nl_pr1           | Nano V26.0 5a97e55 |      24/     24 @ CPS:     0.0 (avg    0.31) (  0.10%) | BPS:     0.0 (avg    0.31) (  0.10%)
+.2023-06-20 16:28:38    33 sec | nl_pr1           | Nano V26.0 5a97e55 |      24/     24 @ CPS:     0.0 (avg    0.30) (  0.10%) | BPS:     0.0 (avg    0.30) (  0.10%)
+.2023-06-20 16:28:39    34 sec | nl_pr1           | Nano V26.0 5a97e55 |      24/     25 @ CPS:     0.0 (avg    0.29) (  0.10%) | BPS:     1.0 (avg    0.32) (  0.11%)
+.2023-06-20 16:28:40    35 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/     59 @ CPS:     1.0 (avg    0.31) (  0.11%) | BPS:    34.0 (avg    1.29) (  0.45%)
+.2023-06-20 16:28:41    36 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/    327 @ CPS:     0.0 (avg    0.31) (  0.11%) | BPS:   268.0 (avg    8.69) (  3.13%)
+.2023-06-20 16:28:42    37 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/    547 @ CPS:     0.0 (avg    0.30) (  0.11%) | BPS:   220.0 (avg   14.41) (  5.33%)
+.2023-06-20 16:28:44    39 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/    700 @ CPS:     0.0 (avg    0.28) (  0.11%) | BPS:    76.5 (avg   17.59) (  6.86%)
+.2023-06-20 16:28:45    40 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/    896 @ CPS:     0.0 (avg    0.28) (  0.11%) | BPS:   196.0 (avg   22.05) (  8.82%)
+.2023-06-20 16:28:46    41 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/   1086 @ CPS:     0.0 (avg    0.27) (  0.11%) | BPS:   190.0 (avg   26.15) ( 10.72%)
+.2023-06-20 16:28:47    42 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/   1232 @ CPS:     0.0 (avg    0.26) (  0.11%) | BPS:   146.0 (avg   29.00) ( 12.18%)
+.2023-06-20 16:28:48    43 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/   1380 @ CPS:     0.0 (avg    0.26) (  0.11%) | BPS:   148.0 (avg   31.77) ( 13.66%)
+.2023-06-20 16:28:49    44 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/   1486 @ CPS:     0.0 (avg    0.25) (  0.11%) | BPS:   106.0 (avg   33.45) ( 14.72%)
+.2023-06-20 16:28:50    45 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/   1522 @ CPS:     0.0 (avg    0.24) (  0.11%) | BPS:    36.0 (avg   33.51) ( 15.08%)
+.2023-06-20 16:28:51    46 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/   1696 @ CPS:     0.0 (avg    0.24) (  0.11%) | BPS:   174.0 (avg   36.57) ( 16.82%)
+.2023-06-20 16:28:52    47 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/   1872 @ CPS:     0.0 (avg    0.23) (  0.11%) | BPS:   176.0 (avg   39.53) ( 18.58%)
+.2023-06-20 16:28:54    49 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/   2028 @ CPS:     0.0 (avg    0.22) (  0.11%) | BPS:    78.0 (avg   41.10) ( 20.14%)
+.2023-06-20 16:28:55    50 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/   2186 @ CPS:     0.0 (avg    0.22) (  0.11%) | BPS:   158.0 (avg   43.44) ( 21.72%)
+.2023-06-20 16:28:56    51 sec | nl_pr1           | Nano V26.0 5a97e55 |      25/   2340 @ CPS:     0.0 (avg    0.22) (  0.11%) | BPS:   154.0 (avg   45.61) ( 23.26%)
+.2023-06-20 16:28:57    52 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   2483 @ CPS:     1.0 (avg    0.23) (  0.12%) | BPS:   143.0 (avg   47.48) ( 24.69%)
+.2023-06-20 16:28:58    53 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   2663 @ CPS:     0.0 (avg    0.23) (  0.12%) | BPS:   180.0 (avg   49.98) ( 26.49%)
+.2023-06-20 16:28:59    54 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   2840 @ CPS:     0.0 (avg    0.22) (  0.12%) | BPS:   177.0 (avg   52.33) ( 28.26%)
+.2023-06-20 16:29:00    55 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   2970 @ CPS:     0.0 (avg    0.22) (  0.12%) | BPS:   130.0 (avg   53.75) ( 29.56%)
+.2023-06-20 16:29:01    56 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   3096 @ CPS:     0.0 (avg    0.21) (  0.12%) | BPS:   126.0 (avg   55.04) ( 30.82%)
+.2023-06-20 16:29:02    57 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   3222 @ CPS:     0.0 (avg    0.21) (  0.12%) | BPS:   126.0 (avg   56.28) ( 32.08%)
+.2023-06-20 16:29:04    59 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   3371 @ CPS:     0.0 (avg    0.20) (  0.12%) | BPS:    74.5 (avg   56.90) ( 33.57%)
+.2023-06-20 16:29:05    60 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   3452 @ CPS:     0.0 (avg    0.20) (  0.12%) | BPS:    81.0 (avg   57.30) ( 34.38%)
+.2023-06-20 16:29:06    61 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   3481 @ CPS:     0.0 (avg    0.20) (  0.12%) | BPS:    29.0 (avg   56.84) ( 34.67%)
+.2023-06-20 16:29:07    62 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   3612 @ CPS:     0.0 (avg    0.19) (  0.12%) | BPS:   131.0 (avg   58.03) ( 35.98%)
+.2023-06-20 16:29:08    63 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   3765 @ CPS:     0.0 (avg    0.19) (  0.12%) | BPS:   153.0 (avg   59.54) ( 37.51%)
+.2023-06-20 16:29:09    64 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   3892 @ CPS:     0.0 (avg    0.19) (  0.12%) | BPS:   127.0 (avg   60.59) ( 38.78%)
+.2023-06-20 16:29:10    65 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   4050 @ CPS:     0.0 (avg    0.18) (  0.12%) | BPS:   158.0 (avg   62.09) ( 40.36%)
+.2023-06-20 16:29:11    66 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   4203 @ CPS:     0.0 (avg    0.18) (  0.12%) | BPS:   153.0 (avg   63.47) ( 41.89%)
+.2023-06-20 16:29:12    67 sec | nl_pr1           | Nano V26.0 5a97e55 |      26/   4353 @ CPS:     0.0 (avg    0.18) (  0.12%) | BPS:   150.0 (avg   64.76) ( 43.39%)
+.2023-06-20 16:29:14    69 sec | nl_pr1           | Nano V26.0 5a97e55 |      28/   4441 @ CPS:     1.0 (avg    0.20) (  0.14%) | BPS:    44.0 (avg   64.16) ( 44.27%)
+.2023-06-20 16:29:15    70 sec | nl_pr1           | Nano V26.0 5a97e55 |      28/   4564 @ CPS:     0.0 (avg    0.20) (  0.14%) | BPS:   123.0 (avg   65.00) ( 45.50%)
+.2023-06-20 16:29:16    71 sec | nl_pr1           | Nano V26.0 5a97e55 |      28/   4702 @ CPS:     0.0 (avg    0.20) (  0.14%) | BPS:   138.0 (avg   66.03) ( 46.88%)
+.2023-06-20 16:29:17    72 sec | nl_pr1           | Nano V26.0 5a97e55 |      28/   4797 @ CPS:     0.0 (avg    0.19) (  0.14%) | BPS:    95.0 (avg   66.43) ( 47.83%)
+.2023-06-20 16:29:18    73 sec | nl_pr1           | Nano V26.0 5a97e55 |      28/   4891 @ CPS:     0.0 (avg    0.19) (  0.14%) | BPS:    94.0 (avg   66.81) ( 48.77%)
+.2023-06-20 16:29:19    74 sec | nl_pr1           | Nano V26.0 5a97e55 |      28/   4960 @ CPS:     0.0 (avg    0.19) (  0.14%) | BPS:    69.0 (avg   66.84) ( 49.46%)
+.2023-06-20 16:29:20    75 sec | nl_pr1           | Nano V26.0 5a97e55 |      30/   5010 @ CPS:     2.0 (avg    0.21) (  0.16%) | BPS:    50.0 (avg   66.61) ( 49.96%)
+.2023-06-20 16:29:21    76 sec | nl_pr1           | Nano V26.0 5a97e55 |      32/   5087 @ CPS:     2.0 (avg    0.24) (  0.18%) | BPS:    77.0 (avg   66.75) ( 50.73%)
+.2023-06-20 16:29:22    77 sec | nl_pr1           | Nano V26.0 5a97e55 |      34/   5163 @ CPS:     2.0 (avg    0.26) (  0.20%) | BPS:    76.0 (avg   66.87) ( 51.49%)
+.2023-06-20 16:29:24    79 sec | nl_pr1           | Nano V26.0 5a97e55 |      39/   5235 @ CPS:     2.5 (avg    0.32) (  0.25%) | BPS:    36.0 (avg   66.09) ( 52.21%)
+.2023-06-20 16:29:25    80 sec | nl_pr1           | Nano V26.0 5a97e55 |      47/   5312 @ CPS:     8.0 (avg    0.41) (  0.33%) | BPS:    77.0 (avg   66.22) ( 52.98%)
+.2023-06-20 16:29:26    81 sec | nl_pr1           | Nano V26.0 5a97e55 |      48/   5389 @ CPS:     1.0 (avg    0.42) (  0.34%) | BPS:    77.0 (avg   66.36) ( 53.75%)
+.2023-06-20 16:29:27    82 sec | nl_pr1           | Nano V26.0 5a97e55 |      62/   5456 @ CPS:    14.0 (avg    0.59) (  0.48%) | BPS:    67.0 (avg   66.37) ( 54.42%)
+.2023-06-20 16:29:28    83 sec | nl_pr1           | Nano V26.0 5a97e55 |      71/   5536 @ CPS:     9.0 (avg    0.69) (  0.57%) | BPS:    80.0 (avg   66.53) ( 55.22%)
+.2023-06-20 16:29:29    84 sec | nl_pr1           | Nano V26.0 5a97e55 |      74/   5606 @ CPS:     3.0 (avg    0.71) (  0.60%) | BPS:    70.0 (avg   66.57) ( 55.92%)
+.2023-06-20 16:29:30    85 sec | nl_pr1           | Nano V26.0 5a97e55 |      88/   5695 @ CPS:    14.0 (avg    0.87) (  0.74%) | BPS:    89.0 (avg   66.84) ( 56.81%)
+.2023-06-20 16:29:31    86 sec | nl_pr1           | Nano V26.0 5a97e55 |     101/   5752 @ CPS:    13.0 (avg    1.01) (  0.87%) | BPS:    57.0 (avg   66.72) ( 57.38%)
+.2023-06-20 16:29:33    88 sec | nl_pr1           | Nano V26.0 5a97e55 |     106/   5820 @ CPS:     2.5 (avg    1.05) (  0.92%) | BPS:    34.0 (avg   65.98) ( 58.06%)
+.2023-06-20 16:29:34    89 sec | nl_pr1           | Nano V26.0 5a97e55 |     125/   5873 @ CPS:    19.0 (avg    1.25) (  1.11%) | BPS:    53.0 (avg   65.83) ( 58.59%)
+.FAIL
