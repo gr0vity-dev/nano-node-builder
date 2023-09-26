@@ -201,6 +201,12 @@ jobs:
           HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
           TEST_FILE=continuous_testing/$HASH.json
 
+          # Check if HASH is null or empty
+          if [[ -z "$HASH" ]]; then
+              echo "HASH is null or empty. Exiting."
+              exit 0
+          fi
+
           git pull origin main
 
           if [[ $(jq '[.testcases[].status == "FAIL"] | any' $TEST_FILE) == "true" ]]; then
