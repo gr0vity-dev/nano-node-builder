@@ -202,7 +202,7 @@ jobs:
           TEST_FILE=continuous_testing/$HASH.json
 
           # Check if HASH is null or empty
-          if [[ -z "$HASH" ]]; then
+          if [[ -z "$HASH" ]] || [[ "$HASH" == "null" ]]; then
               echo "HASH is null or empty. Exiting."
               exit 0
           fi
