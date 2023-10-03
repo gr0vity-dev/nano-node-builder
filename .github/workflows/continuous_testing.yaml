@@ -109,6 +109,12 @@ jobs:
           DOCKER_TAG=${{ needs.prepare_testing.outputs.DOCKER_TAG }}
           STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
+          # Check if DOCKER_TAG is null or empty
+          if [[ -z "$DOCKER_TAG" ]] || [[ "$DOCKER_TAG" == "null" ]]; then
+              echo "DOCKER_TAG is null or empty. Exiting."
+              exit 0
+          fi
+
           nanolab run -t ${{ matrix.testcase }} --gh-path quick_testing -i $DOCKER_TAG > $HOME/status.log
           STATUS=$(grep -E -q "FAIL|unconfirmed blocks|Traceback \(most recent call last\)|Encountered errors while bringing up the project" $HOME/status.log && echo "FAIL" || echo "PASS")
           COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -155,6 +161,14 @@ jobs:
       - name: Update test file
         run: |
           HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
+
+          # Check if HASH is null or empty
+          if [[ -z "$HASH" ]] || [[ "$HASH" == "null" ]]; then
+              echo "HASH is null or empty. Exiting."
+              exit 0
+          fi
+
+
           TEST_FILE=continuous_testing/$HASH.json
           MAX_RETRIES=10
 
