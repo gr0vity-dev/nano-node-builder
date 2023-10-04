@@ -36,6 +36,7 @@ jobs:
 
           if [[ -z "$TEST_BUILD" ]]; then
             echo "No build found to test"
+            echo "COMMIT_HASH='null'" >> $GITHUB_OUTPUT
             exit 0
           else
             git pull origin main
