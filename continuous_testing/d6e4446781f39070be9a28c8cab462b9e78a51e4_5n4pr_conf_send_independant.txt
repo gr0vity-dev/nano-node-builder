@@ -1,0 +1,52 @@
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_send_independant.json
+Start Fetching '5n4pr_conf_send_independant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_send_independant_config.json'
+Done  Fetching '5n4pr_conf_send_independant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_send_independant_config.json'
+Start Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Done  Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Start Fetching 'default_5n4pr.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/default_5n4pr.toml'
+Done  Fetching 'default_5n4pr.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/default_5n4pr.toml'
+[ -f nl_config.toml ] && nanomock down || true
+cp /home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/default_5n4pr.toml nl_config.toml
+nanomock conf_edit --payload '{"path" : "remote_address",  "value" : "172.17.0.1"}'
+nanomock conf_edit --payload '{"path" : "representatives.docker_tag",  "value" : "gr0v1ty/nano-node:d6e4446781f39070be9a28c8cab462b9e78a51e4"}'
+INFO: nanomock data has been copied to your current working directory.
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: 
+SUCCESS: stop_containers
+SUCCESS: reset_nodes_data
+for i in nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4; do if [ "" = true ]; then rm -rf ./nano_nodes/$i/NanoTest/rocksdb && cp -r /home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb ./nano_nodes/$i/NanoTest/rocksdb; else cp /home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb ./nano_nodes/$i/NanoTest/data.ldb; fi; done
+nanomock conf_edit --payload '{"path" : "representatives.cpu",  "value" : "0.3"}'
+The network 'nl_nano-local' already exists.
+INFO: Nodes ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4'] reachable
+INFO:nanomock.internal.utils:Nodes ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4'] reachable
+SUCCESS: start_containers
+SUCCESS:nanomock.internal.utils:start_containers
+INFO: WALLET D495E4F963D53A6A507AA60B9EAEBA429F29D17D16BB935FC13BAEE690676C40 CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p
+INFO: WALLET 3A09CAFEFABEFD70225A542A06C4D6EDFD3A139A1F664F3559D58887226D21CE CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub
+INFO: WALLET 7DECA1A726EA99F0DC7D4D29630137735F83F28414DBEB86C084D55E610C82CB CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6
+INFO: WALLET 647D1E97DEB504034932A402B68D01B5309128C9FF2297341EA212F27CD2DE5C CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h
+INFO: WALLET 9EF758A0A2E147512D5502AFE7C084EC865DFEE1EF73919287CA1C167DF6EC8E CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8
+SUCCESS: ['WALLET D495E4F963D53A6A507AA60B9EAEBA429F29D17D16BB935FC13BAEE690676C40 CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p', 'WALLET 3A09CAFEFABEFD70225A542A06C4D6EDFD3A139A1F664F3559D58887226D21CE CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub', 'WALLET 7DECA1A726EA99F0DC7D4D29630137735F83F28414DBEB86C084D55E610C82CB CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6', 'WALLET 647D1E97DEB504034932A402B68D01B5309128C9FF2297341EA212F27CD2DE5C CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h', 'WALLET 9EF758A0A2E147512D5502AFE7C084EC865DFEE1EF73919287CA1C167DF6EC8E CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8']
+.DEBUG 1 unconfirmed blocks! e.g. 90ED6783896A80DA90A1072D903A1089EE5424BA2C5DA71F9563363500A1A9B5
+.................................................
+
+17:19:18 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+17:19:18 99       | 1        | 4.48     | 4.48     | 0.06       | 0.47       | 0.26      | 0.32      | 0.37      | 0.47      | 5               | 22.33    | 100        | 100          |
+..................................................
+
+17:19:36 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+17:19:36 100      | 0        | 5.49     | 5.49     | 0.1        | 0.47       | 0.24      | 0.3       | 0.38      | 0.47      | 5               | 18.2     | 100        | 100          |
+..................................................
+
+17:19:51 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+17:19:51 100      | 0        | 6.88     | 6.88     | 0.11       | 0.42       | 0.21      | 0.26      | 0.32      | 0.42      | 5               | 14.52    | 100        | 100          |
