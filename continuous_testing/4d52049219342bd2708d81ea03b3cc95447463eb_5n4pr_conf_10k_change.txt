@@ -1,0 +1,669 @@
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_10k_change.json
+Start Fetching '5n4pr_conf_10k_change_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_10k_change_config.json'
+Done  Fetching '5n4pr_conf_10k_change_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_10k_change_config.json'
+Start Fetching '5n4pr_bucket_rounds.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/5n4pr_bucket_rounds.json'
+Done  Fetching '5n4pr_bucket_rounds.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/5n4pr_bucket_rounds.json'
+Start Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Done  Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Start Fetching 'default_5n4pr.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/default_5n4pr.toml'
+Done  Fetching 'default_5n4pr.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/default_5n4pr.toml'
+[ -f nl_config.toml ] && nanomock down || true
+cp /home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/default_5n4pr.toml nl_config.toml
+nanomock conf_edit --payload '{"path" : "remote_address",  "value" : "172.17.0.1"}'
+nanomock conf_edit --payload '{"path" : "representatives.docker_tag",  "value" : "gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb"}'
+INFO: nanomock data has been copied to your current working directory.
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: 
+SUCCESS: stop_containers
+SUCCESS: reset_nodes_data
+for i in nl_genesis nl_pr1 nl_pr2 nl_pr3 nl_pr4; do if [ "" = true ]; then rm -rf ./nano_nodes/$i/NanoTest/rocksdb && cp -r /home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb ./nano_nodes/$i/NanoTest/rocksdb; else cp /home/runner/work/nano-node-builder/nano-node-builder/testcases/dowlnoads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb ./nano_nodes/$i/NanoTest/data.ldb; fi; done
+nanomock conf_edit --payload '{"path" : "representatives.cpu",  "value" : "0.3"}'
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock start && nanomock init_wallets
+Error: WARNING: Retry attempt 1
+Creating volume "nanomock_nl_default_volume" with default driver
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ...
+
+#4 [auth] gr0v1ty/nano-node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+Service 'nl_genesis' failed to build
+
+ERROR: Attempt 1 failed
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from custom_Dockerfile
+#2 transferring dockerfile: 551B done
+#2 DONE 0.0s
+
+#3 [auth] gr0v1ty/nano-node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#4 ERROR: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+Service 'nl_genesis' failed to build
+
+WARNING: Retry attempt 2
+Creating volume "nanomock_nl_default_volume" with default driver
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ...
+
+#4 [auth] gr0v1ty/nano-node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+Service 'nl_genesis' failed to build
+
+ERROR: Attempt 2 failed
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from custom_Dockerfile
+#2 transferring dockerfile: 551B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+Service 'nl_genesis' failed to build
+
+WARNING: Retry attempt 3
+Creating volume "nanomock_nl_default_volume" with default driver
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ...
+
+#4 [auth] gr0v1ty/nano-node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+Service 'nl_genesis' failed to build
+
+ERROR: Attempt 3 failed
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from custom_Dockerfile
+#2 transferring dockerfile: 551B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+Service 'nl_genesis' failed to build
+
+WARNING: Retry attempt 4
+Creating volume "nanomock_nl_default_volume" with default driver
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ...
+
+#4 [auth] gr0v1ty/nano-node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+Service 'nl_genesis' failed to build
+
+ERROR: Attempt 4 failed
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+Service 'nl_genesis' failed to build
+
+WARNING: Retry attempt 5
+Creating volume "nanomock_nl_default_volume" with default driver
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ...
+
+#4 [auth] gr0v1ty/nano-node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+Service 'nl_genesis' failed to build
+
+ERROR: Attempt 5 failed
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from custom_Dockerfile
+#2 transferring dockerfile: 551B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+Service 'nl_genesis' failed to build
+
+WARNING: Retry attempt 6
+Creating volume "nanomock_nl_default_volume" with default driver
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ...
+
+#4 [auth] gr0v1ty/nano-node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+Service 'nl_genesis' failed to build
+
+ERROR: Attempt 6 failed
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from custom_Dockerfile
+#2 transferring dockerfile: 551B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+Service 'nl_genesis' failed to build
+
+WARNING: Retry attempt 7
+Creating volume "nanomock_nl_default_volume" with default driver
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ...
+
+#4 [auth] gr0v1ty/nano-node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+Service 'nl_genesis' failed to build
+
+ERROR: Attempt 7 failed
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from custom_Dockerfile
+#2 transferring dockerfile: 551B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+Service 'nl_genesis' failed to build
+
+WARNING: Retry attempt 8
+Creating volume "nanomock_nl_default_volume" with default driver
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ...
+
+#4 [auth] gr0v1ty/nano-node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+Service 'nl_genesis' failed to build
+
+ERROR: Attempt 8 failed
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from custom_Dockerfile
+#2 transferring dockerfile: 551B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+Service 'nl_genesis' failed to build
+
+WARNING: Retry attempt 9
+Creating volume "nanomock_nl_default_volume" with default driver
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ...
+
+#4 [auth] gr0v1ty/nano-node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+Service 'nl_genesis' failed to build
+
+ERROR: Attempt 9 failed
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from custom_Dockerfile
+#2 transferring dockerfile: 551B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+Service 'nl_genesis' failed to build
+
+WARNING: Retry attempt 10
+Creating volume "nanomock_nl_default_volume" with default driver
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ...
+
+#4 [auth] gr0v1ty/nano-node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: failed to authorize: failed to fetch oauth token: Post "https://auth.docker.io/token": EOF
+Service 'nl_genesis' failed to build
+
+ERROR: Attempt 10 failed
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from custom_Dockerfile
+#2 transferring dockerfile: 551B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb
+#3 ERROR: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+------
+ > [internal] load metadata for docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb:
+------
+custom_Dockerfile:2
+--------------------
+   1 |     ARG NANO_IMAGE="nanocurrency/nano-beta:latest"
+   2 | >>> FROM $NANO_IMAGE
+   3 |     
+   4 |     
+--------------------
+ERROR: failed to solve: gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: docker.io/gr0v1ty/nano-node:4d52049219342bd2708d81ea03b3cc95447463eb: not found
+Service 'nl_genesis' failed to build
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanomock", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 55, in main
+    manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 488, in execute_command
+    command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 55, in wrapper
+    result = func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 419, in start_containers
+    self._wait_for_rpc_availability(nodes)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 276, in _wait_for_rpc_availability
+    raise ValueError(
+ValueError: TIMEOUT: RPCs not reachable for nodes ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4']
+Connecting to [::ffff:172.17.0.1]:44100
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44101
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44102
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44103
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44104
+[Errno 111] Connection refused
