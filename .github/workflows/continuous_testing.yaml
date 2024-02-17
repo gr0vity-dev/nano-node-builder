@@ -97,7 +97,7 @@ jobs:
           # Check if DOCKER_TAG is null or empty
           if [[ -z "$DOCKER_TAG" ]] || [[ "$DOCKER_TAG" == "null" ]]; then
               echo "DOCKER_TAG is null or empty. Exiting."
-              exit 0
+              exit 1
           fi
 
           sudo apt-get update
