@@ -3,9 +3,9 @@ name: Continuous Testing of Docker Images
 on:
   push:
     paths:
-      - 'docker_builder/builds.json'
+      - "docker_builder/builds.json"
   schedule:
-    - cron: '0/10 * * * *'  # "every 5 minutes"
+    - cron: "0/10 * * * *" # "every 5 minutes"
 
 jobs:
   prepare_testing:
@@ -64,17 +64,16 @@ jobs:
           fi
 
   get_testcases:
-      runs-on: ubuntu-latest
-      outputs:
-        MATRIX: ${{ steps.matrix.outputs.MATRIX }}
-      steps:
-        - name: Fetch test case names
-          id: matrix
-          run: |
-            TESTCASES=$(curl -s 'https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing' | jq -r '[.[] | select(.name | endswith("json")) | select(.type == "file") | .name | rtrimstr(".json")]' | jq -c)
+    runs-on: ubuntu-latest
+    outputs:
+      MATRIX: ${{ steps.matrix.outputs.MATRIX }}
+    steps:
+      - name: Fetch test case names
+        id: matrix
+        run: |
+          TESTCASES=$(curl -s 'https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing' | jq -r '[.[] | select(.name | endswith("json")) | select(.type == "file") | .name | rtrimstr(".json")]' | jq -c)
 
-            echo "MATRIX={\"testcase\":$TESTCASES}" >> $GITHUB_OUTPUT
-
+          echo "MATRIX={\"testcase\":$TESTCASES}" >> $GITHUB_OUTPUT
 
   testcases:
     needs: [prepare_testing, get_testcases]
@@ -159,7 +158,6 @@ jobs:
             fi
           done
 
-
       - name: Update test file
         run: |
           HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
@@ -210,7 +208,6 @@ jobs:
             fi
           done
 
-
   post_process:
     needs: [prepare_testing, testcases]
     if: ${{ always() }}
@@ -249,4 +246,3 @@ jobs:
           git add $TEST_FILE
           git commit -m "Set overall status to $OVERALL_STATUS for build $HASH"
           git push origin main
-
