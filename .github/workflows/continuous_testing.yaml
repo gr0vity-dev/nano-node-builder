@@ -35,23 +35,42 @@ jobs:
 
 
           if [[ -z "$TEST_BUILD" ]]; then
-            echo "No build found to test"
-            echo "COMMIT_HASH='null'" >> $GITHUB_OUTPUT
-            exit 0
+              echo "No build found to test"
+              echo "COMMIT_HASH='null'" >> $GITHUB_OUTPUT
+              exit 0
           else
-            git pull origin main
-            # Create new test file with initial status
-            HASH=$(echo "$TEST_BUILD" | jq -r '.hash')
+              git pull origin main
+              # Extract hash and check if it's null or empty
+              HASH=$(echo "$TEST_BUILD" | jq -r '.hash')
+              if [[ -z "$HASH" ]] || [[ "$HASH" == "null" ]]; then
+                  echo "HASH is null or empty. Exiting."
+                  exit 0
+              fi
 
-            # Check if HASH is null or empty
-            if [[ -z "$HASH" ]] || [[ "$HASH" == "null" ]]; then
-                echo "HASH is null or empty. Exiting."
-                exit 0
-            fi
+              echo "Creating test file for build: $HASH"
+              mkdir -p continuous_testing
 
-            echo "Creating test file for build: $HASH"
-            mkdir -p continuous_testing
-            echo '{"hash": "'$HASH'", "run_id": "${{ github.run_id }}", "type": "'$(echo "$TEST_BUILD" | jq -r '.type')'"'$(if [[ $(echo "$TEST_BUILD" | jq -r '.type') == "pull_request" ]]; then pull_request=$(echo "$TEST_BUILD" | jq -r '.pull_request'); echo ', "pull_request": "'$pull_request'"'; fi)$(echo ', "started_at": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'", "completed_at": null, "testcases": [], "overall_status": "running"}') > continuous_testing/$HASH.json
+              # Extract other details from TEST_BUILD and create the JSON file using jq
+              TYPE=$(echo "$TEST_BUILD" | jq -r '.type')
+              PULL_REQUEST=$(echo "$TEST_BUILD" | jq -r '.pull_request // empty')
+              STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+              jq -n \
+                --arg hash "$HASH" \
+                --arg run_id "${{ github.run_id }}" \
+                --arg type "$TYPE" \
+                --arg pull_request "$PULL_REQUEST" \
+                --arg started_at "$STARTED_AT" \
+                '{
+                  hash: $hash,
+                  run_id: $run_id,
+                  type: $type,
+                  pull_request: (if $pull_request == "" then null else $pull_request end),
+                  started_at: $started_at,
+                  completed_at: null,
+                  testcases: [],
+                  overall_status: "running"
+                }' > continuous_testing/$HASH.json
 
             git config user.name "GitHub Actions Bot"
             git config user.email "<>"
