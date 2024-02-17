@@ -94,6 +94,13 @@ jobs:
 
       - name: Install dependencies
         run: |
+          DOCKER_TAG=${{ needs.prepare_testing.outputs.DOCKER_TAG }}
+          # Check if DOCKER_TAG is null or empty
+          if [[ -z "$DOCKER_TAG" ]] || [[ "$DOCKER_TAG" == "null" ]]; then
+              echo "DOCKER_TAG is null or empty. Exiting."
+              exit 0
+          fi
+
           sudo apt-get update
           sudo apt-get install apt-transport-https ca-certificates gnupg-agent software-properties-common --yes
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -109,12 +116,6 @@ jobs:
         run: |
           DOCKER_TAG=${{ needs.prepare_testing.outputs.DOCKER_TAG }}
           STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-
-          # Check if DOCKER_TAG is null or empty
-          if [[ -z "$DOCKER_TAG" ]] || [[ "$DOCKER_TAG" == "null" ]]; then
-              echo "DOCKER_TAG is null or empty. Exiting."
-              exit 0
-          fi
 
           nanolab run -t ${{ matrix.testcase }} --gh-path quick_testing -i $DOCKER_TAG > $HOME/status.log 2>&1
           STATUS=$(grep -E -q "FAIL|unconfirmed blocks|Traceback \(most recent call last\)|Encountered errors while bringing up the project" $HOME/status.log && echo "FAIL" || echo "PASS")
