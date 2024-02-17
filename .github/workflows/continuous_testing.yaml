@@ -51,7 +51,7 @@ jobs:
 
             echo "Creating test file for build: $HASH"
             mkdir -p continuous_testing
-            echo '{"hash": "'$HASH'", "type": "'$(echo "$TEST_BUILD" | jq -r '.type')'"'$(if [[ $(echo "$TEST_BUILD" | jq -r '.type') == "pull_request" ]]; then pull_request=$(echo "$TEST_BUILD" | jq -r '.pull_request'); echo ', "pull_request": "'$pull_request'"'; fi)$(echo ', "started_at": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'", "completed_at": null, "testcases": [], "overall_status": "running"}') > continuous_testing/$HASH.json
+            echo '{"hash": "'$HASH'", run_id: "${{ github.run_id }}", "type": "'$(echo "$TEST_BUILD" | jq -r '.type')'"'$(if [[ $(echo "$TEST_BUILD" | jq -r '.type') == "pull_request" ]]; then pull_request=$(echo "$TEST_BUILD" | jq -r '.pull_request'); echo ', "pull_request": "'$pull_request'"'; fi)$(echo ', "started_at": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'", "completed_at": null, "testcases": [], "overall_status": "running"}') > continuous_testing/$HASH.json
 
             git config user.name "GitHub Actions Bot"
             git config user.email "<>"
