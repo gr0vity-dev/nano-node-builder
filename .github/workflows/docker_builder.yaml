@@ -31,15 +31,15 @@ jobs:
             map(
               select(.commit.message | test("\\(#\\d{4,}\\)")) | 
               { 
-                hash: .sha, 
-                type: "commit", 
+                hash: .sha,
+                type: "commit",
                 title: .commit.message,
                 pull_request: ( .commit.message | match("\\(#(\\d{4,})\\)").captures[0].string ),
-                created_at: .commit.author.date, 
-                built_at: null, 
-                build_status: null, 
-                docker_tag: null, 
-                build_started_at: $NOW, 
+                created_at: .commit.author.date,
+                built_at: null,
+                build_status: null,
+                docker_tag: null,
+                build_started_at: $NOW,
                 run_id: null
               }
             )' > $HOME/latest_commits.json
@@ -53,18 +53,18 @@ jobs:
           jq --arg NOW "$NOW" '
             map(
               {
-                hash: .head.sha, 
-                type: "pull_request", 
+                hash: .head.sha,
+                type: "pull_request",
                 title: .title,
                 body: .body,
                 draft: .draft,
-                pull_request: .number, 
-                label: .head.label, 
-                created_at: .created_at, 
-                built_at: null, 
-                build_status: null, 
+                pull_request: .number,
+                label: .head.label,
+                created_at: .created_at,
+                built_at: null,
+                build_status: null,
                 docker_tag: null, 
-                build_started_at: $NOW, 
+                build_started_at: $NOW,
                 run_id: null
               }
             )' > $HOME/all_prs.json
@@ -99,19 +99,19 @@ jobs:
 
               if [ -z "$result" ]; then
                   # Default repo for commits
-                  echo "owner=nanocurrency" >> $GITHUB_ENV
-                  echo "branch=$COMMIT_TO_TEST" >> $GITHUB_ENV
-                  echo "add_latest=1" >> $GITHUB_ENV
+                  echo "owner=nanocurrency" >> $GITHUB_OUTPUT
+                  echo "branch=$COMMIT_TO_TEST" >> $GITHUB_OUTPUT
+                  echo "add_latest=1" >> $GITHUB_OUTPUT
               else
                   # User repo for pull requests
                   owner=$(echo "$result" | jq -r '.owner')
                   branch=$(echo "$result" | jq -r '.branch')
-                  echo "owner=$owner" >> $GITHUB_ENV
-                  echo "branch=$branch" >> $GITHUB_ENV
+                  echo "owner=$owner" >> $GITHUB_OUTPUT
+                  echo "branch=$branch" >> $GITHUB_OUTPUT
               fi
 
-              echo "continue=1" >> $GITHUB_ENV
-              echo "COMMIT_TO_TEST=$COMMIT_TO_TEST" >> $GITHUB_ENV
+              echo "continue=1" >> $GITHUB_OUTPUT
+              echo "COMMIT_TO_TEST=$COMMIT_TO_TEST" >> $GITHUB_OUTPUT
 
               # Only commit if there is a change (else git returns -1 and the workflow fails)
               if [ -n "$(git status --porcelain)" ]; then
@@ -195,4 +195,4 @@ jobs:
 
           git add .
           git commit -m "Update build status to $BUILD_STATUS for $DOCKER_TAG"
-          git push origin main         
+          git push origin main
