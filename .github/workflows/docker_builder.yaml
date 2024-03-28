@@ -2,7 +2,7 @@ name: Build and publish docker image for each commit in the officiala nanocurren
 # on: [push, pull_request]
 on:
   schedule:
-    - cron: '0/5 * * * *'  # "every 30 minutes
+    - cron: "0/5 * * * *" # "every 30 minutes
 
 jobs:
   publish_docker_image_on_new_commit:
@@ -19,68 +19,120 @@ jobs:
           # Get the current date in the desired format
           NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-          # Get latest 10 commits and write to disk in JSON format
-          curl -s "Accept: application/vnd.github+json" "https://api.github.com/repos/nanocurrency/nano-node/commits?sha=develop&per_page=10" | \
-              jq --arg NOW "$NOW" 'map({hash: .sha, type: "commit", created_at: .commit.author.date, built_at: null, build_status: null, docker_tag: null, build_started_at: $NOW, run_id: "${{ github.run_id }}"}) | [ .[] ]' > $HOME/latest_commits.json
+          # Define repository specifics
+          REPO="nanocurrency/nano-node"
+          BASE_URL="https://api.github.com/repos/${REPO}"
+          GH_API_HEADER="Accept: application/vnd.github+json"
 
-          # Append new commits to existing builds_file
-          jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' docker_builder/builds.json $HOME/latest_commits.json > temp.out && mv temp.out docker_builder/builds.json
 
-          # Get all pull requests
-          curl -s "Accept: application/vnd.github+json" 'https://api.github.com/repos/nanocurrency/nano-node/pulls?state=open&per_page=100&page=1' | \
-              jq --arg NOW "$NOW" 'map({hash: .head.sha, type: "pull_request", pull_request: .number, label: .head.label, created_at: .created_at, built_at: null, build_status: null, docker_tag: null, build_started_at: $NOW, run_id: "${{ github.run_id }}"}) | [ .[] ]' > $HOME/all_prs.json
+          # Get the latest 25 commits and write to disk in JSON format if mandatory PR number is present (#DDDD)
+          curl -s -H "${GH_API_HEADER}" "${BASE_URL}/commits?sha=develop&per_page=25" | \
+          jq --arg NOW "$NOW" '
+            map(
+              select(.commit.message | test("\\(#\\d{4,}\\)")) | 
+              { 
+                hash: .sha, 
+                type: "commit", 
+                title: .commit.message,
+                pull_request: ( .commit.message | match("\\(#(\\d{4,})\\)").captures[0].string ),
+                created_at: .commit.author.date, 
+                built_at: null, 
+                build_status: null, 
+                docker_tag: null, 
+                build_started_at: $NOW, 
+                run_id: null
+              }
+            )' > $HOME/latest_commits.json
 
-          # Append new PRs to existing builds_file
-          jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' docker_builder/builds.json $HOME/all_prs.json > temp.out && mv temp.out docker_builder/builds.json
+          # Append new commits to existing builds_file and remove duplicates
+          jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' \
+          docker_builder/builds.json $HOME/latest_commits.json > temp.out && mv temp.out docker_builder/builds.json
+
+          # Get all open pull requests and write to disk in JSON format
+          curl -s -H "${GH_API_HEADER}" "${BASE_URL}/pulls?state=open&per_page=100&page=1" | \
+          jq --arg NOW "$NOW" '
+            map(
+              {
+                hash: .head.sha, 
+                type: "pull_request", 
+                title: .title,
+                body: .body,
+                draft: .draft,
+                pull_request: .number, 
+                label: .head.label, 
+                created_at: .created_at, 
+                built_at: null, 
+                build_status: null, 
+                docker_tag: null, 
+                build_started_at: $NOW, 
+                run_id: null
+              }
+            )' > $HOME/all_prs.json
+
+          # Append new PRs to existing builds_file and remove duplicates
+          jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' \
+          docker_builder/builds.json $HOME/all_prs.json > temp.out && mv temp.out docker_builder/builds.json
 
           # Get first hash that is not yet built
           COMMIT_TO_TEST=$(jq -r '.[] | select(.build_status == null) | .hash' docker_builder/builds.json | head -n 1)
 
           if [ -z "$COMMIT_TO_TEST" ]; then
-              echo "variable is empty"
+              echo "The COMMIT_TO_TEST variable is empty. Exiting..."
               exit 0
           else
-            # Set "build_status" to building and write to build.json
-            jq --arg COMMIT_TO_TEST "$COMMIT_TO_TEST" '[.[] | if .hash == $COMMIT_TO_TEST then .build_status = "building" else . end]' docker_builder/builds.json >  $HOME/temp.json && mv  $HOME/temp.json docker_builder/builds.json
-            # Get the current json item where hash matches COMMIT_TO_TEST
-            current_json_item=$(cat docker_builder/builds.json | jq --arg COMMIT_TO_TEST "$COMMIT_TO_TEST" 'map(select(.hash == $COMMIT_TO_TEST)) | .[0]')
+              # Update the build_status to "building" for the specified commit
+              jq --arg COMMIT_TO_TEST "$COMMIT_TO_TEST" '
+                map(if .hash == $COMMIT_TO_TEST then .build_status = "building" else . end)' \
+                docker_builder/builds.json > $HOME/temp.json && mv $HOME/temp.json docker_builder/builds.json
 
-            #Get current item
-            result=$(echo "$current_json_item" | jq 'if .type == "pull_request" then .label | split(":") as $pair | {owner: $pair[0], branch: $pair[1]} else empty end')
-            if [ -z "$result" ]; then
-              #default repo for commits
-              echo "owner=nanocurrency" >> $GITHUB_OUTPUT
-              echo "branch=$COMMIT_TO_TEST" >> $GITHUB_OUTPUT
-              echo "add_latest=1" >> $GITHUB_OUTPUT
-            else
-              #user repo for pull_requests
-              owner=$(echo "$result" | jq -r '.owner')
-              branch=$(echo "$result" | jq -r '.branch')
-              echo "owner=$owner" >> $GITHUB_OUTPUT
-              echo "branch=$branch" >> $GITHUB_OUTPUT
-            fi
+              # Extract the JSON item where hash matches COMMIT_TO_TEST
+              current_json_item=$(jq --arg COMMIT_TO_TEST "$COMMIT_TO_TEST" '
+                map(select(.hash == $COMMIT_TO_TEST)) | .[0]' docker_builder/builds.json)
 
+              # Determine if the current item is a pull request or a commit
+              result=$(echo "$current_json_item" | jq '
+                if .type == "pull_request" then
+                  .label | split(":") | {owner: .[0], branch: .[1]}
+                else
+                  empty
+                end')
 
-            echo "continue=1" >> $GITHUB_OUTPUT
-            echo "COMMIT_TO_TEST=$COMMIT_TO_TEST" >> $GITHUB_OUTPUT
+              if [ -z "$result" ]; then
+                  # Default repo for commits
+                  echo "owner=nanocurrency" >> $GITHUB_ENV
+                  echo "branch=$COMMIT_TO_TEST" >> $GITHUB_ENV
+                  echo "add_latest=1" >> $GITHUB_ENV
+              else
+                  # User repo for pull requests
+                  owner=$(echo "$result" | jq -r '.owner')
+                  branch=$(echo "$result" | jq -r '.branch')
+                  echo "owner=$owner" >> $GITHUB_ENV
+                  echo "branch=$branch" >> $GITHUB_ENV
+              fi
 
-            #ONLY COMMIT IF THERE IS A CHANGE (else git returns -1 and workflow fails)
-            if [ -n "$(git status --porcelain)" ]; then
-              git config user.name "GitHub Actions Bot"
-              git config user.email "<>"
-              git pull
-              git add .
-              git commit -m "docker building"
-              git push origin main
-            fi
+              echo "continue=1" >> $GITHUB_ENV
+              echo "COMMIT_TO_TEST=$COMMIT_TO_TEST" >> $GITHUB_ENV
+
+              # Only commit if there is a change (else git returns -1 and the workflow fails)
+              if [ -n "$(git status --porcelain)" ]; then
+                  git config user.name "GitHub Actions Bot"
+                  git config user.email "actions@github.com"
+                  git pull
+                  git add .
+                  git commit -m "Update docker build status to building for $COMMIT_TO_TEST"
+                  git push origin main
+              else
+                  echo "No changes detected. Skipping git commit."
+              fi
           fi
+
       - name: checkout nanocurrency/nano-node
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 #v3.1.0
         with:
           repository: ${{ steps.compare_hash.outputs.owner }}/nano-node
           submodules: "recursive"
-          ref:  ${{ steps.compare_hash.outputs.branch }}
+          ref: ${{ steps.compare_hash.outputs.branch }}
           path: nano-node
       - name: build docker image
         continue-on-error: true
@@ -109,7 +161,6 @@ jobs:
             docker push gr0v1ty/nano-node:latest
           fi
 
-
       - name: checkout gr0vity-dev/nano-node-builder
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
         uses: actions/checkout@v3
@@ -120,15 +171,28 @@ jobs:
         working-directory: ./nano-node-builder
         run: |
           git pull origin main
-          BUILD_STATUS=${{ steps.docker_build.outputs.BUILD_STATUS }}
+          BUILD_STATUS="${{ steps.docker_build.outputs.BUILD_STATUS }}"
           BUILD_AT=$(date -u +%FT%TZ)
-          DOCKER_TAG=${{ steps.docker_build.outputs.DOCKER_TAG }}
-          hash_value=${{ steps.compare_hash.outputs.COMMIT_TO_TEST }}
-          #Update the builds.json
-          jq --arg build_status "$BUILD_STATUS" --arg DOCKER_TAG "$DOCKER_TAG" --arg build_at "$BUILD_AT" --arg hash_value "$hash_value" \
-              '[.[] | if .hash == $hash_value then .build_status = $build_status | .built_at = $build_at | .docker_tag = ($DOCKER_TAG | gsub("{hash}"; .hash)) else . end]' \
-               docker_builder/builds.json | jq '. | sort_by(.built_at)' > $HOME/temp.json && mv  $HOME/temp.json docker_builder/builds.json
+          DOCKER_TAG="${{ steps.docker_build.outputs.DOCKER_TAG }}"
+          hash_value="${{ steps.compare_hash.outputs.COMMIT_TO_TEST }}"
+          GITHUB_RUN_ID="${{ github.run_id }}"
+
+          # Update the builds.json with the new build information
+          jq --arg build_status "$BUILD_STATUS" \
+            --arg DOCKER_TAG "$DOCKER_TAG" \
+            --arg build_at "$BUILD_AT" \
+            --arg hash_value "$hash_value" \
+            --arg run_id "$GITHUB_RUN_ID" \
+            '
+            map(
+              if .hash == $hash_value then 
+                .build_status = $build_status | 
+                .built_at = $build_at | 
+                .docker_tag = ($DOCKER_TAG | gsub("{hash}"; .hash)) | 
+                .run_id = $run_id
+              else . end
+            )' docker_builder/builds.json > $HOME/temp.json && mv $HOME/temp.json docker_builder/builds.json
 
           git add .
-          git commit -m "build $BUILD_STATUS ($DOCKER_TAG)"
-          git push origin main
+          git commit -m "Update build status to $BUILD_STATUS for $DOCKER_TAG"
+          git push origin main         
