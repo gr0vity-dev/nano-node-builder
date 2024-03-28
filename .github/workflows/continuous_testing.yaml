@@ -1,11 +1,9 @@
 name: Continuous Testing of Docker Images
 
 on:
-  push:
-    paths:
-      - "docker_builder/builds.json"
   schedule:
     - cron: "0/10 * * * *" # "every 5 minutes"
+  workflow_dispatch:
 
 jobs:
   prepare_testing:

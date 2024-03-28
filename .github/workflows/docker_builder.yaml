@@ -3,6 +3,7 @@ name: Build and publish docker image for each commit in the officiala nanocurren
 on:
   schedule:
     - cron: "0/5 * * * *" # "every 30 minutes
+  workflow_dispatch:
 
 jobs:
   publish_docker_image_on_new_commit:
