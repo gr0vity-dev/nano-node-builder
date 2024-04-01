@@ -6380,6 +6380,18 @@
     "run_id": "6790225316"
   },
   {
+    "hash": "697f2ce05deab5bc9cdc0b17cefddb65c5a3b3ad",
+    "type": "commit",
+    "title": "Removing unconfirmed_frontiers command line option. (#4530)\n\nWhen unconfirmed blocks are moved in to memory this information will not be queryable outside the node process.",
+    "pull_request": "4530",
+    "created_at": "2024-04-01T15:40:24Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-01T15:45:51Z",
+    "run_id": null
+  },
+  {
     "hash": "69a540d7d2b436bd789b12a9864d50dd6a93bb4b",
     "type": "commit",
     "created_at": "2023-09-17T20:37:54Z",
@@ -13563,6 +13575,18 @@
     "built_at": "2023-05-10T14:55:23Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:e3b3012123a58819c0a741612912264ba4fc440b"
+  },
+  {
+    "hash": "e41498221c0e092867870c46a943096151dcfc4e",
+    "type": "commit",
+    "title": "Use ledger::confirm (#4531)\n\n* Use ledger::confirm instead of modifying confirmation_height_store\r\n\r\n* Remove usages of confirmation_height_store where results are unused.",
+    "pull_request": "4531",
+    "created_at": "2024-04-01T15:40:14Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-01T15:45:51Z",
+    "run_id": null
   },
   {
     "hash": "e4b39f780d467d6230fec5574195327893c6504a",
