@@ -9581,6 +9581,21 @@
     "run_id": "8388206042"
   },
   {
+    "hash": "9c82c4055e610d75d28d367e1d6e55094b104896",
+    "type": "pull_request",
+    "title": "Introduce ledger view classes to separate confirmed/unconfirmed operations on the ledger",
+    "body": "The motivation for this PR is in preparation for bounded backlog changes. Currently, both confirmed and unconfirmed transactions are together on disk and the ACID properties of the ledger are encapsulated with a database transaction.\r\n\r\nWith the bounded backlog, blocks will be stored in memory so there will need to be memory synchronization in addition to database synchronization. Rather than filling the ledger class with unconfirmed/confirmed variants for each operation.\r\n\r\nThere are two views of the ledger:\r\nledger::confirmed () - Gives the view of the ledger only containing confirmed information\r\nledger::unconfirmed () - Gives a view of the ledger including unconfirmed information\r\nledger::operator->() - Syntax sugar to access unconfirmed view so calls that were previously of the form `ledger.get (...)` and would otherwise become `ledger.unconfirmed ().get (...)` can be written as `ledger->get (...)`",
+    "draft": false,
+    "pull_request": 4486,
+    "label": "clemahieu:ledger_view",
+    "created_at": "2024-03-12T14:33:24Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-01T16:58:29Z",
+    "run_id": null
+  },
+  {
     "hash": "9c9c56bf59e7b5603e2b414120d179e0db4b5663",
     "type": "pull_request",
     "pull_request": 4209,
