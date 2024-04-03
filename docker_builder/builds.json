@@ -7639,6 +7639,18 @@
     "run_id": "8262266299"
   },
   {
+    "hash": "7dbf75e2e9ff158c50dc3054f02b29b008c8f20c",
+    "type": "commit",
+    "title": "Fix pruning tests that did not confirm blocks before pruning. Strongly ensure blocks are confirmed while pruning. (#4532)\n\nnode::collect_ledger_pruning_targets already ensures blocks are confirmed before pruning however this was not the case in tests. Removed one test that only tested erroneous behavior.",
+    "pull_request": "4532",
+    "created_at": "2024-04-03T16:58:17Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-03T17:07:41Z",
+    "run_id": null
+  },
+  {
     "hash": "7e32c33ad11c1723333b59301a789e4dd607489a",
     "type": "pull_request",
     "pull_request": 4407,
