@@ -8152,6 +8152,21 @@
     "run_id": "8239431790"
   },
   {
+    "hash": "852347e723c15988bf8d3b473677e9661306089e",
+    "type": "pull_request",
+    "title": "Fair queuing for block processor",
+    "body": "The current design of block processor queue is problematic. We have a single, large queue that is shared by all peers and node components (bootstrapping, local blocks, unchecked table). This means that in periods of high activity this queue can quickly become overwhelmed, with excessively active peers consuming its capacity.\r\n\r\nI propose we use a new design: a fair queue where each peer and each component gets its own smaller queue with a configurable size and priority. Block processor will then use this queue to process incoming blocks in a (weighted) round robin manner. This should ensure that even when network is under stress, data coming from well-behaved peers is ingested quickly.\r\n\r\nCurrently all peers are treated with equal priority, but it is possible to modify this implementation to give more resources to representatives - once we implement a reliable way to authenticate channels.\r\n\r\nThe default size of queue per peer is 128 blocks. This should be enough for live network, but probably should be adjusted for beta in order to be able to saturate the network.",
+    "draft": false,
+    "pull_request": 4476,
+    "label": "pwojcikdev:fair-queuing-3",
+    "created_at": "2024-03-10T19:14:44Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-03T20:40:14Z",
+    "run_id": null
+  },
+  {
     "hash": "8546cba8d606d7e1e11d1fa8024a571064014088",
     "type": "pull_request",
     "pull_request": 4333,
