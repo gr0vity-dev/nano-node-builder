@@ -13318,6 +13318,21 @@
     "docker_tag": "gr0v1ty/nano-node:dcb4dbc34b17016d473397ccd4f48bbe6a2c38b9"
   },
   {
+    "hash": "dd07e26de9cb9702fc5fb99ae8edb5f7971af03d",
+    "type": "pull_request",
+    "title": "RPC endpoint for election statistics",
+    "body": "This pull request adds a new election_statistics RPC endpoint to help identify bottlenecks within the AEC.\r\nThe endpoint will respond with the number of active elections for each electiontype. It will also return the percentage of AEC slots in use.\r\nIf this is merged, I intend to expand the dataset with the average and max election age.\r\n\r\nRequest:\r\n`{\r\n  \"action\": \"election_statistics\"\r\n}`\r\n\r\nResponse example:\r\n`{\r\n    \"normal\": \"1595\",\r\n    \"hinted\": \"70\",\r\n    \"optimistic\": \"222\",\r\n    \"total\": \"1887\",\r\n    \"aec_utilization_percentage\": \"37.74\"\r\n}`",
+    "draft": false,
+    "pull_request": 4533,
+    "label": "RickiNano:aec-statistics",
+    "created_at": "2024-04-03T17:29:00Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-03T17:30:12Z",
+    "run_id": null
+  },
+  {
     "hash": "dd121a84db6329bd428ea89a7cea9c575d8c4b62",
     "type": "commit",
     "created_at": "2023-11-06T10:33:58Z",
