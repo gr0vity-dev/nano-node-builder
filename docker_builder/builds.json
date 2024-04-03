@@ -15113,6 +15113,21 @@
     "docker_tag": "gr0v1ty/nano-node:f9e5bbfb470e2c3ab45b3dd49d65e0192ca9c790"
   },
   {
+    "hash": "f9f5a41143ac919a07603a377beec5cb571ed58c",
+    "type": "pull_request",
+    "title": "Fix pruning tests that did not confirm blocks before pruning.",
+    "body": "Strongly ensure blocks are confirmed while pruning.\r\n\r\nnode::collect_ledger_pruning_targets already ensures blocks are confirmed before pruning however this was not the case in tests. Removed one test that only tested erroneous behavior.",
+    "draft": false,
+    "pull_request": 4532,
+    "label": "clemahieu:pruning_confirmed",
+    "created_at": "2024-04-03T09:21:47Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-03T09:25:23Z",
+    "run_id": null
+  },
+  {
     "hash": "fa2151f07aedc1f8ce907b5265b8843f65b751a8",
     "type": "commit",
     "created_at": "2023-09-15T15:23:24Z",
