@@ -14867,6 +14867,21 @@
     "run_id": "7715028074"
   },
   {
+    "hash": "f4a04ea06d4440218f41ac4f1521f6cf42564d44",
+    "type": "pull_request",
+    "title": "Move write database queue",
+    "body": "This renames write_database_queue to write_queue and moves the class into the nano::store library. It also moves the object from nano::node to nano::store::component.\r\n\r\nThis is a more natural place for this class/object to be placed and also preps for confirming_set to be moved on to the ledger class which would otherwise have a cyclic dependency secure -> store -> node -> secure",
+    "draft": false,
+    "pull_request": 4535,
+    "label": "clemahieu:move_write_database_queue",
+    "created_at": "2024-04-04T11:07:35Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-04T14:39:51Z",
+    "run_id": null
+  },
+  {
     "hash": "f4ce5b968325bbbb670f0d883eb40d0048474177",
     "type": "pull_request",
     "pull_request": 4384,
