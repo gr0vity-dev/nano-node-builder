@@ -403,6 +403,21 @@
     "run_id": "7611913011"
   },
   {
+    "hash": "06e1c8b4e7609f2b42cd1a7aa2a93cc22c15cb8e",
+    "type": "pull_request",
+    "title": "Introduce ledger view classes to separate confirmed/unconfirmed operations on the ledger",
+    "body": "The motivation for this PR is in preparation for bounded backlog changes. Currently, both confirmed and unconfirmed transactions are together on disk and the ACID properties of the ledger are encapsulated with a database transaction.\r\n\r\nWith the bounded backlog, blocks will be stored in memory so there will need to be memory synchronization in addition to database synchronization. Rather than filling the ledger class with unconfirmed/confirmed variants for each operation.\r\n\r\nThere are two views of the ledger:\r\nledger::confirmed () - Gives the view of the ledger only containing confirmed information\r\nledger::unconfirmed () - Gives a view of the ledger including unconfirmed information\r\nledger::operator->() - Syntax sugar to access unconfirmed view so calls that were previously of the form `ledger.get (...)` and would otherwise become `ledger.unconfirmed ().get (...)` can be written as `ledger->get (...)`",
+    "draft": false,
+    "pull_request": 4486,
+    "label": "clemahieu:ledger_view",
+    "created_at": "2024-03-12T14:33:24Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-04T15:07:21Z",
+    "run_id": null
+  },
+  {
     "hash": "06f28d22ca3c9939235d39c63648896b15aa0f0c",
     "type": "commit",
     "created_at": "2024-02-11T12:48:03Z",
@@ -1876,6 +1891,21 @@
     "built_at": "2023-04-05T17:46:57Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:1ed7c33a52afc72c00a9f3e5edd8e2973419787d"
+  },
+  {
+    "hash": "1eeae3a3b828910d70cf761b024e70f30c2c08d2",
+    "type": "pull_request",
+    "title": "Fair queuing for vote processor",
+    "body": "Similar to the way it was done for block processing, this implements fair queue for vote processor. Votes are processed in round robin manner from all peers, with higher tier votes having slightly higher priority.",
+    "draft": false,
+    "pull_request": 4536,
+    "label": "pwojcikdev:fair-queuing/vote-processor",
+    "created_at": "2024-04-04T14:58:58Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-04T15:07:21Z",
+    "run_id": null
   },
   {
     "hash": "1ef520a258c17eb40450c7eb9b8c9c00dc171881",
