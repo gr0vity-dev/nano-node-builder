@@ -8651,6 +8651,21 @@
     "run_id": "8208472248"
   },
   {
+    "hash": "8bcd91352c045905bfca612faa48897158147edf",
+    "type": "pull_request",
+    "title": "Election age statistics",
+    "body": "This PR adds information to the `election_statistics` RPC call about the maximum and average age of elections in AEC .\r\nThis will help identify long running elections.\r\nI have also updated the unit test to create an election\r\n\r\nRequest:\r\n```\r\n{\r\n  \"action\": \"election_statistics\"\r\n}\r\n```\r\nResponse example:\r\n```\r\n{\r\n    \"normal\": \"200\",\r\n    \"hinted\": \"22\",\r\n    \"optimistic\": \"425\",\r\n    \"total\": \"647\",\r\n    \"aec_utilization_percentage\": \"8.09\",\r\n    \"max_election_age\": \"6\",\r\n    \"average_election_age\": \"2.46\"\r\n}\r\n```",
+    "draft": false,
+    "pull_request": 4537,
+    "label": "RickiNano:election-age-statistics",
+    "created_at": "2024-04-04T19:09:27Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-04T19:11:42Z",
+    "run_id": null
+  },
+  {
     "hash": "8bfb8af34b2c6c02fdeb9761d286edf2d794ffe4",
     "type": "pull_request",
     "pull_request": 4495,
