@@ -8313,6 +8313,21 @@
     "docker_tag": "gr0v1ty/nano-node:86e311a32986420ed8bc70f9ccf3a8040f8b7ad2"
   },
   {
+    "hash": "86e51987107ed952a567ec290207f8bade2c9c19",
+    "type": "pull_request",
+    "title": "Move write database queue",
+    "body": "This renames write_database_queue to write_queue and moves the class into the nano::store library. It also moves the object from nano::node to nano::store::component.\r\n\r\nThis is a more natural place for this class/object to be placed and also preps for confirming_set to be moved on to the ledger class which would otherwise have a cyclic dependency secure -> store -> node -> secure",
+    "draft": false,
+    "pull_request": 4535,
+    "label": "clemahieu:move_write_database_queue",
+    "created_at": "2024-04-04T11:07:35Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-04T11:07:55Z",
+    "run_id": null
+  },
+  {
     "hash": "876c91b3eadbc8bac02129ae809ceead8c4fe345",
     "type": "commit",
     "created_at": "2023-11-27T14:37:53Z",
