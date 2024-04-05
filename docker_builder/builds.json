@@ -11747,6 +11747,21 @@
     "docker_tag": ""
   },
   {
+    "hash": "bd11f930e5a24b707174cbf5fa43a3e8680d0a44",
+    "type": "pull_request",
+    "title": "Block checker",
+    "body": "Rewrite of https://github.com/nanocurrency/nano-node/pull/3727 with functional style checking rather than a pipeline",
+    "draft": true,
+    "pull_request": 4345,
+    "label": "clemahieu:block_checker",
+    "created_at": "2023-11-14T12:02:06Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-05T23:45:17Z",
+    "run_id": null
+  },
+  {
     "hash": "bd31e60aaa2ba769d03eb0542b01e96558d1b19a",
     "type": "pull_request",
     "pull_request": 4514,
@@ -13259,6 +13274,21 @@
     "docker_tag": "gr0v1ty/nano-node:d6bb9479f9c1dd24edda4a6ab89a9ec12037150a",
     "build_started_at": "2024-03-12T14:42:20Z",
     "run_id": "8250806455"
+  },
+  {
+    "hash": "d6ddbc6896fde5413c8b56aa7b7b8e0c4bd19b8c",
+    "type": "pull_request",
+    "title": "Introduce ledger view classes to separate confirmed/unconfirmed operations on the ledger",
+    "body": "The motivation for this PR is in preparation for bounded backlog changes. Currently, both confirmed and unconfirmed transactions are together on disk and the ACID properties of the ledger are encapsulated with a database transaction.\r\n\r\nWith the bounded backlog, blocks will be stored in memory so there will need to be memory synchronization in addition to database synchronization. Rather than filling the ledger class with unconfirmed/confirmed variants for each operation.\r\n\r\nThe ledger is divided in to several sets and subsets:\r\nledger::confirmed - The set of confirmed transactions\r\nledger::any - The superset of confirmed and unconfirmed transactions\r\n\r\nWhen unconfirmed blocks are held in memory the set ledger::unconfirmed will be added which holds only unconfirmed transactions.\r\n\r\nIn the future the confirming_set can be moved on to ledger which is the subset of unconfirmed blocks that are queued to be moved in to the confirmed set.",
+    "draft": false,
+    "pull_request": 4486,
+    "label": "clemahieu:ledger_view",
+    "created_at": "2024-03-12T14:33:24Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-05T23:45:17Z",
+    "run_id": null
   },
   {
     "hash": "d6e172eb5551e5a952d57dca32de7e6bec09bbc0",
