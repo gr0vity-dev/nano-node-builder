@@ -74,6 +74,7 @@ jobs:
             git config user.email "<>"
             git add continuous_testing/$HASH.json
             git commit -m "Start testing for build $HASH"
+            git pull
             git push origin main
 
             echo "COMMIT_HASH=$HASH" >> $GITHUB_OUTPUT
@@ -161,7 +162,8 @@ jobs:
             git config user.email "<>"
             git add "continuous_testing/${HASH}_${TESTCASE}.txt"
             git commit -m "Add log file for failed test ${TESTCASE} in build ${HASH}"
-
+            git pull
+            
             if git push origin main; then
               echo "Push successful!"
               break
@@ -211,7 +213,8 @@ jobs:
             git config user.email "<>"
             git add $TEST_FILE
             git commit -m "Update test result for ${{ matrix.testcase }} in build $HASH"
-
+            git pull
+            
             if git push origin main; then
               echo "Push successful!"
               break
@@ -262,4 +265,5 @@ jobs:
           git config user.email "<>"
           git add $TEST_FILE
           git commit -m "Set overall status to $OVERALL_STATUS for build $HASH"
+          git pull
           git push origin main
