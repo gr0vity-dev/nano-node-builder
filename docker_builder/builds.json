@@ -1580,6 +1580,21 @@
     "run_id": "7828015254"
   },
   {
+    "hash": "18c775da887d9a146c40081acf2b921951b1019c",
+    "type": "pull_request",
+    "title": "Keep weak pointer to node in socket objects",
+    "body": "There were occasional lifetime issues when running tests, where socket handlers would complete after parent node is destroyed. While using weak ptr to fix such issues is arguably a symptom of bad design, it's a necessary intermediate step to continue refactoring network code to eventually have async handlers properly controlled.",
+    "draft": false,
+    "pull_request": 4542,
+    "label": "pwojcikdev:networking-fixes/socket-node-weak-ptr",
+    "created_at": "2024-04-08T09:20:04Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-08T09:25:15Z",
+    "run_id": null
+  },
+  {
     "hash": "18ccc17d6bb821aee2713b3fb7764508ff3a3c3e",
     "type": "pull_request",
     "pull_request": 4476,
