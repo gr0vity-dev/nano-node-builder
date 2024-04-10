@@ -2549,6 +2549,21 @@
     "run_id": "6717972888"
   },
   {
+    "hash": "29947cfda7bb0dbe35b8d9028cde22f6c282251b",
+    "type": "pull_request",
+    "title": "Max election age precision",
+    "body": "`max_election_age` is currently being casted as `std::chrono::seconds` which causes the value to be rounded to nearest second. This pr changes it to use `double` and returns the value with 2 decimals.\r\nIt's unfortunate that I did not notice this issue in the original PR.\r\nThe unit test is also updated to test that both election age values are greater than zero. On my machine they are 0.09 seconds during unit test.\r\nI also implemented the syntax Colin suggested for `oldest_election_start` to avoid the if statement",
+    "draft": false,
+    "pull_request": 4549,
+    "label": "RickiNano:max-age-decimals",
+    "created_at": "2024-04-10T06:10:14Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-10T06:15:16Z",
+    "run_id": null
+  },
+  {
     "hash": "299bfbc4c9173e60ec22a988ea305c9aebfe13f4",
     "type": "commit",
     "created_at": "2024-01-26T16:47:10Z",
