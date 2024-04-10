@@ -13435,6 +13435,21 @@
     "docker_tag": "gr0v1ty/nano-node:d570e645fa75e20be43069af4aced47d38360feb"
   },
   {
+    "hash": "d5809d0bac99c79c2a65e17a086600ea0b12d0fa",
+    "type": "pull_request",
+    "title": "Max election age precision",
+    "body": "`max_election_age` is currently being casted as `std::chrono::seconds` which causes the value to be rounded to nearest second. This pr changes it to use `double` and returns the value with 2 decimals.\r\nIt's unfortunate that I did not notice this issue in the original PR.\r\nThe unit test is also updated to test that both election age values are greater than zero. On my machine they are 0.09 seconds during unit test.\r\nI also implemented the syntax Colin suggested for `oldest_election_start` to avoid the if statement",
+    "draft": false,
+    "pull_request": 4549,
+    "label": "RickiNano:max-age-decimals",
+    "created_at": "2024-04-10T06:10:14Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-10T07:47:28Z",
+    "run_id": null
+  },
+  {
     "hash": "d58316451abd507a5a328ffc024651fa8a129ba2",
     "type": "commit",
     "created_at": "2024-03-16T19:24:17Z",
