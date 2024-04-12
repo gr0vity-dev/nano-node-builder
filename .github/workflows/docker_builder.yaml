@@ -21,7 +21,8 @@ jobs:
           NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           
           # Define repository specifics
-          BASE_URL="https://api.github.com/repos/nanocurrency/nano-node"
+          REPO="nanocurrency/nano-node"
+          BASE_URL="https://api.github.com/repos/${REPO}"
           GH_API_HEADER="Accept: application/vnd.github+json"
           
           # Get the latest commits and write to disk in JSON format. Try to extract pr number form commit message (#DDDD)
