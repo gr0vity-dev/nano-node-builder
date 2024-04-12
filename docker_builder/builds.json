@@ -2068,6 +2068,18 @@
     "docker_tag": "gr0v1ty/nano-node:1fcbe6317c914bdb41458fac325f1d55c3a16afc"
   },
   {
+    "hash": "1fda9d2976b30054611e53b886490d53cc8dce04",
+    "type": "commit",
+    "title": "Moving write_database_queue in to nano::store namespace/library.",
+    "pull_request": "N/A",
+    "created_at": "2024-04-04T10:25:43Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-12T09:48:30Z",
+    "run_id": null
+  },
+  {
     "hash": "2016dffc8263c75037d6fa9eb2fce5bc91833eb0",
     "type": "pull_request",
     "pull_request": 4345,
@@ -2301,6 +2313,18 @@
     "built_at": "2023-10-11T11:39:26Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:2482106994b278d4f482b16fb951a04131a1e300"
+  },
+  {
+    "hash": "24a55d8f6bd73bc41f390cb5fee7fb50cd326d4d",
+    "type": "commit",
+    "title": "Rename nano::store::write_database_queue to nano::store::write_queue",
+    "pull_request": "N/A",
+    "created_at": "2024-04-04T10:29:55Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-12T09:48:30Z",
+    "run_id": null
   },
   {
     "hash": "24e4cfad103fab27178c5a692e3b0490cbd2b6ee",
@@ -6640,6 +6664,18 @@
     "run_id": "8381457774"
   },
   {
+    "hash": "676f71525bf87b4685e10904ec29a99dd8a02faa",
+    "type": "commit",
+    "title": "Store origin channel as weak_ptr",
+    "pull_request": "N/A",
+    "created_at": "2024-04-03T20:32:33Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-12T09:48:30Z",
+    "run_id": null
+  },
+  {
     "hash": "67841b6a797b564a8eb36688bb220b9bfeadb596",
     "type": "commit",
     "created_at": "2024-01-26T04:09:25Z",
@@ -7817,6 +7853,18 @@
     "run_id": "7678744189"
   },
   {
+    "hash": "7976d310ebcb53bd113821bd41caec5fa055374f",
+    "type": "commit",
+    "title": "Bugfix add_outer_node, it should be added to disconnected set of nodes\n\nBy adding it to the standard set of nodes, any sebsequent node additions\nwill connect to it and it is will remain unconnected.\n\nadd_outer_node should be merged with make_disconnected_node.",
+    "pull_request": "N/A",
+    "created_at": "2024-04-10T03:59:15Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-12T09:48:30Z",
+    "run_id": null
+  },
+  {
     "hash": "79a0460927fb492a85da68c25cae3106c209eec7",
     "type": "pull_request",
     "pull_request": 4286,
@@ -8586,6 +8634,18 @@
     "built_at": "2023-10-09T10:30:49Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:85bcaaedf18d7d3ddabe7e828840842842c3fc14"
+  },
+  {
+    "hash": "85c323804de6b33290d849825de7ffb9b6be77ad",
+    "type": "commit",
+    "title": "Merge pull request #4535 from clemahieu/move_write_database_queue\n\nMove write database queue",
+    "pull_request": "N/A",
+    "created_at": "2024-04-04T15:43:52Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-12T09:48:30Z",
+    "run_id": null
   },
   {
     "hash": "85d1b8da8a5bdcd142888a2bcdf0e2798b773852",
@@ -9429,6 +9489,18 @@
     "docker_tag": "gr0v1ty/nano-node:923377c15b2eb100a38d6c7097f86b5dd5268e16",
     "build_started_at": "2024-04-09T17:07:28Z",
     "run_id": "8619600783"
+  },
+  {
+    "hash": "92504e04f8fb0d813aa777eb88889ac26673594d",
+    "type": "commit",
+    "title": "Move inactive_node and node_wrapper into their own files",
+    "pull_request": "N/A",
+    "created_at": "2024-04-08T08:53:18Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-12T09:48:30Z",
+    "run_id": null
   },
   {
     "hash": "926931b7db7c916a4a2fb41615d0d8e83e4f8cf2",
@@ -12655,6 +12727,18 @@
     "docker_tag": "gr0v1ty/nano-node:c7d77ed83692927e8b79d2bfbb43908dc0e6d307"
   },
   {
+    "hash": "c8fb3a5c4a04776abedba9a060ef67e3136e3d23",
+    "type": "commit",
+    "title": "Merge pull request #4547 from clemahieu/tsan_fix\n\nFixes TSAN issues.",
+    "pull_request": "N/A",
+    "created_at": "2024-04-09T23:57:27Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-12T09:48:30Z",
+    "run_id": null
+  },
+  {
     "hash": "c90d599ccdb204bfb06460c10232808b15cc6ccd",
     "type": "pull_request",
     "pull_request": 4124,
@@ -12799,6 +12883,18 @@
     "docker_tag": "gr0v1ty/nano-node:caef5dcabcf6a5ef87ead342935a6a18a4ec362c",
     "build_started_at": "2024-03-10T20:14:43Z",
     "run_id": "8224504096"
+  },
+  {
+    "hash": "cb1893a424d407f18a009e682e902d8ea525ea59",
+    "type": "commit",
+    "title": "Fix race condition from TSAN where block_sideband is updated by different nodes.",
+    "pull_request": "N/A",
+    "created_at": "2024-04-09T14:51:12Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-12T09:48:30Z",
+    "run_id": null
   },
   {
     "hash": "cb2765664500276cc9989d86dd5a478f23fd2046",
@@ -14844,6 +14940,18 @@
     "built_at": "2023-06-02T13:42:02Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:ec5ed07710c19a4803873c28c0cb23148a352031"
+  },
+  {
+    "hash": "ec6207f435aaae6040b0a663881cf4b08e2faa01",
+    "type": "commit",
+    "title": "Merge pull request #4476 from pwojcikdev/fair-queuing-3\n\nFair queuing for block processor",
+    "pull_request": "N/A",
+    "created_at": "2024-04-04T10:08:51Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-12T09:48:30Z",
+    "run_id": null
   },
   {
     "hash": "ec6af1335f67d8ebb0fe37283b00b81f0d25d9d4",
