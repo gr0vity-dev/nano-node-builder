@@ -19,32 +19,55 @@ jobs:
         run: |
           # Get the current date in the desired format
           NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-
+          
           # Define repository specifics
-          REPO="nanocurrency/nano-node"
-          BASE_URL="https://api.github.com/repos/${REPO}"
+          BASE_URL="https://api.github.com/repos/nanocurrency/nano-node"
           GH_API_HEADER="Accept: application/vnd.github+json"
-
-
-          # Get the latest 25 commits and write to disk in JSON format if mandatory PR number is present (#DDDD)
+          
+          # Get the latest commits and write to disk in JSON format. Try to extract pr number form commit message (#DDDD)
           curl -s -H "${GH_API_HEADER}" "${BASE_URL}/commits?sha=develop&per_page=25" | \
           jq --arg NOW "$NOW" '
+            map({
+              hash: .sha,
+              type: "commit",
+              title: .commit.message,
+              pull_request: (try .commit.message | match("\\(#(\\d{4,})\\)").captures[0].string // "N/A"),
+              created_at: .commit.author.date,
+              built_at: null,
+              build_status: null,
+              docker_tag: null,
+              build_started_at: $NOW,
+              run_id: null
+            })' > $HOME/latest_commits.json
+          
+          # Helper to fetch pull request number by commit SHA via github api
+          fetch_pr_number() {
+            local COMMIT_SHA=$1
+            curl -s -H "${GH_API_HEADER}" "https://api.github.com/search/issues?q=${COMMIT_SHA}+type:pr+repo:${REPO}" | \
+            jq -r '.items[0].number // "N/A"'
+          }
+          
+          # Find all commits without a PR number in their title
+          jq '[.[] | select(.pull_request == "N/A") | {hash: .hash, pull_request: .pull_request}]' $HOME/latest_commits.json > $HOME/shas_to_update.json          
+          # Read hashes from the JSON file and create a mapping
+          jq -c '.[]' $HOME/shas_to_update.json | while IFS= read -r entry; do
+            hash=$(echo "$entry" | jq -r '.hash')
+            pr_number=$(fetch_pr_number "$hash")
+            # Create a JSON object for each mapping
+            echo "{\"hash\":\"$hash\", \"pr_number\":\"$pr_number\"}"
+          done | jq -s '.' > $HOME/sha_pr_mapping.json
+          
+          # Update original json with pr numbers from github api
+          jq --slurpfile updates "$HOME/sha_pr_mapping.json" ' 
+            ($updates[0] | map({key: .hash, value: .pr_number}) | from_entries) as $map |  
             map(
-              select(.commit.message | test("\\(#\\d{4,}\\)")) | 
-              { 
-                hash: .sha,
-                type: "commit",
-                title: .commit.message,
-                author: .commit.author.name,
-                pull_request: ( .commit.message | match("\\(#(\\d{4,})\\)").captures[0].string ),
-                created_at: .commit.author.date,
-                built_at: null,
-                build_status: null,
-                docker_tag: null,
-                build_started_at: $NOW,
-                run_id: null
-              }
-            )' > $HOME/latest_commits.json
+              if $map[.hash] then
+                .pull_request = if .pull_request == "N/A" then $map[.hash] else .pull_request end
+              else
+                .
+              end
+            )' "$HOME/latest_commits.json" > "$HOME/updated_commits.json"          
+          mv $HOME/updated_commits.json $HOME/latest_commits.json
 
           # Append new commits to existing builds_file and remove duplicates
           jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' \
