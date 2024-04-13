@@ -418,6 +418,18 @@
     "run_id": "8556966266"
   },
   {
+    "hash": "06ef24b196cbaf34ab7a6ded71b7be9df1f173bd",
+    "type": "commit",
+    "title": "Merge pull request #4556 from clemahieu/vote_generator_write_queue",
+    "pull_request": "4556",
+    "created_at": "2024-04-13T19:34:20Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-13T19:36:13Z",
+    "run_id": null
+  },
+  {
     "hash": "06f28d22ca3c9939235d39c63648896b15aa0f0c",
     "type": "commit",
     "created_at": "2024-02-11T12:48:03Z",
@@ -3145,6 +3157,18 @@
     "built_at": "2023-09-05T11:58:14Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:3061d0009d58271631caa6087ab5781a2bde8d03"
+  },
+  {
+    "hash": "30a0d1e311b7e18b9cafeb3375135bcf12a938ce",
+    "type": "commit",
+    "title": "Use memory weight instead of exact weight. (#4555)",
+    "pull_request": "4555",
+    "created_at": "2024-04-13T19:34:44Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-13T19:36:13Z",
+    "run_id": null
   },
   {
     "hash": "30a2d047bf0df3f5d85d76e14953d48cc6a99dec",
@@ -12861,6 +12885,18 @@
     "built_at": "2023-05-04T13:51:48Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:c7d77ed83692927e8b79d2bfbb43908dc0e6d307"
+  },
+  {
+    "hash": "c8b6debc43acf78f95d75e4622736191c614b5a8",
+    "type": "commit",
+    "title": "Clean up write_queue::wait.\n\nAdd consistency check to ensure the writer token is not already queued since they're waited for by value.\nChange wait-loop to use the predicated overload of wait.",
+    "pull_request": "4556",
+    "created_at": "2024-04-12T19:09:50Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-13T19:36:13Z",
+    "run_id": null
   },
   {
     "hash": "c8fb3a5c4a04776abedba9a060ef67e3136e3d23",
