@@ -9985,6 +9985,22 @@
     "run_id": "7728696105"
   },
   {
+    "hash": "980fdf5d3dbedfc05749670f1a47b2f6ea6c0dd6",
+    "type": "pull_request",
+    "title": "Generate indented toml config files for improved legibility",
+    "author": "RickiNano",
+    "body": "The current config layout is quite hard to navigate.\r\nThis PR adds indentation to clearly show what is a child object of a node. Indentations are allowed for the TOML format according to the official documentation.\r\n`--generate_config` cli command has been tested with both node, rpc and log configs. It also supports the `--use_defaults` command with correct output.\r\nHere is a small sample of the new config file for illustration:\r\n```\r\n[node.httpcallback]\r\n\r\n        # Callback address.\r\n        # type:string,ip\r\n        # address = \"\"\r\n\r\n        # Callback port number.\r\n        # type:uint16\r\n        # port = 0\r\n\r\n        # Callback target path.\r\n        # type:string,uri\r\n        # target = \"\"\r\n\r\n[node.ipc.flatbuffers]\r\n\r\n        # Allow client to send unknown fields in json messages. These will be ignored.\r\n        # type:bool\r\n        # skip_unexpected_fields_in_json = true\r\n\r\n        # Verify that the buffer is valid before parsing. This is recommended when receiving data from untrusted sources.\r\n        # type:bool\r\n        # verify_buffers = true\r\n\r\n[node.ipc.local]\r\n\r\n        # If enabled, certain unsafe RPCs can be used. Not recommended for production systems.\r\n        # type:bool\r\n        # allow_unsafe = false\r\n\r\n        # Enable or disable IPC via local domain socket.\r\n        # type:bool\r\n        # enable = false\r\n\r\n        # Timeout for requests.\r\n        # type:seconds\r\n        # io_timeout = 15\r\n\r\n        # Path to the local domain socket.\r\n        # type:string\r\n        # path = \"/tmp/nano\"\r\n\r\n[node.ipc.tcp]\r\n\r\n        # Enable or disable IPC via TCP server.\r\n        # type:bool\r\n        # enable = false\r\n\r\n        # Timeout for requests.\r\n        # type:seconds\r\n        # io_timeout = 15\r\n\r\n        # Server listening port.\r\n        # type:uint16\r\n        # port = 7077\r\n```\r\n",
+    "draft": false,
+    "pull_request": 4558,
+    "label": "RickiNano:Config-legibility",
+    "created_at": "2024-04-13T22:19:57Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-13T22:23:07Z",
+    "run_id": null
+  },
+  {
     "hash": "9836ef29dc847e0d1a7aa99e5168af44b885096b",
     "type": "commit",
     "created_at": "2023-04-27T22:57:08Z",
