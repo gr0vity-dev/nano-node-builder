@@ -2686,6 +2686,22 @@
     "docker_tag": "gr0v1ty/nano-node:29cd166fe5e29eba6537fd7a2c41041afa1de1af"
   },
   {
+    "hash": "29e7218959b8ea8166a44b305ae30597b6c3426b",
+    "type": "pull_request",
+    "title": "Cleaner daemon stopping",
+    "author": "pwojcikdev",
+    "body": "Current daemon stopping logic is unnecessarily convoluted and relies on io context being stopped first, which is problematic. This should unblock https://github.com/nanocurrency/nano-node/pull/4523. I expect this will also make it easier to move io context into the node.\r\n\r\nThere are no CI tests that ensure proper daemon operation, but by testing it manually it seems to work fine. I'll see if I can implement such test and submit it in another PR.\r\n\r\n```\r\n[2024-04-14 19:10:39.736] [daemon] [warning] Interrupt signal received (SIGTERM), stopping...\r\n[2024-04-14 19:10:39.736] [daemon] [info] Stopping...\r\n[2024-04-14 19:10:39.736] [rpc] [error] Error accepting RPC connection: Operation canceled\r\n[2024-04-14 19:10:39.736] [node] [info] Node stopping...\r\n[2024-04-14 19:10:39.768] [tcp_listener] [error] Unable to accept connection: Operation canceled (0.0.0.0)\r\n[2024-04-14 19:10:39.769] [tcp_listener] [error] Acceptor is not open\r\n[2024-04-14 19:10:39.778] [upnp] [warning] UPnP shutdown TCP port mapping failed: 714 (NoSuchEntryInArray)\r\n[2024-04-14 19:10:39.972] [daemon] [info] Daemon stopped\r\n```",
+    "draft": false,
+    "pull_request": 4560,
+    "label": "pwojcikdev:networking-fixes/daemon-latch-rebased",
+    "created_at": "2024-04-14T17:17:49Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-14T22:18:13Z",
+    "run_id": null
+  },
+  {
     "hash": "2a201efdc3f6e70571b99053d495c2e22fb15d05",
     "type": "pull_request",
     "title": "Encapsulate ledger cache counts",
@@ -2707,6 +2723,18 @@
     "built_at": "2023-03-21T11:50:05Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:2a23efced60a18dd9922e5800d21e85a63ffb4ee"
+  },
+  {
+    "hash": "2ac4aa79d8cd408918d91fa708880142a247d595",
+    "type": "commit",
+    "title": "Use enclosing transaction within scheduler::optimistic::run_one rather than opening a new one.",
+    "pull_request": "4559",
+    "created_at": "2024-04-11T14:24:53Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-14T22:18:13Z",
+    "run_id": null
   },
   {
     "hash": "2ad38a606a5ed7d6797939166810a140791d9bc1",
@@ -3077,6 +3105,22 @@
     "docker_tag": "gr0v1ty/nano-node:2f69c60c6776a58795b69a98d276ba699d05526a",
     "build_started_at": "2024-03-19T09:20:19Z",
     "run_id": "8340495054"
+  },
+  {
+    "hash": "2fa91852d13a417fc70a61ad266981ae0d8d5c4d",
+    "type": "pull_request",
+    "title": "Test daemon interrupt handling",
+    "author": "pwojcikdev",
+    "body": "This adds a system test that ensures correct behavior of daemon interrupt handling. Additionally this cleans up and improves output of the whole systest suite.",
+    "draft": false,
+    "pull_request": 4563,
+    "label": "pwojcikdev:daemon-systests-rebased",
+    "created_at": "2024-04-14T20:07:22Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-14T22:18:13Z",
+    "run_id": null
   },
   {
     "hash": "2fa92c40f7122bc1ef83e7577476095ca7609c73",
@@ -6874,6 +6918,22 @@
     "run_id": "6790225316"
   },
   {
+    "hash": "69285accf17076b2c0225d3eb80967a6eadd1755",
+    "type": "pull_request",
+    "title": "Constexpr check NANO_ASIO_HANDLER_TRACKING",
+    "author": "pwojcikdev",
+    "body": "Using constexprs instead of ifdefs should be preferred to avoid dead code.",
+    "draft": false,
+    "pull_request": 4562,
+    "label": "pwojcikdev:constexpr-asio-handler-tracking",
+    "created_at": "2024-04-14T17:27:55Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-14T22:18:13Z",
+    "run_id": null
+  },
+  {
     "hash": "697f2ce05deab5bc9cdc0b17cefddb65c5a3b3ad",
     "type": "commit",
     "title": "Removing unconfirmed_frontiers command line option. (#4530)\n\nWhen unconfirmed blocks are moved in to memory this information will not be queryable outside the node process.",
@@ -7310,6 +7370,18 @@
     "docker_tag": "gr0v1ty/nano-node:6f996b23fe317fa851d18d901b76b504754cfaa4",
     "build_started_at": "2024-01-25T11:47:09Z",
     "run_id": "7654029887"
+  },
+  {
+    "hash": "6fa57aa8f43e279c19fbdb7f234da1e86d03f7f9",
+    "type": "commit",
+    "title": "Merge pull request #4559 from clemahieu/recursive_transaction_cleanup\n\nClean up and remove recursive transaction usage",
+    "pull_request": "4559",
+    "created_at": "2024-04-14T20:17:58Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-14T22:18:13Z",
+    "run_id": null
   },
   {
     "hash": "6fb101d6ec33e88a5bfee60f347689c867e3178e",
@@ -8132,6 +8204,18 @@
     "docker_tag": "gr0v1ty/nano-node:7c7e93166f1307c6cff889e4309f5a01b845a8d4",
     "build_started_at": "2024-01-18T00:35:47Z",
     "run_id": "7563609321"
+  },
+  {
+    "hash": "7cd86ccf62d67842d083cd0b8932362d9e4868da",
+    "type": "commit",
+    "title": "Eliminate recursive opening of transactions in unit tests.\n\nRecursive transactions are unnecessary and will deadlock when memory protection is needed/added to ledger transactions.",
+    "pull_request": "4559",
+    "created_at": "2024-04-13T10:45:24Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-14T22:18:13Z",
+    "run_id": null
   },
   {
     "hash": "7ce38c8ea4bbfd140ea98fd8dfe7486b3ce00522",
@@ -9520,6 +9604,18 @@
     "docker_tag": "gr0v1ty/nano-node:90ced1a60cd05abe645440b89ed71eab21551598"
   },
   {
+    "hash": "90d2efb3f191f64f42ef8903fcb8fc14b8025d5e",
+    "type": "commit",
+    "title": "Log capitalization (#4561)",
+    "pull_request": "4561",
+    "created_at": "2024-04-14T20:07:39Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-14T22:18:13Z",
+    "run_id": null
+  },
+  {
     "hash": "910ceed162b5d9d2ee05e9b6a23b38005e311772",
     "type": "pull_request",
     "pull_request": 3734,
@@ -10679,6 +10775,22 @@
     "built_at": "2023-04-04T16:15:11Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:a1a0a9fbaab1f3f0e4b690e2fbe09be31e08aaed"
+  },
+  {
+    "hash": "a1bee12bcd08a0aa0ec75b612d9b02445f2f4c79",
+    "type": "pull_request",
+    "title": "Fix race conditions in accessing election confirmation counters ",
+    "author": "dsiganos",
+    "body": null,
+    "draft": false,
+    "pull_request": 4564,
+    "label": "dsiganos:fix_active_transactions_activate_inactive",
+    "created_at": "2024-04-14T21:04:36Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-14T22:18:13Z",
+    "run_id": null
   },
   {
     "hash": "a1cc7a5a8c044746d6e05a9316c055b858002da1",
