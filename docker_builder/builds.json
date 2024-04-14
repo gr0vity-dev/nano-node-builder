@@ -7279,11 +7279,11 @@
     "title": "Move node::receive_confirmed to wallets::receive_confirmed (#4557)\n\nThis is inherently a wallet operation so it's more appropriate to be on the wallets class.\r\nThis also breaks a direct dependency/cycle from block processing to the wallet operations.\r\nThis also breaks a lock order inversion where a ledger transaction mutex is held while acquiring the wallet mutexes while most operations do it in the reverse order.",
     "pull_request": "4557",
     "created_at": "2024-04-14T10:35:38Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2024-04-14T11:38:08Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:6f8e1d3be2ea051222480c6fadbd21865e934b93",
     "build_started_at": "2024-04-14T11:13:16Z",
-    "run_id": null
+    "run_id": "8679532477"
   },
   {
     "hash": "6f916f09d88b5b2aa5024b705148c9373a58a44d",
