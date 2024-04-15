@@ -31,6 +31,7 @@ jobs:
             map({
               hash: .sha,
               type: "commit",
+              author: .author.login,
               title: .commit.message,
               pull_request: (try .commit.message | match("\\(#(\\d{4,})\\)").captures[0].string // "N/A"),
               created_at: .commit.author.date,
