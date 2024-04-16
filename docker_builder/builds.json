@@ -869,6 +869,22 @@
     "run_id": "8314441811"
   },
   {
+    "hash": "0d943f41353a96808cf33292a0b4237138c0365c",
+    "type": "pull_request",
+    "title": "Introduce ledger view classes to separate confirmed/unconfirmed operations on the ledger",
+    "author": "clemahieu",
+    "body": "The motivation for this PR is in preparation for bounded backlog changes. Currently, both confirmed and unconfirmed transactions are together on disk and the ACID properties of the ledger are encapsulated with a database transaction.\r\n\r\nWith the bounded backlog, blocks will be stored in memory so there will need to be memory synchronization in addition to database synchronization. Rather than filling the ledger class with unconfirmed/confirmed variants for each operation.\r\n\r\nThe ledger is divided in to several sets and subsets:\r\nledger::confirmed - The set of confirmed transactions\r\nledger::any - The superset of confirmed and unconfirmed transactions\r\n\r\nWhen unconfirmed blocks are held in memory the set ledger::unconfirmed will be added which holds only unconfirmed transactions.\r\n\r\nIn the future the confirming_set can be moved on to ledger which is the subset of unconfirmed blocks that are queued to be moved in to the confirmed set.",
+    "draft": false,
+    "pull_request": 4486,
+    "label": "clemahieu:ledger_view",
+    "created_at": "2024-03-12T14:33:24Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-16T03:35:03Z",
+    "run_id": null
+  },
+  {
     "hash": "0db8f91346c4d3a9be830854b6e3cedad54a90a1",
     "type": "pull_request",
     "pull_request": 4413,
