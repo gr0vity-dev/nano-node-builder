@@ -10147,6 +10147,19 @@
     "docker_tag": "gr0v1ty/nano-node:95493f4dc05debe8c06b70c367be0f84088a9a64"
   },
   {
+    "hash": "9553d9b7d6f20eb4aafa1ec0f0f0ee8b5d6a4f51",
+    "type": "commit",
+    "author": "dsiganos",
+    "title": "Fix race condition in unit test active_transactions.activate_inactive\n\nThe stats counters are updated in a callback called after the block\nhas been confirmed.",
+    "pull_request": "4564",
+    "created_at": "2024-04-14T20:34:56Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-16T09:20:56Z",
+    "run_id": null
+  },
+  {
     "hash": "955c79e664df1129708180c0df9a9d7547c35c51",
     "type": "commit",
     "created_at": "2023-03-07T15:48:57Z",
@@ -10559,6 +10572,19 @@
     "docker_tag": "gr0v1ty/nano-node:9bcb65ca2434ce3bc78f37544e4ffaf2d673a326",
     "build_started_at": "2024-03-09T12:18:32Z",
     "run_id": "8214449124"
+  },
+  {
+    "hash": "9be56a67f21c36af7c4d4b1872d2ec8c24c40abd",
+    "type": "commit",
+    "author": "dsiganos",
+    "title": "Fix some confirmation_callback tests that use confirmation counters\n\nThe counters are incremented in a callback after confirmation happens,\nso the tests need to wait for the counters to be updated.",
+    "pull_request": "4564",
+    "created_at": "2024-04-14T20:54:33Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-16T09:20:56Z",
+    "run_id": null
   },
   {
     "hash": "9c101081700269df97f12862bda5ee58b220cd49",
