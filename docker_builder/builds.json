@@ -4394,6 +4394,22 @@
     "run_id": "7730256320"
   },
   {
+    "hash": "4003a8afac02e340840a976be9ce60d193c9089d",
+    "type": "pull_request",
+    "title": "Move confirming_set on to ledger and add a shared_mutex for keeping memory objects in sync with the ledger",
+    "author": "clemahieu",
+    "body": "This adds a shared_mutex to ledger transactions which allows shared read access and exclusive write access to the ledger. This should fix the problem identified here https://github.com/nanocurrency/nano-node/pull/4540, and find similar need when synchronizing bounded backlog memory objects. I will break this PR up in to discrete chunks starting with https://github.com/nanocurrency/nano-node/pull/4566.\r\n\r\nThe existing ledger operations use store transactions as the synchronization method though this uses an MVCC strategy which doesn't play well when also synchronizing memory objects. Adding a shared_mutex to the transaction means ledger writes are done exclusively to ledger reads while reads can co-exist with other reads.\r\n\r\nThere are several seemingly unrelated changes added but there is a commonality in their purpose: they addressed deadlocks that occur under the new mutually exclusive write transaction behavior. The changes fall under 2 major categories:\r\n\r\n### Non-obvious recursive acquisition of ledger read transaction.\r\nWhile the ledger transactions support shared/concurrent read access, they no longer support recursive read transaction acquisition e.g. acquiring a ledger read transaction while an existing one is on the thread stack. The reason for this is that if a write transaction with exclusive lock access is requested elsewhere in the program between two read transactions requests, the second inner read transaction will be deadlocked. This is due to the behavior of shared_mutex where once unique_lock access is requested, it will block new shared_lock acquisition until the unique_lock can be serviced.\r\n\r\n### Lock order inversion by holding a read transaction across component boundaries.\r\nA common pattern is for the node to have a component with a thread that accepts input guarded by a mutex and the thread does some database operation during its loop. This means as a general rule components have a lock order of: _component-mutex_ then _ledger-mutex_.\r\nComponents also issue notifications or callbacks during their processing loop which sends data to other components. We run into issues when a component needs to pass data to another component: if the database mutex is being held while dispatching this creates a _ledger-mutex_ then _component-mutex_ lock order inversion which TSAN identifies.\r\nTo solve these cases the component must not hold a database transaction while making a callback or notifying observers.\r\n\r\nIt was inconvenient at first to fix up all these cases, however, it seemed to generally address places that might have caused read transactions to stay open for a long time or give unexpected results because of MVCC behavior instead of mutex behavior.",
+    "draft": true,
+    "pull_request": 4567,
+    "label": "clemahieu:ledger_confirming_set",
+    "created_at": "2024-04-16T10:11:59Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-16T10:12:34Z",
+    "run_id": null
+  },
+  {
     "hash": "40306635ec11ac12d7cca712c83f8a812079e9de",
     "type": "commit",
     "created_at": "2024-02-20T18:09:04Z",
