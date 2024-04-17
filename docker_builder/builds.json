@@ -146,6 +146,19 @@
     "run_id": "8003038674"
   },
   {
+    "hash": "01a1e672f8264a34191706957db1d4f91242d922",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add daemon interrupt test",
+    "pull_request": "4563",
+    "created_at": "2024-04-14T19:24:01Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-17T07:51:58Z",
+    "run_id": null
+  },
+  {
     "hash": "01c4857b2fab777ee9495814cc3b7a975b5f9fb4",
     "type": "pull_request",
     "pull_request": 4494,
@@ -607,6 +620,19 @@
     "docker_tag": "gr0v1ty/nano-node:0912b9b7600d46834376c3f6a6be2344e081d26e",
     "build_started_at": "2023-12-03T16:39:43Z",
     "run_id": "7078113612"
+  },
+  {
+    "hash": "0923d36c600cfae163610414260658a60d648b65",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Systest timeout",
+    "pull_request": "4563",
+    "created_at": "2024-04-14T19:29:31Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-17T07:51:58Z",
+    "run_id": null
   },
   {
     "hash": "09280b7939fada5b9bd72efa9828e0ac7b1c64c3",
@@ -2350,6 +2376,22 @@
     "built_at": "2023-04-13T22:54:57Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:23e7268d996229921a144c44335f015608623828"
+  },
+  {
+    "hash": "2426f2c531e6a88d0473919bf6e0c07de40f2b3f",
+    "type": "pull_request",
+    "title": "Cleaner daemon stopping",
+    "author": "pwojcikdev",
+    "body": "Current daemon stopping logic is unnecessarily convoluted and relies on io context being stopped first, which is problematic. This should unblock https://github.com/nanocurrency/nano-node/pull/4523. I expect this will also make it easier to move io context into the node.\r\n\r\nThere are no CI tests that ensure proper daemon operation, but by testing it manually it seems to work fine. I'll see if I can implement such test and submit it in another PR.\r\n\r\n```\r\n[2024-04-14 19:10:39.736] [daemon] [warning] Interrupt signal received (SIGTERM), stopping...\r\n[2024-04-14 19:10:39.736] [daemon] [info] Stopping...\r\n[2024-04-14 19:10:39.736] [rpc] [error] Error accepting RPC connection: Operation canceled\r\n[2024-04-14 19:10:39.736] [node] [info] Node stopping...\r\n[2024-04-14 19:10:39.768] [tcp_listener] [error] Unable to accept connection: Operation canceled (0.0.0.0)\r\n[2024-04-14 19:10:39.769] [tcp_listener] [error] Acceptor is not open\r\n[2024-04-14 19:10:39.778] [upnp] [warning] UPnP shutdown TCP port mapping failed: 714 (NoSuchEntryInArray)\r\n[2024-04-14 19:10:39.972] [daemon] [info] Daemon stopped\r\n```",
+    "draft": false,
+    "pull_request": 4560,
+    "label": "pwojcikdev:networking-fixes/daemon-latch-rebased",
+    "created_at": "2024-04-14T17:17:49Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-17T07:51:58Z",
+    "run_id": null
   },
   {
     "hash": "244e49c6f7682f9f535ffcb0f52dfdd1e18066d0",
@@ -11426,6 +11468,19 @@
     "docker_tag": "gr0v1ty/nano-node:a8133b3e1a31801d6734bacdd4776e257a9b2843"
   },
   {
+    "hash": "a8522e9cccfdaeafccdc2a69086d7b2b0bc9bb9b",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Improve systest output",
+    "pull_request": "4563",
+    "created_at": "2024-01-31T23:02:49Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-17T07:51:58Z",
+    "run_id": null
+  },
+  {
     "hash": "a85dd4ad497bac434be3260978bff222df8a57b1",
     "type": "pull_request",
     "pull_request": 4238,
@@ -12255,6 +12310,19 @@
     "docker_tag": "gr0v1ty/nano-node:b5fe8765388795d97b3c475496f3a95fb26bba61",
     "build_started_at": "2024-02-17T16:25:51Z",
     "run_id": "7942908784"
+  },
+  {
+    "hash": "b61020c02c4f8c9ebd5d9bafefea58bbbb9accd9",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Merge pull request #4563 from pwojcikdev/daemon-systests-rebased\n\nTest daemon interrupt handling",
+    "pull_request": "4563",
+    "created_at": "2024-04-17T07:45:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-17T07:51:58Z",
+    "run_id": null
   },
   {
     "hash": "b64fd555549aaf019eb3c674366276f6e36c7a26",
