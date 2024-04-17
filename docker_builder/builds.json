@@ -9204,6 +9204,19 @@
     "run_id": "8625821832"
   },
   {
+    "hash": "86015438898bdc8107dff233ac488779751a7a87",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rename to core_test_main to entry for consistency (#4572)\n\n* Delete stub `core_test/entry.cpp`\r\n\r\n* Rename to `core_test_main` to `entry` for consistency\r\n\r\n* Fix includes",
+    "pull_request": "4572",
+    "created_at": "2024-04-17T11:35:40Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-17T11:40:01Z",
+    "run_id": null
+  },
+  {
     "hash": "8607a66d74e7b3682226d741f575fe76ceedbaad",
     "type": "commit",
     "created_at": "2023-09-20T01:41:13Z",
@@ -11307,6 +11320,22 @@
     "docker_tag": "gr0v1ty/nano-node:a47da679a9de942ae77cfdac61c12a1c83cf313d",
     "build_started_at": "2024-03-22T08:48:02Z",
     "run_id": "8387719129"
+  },
+  {
+    "hash": "a4f2164cef9adf89b1d5aecdca0a527ac8c29b92",
+    "type": "pull_request",
+    "title": "Peer cache",
+    "author": "pwojcikdev",
+    "body": "This introduces a new `peer_cache` component that is responsible for storing and managing cached peers. Previously storing peers was done by `tcp_channels` and loading by `node`, which is not the core responsibility of these classes.\r\nPrevious behavior was that only the latest set of peers was stored (ie. cache was cleared before every write). Now the cache keeps track of peers up to a certain cutoff age (by default 1 hour).\r\nAnother behavior change is that network reachout thread tries to contact cached peers. Previously this was only done once, on node startup. This should help with resiliency if for some reason node temporarily loses connection to a peer (eg. due to network outage).",
+    "draft": false,
+    "pull_request": 4574,
+    "label": "pwojcikdev:cached-peers-2",
+    "created_at": "2024-04-17T11:34:31Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-17T11:40:01Z",
+    "run_id": null
   },
   {
     "hash": "a4f8bdb859efd3be52c4cb61a49785f23018d2e5",
