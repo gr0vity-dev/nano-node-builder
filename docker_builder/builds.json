@@ -7741,7 +7741,7 @@
     "pull_request": "N/A",
     "created_at": "2024-04-13T18:51:32Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2024-04-17T09:14:33Z",
     "run_id": null
@@ -15239,6 +15239,19 @@
     "docker_tag": "gr0v1ty/nano-node:e258b8f4bf43a1c26efe3cd7a751128cd506069e",
     "build_started_at": "2024-04-16T13:37:28Z",
     "run_id": "8706658082"
+  },
+  {
+    "hash": "e2c76ca44a96586be922ef92b64a738aef08a7fd",
+    "type": "commit",
+    "author": "dsiganos",
+    "title": "Fix race condition in test election_scheduler.no_vacancy\n\nBlocks send and receive are not confirmed for sure since nothing waits for\ntheir confirmation. If they do not confirm in time, then one of the blocks\nsend or receive will take the only available place in the AEC and not\nblock2 as expected.",
+    "pull_request": "4570",
+    "created_at": "2024-04-17T05:02:11Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-17T09:31:34Z",
+    "run_id": null
   },
   {
     "hash": "e2d59b36fc711d477dc8fc50e3b4cac0f388e86b",
