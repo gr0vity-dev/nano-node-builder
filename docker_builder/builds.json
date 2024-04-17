@@ -10030,6 +10030,22 @@
     "docker_tag": ""
   },
   {
+    "hash": "92b2f1284330dc1f17e2f583f45766ab5fa4232e",
+    "type": "pull_request",
+    "title": "CLI option to merge new node config changes into current config",
+    "author": "RickiNano",
+    "body": "The node config options are constantly changing with each new version of the node. New ones are added and old ones are removed. As a node operator it's not easy to keep your config file up to date because it currently needs to be done manually.\r\nThis PR adds a new CLI option called \"update_config\" that will read the current configuration file and find all non-default values. It will then insert them into a fresh default node configuration, and output it to the console.",
+    "draft": false,
+    "pull_request": 4521,
+    "label": "RickiNano:update-config",
+    "created_at": "2024-03-24T14:43:23Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-17T06:31:26Z",
+    "run_id": null
+  },
+  {
     "hash": "92b4455c588fb722887e8fdbefde269d6e6e7cb0",
     "type": "commit",
     "title": "Test case for pending table query at different epochs",
