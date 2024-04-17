@@ -127,9 +127,9 @@ jobs:
           # Install docker-compose v1.29 required for cpu limits to be applied in the testcases. docker-compose V2 ignores hardware limits
           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
-          pip install git+https://github.com/gr0vity-dev/python-ed25519-blake2b
-          pip install git+https://github.com/gr0vity-dev/nanomock.git@e4754b9e626bdde996424d6b47cbb465e8b5dad3
-          pip install git+https://github.com/gr0vity-dev/nanolab.git@5334ee3dc042fbf21dce3cdd384cef8d0e6983ab
+          pip install git+https://github.com/gr0vity-dev/python-ed25519-blake2b@151ad17b2a50a3329652bd4920c0db25eaeefeb1
+          pip install git+https://github.com/gr0vity-dev/nanomock.git@5e3b50e6d1a366464ecaef75208ae66e9818dd31
+          pip install git+https://github.com/gr0vity-dev/nanolab.git@4d072a2ec9efd90d085ca438d6201abb69ed8505
 
       - name: Run test case
         run: |
