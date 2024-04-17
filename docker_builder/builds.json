@@ -11277,6 +11277,22 @@
     "run_id": "8387719129"
   },
   {
+    "hash": "a4f8bdb859efd3be52c4cb61a49785f23018d2e5",
+    "type": "pull_request",
+    "title": "Fix windows tests",
+    "author": "RickiNano",
+    "body": "The timeout command behaves differently in windows than linux and mac. In windows it will pause for the specified value before continuing the script.\r\nThis PR enables windows system tests to be launched from a native Windows command prompt instead of the bash and use the build in timeout function (in milliseconds)",
+    "draft": false,
+    "pull_request": 4571,
+    "label": "RickiNano:fix-windows-tests",
+    "created_at": "2024-04-17T09:21:55Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-17T10:05:30Z",
+    "run_id": null
+  },
+  {
     "hash": "a51dcd23ac6483b60e6300e65a69211bb2ccdba1",
     "type": "pull_request",
     "pull_request": 4460,
