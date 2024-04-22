@@ -17757,6 +17757,22 @@
     "docker_tag": "gr0v1ty/nano-node:fdffa32a9ff8d009066331eab258f655819f83c3"
   },
   {
+    "hash": "fe01ecb82ff51e69ef34de8037c8ca0bb0642bc2",
+    "type": "pull_request",
+    "title": "Peer cache",
+    "author": "pwojcikdev",
+    "body": "This introduces a new `peer_cache` component that is responsible for managing cached peers. Previously storing peers was done by `tcp_channels` and loading by `node`, which is not the core responsibility of these classes.\r\nPrevious behavior was that only the latest set of peers was stored (ie. cache was cleared before every write). Now the cache keeps track of peers up to a certain cutoff age (by default 1 hour).\r\nAnother behavior change is that network reachout thread tries to contact cached peers. Previously this was only done once, on node startup. This should help with resiliency if for some reason node temporarily loses connection to its peers (eg. due to network outage).",
+    "draft": false,
+    "pull_request": 4574,
+    "label": "pwojcikdev:cached-peers-2",
+    "created_at": "2024-04-17T11:34:31Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-22T15:23:44Z",
+    "run_id": null
+  },
+  {
     "hash": "fe08198ff54e0ec4d0c39626b7eab8f3a145de33",
     "type": "pull_request",
     "pull_request": 4271,
