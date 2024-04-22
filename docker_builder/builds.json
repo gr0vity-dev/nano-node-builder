@@ -15917,6 +15917,22 @@
     "run_id": "8248894538"
   },
   {
+    "hash": "e93f2437c767d9d26cb77d54506cf8449cd5b6f1",
+    "type": "pull_request",
+    "title": "Use a dedicated thread for tcp listener",
+    "author": "pwojcikdev",
+    "body": "While I'm not aware of any problems with previous implementation, the async way of implementing `tcp_listener` was generally harder to understand and to evolve over time. It was especially problematic when making changes to other aspects of networking code. Given that our connections are long-lived and relatively infrequent, there is very little need for tcp acceptor code to be focused on performance and instead we should prioritize readability and maintainability. This modifies it to instead run on a single, dedicated thread and use blocking IO operations.",
+    "draft": false,
+    "pull_request": 4523,
+    "label": "pwojcikdev:networking-fixes/tcp-listener-2",
+    "created_at": "2024-03-25T16:06:32Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-22T08:39:45Z",
+    "run_id": null
+  },
+  {
     "hash": "e97067ffdab8b1ae6a090b87d378b172be533af2",
     "type": "pull_request",
     "pull_request": 4520,
