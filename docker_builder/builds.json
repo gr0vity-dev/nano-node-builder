@@ -12129,6 +12129,22 @@
     "run_id": "8401252333"
   },
   {
+    "hash": "aa9782921969abd15fbe18ae64cdeb2de0c78d70",
+    "type": "pull_request",
+    "title": "Node configuration auto updater",
+    "author": "RickiNano",
+    "body": "This pull request introduces a new command line feature `--update_config` , which updates the nodes current configuration by merging custom settings into the latest configuration template. Custom settings will be uncommented in the new configuration, while default values will be commented.\r\nThis feature simplifies the process for node operators to maintain an up-to-date configuration without manually merging the current configuration with the new one.\r\n\r\nFeatures:\r\n* Updates config file with new entries, tables and documentation\r\n* Removes entries that are no longer referenced in code\r\n* Preserves custom values from current configuration\r\n* Formatted output\r\n\r\nLimitations:\r\n* Currently only works with node configuration file but could easily be extended to rpc an log configs\r\n",
+    "draft": false,
+    "pull_request": 4579,
+    "label": "RickiNano:auto_update_config",
+    "created_at": "2024-04-20T07:34:06Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-24T19:38:36Z",
+    "run_id": null
+  },
+  {
     "hash": "aa9ca25acadcdad832e447d2271abc7c784bafac",
     "type": "pull_request",
     "pull_request": 4397,
