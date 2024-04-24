@@ -8328,6 +8328,22 @@
     "run_id": "7058588921"
   },
   {
+    "hash": "76a5211adfa0d0400441de4a7d48ffc204b9ff1c",
+    "type": "pull_request",
+    "title": "Use coroutines in tcp listener",
+    "author": "pwojcikdev",
+    "body": "To fix remaining TSAN issues this PR changes tcp listener implementation to use coroutines with a strand. The resulting code is structurally almost identical to the threaded version.\r\n\r\nContinuation of https://github.com/nanocurrency/nano-node/pull/4523",
+    "draft": false,
+    "pull_request": 4581,
+    "label": "pwojcikdev:networking-fixes/tcp-listener-2-coroutines",
+    "created_at": "2024-04-22T14:35:41Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-24T05:34:32Z",
+    "run_id": null
+  },
+  {
     "hash": "76a5503669a60cf9039fcd7b89be8efb51ae864d",
     "type": "commit",
     "created_at": "2023-05-15T16:48:41Z",
