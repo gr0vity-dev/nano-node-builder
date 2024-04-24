@@ -10893,6 +10893,22 @@
     "run_id": "8298619683"
   },
   {
+    "hash": "98be6626a13c16d4468b2017fcbd2a9a64b1c10c",
+    "type": "pull_request",
+    "title": "Stats overhaul",
+    "author": "pwojcikdev",
+    "body": "# Stats overhaul\r\n\r\nThe goal of this PR is to address some of the issues that have been increasingly cropping up with the current stats system. I believe that having a more flexible and performant system will allow us to experiment and iterate faster.\r\n\r\nThe immediate problem that is fixed is the fact that we ran out of space for declaring new stat enums:\r\n```\r\nIn file included from /nano-node/nano/lib/stats.hpp:5:\r\n/nano-node/nano/lib/stats_enums.hpp:407:2: error: enumerator value 256 is not representable in the underlying type 'uint8_t' (aka 'unsigned char')\r\n```\r\n\r\nHowever, this PR contains a bit more than that. The main changes are:\r\n- Do not require `stat::detail` enum to have `uint8` underlying type. This allows for practically unlimited number of custom stats.\r\n- Offload heavy IO operations (saving stats to disk) to a dedicated thread. Previously this was done inside the call to stat update functions, which introduced latency spikes.\r\n- Rework the way histograms are handled. Previously histograms needed to be registered with the stats system beforehand, which was cumbersome and as a result not used. Now we store samples in a ring buffer and leave histogram creation to the user (e.g. nano-prom-exporter).\r\n- Use read-write locks. This is a bit experimental, but on my system it seems to give some performance benefits. I'll try to include microbenchmarking suite as part of a separate PR (ongoing work is here https://github.com/pwojcikdev/nano-node/tree/stats-benchmarking )\r\n\r\n## Heatmaps\r\n\r\nI added experimental support for histogram generation to my fork of the `nano-prom-exporter` (https://github.com/pwojcikdev/nano-prom-exporter/commits/histograms/). This allows for generating heatmaps like this one:\r\n\r\n<img width=\"2991\" alt=\"Screenshot 2024-03-06 at 10 20 51\" src=\"https://github.com/nanocurrency/nano-node/assets/3044353/ec59d9ed-6dbf-4bbe-a710-b894bb2d6106\">\r\n",
+    "draft": false,
+    "pull_request": 4583,
+    "label": "pwojcikdev:stats-improvements-2",
+    "created_at": "2024-04-24T14:26:18Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-24T14:30:29Z",
+    "run_id": null
+  },
+  {
     "hash": "98e0da36b7bd35cb9b2049e8d18ffa61e416f9e6",
     "type": "pull_request",
     "pull_request": 4492,
