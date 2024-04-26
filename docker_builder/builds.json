@@ -772,6 +772,22 @@
     "run_id": "8372916544"
   },
   {
+    "hash": "0b79fdf41908d2886b0eb553d43f2917b451fc3f",
+    "type": "pull_request",
+    "title": "Node configuration auto updater",
+    "author": "RickiNano",
+    "body": "This pull request introduces a new command line feature `--update_config` , which updates the nodes current configuration by merging custom settings into the latest configuration template. Custom settings will be uncommented in the new configuration, while default values will be commented.\r\nThis feature simplifies the process for node operators to maintain an up-to-date configuration without manually merging the current configuration with the new one.\r\n\r\nFeatures:\r\n* Updates config file with new entries, tables and documentation\r\n* Removes entries that are no longer referenced in code\r\n* Preserves custom values from current configuration\r\n* Formatted output\r\n\r\nLimitations:\r\n* Currently only works with node configuration file but could easily be extended to rpc an log configs\r\n",
+    "draft": false,
+    "pull_request": 4579,
+    "label": "RickiNano:auto_update_config",
+    "created_at": "2024-04-20T07:34:06Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-26T20:09:20Z",
+    "run_id": null
+  },
+  {
     "hash": "0b85d1021fdad3f8fe56fb48bb194d02c484d17c",
     "type": "commit",
     "created_at": "2024-02-13T11:36:01Z",
@@ -9090,6 +9106,22 @@
     "docker_tag": "gr0v1ty/nano-node:7fa2e47088aaa2fe4eba9e5e1f168ca4f00809b4",
     "build_started_at": "2023-11-09T20:37:54Z",
     "run_id": "6817173542"
+  },
+  {
+    "hash": "7fd6580d5e5db320bdca0be97e97f73a4a198a3e",
+    "type": "pull_request",
+    "title": "Fix inactive votes cache election start",
+    "author": "dsiganos",
+    "body": null,
+    "draft": false,
+    "pull_request": 4587,
+    "label": "dsiganos:fix_inactive_votes_cache_election_start",
+    "created_at": "2024-04-26T20:05:17Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-26T20:09:20Z",
+    "run_id": null
   },
   {
     "hash": "7fdf3120f85e53cb7cd5d02b8ee8888dee53265c",
