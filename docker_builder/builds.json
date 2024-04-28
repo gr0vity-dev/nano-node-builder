@@ -1922,6 +1922,22 @@
     "docker_tag": "gr0v1ty/nano-node:1c4864798d462222fe6e2802ef64646d2003cd93"
   },
   {
+    "hash": "1c5df776158d61db246f23c625d43237bd20efaa",
+    "type": "pull_request",
+    "title": "Run UPNP port mapping on a dedicated thread",
+    "author": "pwojcikdev",
+    "body": "This reworks the `port_mapping` component responsible for port redirection configuration to run on a dedicated thread. This should help with node resiliency. \r\n\r\nHowever, the problem I noticed is that testing `port_mapping` component doesn't seem to be part of our CI. There is a comment indicating that maybe this was attempted in the past:\r\n> // Long discovery time and fast setup/teardown make this impractical for testing\r\n\r\nI'd recommend that we look into it. Perhaps it can be done as part of our system test suite.",
+    "draft": false,
+    "pull_request": 4591,
+    "label": "pwojcikdev:portmapping-thread",
+    "created_at": "2024-04-28T11:49:57Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-28T12:38:29Z",
+    "run_id": null
+  },
+  {
     "hash": "1c613cf03501cd51f100886638670053a334e1cc",
     "type": "pull_request",
     "pull_request": 4519,
@@ -4595,6 +4611,19 @@
     "built_at": "2023-02-09T21:13:52Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:3f5a2f547196e86164af2d66ccf125b400d4022b"
+  },
+  {
+    "hash": "3f61cd94a63a2d93d5a99ee7ae0286b63058440c",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Async task helper (#4590)\n\n* Introduce async task class\r\n\r\n* Use in `tcp_listener`\r\n\r\n* Comments\r\n\r\n* Tests\r\n\r\n* Use constructor for spawning",
+    "pull_request": "4590",
+    "created_at": "2024-04-28T12:37:05Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-28T12:38:29Z",
+    "run_id": null
   },
   {
     "hash": "3feddcbdc56c80ff6433503aee7622aa4690c79d",
