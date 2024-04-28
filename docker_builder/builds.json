@@ -3797,6 +3797,22 @@
     "run_id": "8420893800"
   },
   {
+    "hash": "333a5055bc21d48151e2f4980355446e13c372ce",
+    "type": "pull_request",
+    "title": "Run UPNP port mapping on a dedicated thread",
+    "author": "pwojcikdev",
+    "body": "This reworks the `port_mapping` component responsible for port redirection configuration to run on a dedicated thread. This should help with node resiliency. \r\n\r\nHowever, the problem I noticed is that testing `port_mapping` component doesn't seem to be part of our CI. There is a comment indicating that this might have been attempted in the past:\r\n> // Long discovery time and fast setup/teardown make this impractical for testing\r\n\r\nI'd recommend that we look into it. Perhaps it can be done as part of our system test suite.",
+    "draft": false,
+    "pull_request": 4591,
+    "label": "pwojcikdev:portmapping-thread",
+    "created_at": "2024-04-28T11:49:57Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-28T11:53:40Z",
+    "run_id": null
+  },
+  {
     "hash": "334a9de57f7ef7b4d3534ed7c9fb1381bced3544",
     "type": "pull_request",
     "pull_request": 4513,
