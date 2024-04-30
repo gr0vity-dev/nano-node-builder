@@ -5063,7 +5063,7 @@
     "pull_request": "4593",
     "created_at": "2024-03-21T16:26:35Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2024-04-30T13:34:48Z",
     "run_id": null
@@ -14643,6 +14643,22 @@
     "built_at": "2023-10-05T17:06:11Z",
     "build_status": "fail",
     "docker_tag": ""
+  },
+  {
+    "hash": "c7a48b1fd542f324e7717911d0f4a989e81d029a",
+    "type": "pull_request",
+    "title": "Stats overhaul",
+    "author": "pwojcikdev",
+    "body": "# Stats overhaul\r\n\r\nThe goal of this PR is to address some of the issues that have been increasingly cropping up with the current stats system. I believe that having a more flexible and performant system will allow us to experiment and iterate faster.\r\n\r\nThe immediate problem that is fixed is the fact that we ran out of space for declaring new stat enums:\r\n```\r\nIn file included from /nano-node/nano/lib/stats.hpp:5:\r\n/nano-node/nano/lib/stats_enums.hpp:407:2: error: enumerator value 256 is not representable in the underlying type 'uint8_t' (aka 'unsigned char')\r\n```\r\n\r\nHowever, this PR contains a bit more than that. The main changes are:\r\n- Do not require `stat::detail` enum to have `uint8` underlying type. This allows for practically unlimited number of custom stats.\r\n- Offload heavy IO operations (saving stats to disk) to a dedicated thread. Previously this was done inside the call to stat update functions, which introduced latency spikes.\r\n- Rework the way histograms are handled. Previously histograms needed to be registered with the stats system beforehand, which could be cumbersome and as a result not used. Now we store samples in a ring buffer and leave histogram creation to the user (e.g. nano-prom-exporter).\r\nNote: I'm still not sure whether this approach is really better, this needs a bit more experimentation.\r\n- Use read-write locks with atomic integers for counter values. This is a bit experimental, but on my system it seems to give some performance benefits. I'll try to include microbenchmarking suite as part of a separate PR (ongoing work is here https://github.com/pwojcikdev/nano-node/tree/stats-benchmarking )\r\n- Remove special semantics of `stat::detail::all` enum. Previously we tracked a special `all` entry that was used to aggregate all stats of a given type. It was used only by unit tests and required special filters to remove from grafana dashboards, where it unnecessarily cluttered the view. Now stat aggregation is handled by a dedicated overload of `stats::count ()` function.\r\n\r\n## Heatmaps\r\n\r\nI added experimental support for histogram generation to my fork of the `nano-prom-exporter` (https://github.com/pwojcikdev/nano-prom-exporter/commits/histograms/). This allows for generating heatmaps like this one:\r\n\r\n<img width=\"2991\" alt=\"Screenshot 2024-03-06 at 10 20 51\" src=\"https://github.com/nanocurrency/nano-node/assets/3044353/ec59d9ed-6dbf-4bbe-a710-b894bb2d6106\">\r\n",
+    "draft": false,
+    "pull_request": 4583,
+    "label": "pwojcikdev:stats-improvements-2",
+    "created_at": "2024-04-24T14:26:18Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-30T14:46:37Z",
+    "run_id": null
   },
   {
     "hash": "c7aa46557c86411b4c1057647b34da56caef1fa1",
