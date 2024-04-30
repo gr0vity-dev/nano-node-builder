@@ -585,6 +585,22 @@
     "docker_tag": "gr0v1ty/nano-node:08512db3ecc8db0447dfdb673f576c82e9b9b2c0"
   },
   {
+    "hash": "085310820c8a68a5bb2f19008ad1521e36a4ec37",
+    "type": "pull_request",
+    "title": "Introduce ledger confirmed_set/any_set classes to separate confirmed-only and confirmed/unconfirmed operations on the ledger",
+    "author": "clemahieu",
+    "body": "The motivation for this PR is in preparation for bounded backlog changes. Currently, both confirmed and unconfirmed transactions are together on disk and the ACID properties of the ledger are encapsulated with a database transaction.\r\n\r\nWith the bounded backlog, blocks will be stored in memory so there will need to be memory synchronization in addition to database synchronization. Rather than filling the ledger class with unconfirmed/confirmed variants for each operation.\r\n\r\nThe ledger is divided in to several sets and subsets:\r\nledger::confirmed - The set of confirmed transactions\r\nledger::any - The superset of confirmed and unconfirmed transactions\r\n\r\nWhen unconfirmed blocks are held in memory the set ledger::unconfirmed will be added which holds only unconfirmed transactions.\r\n\r\nIn the future the confirming_set can be moved on to ledger which is the subset of unconfirmed blocks that are queued to be moved in to the confirmed set.",
+    "draft": false,
+    "pull_request": 4486,
+    "label": "clemahieu:ledger_view",
+    "created_at": "2024-03-12T14:33:24Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-04-30T13:19:07Z",
+    "run_id": null
+  },
+  {
     "hash": "08979619041ebea0033b40bed10e7e21efea5bda",
     "type": "pull_request",
     "pull_request": 4413,
@@ -5208,6 +5224,22 @@
     "docker_tag": "gr0v1ty/nano-node:47654f406155d7146de2d372bb634034f572d160",
     "build_started_at": "2024-01-31T16:49:07Z",
     "run_id": "7729488531"
+  },
+  {
+    "hash": "47749fbe46c89e59699ed77b2e57270e76a045c6",
+    "type": "pull_request",
+    "title": "Redesign the priority scheduler to maintain a 1-to-1 link with running elections",
+    "author": "clemahieu",
+    "body": "This change appropriately prioritises elections by bucket and then by LRU account. Overfilled buckets have the lowest priority block election cancelled and rolled back.",
+    "draft": true,
+    "pull_request": 4593,
+    "label": "clemahieu:priority_limiter",
+    "created_at": "2024-04-30T12:53:50Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-30T13:19:07Z",
+    "run_id": null
   },
   {
     "hash": "47889a2ffa97d1a4265d0f175d5a79e63f3e4fc3",
