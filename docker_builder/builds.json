@@ -799,7 +799,7 @@
     "pull_request": "4593",
     "created_at": "2024-03-11T23:16:07Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2024-04-30T13:34:48Z",
     "run_id": null
@@ -2686,6 +2686,19 @@
     "docker_tag": "gr0v1ty/nano-node:2708ec109649067dade2c2ad6ac92e67a543e20e",
     "build_started_at": "2024-03-14T16:57:22Z",
     "run_id": "8284576723"
+  },
+  {
+    "hash": "274c6714cacc567087a01f954826f498ff560463",
+    "type": "commit",
+    "author": "dsiganos",
+    "title": "A system test to exercise the rpc stop command (#4573)\n\nIntroduce a systest case for rpc stop command",
+    "pull_request": "4573",
+    "created_at": "2024-04-30T13:47:44Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-30T13:49:17Z",
+    "run_id": null
   },
   {
     "hash": "275c34de815066e44d8e197d2cb5f9e1ef4e04fa",
@@ -4743,6 +4756,19 @@
     "docker_tag": "gr0v1ty/nano-node:4003a8afac02e340840a976be9ce60d193c9089d",
     "build_started_at": "2024-04-16T10:12:34Z",
     "run_id": "8703833322"
+  },
+  {
+    "hash": "401d61c24cae89e94d62c5580523d5d3f814616b",
+    "type": "commit",
+    "author": "RickiNano",
+    "title": "Node configuration auto updater (#4579)\n\nThis pull request introduces a new command line feature --update_config , which updates the nodes current configuration by merging custom settings into the latest configuration template. Custom settings will be uncommented in the new configuration, while default values will be commented.\r\nThis feature simplifies the process for node operators to maintain an up-to-date configuration without manually merging the current configuration with the new one.\r\n\r\nFeatures:\r\n\r\nUpdates config file with new entries, tables and documentation\r\nRemoves entries that are no longer referenced in code\r\nPreserves custom values from current configuration\r\nFormatted output\r\nLimitations:\r\n\r\nCurrently only works with node configuration file but could easily be extended to rpc an log configs",
+    "pull_request": "4579",
+    "created_at": "2024-04-30T13:47:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-30T13:49:17Z",
+    "run_id": null
   },
   {
     "hash": "40306635ec11ac12d7cca712c83f8a812079e9de",
@@ -11202,6 +11228,22 @@
     "run_id": "8881933540"
   },
   {
+    "hash": "96374dc64212ce8966118ad8b67bfccaa1028709",
+    "type": "pull_request",
+    "title": "Style fix, pass transaction as first argument.",
+    "author": "clemahieu",
+    "body": null,
+    "draft": false,
+    "pull_request": 4592,
+    "label": "clemahieu:priority_activate_signature",
+    "created_at": "2024-04-30T12:41:36Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-30T13:49:17Z",
+    "run_id": null
+  },
+  {
     "hash": "969e4c9bba104df629f558425d891dc57cca74fd",
     "type": "pull_request",
     "pull_request": 4295,
@@ -12648,6 +12690,22 @@
     "docker_tag": "gr0v1ty/nano-node:aaa8b4fc942d4f13f5ad7b09417a63158252e484",
     "build_started_at": "2024-04-04T17:34:52Z",
     "run_id": "8558915468"
+  },
+  {
+    "hash": "aad626f04d86cfaae0a3e19021478119cd840290",
+    "type": "pull_request",
+    "title": "Redesign the priority scheduler to maintain a 1-to-1 link with running elections",
+    "author": "clemahieu",
+    "body": "This change appropriately prioritises elections by bucket and then by LRU account. Overfilled buckets have the lowest priority block election cancelled and rolled back.",
+    "draft": true,
+    "pull_request": 4593,
+    "label": "clemahieu:priority_limiter",
+    "created_at": "2024-04-30T12:53:50Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-04-30T13:49:17Z",
+    "run_id": null
   },
   {
     "hash": "ab3036759876a802da6092d1f0a40cbcf9abeab2",
