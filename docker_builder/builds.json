@@ -2893,6 +2893,22 @@
     "run_id": "8689302589"
   },
   {
+    "hash": "28af014a737d77111cab868e16904a4b5ebfce1c",
+    "type": "pull_request",
+    "title": "Remove temporary channels",
+    "author": "pwojcikdev",
+    "body": "Our current networking design is strange in this aspect, that we treat connections accepted by our node (temporary channels) differently to connections that are initiated by our node. There is no fundamental reason for such behavior, TCP allows for bidirectional communication and doing so may lead to more robust network, since some peers aren't directly reachable (NAT, firewalls).\r\n\r\nThe logic for handling those temporary channels was also not great, it created a new channel for each processed message which led to inefficiencies, especially when paired with fair queuing. Look at `nano::transport::tcp_channels::process_message (...)`. It also used node id for channel lookup when processing messages. Here I'm associating each realtime connection with a single channel, without relying on node id, which is simpler and more robust approach.\r\n\r\nThis PR moves management of lower-level connections fully to `tcp_listener` and implements them using coroutines. Each connection attempt is given a timeout (by default 60 seconds) and node id conflicts are only rejected for same IP addresses.\r\n\r\nPrevious attempt to fix this issue was https://github.com/nanocurrency/nano-node/pull/3928",
+    "draft": false,
+    "pull_request": 4595,
+    "label": "pwojcikdev:networking-fixes/connecting-4",
+    "created_at": "2024-04-30T18:06:51Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-01T11:52:12Z",
+    "run_id": null
+  },
+  {
     "hash": "2903a9977a520c69554500196d1f9c76a07f8bfd",
     "type": "commit",
     "created_at": "2024-02-23T10:29:39Z",
