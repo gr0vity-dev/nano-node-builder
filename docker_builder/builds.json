@@ -10106,6 +10106,22 @@
     "run_id": "7663924228"
   },
   {
+    "hash": "86406acb7d87b349d409e31d2cf0707ffd9e9974",
+    "type": "pull_request",
+    "title": "Redesign the priority scheduler to maintain a 1-to-1 link with running elections",
+    "author": "clemahieu",
+    "body": "This change appropriately prioritises elections by bucket and then by LRU account. Overfilled buckets have the lowest priority block election cancelled and rolled back.",
+    "draft": true,
+    "pull_request": 4593,
+    "label": "clemahieu:priority_limiter",
+    "created_at": "2024-04-30T12:53:50Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-01T11:45:05Z",
+    "run_id": null
+  },
+  {
     "hash": "86438ddb125036cb7fd6cf025d597f26b23fe201",
     "type": "commit",
     "title": "Fix and re-enable unit test rpc.wallet_history (#4552)\n\nIt appears that the problem was that a timestamp was checked for exactness\r\ninstead of checking for a time range.",
@@ -18471,6 +18487,22 @@
     "built_at": "2023-09-26T16:22:42Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:f8739eb42074cfa63a5f898abfa7117c1aac4c2e"
+  },
+  {
+    "hash": "f8812085d1c2b9a8ea886fc7cf3070f0e2fa67ea",
+    "type": "pull_request",
+    "title": "Remove temporary channels",
+    "author": "pwojcikdev",
+    "body": "Our current networking design is strange in this aspect, that we treat connections accepted by our node (temporary channels) differently to connections that are initiated by our node. There is no fundamental reason for such behavior, TCP allows for bidirectional communication and doing so may lead to more robust network, since some peers aren't directly reachable (NAT, firewalls).\r\n\r\nThe logic for handling those temporary channels was also not great, it created a new channel for each processed message which led to inefficiencies, especially when paired with fair queuing. Look at `nano::transport::tcp_channels::process_message (...)`. It also used node id for channel lookup when processing messages. Here I'm associating each realtime connection with a single channel, without relying on node id, which is simpler and more robust approach.\r\n\r\nThis PR moves management of lower-level connections fully to `tcp_listener` and implements them using coroutines. Each connection attempt is given a timeout (by default 60 seconds) and node id conflicts are only rejected for same IP addresses.\r\n\r\nPrevious attempt to fix this issue was https://github.com/nanocurrency/nano-node/pull/3928",
+    "draft": false,
+    "pull_request": 4595,
+    "label": "pwojcikdev:networking-fixes/connecting-4",
+    "created_at": "2024-04-30T18:06:51Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-01T11:45:05Z",
+    "run_id": null
   },
   {
     "hash": "f8ab9be833236c6be8910af51645dff605b48f5f",
