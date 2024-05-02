@@ -14041,6 +14041,22 @@
     "run_id": "7454294270"
   },
   {
+    "hash": "bc549f15df46bfa1912dc70988dd59c9b4de498e",
+    "type": "pull_request",
+    "title": "Stats logging",
+    "author": "pwojcikdev",
+    "body": "This allows logging individual stat counter increments. This is useful for debugging tests. This functionality can be enabled by setting `NANO_LOG_STATS=[1,true,on]` environment variable.\r\n\r\nExample output:\r\n```\r\n[2024-05-02 18:43:27.939] [node_16gzg] [stats] [debug] Stat: bootstrap_server::request::in += 1\r\n[2024-05-02 18:43:27.939] [node_16gzg] [stats] [debug] Stat: bootstrap_server_request::blocks::in += 1\r\n[2024-05-02 18:43:27.939] [node_3e5x4] [stats] [debug] Stat: traffic_tcp::all::out += 51\r\n[2024-05-02 18:43:27.939] [node_3e5x4] [stats] [debug] Stat: bootstrap_ascending::track::in += 1\r\n[2024-05-02 18:43:27.939] [node_3e5x4] [stats] [debug] Sample: bootstrap_tag_duration -> 1\r\n```",
+    "draft": false,
+    "pull_request": 4596,
+    "label": "pwojcikdev:stats-logging",
+    "created_at": "2024-05-02T16:49:32Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-02T16:53:09Z",
+    "run_id": null
+  },
+  {
     "hash": "bc60e763a9ee4d704f91789718b5ea33d5d44e7f",
     "type": "commit",
     "created_at": "2023-03-05T16:32:06Z",
@@ -16930,6 +16946,22 @@
     "docker_tag": "gr0v1ty/nano-node:e6512cfd8dd66eb506d7d7a5699340b61bbb3920",
     "build_started_at": "2024-03-19T06:12:09Z",
     "run_id": "8338402619"
+  },
+  {
+    "hash": "e66ca8febe3963de70ab4a783e5e13c6310c6708",
+    "type": "pull_request",
+    "title": "Wait until fair queue source drains before removal",
+    "author": "pwojcikdev",
+    "body": "The previous behavior o closing queues with pending entries was causing too much confusion during performance testing.",
+    "draft": false,
+    "pull_request": 4597,
+    "label": "pwojcikdev:fair-queue-drain",
+    "created_at": "2024-05-02T16:52:57Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-02T16:53:09Z",
+    "run_id": null
   },
   {
     "hash": "e6d115ecf854a3d2bfdc9274480deac08d4068d2",
