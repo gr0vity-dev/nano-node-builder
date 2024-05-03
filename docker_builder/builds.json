@@ -2445,6 +2445,22 @@
     "docker_tag": "gr0v1ty/nano-node:20f77685ebef75d3b5a7b8d10e5ba1611d298764"
   },
   {
+    "hash": "214968564730c075e8abde8e378b04e612bb0ffe",
+    "type": "pull_request",
+    "title": "Fair queuing for request aggregator",
+    "author": "pwojcikdev",
+    "body": "This implements fair queuing for request aggregator. The benefit is that it removes a small delay that was there due to buffering of requests. This is unnecessary, because client side (`confirmation_solicitor` class) already bundles requests.\r\nI believe that the principle of client->server communication should be that the server does the least processing possible. If client requests data inefficiently, then it will just receive less data and fewer resources will be spent servicing them.",
+    "draft": false,
+    "pull_request": 4598,
+    "label": "pwojcikdev:fair-queuing/request-aggregator-3",
+    "created_at": "2024-05-03T07:15:46Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-03T07:26:35Z",
+    "run_id": null
+  },
+  {
     "hash": "214fed258a931545a7698e1bfe5e3ae1a91541a0",
     "type": "pull_request",
     "pull_request": 3727,
