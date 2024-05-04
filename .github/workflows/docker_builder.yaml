@@ -172,7 +172,7 @@ jobs:
           ADD_LATEST=${{ steps.compare_hash.outputs.add_latest}}
           echo "BUILD_STATUS=fail" >> $GITHUB_OUTPUT
 
-          docker build -f docker/node/Dockerfile -t gr0v1ty/nano-node .
+          NANO_TRACING=ON docker build -f docker/node/Dockerfile -t gr0v1ty/nano-node .
           # If build fails, the following part is not executed but the next steps are executed!
 
           echo "BUILD_STATUS=pass" >> $GITHUB_OUTPUT
