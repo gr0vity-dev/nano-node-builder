@@ -17528,6 +17528,22 @@
     "docker_tag": "gr0v1ty/nano-node:ecd1f0338a1a4cbc215be55530aee3acb1687ef0"
   },
   {
+    "hash": "ecdbcdd60b42f0c59d8549c998d128bf1cfe2bf3",
+    "type": "pull_request",
+    "title": "Redesign the priority scheduler to maintain a 1-to-1 link with running elections",
+    "author": "clemahieu",
+    "body": "This change appropriately prioritises elections by bucket and then by LRU account. Overfilled buckets have the lowest priority block election cancelled and rolled back.",
+    "draft": true,
+    "pull_request": 4593,
+    "label": "clemahieu:priority_limiter",
+    "created_at": "2024-04-30T12:53:50Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-04T09:09:56Z",
+    "run_id": null
+  },
+  {
     "hash": "ece1cfd6db9fa630bc591ca2b43f1b31764ab610",
     "type": "commit",
     "created_at": "2024-03-06T17:40:18Z",
