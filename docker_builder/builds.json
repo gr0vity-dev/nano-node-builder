@@ -9555,6 +9555,22 @@
     "run_id": "7668184498"
   },
   {
+    "hash": "7d172cfc3a9b72282eb96769df0c47a99ff46065",
+    "type": "pull_request",
+    "title": "Multithreaded vote processor",
+    "author": "pwojcikdev",
+    "body": "Changes vote processor to use multiple threads. While processing of votes inside the election container is still done under exclusive lock, this should help amortize time spent checking vote signatures.",
+    "draft": false,
+    "pull_request": 4600,
+    "label": "pwojcikdev:vote-processor-threads",
+    "created_at": "2024-05-03T11:36:29Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-05T09:08:08Z",
+    "run_id": null
+  },
+  {
     "hash": "7d2fbd80268be15ef323eed82bd29838503cf50d",
     "type": "commit",
     "created_at": "2024-03-21T10:49:25Z",
