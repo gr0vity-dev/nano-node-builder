@@ -1,0 +1,923 @@
+ed5eb8a83adb487d9338863ff031d3d66ff49cc4: Pulling from gr0v1ty/nano-node
+3c645031de29: Already exists
+2b4ee3b3edc7: Pulling fs layer
+c417e290b84f: Pulling fs layer
+1575e1a5cbd2: Pulling fs layer
+b5939a043351: Pulling fs layer
+f9951e8b14de: Pulling fs layer
+803a6ead98a6: Pulling fs layer
+5ca318719bae: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+8aa81913f124: Pulling fs layer
+24709c054c79: Pulling fs layer
+b5939a043351: Waiting
+f9951e8b14de: Waiting
+803a6ead98a6: Waiting
+5ca318719bae: Waiting
+4f4fb700ef54: Waiting
+8aa81913f124: Waiting
+24709c054c79: Waiting
+2b4ee3b3edc7: Verifying Checksum
+b5939a043351: Verifying Checksum
+b5939a043351: Download complete
+1575e1a5cbd2: Verifying Checksum
+1575e1a5cbd2: Download complete
+f9951e8b14de: Verifying Checksum
+f9951e8b14de: Download complete
+2b4ee3b3edc7: Pull complete
+803a6ead98a6: Verifying Checksum
+803a6ead98a6: Download complete
+5ca318719bae: Verifying Checksum
+5ca318719bae: Download complete
+8aa81913f124: Verifying Checksum
+8aa81913f124: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+24709c054c79: Verifying Checksum
+24709c054c79: Download complete
+c417e290b84f: Verifying Checksum
+c417e290b84f: Download complete
+c417e290b84f: Pull complete
+1575e1a5cbd2: Pull complete
+b5939a043351: Pull complete
+f9951e8b14de: Pull complete
+803a6ead98a6: Pull complete
+5ca318719bae: Pull complete
+4f4fb700ef54: Pull complete
+8aa81913f124: Pull complete
+24709c054c79: Pull complete
+Digest: sha256:b5c9bdff944fee3b2330fdd1cc3315210606f6db87ca33d011d87a6a4c777200
+Status: Downloaded newer image for gr0v1ty/nano-node:ed5eb8a83adb487d9338863ff031d3d66ff49cc4
+docker.io/gr0v1ty/nano-node:ed5eb8a83adb487d9338863ff031d3d66ff49cc4
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_send_dependant.json
+Start Fetching '5n4pr_conf_send_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_send_dependant_config.json'
+Done  Fetching '5n4pr_conf_send_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_send_dependant_config.json'
+Start Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Done  Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: nl_genesis_exporter added for node nl_genesis
+nl_pr1_exporter added for node nl_pr1
+nl_pr2_exporter added for node nl_pr2
+nl_pr3_exporter added for node nl_pr3
+nl_pr4_exporter added for node nl_pr4
+SUCCESS: stop_containers completed with None result.
+SUCCESS: reset_nodes_data completed with None result.
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: nl_genesis_exporter added for node nl_genesis
+nl_pr1_exporter added for node nl_pr1
+nl_pr2_exporter added for node nl_pr2
+nl_pr3_exporter added for node nl_pr3
+nl_pr4_exporter added for node nl_pr4
+Error executing command: nanomock start && nanomock init_wallets
+Error: ERROR: Command failed: docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d
+ERROR: Error output: Creating volume "nanomock_nl_default_volume" with default driver
+Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:ed5eb8a83adb487d9338863ff031d3d66ff49cc4
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:ed5eb8a83adb487d9338863ff031d3d66ff49cc4
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 DONE 0.7s
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 DONE 0.5s
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 0.248 /bin/sh: 1: [[: not found
+#7 1.831 Get:1 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
+#7 1.831 Get:2 http://security.ubuntu.com/ubuntu jammy-security InRelease [110 kB]
+#7 1.992 Get:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [119 kB]
+#7 2.036 Get:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [109 kB]
+#7 2.428 Get:5 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [44.7 kB]
+#7 2.509 Get:6 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [2265 kB]
+#7 2.518 Get:7 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
+#7 2.575 Get:8 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
+#7 2.588 Get:9 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
+#7 2.670 Get:10 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [1756 kB]
+#7 2.675 Get:11 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
+#7 2.705 Get:12 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1077 kB]
+#7 2.887 Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [51.1 kB]
+#7 2.887 Get:14 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1371 kB]
+#7 2.895 Get:15 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [2339 kB]
+#7 2.926 Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [2037 kB]
+#7 2.948 Get:17 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [81.0 kB]
+#7 2.948 Get:18 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [31.9 kB]
+#7 3.656 Fetched 31.4 MB in 2s (16.1 MB/s)
+#7 3.656 Reading package lists...
+#7 4.339 Reading package lists...
+#7 4.978 Building dependency tree...
+#7 5.105 Reading state information...
+#7 5.212 The following additional packages will be installed:
+#7 5.212   libatm1 libbpf0 libbsd0 libcap2-bin libelf1 libmd0 libmnl0 libpam-cap
+#7 5.212   libxtables12
+#7 5.213 Suggested packages:
+#7 5.213   iproute2-doc
+#7 5.237 The following NEW packages will be installed:
+#7 5.237   iproute2 libatm1 libbpf0 libbsd0 libcap2-bin libelf1 libmd0 libmnl0
+#7 5.238   libpam-cap libxtables12
+#7 5.316 0 upgraded, 10 newly installed, 0 to remove and 3 not upgraded.
+#7 5.316 Need to get 1430 kB of archives.
+#7 5.316 After this operation, 4151 kB of additional disk space will be used.
+#7 5.316 Get:1 http://archive.ubuntu.com/ubuntu jammy/main amd64 libelf1 amd64 0.186-1build1 [51.0 kB]
+#7 5.412 Get:2 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libbpf0 amd64 1:0.5.0-1ubuntu22.04.1 [140 kB]
+#7 5.468 Get:3 http://archive.ubuntu.com/ubuntu jammy/main amd64 libmd0 amd64 1.0.4-1build1 [23.0 kB]
+#7 5.475 Get:4 http://archive.ubuntu.com/ubuntu jammy/main amd64 libbsd0 amd64 0.11.5-1 [44.8 kB]
+#7 5.483 Get:5 http://archive.ubuntu.com/ubuntu jammy/main amd64 libmnl0 amd64 1.0.4-3build2 [13.2 kB]
+#7 5.485 Get:6 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libxtables12 amd64 1.8.7-1ubuntu5.2 [31.3 kB]
+#7 5.489 Get:7 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcap2-bin amd64 1:2.44-1ubuntu0.22.04.1 [26.0 kB]
+#7 5.494 Get:8 http://archive.ubuntu.com/ubuntu jammy/main amd64 iproute2 amd64 5.15.0-1ubuntu2 [1070 kB]
+#7 5.570 Get:9 http://archive.ubuntu.com/ubuntu jammy/main amd64 libatm1 amd64 1:2.5.1-4build2 [22.8 kB]
+#7 5.571 Get:10 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpam-cap amd64 1:2.44-1ubuntu0.22.04.1 [7928 B]
+#7 6.935 debconf: delaying package configuration, since apt-utils is not installed
+#7 6.977 Fetched 1430 kB in 0s (4339 kB/s)
+#7 7.236 Selecting previously unselected package libelf1:amd64.
+#7 7.236 (Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 4393 files and directories currently installed.)
+#7 7.618 Preparing to unpack .../0-libelf1_0.186-1build1_amd64.deb ...
+#7 7.620 Unpacking libelf1:amd64 (0.186-1build1) ...
+#7 7.636 Selecting previously unselected package libbpf0:amd64.
+#7 7.637 Preparing to unpack .../1-libbpf0_1%3a0.5.0-1ubuntu22.04.1_amd64.deb ...
+#7 7.638 Unpacking libbpf0:amd64 (1:0.5.0-1ubuntu22.04.1) ...
+#7 7.654 Selecting previously unselected package libmd0:amd64.
+#7 7.654 Preparing to unpack .../2-libmd0_1.0.4-1build1_amd64.deb ...
+#7 7.655 Unpacking libmd0:amd64 (1.0.4-1build1) ...
+#7 7.674 Selecting previously unselected package libbsd0:amd64.
+#7 7.675 Preparing to unpack .../3-libbsd0_0.11.5-1_amd64.deb ...
+#7 7.676 Unpacking libbsd0:amd64 (0.11.5-1) ...
+#7 7.691 Selecting previously unselected package libmnl0:amd64.
+#7 7.692 Preparing to unpack .../4-libmnl0_1.0.4-3build2_amd64.deb ...
+#7 7.693 Unpacking libmnl0:amd64 (1.0.4-3build2) ...
+#7 7.708 Selecting previously unselected package libxtables12:amd64.
+#7 7.708 Preparing to unpack .../5-libxtables12_1.8.7-1ubuntu5.2_amd64.deb ...
+#7 7.709 Unpacking libxtables12:amd64 (1.8.7-1ubuntu5.2) ...
+#7 7.722 Selecting previously unselected package libcap2-bin.
+#7 7.723 Preparing to unpack .../6-libcap2-bin_1%3a2.44-1ubuntu0.22.04.1_amd64.deb ...
+#7 7.724 Unpacking libcap2-bin (1:2.44-1ubuntu0.22.04.1) ...
+#7 7.743 Selecting previously unselected package iproute2.
+#7 7.744 Preparing to unpack .../7-iproute2_5.15.0-1ubuntu2_amd64.deb ...
+#7 7.745 Unpacking iproute2 (5.15.0-1ubuntu2) ...
+#7 7.790 Selecting previously unselected package libatm1:amd64.
+#7 7.791 Preparing to unpack .../8-libatm1_1%3a2.5.1-4build2_amd64.deb ...
+#7 7.792 Unpacking libatm1:amd64 (1:2.5.1-4build2) ...
+#7 7.807 Selecting previously unselected package libpam-cap:amd64.
+#7 7.808 Preparing to unpack .../9-libpam-cap_1%3a2.44-1ubuntu0.22.04.1_amd64.deb ...
+#7 7.809 Unpacking libpam-cap:amd64 (1:2.44-1ubuntu0.22.04.1) ...
+#7 7.826 Setting up libatm1:amd64 (1:2.5.1-4build2) ...
+#7 7.830 Setting up libcap2-bin (1:2.44-1ubuntu0.22.04.1) ...
+#7 7.833 Setting up libmnl0:amd64 (1.0.4-3build2) ...
+#7 7.836 Setting up libxtables12:amd64 (1.8.7-1ubuntu5.2) ...
+#7 7.838 Setting up libmd0:amd64 (1.0.4-1build1) ...
+#7 7.842 Setting up libbsd0:amd64 (0.11.5-1) ...
+#7 7.845 Setting up libelf1:amd64 (0.186-1build1) ...
+#7 7.848 Setting up libpam-cap:amd64 (1:2.44-1ubuntu0.22.04.1) ...
+#7 8.072 debconf: unable to initialize frontend: Dialog
+#7 8.072 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#7 8.072 debconf: falling back to frontend: Readline
+#7 8.077 debconf: unable to initialize frontend: Readline
+#7 8.077 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#7 8.077 debconf: falling back to frontend: Teletype
+#7 8.214 Setting up libbpf0:amd64 (1:0.5.0-1ubuntu22.04.1) ...
+#7 8.217 Setting up iproute2 (5.15.0-1ubuntu2) ...
+#7 8.289 debconf: unable to initialize frontend: Dialog
+#7 8.289 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#7 8.289 debconf: falling back to frontend: Readline
+#7 8.290 debconf: unable to initialize frontend: Readline
+#7 8.290 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#7 8.290 debconf: falling back to frontend: Teletype
+#7 8.341 Processing triggers for libc-bin (2.35-0ubuntu3.6) ...
+#7 DONE 9.3s
+
+#8 exporting to image
+#8 exporting layers
+#8 exporting layers 0.7s done
+#8 writing image sha256:a853ce091dcc4dfd2444e85129b26cbf6d37776d4bb9213d8c2e1e02aac14e88 done
+#8 naming to docker.io/library/nanomock_nl_genesis done
+#8 DONE 0.7s
+Image for service nl_genesis was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Building nl_pr1
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:ed5eb8a83adb487d9338863ff031d3d66ff49cc4
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:ed5eb8a83adb487d9338863ff031d3d66ff49cc4
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 CACHED
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 CACHED
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 writing image sha256:a853ce091dcc4dfd2444e85129b26cbf6d37776d4bb9213d8c2e1e02aac14e88 done
+#8 naming to docker.io/library/nanomock_nl_pr1 done
+#8 DONE 0.0s
+Image for service nl_pr1 was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Building nl_pr2
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:ed5eb8a83adb487d9338863ff031d3d66ff49cc4
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:ed5eb8a83adb487d9338863ff031d3d66ff49cc4
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 CACHED
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 CACHED
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 writing image sha256:a853ce091dcc4dfd2444e85129b26cbf6d37776d4bb9213d8c2e1e02aac14e88 done
+#8 naming to docker.io/library/nanomock_nl_pr2 done
+#8 DONE 0.0s
+Image for service nl_pr2 was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Building nl_pr3
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:ed5eb8a83adb487d9338863ff031d3d66ff49cc4
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:ed5eb8a83adb487d9338863ff031d3d66ff49cc4
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 CACHED
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 CACHED
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 writing image sha256:a853ce091dcc4dfd2444e85129b26cbf6d37776d4bb9213d8c2e1e02aac14e88 done
+#8 naming to docker.io/library/nanomock_nl_pr3 done
+#8 DONE 0.0s
+Image for service nl_pr3 was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Building nl_pr4
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:ed5eb8a83adb487d9338863ff031d3d66ff49cc4
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:ed5eb8a83adb487d9338863ff031d3d66ff49cc4
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 CACHED
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 CACHED
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 writing image sha256:a853ce091dcc4dfd2444e85129b26cbf6d37776d4bb9213d8c2e1e02aac14e88 done
+#8 naming to docker.io/library/nanomock_nl_pr4 done
+#8 DONE 0.0s
+Image for service nl_pr4 was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Building nl_genesis_exporter
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 435B done
+#1 DONE 0.0s
+
+#2 [auth] library/python:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.7-alpine
+#3 DONE 0.5s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/8] FROM docker.io/library/python:3.7-alpine@sha256:f3d31c8677d03f0b3c724446077f229a6ce9d3ac430f5c08cd7dff00292048c3
+#5 resolve docker.io/library/python:3.7-alpine@sha256:f3d31c8677d03f0b3c724446077f229a6ce9d3ac430f5c08cd7dff00292048c3 done
+#5 sha256:f3d31c8677d03f0b3c724446077f229a6ce9d3ac430f5c08cd7dff00292048c3 1.65kB / 1.65kB done
+#5 sha256:e6da3ee9bb64dd12b98fa609487f112fe1e365522e6e8345309db15c22a80a51 1.37kB / 1.37kB done
+#5 sha256:1bac8ae77e4af0b868b62a75115616a20e025e0451eeed05d94a4cfc4523e58a 6.87kB / 6.87kB done
+#5 sha256:96526aa774ef0126ad0fe9e9a95764c5fc37f409ab9e97021e7b4775d82bf6fa 0B / 3.40MB 0.1s
+#5 sha256:9875af95546db78168a6761b7fa205ed1cd0c153cd89356c1512e551c12b2d5c 0B / 622.29kB 0.1s
+#5 sha256:4819c95424fc4a94767c9329b02238ebcce0bc682384cb671379bc1fb8a12b55 0B / 10.94MB 0.1s
+#5 sha256:9875af95546db78168a6761b7fa205ed1cd0c153cd89356c1512e551c12b2d5c 622.29kB / 622.29kB 0.2s done
+#5 sha256:4819c95424fc4a94767c9329b02238ebcce0bc682384cb671379bc1fb8a12b55 8.39MB / 10.94MB 0.2s
+#5 sha256:148762f75a1f92cc9857e9c488bf95d5aac61e9905ec47a7408025b2dd5c3b7a 0B / 240B 0.2s
+#5 extracting sha256:96526aa774ef0126ad0fe9e9a95764c5fc37f409ab9e97021e7b4775d82bf6fa
+#5 sha256:96526aa774ef0126ad0fe9e9a95764c5fc37f409ab9e97021e7b4775d82bf6fa 3.40MB / 3.40MB 0.3s done
+#5 sha256:4819c95424fc4a94767c9329b02238ebcce0bc682384cb671379bc1fb8a12b55 10.94MB / 10.94MB 0.2s done
+#5 sha256:148762f75a1f92cc9857e9c488bf95d5aac61e9905ec47a7408025b2dd5c3b7a 240B / 240B 0.2s done
+#5 extracting sha256:96526aa774ef0126ad0fe9e9a95764c5fc37f409ab9e97021e7b4775d82bf6fa 0.1s done
+#5 sha256:ea1518237b3753b3fe40ee773d77651704178d9baa72ae5012e13a992cfa6c63 2.85MB / 2.85MB 0.3s done
+#5 extracting sha256:9875af95546db78168a6761b7fa205ed1cd0c153cd89356c1512e551c12b2d5c
+#5 extracting sha256:9875af95546db78168a6761b7fa205ed1cd0c153cd89356c1512e551c12b2d5c 0.2s done
+#5 extracting sha256:4819c95424fc4a94767c9329b02238ebcce0bc682384cb671379bc1fb8a12b55
+#5 extracting sha256:4819c95424fc4a94767c9329b02238ebcce0bc682384cb671379bc1fb8a12b55 0.3s done
+#5 extracting sha256:148762f75a1f92cc9857e9c488bf95d5aac61e9905ec47a7408025b2dd5c3b7a
+#5 extracting sha256:148762f75a1f92cc9857e9c488bf95d5aac61e9905ec47a7408025b2dd5c3b7a done
+#5 extracting sha256:ea1518237b3753b3fe40ee773d77651704178d9baa72ae5012e13a992cfa6c63 0.1s
+#5 extracting sha256:ea1518237b3753b3fe40ee773d77651704178d9baa72ae5012e13a992cfa6c63 0.2s done
+#5 DONE 1.4s
+
+#6 [2/8] RUN apk update
+#6 0.173 fetch https://dl-cdn.alpinelinux.org/alpine/v3.18/main/x86_64/APKINDEX.tar.gz
+#6 0.260 fetch https://dl-cdn.alpinelinux.org/alpine/v3.18/community/x86_64/APKINDEX.tar.gz
+#6 0.467 v3.18.6-197-gcea87010f56 [https://dl-cdn.alpinelinux.org/alpine/v3.18/main]
+#6 0.467 v3.18.6-197-gcea87010f56 [https://dl-cdn.alpinelinux.org/alpine/v3.18/community]
+#6 0.467 OK: 20084 distinct packages available
+#6 DONE 0.5s
+
+#7 [3/8] RUN apk add git gcc musl-dev linux-headers
+#7 0.463 (1/21) Upgrading musl (1.2.4-r1 -> 1.2.4-r2)
+#7 0.518 (2/21) Installing libgcc (12.2.1_git20220924-r10)
+#7 0.523 (3/21) Installing libstdc++ (12.2.1_git20220924-r10)
+#7 0.545 (4/21) Installing zstd-libs (1.5.5-r4)
+#7 0.556 (5/21) Installing binutils (2.40-r7)
+#7 0.625 (6/21) Installing libgomp (12.2.1_git20220924-r10)
+#7 0.631 (7/21) Installing libatomic (12.2.1_git20220924-r10)
+#7 0.634 (8/21) Installing gmp (6.2.1-r3)
+#7 0.641 (9/21) Installing isl26 (0.26-r1)
+#7 0.658 (10/21) Installing mpfr4 (4.2.0_p12-r0)
+#7 0.680 (11/21) Installing mpc1 (1.3.1-r1)
+#7 0.686 (12/21) Installing gcc (12.2.1_git20220924-r10)
+#7 1.370 (13/21) Installing brotli-libs (1.0.9-r14)
+#7 1.380 (14/21) Installing libunistring (1.1-r1)
+#7 1.393 (15/21) Installing libidn2 (2.3.4-r1)
+#7 1.398 (16/21) Installing nghttp2-libs (1.57.0-r0)
+#7 1.402 (17/21) Installing libcurl (8.5.0-r0)
+#7 1.412 (18/21) Installing pcre2 (10.42-r1)
+#7 1.420 (19/21) Installing git (2.40.1-r0)
+#7 1.478 (20/21) Installing linux-headers (6.3-r0)
+#7 1.593 (21/21) Installing musl-dev (1.2.4-r2)
+#7 1.656 Executing busybox-1.36.1-r2.trigger
+#7 1.663 OK: 176 MiB in 58 packages
+#7 DONE 1.9s
+
+#8 [4/8] RUN git clone https://github.com/pwojcikdev/nano-prom-exporter.git app
+#8 0.168 Cloning into 'app'...
+#8 DONE 0.5s
+
+#9 [5/8] WORKDIR /app
+#9 DONE 0.0s
+
+#10 [6/8] RUN git checkout fc1d802b7c0737cdadebd34c2d90de232c7d9069
+#10 0.203 Note: switching to 'fc1d802b7c0737cdadebd34c2d90de232c7d9069'.
+#10 0.203 
+#10 0.203 You are in 'detached HEAD' state. You can look around, make experimental
+#10 0.203 changes and commit them, and you can discard any commits you make in this
+#10 0.203 state without impacting any branches by switching back to a branch.
+#10 0.203 
+#10 0.203 If you want to create a new branch to retain commits you create, you may
+#10 0.203 do so (now or later) by using -c with the switch command. Example:
+#10 0.203 
+#10 0.203   git switch -c <new-branch-name>
+#10 0.203 
+#10 0.203 Or undo this operation with:
+#10 0.203 
+#10 0.203   git switch -
+#10 0.203 
+#10 0.203 Turn off this advice by setting config variable advice.detachedHead to false
+#10 0.203 
+#10 0.203 HEAD is now at fc1d802 fix macos
+#10 DONE 0.2s
+
+#11 [7/8] RUN pip install -r requirements.txt
+#11 1.566 Collecting prometheus-client
+#11 1.629   Downloading prometheus_client-0.17.1-py3-none-any.whl (60 kB)
+#11 1.648      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 60.6/60.6 kB 3.2 MB/s eta 0:00:00
+#11 1.694 Collecting requests
+#11 1.708   Downloading requests-2.31.0-py3-none-any.whl (62 kB)
+#11 1.714      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.6/62.6 kB 13.5 MB/s eta 0:00:00
+#11 1.827 Collecting psutil
+#11 1.841   Downloading psutil-5.9.8.tar.gz (503 kB)
+#11 1.871      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 503.2/503.2 kB 18.2 MB/s eta 0:00:00
+#11 1.969   Installing build dependencies: started
+#11 3.527   Installing build dependencies: finished with status 'done'
+#11 3.528   Getting requirements to build wheel: started
+#11 3.801   Getting requirements to build wheel: finished with status 'done'
+#11 3.804   Preparing metadata (pyproject.toml): started
+#11 4.055   Preparing metadata (pyproject.toml): finished with status 'done'
+#11 4.120 Collecting urllib3<3,>=1.21.1
+#11 4.134   Downloading urllib3-2.0.7-py3-none-any.whl (124 kB)
+#11 4.141      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 124.2/124.2 kB 32.3 MB/s eta 0:00:00
+#11 4.158 Collecting idna<4,>=2.5
+#11 4.172   Downloading idna-3.7-py3-none-any.whl (66 kB)
+#11 4.177      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 66.8/66.8 kB 23.2 MB/s eta 0:00:00
+#11 4.275 Collecting charset-normalizer<4,>=2
+#11 4.290   Downloading charset_normalizer-3.3.2-cp37-cp37m-musllinux_1_1_x86_64.whl (136 kB)
+#11 4.296      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 137.0/137.0 kB 38.2 MB/s eta 0:00:00
+#11 4.322 Collecting certifi>=2017.4.17
+#11 4.336   Downloading certifi-2024.2.2-py3-none-any.whl (163 kB)
+#11 4.342      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 163.8/163.8 kB 42.0 MB/s eta 0:00:00
+#11 4.372 Building wheels for collected packages: psutil
+#11 4.373   Building wheel for psutil (pyproject.toml): started
+#11 5.840   Building wheel for psutil (pyproject.toml): finished with status 'done'
+#11 5.842   Created wheel for psutil: filename=psutil-5.9.8-cp37-abi3-linux_x86_64.whl size=277824 sha256=30ba9eb92f9ac0afee256117f3013c31e9145fab3864e9127e721caac9659e1a
+#11 5.842   Stored in directory: /root/.cache/pip/wheels/8d/cf/8c/1e8d039a01ea9b6d457d131bb551465a4cce4f1cb4c461393a
+#11 5.845 Successfully built psutil
+#11 5.922 Installing collected packages: urllib3, psutil, prometheus-client, idna, charset-normalizer, certifi, requests
+#11 6.307 Successfully installed certifi-2024.2.2 charset-normalizer-3.3.2 idna-3.7 prometheus-client-0.17.1 psutil-5.9.8 requests-2.31.0 urllib3-2.0.7
+#11 6.308 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#11 6.314 
+#11 6.314 [notice] A new release of pip is available: 23.0.1 -> 24.0
+#11 6.314 [notice] To update, run: pip install --upgrade pip
+#11 DONE 6.5s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 0.8s done
+#12 writing image sha256:2f31babffc2be9dc649cc08104a01c6f7e95c98ddeefd3c81a26a6fb73f6e1be done
+#12 naming to docker.io/library/nanomock_nl_genesis_exporter done
+#12 DONE 0.8s
+Image for service nl_genesis_exporter was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Building nl_pr1_exporter
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 435B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.7-alpine
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/python:3.7-alpine@sha256:f3d31c8677d03f0b3c724446077f229a6ce9d3ac430f5c08cd7dff00292048c3
+#4 DONE 0.0s
+
+#5 [2/8] RUN apk update
+#5 CACHED
+
+#6 [3/8] RUN apk add git gcc musl-dev linux-headers
+#6 CACHED
+
+#7 [4/8] RUN git clone https://github.com/pwojcikdev/nano-prom-exporter.git app
+#7 CACHED
+
+#8 [5/8] WORKDIR /app
+#8 CACHED
+
+#9 [6/8] RUN git checkout fc1d802b7c0737cdadebd34c2d90de232c7d9069
+#9 CACHED
+
+#10 [7/8] RUN pip install -r requirements.txt
+#10 CACHED
+
+#11 exporting to image
+#11 exporting layers done
+#11 writing image sha256:2f31babffc2be9dc649cc08104a01c6f7e95c98ddeefd3c81a26a6fb73f6e1be done
+#11 naming to docker.io/library/nanomock_nl_pr1_exporter done
+#11 DONE 0.0s
+Image for service nl_pr1_exporter was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Building nl_pr2_exporter
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 435B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.7-alpine
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/python:3.7-alpine@sha256:f3d31c8677d03f0b3c724446077f229a6ce9d3ac430f5c08cd7dff00292048c3
+#4 DONE 0.0s
+
+#5 [3/8] RUN apk add git gcc musl-dev linux-headers
+#5 CACHED
+
+#6 [4/8] RUN git clone https://github.com/pwojcikdev/nano-prom-exporter.git app
+#6 CACHED
+
+#7 [5/8] WORKDIR /app
+#7 CACHED
+
+#8 [6/8] RUN git checkout fc1d802b7c0737cdadebd34c2d90de232c7d9069
+#8 CACHED
+
+#9 [2/8] RUN apk update
+#9 CACHED
+
+#10 [7/8] RUN pip install -r requirements.txt
+#10 CACHED
+
+#11 exporting to image
+#11 exporting layers done
+#11 writing image sha256:2f31babffc2be9dc649cc08104a01c6f7e95c98ddeefd3c81a26a6fb73f6e1be done
+#11 naming to docker.io/library/nanomock_nl_pr2_exporter done
+#11 DONE 0.0s
+Image for service nl_pr2_exporter was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Building nl_pr3_exporter
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 435B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.7-alpine
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/python:3.7-alpine@sha256:f3d31c8677d03f0b3c724446077f229a6ce9d3ac430f5c08cd7dff00292048c3
+#4 DONE 0.0s
+
+#5 [6/8] RUN git checkout fc1d802b7c0737cdadebd34c2d90de232c7d9069
+#5 CACHED
+
+#6 [3/8] RUN apk add git gcc musl-dev linux-headers
+#6 CACHED
+
+#7 [2/8] RUN apk update
+#7 CACHED
+
+#8 [4/8] RUN git clone https://github.com/pwojcikdev/nano-prom-exporter.git app
+#8 CACHED
+
+#9 [5/8] WORKDIR /app
+#9 CACHED
+
+#10 [7/8] RUN pip install -r requirements.txt
+#10 CACHED
+
+#11 exporting to image
+#11 exporting layers done
+#11 writing image sha256:2f31babffc2be9dc649cc08104a01c6f7e95c98ddeefd3c81a26a6fb73f6e1be done
+#11 naming to docker.io/library/nanomock_nl_pr3_exporter done
+#11 DONE 0.0s
+Image for service nl_pr3_exporter was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Building nl_pr4_exporter
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 435B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.7-alpine
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/8] FROM docker.io/library/python:3.7-alpine@sha256:f3d31c8677d03f0b3c724446077f229a6ce9d3ac430f5c08cd7dff00292048c3
+#4 DONE 0.0s
+
+#5 [6/8] RUN git checkout fc1d802b7c0737cdadebd34c2d90de232c7d9069
+#5 CACHED
+
+#6 [5/8] WORKDIR /app
+#6 CACHED
+
+#7 [2/8] RUN apk update
+#7 CACHED
+
+#8 [3/8] RUN apk add git gcc musl-dev linux-headers
+#8 CACHED
+
+#9 [4/8] RUN git clone https://github.com/pwojcikdev/nano-prom-exporter.git app
+#9 CACHED
+
+#10 [7/8] RUN pip install -r requirements.txt
+#10 CACHED
+
+#11 exporting to image
+#11 exporting layers done
+#11 writing image sha256:2f31babffc2be9dc649cc08104a01c6f7e95c98ddeefd3c81a26a6fb73f6e1be done
+#11 naming to docker.io/library/nanomock_nl_pr4_exporter done
+#11 DONE 0.0s
+Image for service nl_pr4_exporter was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Creating nl_pr4 ... 
+Creating nl_pr3 ... 
+Creating nl_genesis ... 
+Creating nl_pr2     ... 
+Creating nl_pr1     ... 
+Host is already in use by another container
+Creating nl_pr4     ... error
+
+ERROR: for nl_pr4  Cannot start service nl_pr4: driver failed programming external connectivity on endpoint nl_pr4 (d7c06c5b9f68f472dfa214c7734cea3f03202fda420d3850359d6162766dbccb): Error starting userland proxy: listen tcp4 0.0.0.0:44104: bind: address already in use
+Creating nl_pr3     ... done
+Creating nl_pr2     ... done
+Creating nl_genesis ... done
+Creating nl_pr1     ... done
+Creating nl_pr2_exporter ... 
+Creating nl_pr3_exporter ... 
+Creating nl_genesis_exporter ... 
+Creating nl_pr1_exporter     ... 
+Creating nl_pr2_exporter     ... done
+Creating nl_pr1_exporter     ... done
+Creating nl_genesis_exporter ... done
+Creating nl_pr3_exporter     ... done
+
+ERROR: for nl_pr4  Cannot start service nl_pr4: driver failed programming external connectivity on endpoint nl_pr4 (d7c06c5b9f68f472dfa214c7734cea3f03202fda420d3850359d6162766dbccb): Error starting userland proxy: listen tcp4 0.0.0.0:44104: bind: address already in use
+Encountered errors while bringing up the project.
+
+ERROR: Return code: 1
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 198, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanomock", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 58, in main
+    asyncio.run(main_async(args))
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 54, in main_async
+    await manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 504, in execute_command
+    await command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 433, in start_containers
+    self.docker_interface.compose_start(nodes)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 56, in compose_start
+    return self._run_command(cmd)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 33, in _run_command
+    subprocess_run_capture_output(base_command)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 209, in subprocess_run_capture_output
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: <exception str() failed>
+.DEBUG 2 unconfirmed blocks! e.g. 4334B7A2EDC69F4C78937F2146907E113BD602A81DC60DC32232AECDB7DBF8CD
+.DEBUG 2 unconfirmed blocks! e.g. FBACEB19191C43274C8ACCC96286CC1CEAAB1A31247EBBCAC5FFE22F4D26FFF9
+.DEBUG 2 unconfirmed blocks! e.g. 0A28BD9886307C3D3DEA151DA7024ED9E08C67A304E4EA2F5421F41B4931674F
+.DEBUG 2 unconfirmed blocks! e.g. 5E7A5343FCA6528C3499587D336755F11FF72E1B08AAC7A025421BD4344E4BFA
+.DEBUG 2 unconfirmed blocks! e.g. 35EF14A3C0F8A7F942333E29D62CECD07BF57CD4498FD36D097C21592B124CA9
+.DEBUG 2 unconfirmed blocks! e.g. C12C77E23FB5A4F063261C8A82AC57DAD705383284FD267A10FF837FD453A493
+.DEBUG 2 unconfirmed blocks! e.g. DAF0ED20BE5251143E8EDAF1EA114DD043DED5FD9B4163F92F56BE1B1FE4C7C8
+.DEBUG 2 unconfirmed blocks! e.g. 7AAA49F39135EECB6387941974584B2D902BEE534C0E562C7064CCC593A01816
+.DEBUG 2 unconfirmed blocks! e.g. 2AAC5A8FBEDB0C12FFB14FE632B9961F966A35D847F0E423C0BA0BA37F37F501
+.DEBUG 2 unconfirmed blocks! e.g. 1A6966D36C82C8B36F2393AA07364F23787002320984F1B44AF7DC97B77A5A18
+.DEBUG 2 unconfirmed blocks! e.g. A18FD6AF6DFB1D6EDBBDE1E445A0752ED6E6CEEEAB8E845ADD024CCEC7EC0E08
+.DEBUG 2 unconfirmed blocks! e.g. ED4F94DAB61D5240B237EC5C6E857C3E4CBFBE9E7FE4947E22309F3061C8E45F
+.DEBUG 2 unconfirmed blocks! e.g. DD91F8083AC91FE54DC3CA71B53633C4A34D5412BF2110AC942A5EA770DE6DB0
+.DEBUG 2 unconfirmed blocks! e.g. 75D330C3087535F66B08A2CC0E41206B4A73A91E6A2D607CA0544477505EC3AE
+.DEBUG 2 unconfirmed blocks! e.g. 5216E9D412F702A69A055460CE8A2E56E1D1A2E25FF07241047E825B3E427D84
+.DEBUG 2 unconfirmed blocks! e.g. FD8EC8F2AF7B2E27C5684092B253F34C72A855951A94009896992F024BBA89EC
+.DEBUG 2 unconfirmed blocks! e.g. 783477766E228CE351CA09C80347CC0D564B5E8F54AFF0C83F1D422EB267FCBD
+.DEBUG 2 unconfirmed blocks! e.g. F8FBBBFCA343A99323A758F6B0975B06AD33BD715AA2A32ACEBF48223A011C0E
+.DEBUG 2 unconfirmed blocks! e.g. 214AA0D53C3FF683F06329FB516340FCF0EFC480867177BE447FB8DE250DF24D
+.DEBUG 2 unconfirmed blocks! e.g. 99D94E637907A5A78E2181F4F687B03A615B705C8A5D870605E2756F86C71779
+.DEBUG 2 unconfirmed blocks! e.g. 7F72673BEC91D068CD6EE41D7105C14367EB89CF566A11112D400BE5BBFF432D
+.DEBUG 2 unconfirmed blocks! e.g. 5CD9123C7F4CA74D33696A8E4F1EF8844A389C9B73BC68480E8D8E075C1275FB
+.DEBUG 2 unconfirmed blocks! e.g. CF06888BCBED1810B7E1731DBB4A96325E2D94FDC5AFEBBBDB666901BE7A0B8B
+.DEBUG 2 unconfirmed blocks! e.g. B3D470F6BA101676ADACE8905A07E4621A6ABC774A7F1E270FE5CEFCAE619C26
+.DEBUG 2 unconfirmed blocks! e.g. 08C32082B656AAB419F2B719AE327C1EECEA57D1D7768E05579FC21D727B8DDE
+.DEBUG 2 unconfirmed blocks! e.g. B00174126D019F020BD05399AEC12BFF966AF7FFAFCD230E15C7ACE609ECE4F2
+.DEBUG 2 unconfirmed blocks! e.g. 615B2CA0E7C5C1E81BD35283F33FBB37572CD9F7CF9A38601A43B53F62CB8213
+.DEBUG 2 unconfirmed blocks! e.g. 528E848C4496F848174DAA231A94FE7EF25263FBDBF64D6FCD10394E3F3BFBEE
+.DEBUG 2 unconfirmed blocks! e.g. E5A3A469670EFB9B61F10800C0517225B99F754BD97CE698DD7C3CF62934AC77
+.DEBUG 2 unconfirmed blocks! e.g. B765740438CE163758706005A2379E592ED3ECEAF25839EC6BAF4B2F82FEBC55
+.DEBUG 2 unconfirmed blocks! e.g. 2EA67CBF1F4CFA63D900014DD76190E69B491E1C448448CF0FAC33413E86F690
+.DEBUG 2 unconfirmed blocks! e.g. F606F3E0F5B75E6F178EB78139862FCC4ABAEF78D0CB73585C829CD88736D45B
+.DEBUG 2 unconfirmed blocks! e.g. 841455CB147B97DBCA8ACF8E667434B582CCDBBD971193EEE1A6CA7989DB7C16
+.DEBUG 2 unconfirmed blocks! e.g. FED0B1EBC58D05C04731211A5DE4E9B6FA95A32CB7B095B901C342C99D01CD73
+.DEBUG 2 unconfirmed blocks! e.g. C9D59855C96243549B0317ED9E793A6CA1DA72C5B8A151F814456999FD08FCED
+.DEBUG 2 unconfirmed blocks! e.g. 42EDCEF691F29AC55578F3ECD4CD66D7FBB8E0BB98B84EF5B598E1CD7D81D5EB
+.DEBUG 2 unconfirmed blocks! e.g. 692820570E4D7E54557657A3AB475BB162B0E8DB3A52F6FB4B3D5256CC7F46C3
+.DEBUG 2 unconfirmed blocks! e.g. A3CC8B1C38BA43ADF1D09D217195FA475C59E9AC5D7F42F97EFE4C7B2FACF992
+.DEBUG 2 unconfirmed blocks! e.g. 00CAE6B6109DA6ED4DA308BC298E2F80FB4F17BEADDA5F9C4C86356DD9F18F75
+.DEBUG 2 unconfirmed blocks! e.g. F0D2F73CECF5B92154A01973616B54E333B0DC15F3C24D5D6DFF6288D9E75B9F
+.DEBUG 2 unconfirmed blocks! e.g. 90D432BFD6AAE3E1760F8582CAD0D1AA2C213B8BAD849C2DE689DE74073D13A9
+.DEBUG 2 unconfirmed blocks! e.g. EDDF73DAC9522C5A35217669BE67469F904F27E3CA8DBF33B4EE021E27F3D8EE
+.DEBUG 2 unconfirmed blocks! e.g. E0B8112089550B8C435BAE05378CDB0724613ECE97A711DBA7812F4F3DB4BE9E
+.DEBUG 2 unconfirmed blocks! e.g. 0F893684CCCD6EE15B790B25CB94F1CAD3483F2846438A50668AD3D6B15C883F
+.DEBUG 2 unconfirmed blocks! e.g. 5E0DEF58B80B162655DF03C6F0F71D33B4C972E1F320DD3BB48E095A8696239F
+.DEBUG 2 unconfirmed blocks! e.g. 7D5D1384527EDE9A14F1BE9E1F6FD57921A93FAD003FF50EE729C5077CF956C7
+.DEBUG 2 unconfirmed blocks! e.g. 2F800E9CC3DDCA9ABD4962FC1A884176FE46EB23795056BBDC4F956C040B5F5F
+.DEBUG 2 unconfirmed blocks! e.g. D17C1634A367167ABDC7826A501DEAC9281B8508A92C95FA03BD76D8AACF461A
+.DEBUG 2 unconfirmed blocks! e.g. CE2645029875D476394A8836FBAFCA68E72D15C04C286C1A90AAE246AD60DC96
+.DEBUG 2 unconfirmed blocks! e.g. CEFEA5E6E99773316D6F445B6DEEF79450F668577D28B1E188B0F14AAF971758
+
+
+13:19:12 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+13:19:12 0        | 100      | 0.39     | 0.0      | -1         | -1         | -1        | -1        | -1        | -1        | 5               | 253.45   | 100        | 0            |
+.DEBUG 2 unconfirmed blocks! e.g. 1F13BA1C896C232A2CAC6120E606859C7EF4F194C90306638BD93C1CD5B4D715
+.DEBUG 2 unconfirmed blocks! e.g. D4221EBAE900A4F5ABC838B50EE2934DE4AB36F5C1797A06620416E2891838EC
+.DEBUG 2 unconfirmed blocks! e.g. FE9FB00FE71815CCC831600BC5CC05A57172232E11B96E30008CA91EE776A6C1
+.DEBUG 2 unconfirmed blocks! e.g. DB3C61E5A0AC25FA7C5D50D04E3B442128165C33F030C476D1A2F014359060C7
+.DEBUG 2 unconfirmed blocks! e.g. 9FAF8110E46869FB59DD5A73BC179EF0875D5934DF6CC058CF943DC9D03A942B
+.DEBUG 2 unconfirmed blocks! e.g. 312346A191B2A704231B8CE5682F16C8A0B6BF2C30088309AC2E615132BCDEBA
+.DEBUG 2 unconfirmed blocks! e.g. BF1387B5826878C7170F7B2F7B35B04B55B94AAE5AC974491139978E022F9D91
+.DEBUG 2 unconfirmed blocks! e.g. EE8BDBC834AA3A5EFCDBAAA424A5B58ED73F749BC1A99A4E9E5E611738BA53F5
+.DEBUG 2 unconfirmed blocks! e.g. 170F03755322A33BFC4E7D38A00BE06503AF704BC6DC7DB0DD6FDDE62AA6CB05
+.DEBUG 2 unconfirmed blocks! e.g. 99E68C97C5C1FC764E7EE8C949F099BBCD302D04288BFAF799BB7C8CAEC36BDE
+.DEBUG 2 unconfirmed blocks! e.g. E8406368482732E27A8B7E618320D2A4AC9ED89E122BB30B4AB19E10E7C04BE9
+.DEBUG 2 unconfirmed blocks! e.g. CA42F9CDF10D77DD58BC67591191465E6F5172BCE33CA1D9F6E65A71065EFBDD
+.DEBUG 2 unconfirmed blocks! e.g. E6498721AFB108B2A70DB921FEA3D9AA170A3E68DB87BD764F867115BB09C22E
+.DEBUG 2 unconfirmed blocks! e.g. 05870E8029AD2BF486F56C8BA3BD9B9802893638A9A367034CA9FA8A5BF4D4CE
+.DEBUG 2 unconfirmed blocks! e.g. 9ACB7A13C9CA7A55CD902DFDDD39A48EC97FD4066FF5EE0D1C390E454BE29A6C
+.DEBUG 2 unconfirmed blocks! e.g. D1CD929166A5EA8A13FFED962A56452E82DE0FE0BD796DF9D97F59F037F810A1
+.DEBUG 2 unconfirmed blocks! e.g. 7A2C204262BCE17D9DE495EFE5FC2F82F2C99D683926CE6CEAA95A8C6F82D938
+.DEBUG 2 unconfirmed blocks! e.g. C74D18CF4CA40684794B1C1F13625C9B72B448D8AF5F4FB0DB5793F0350B7D39
+.DEBUG 2 unconfirmed blocks! e.g. CFA74998E15D35AEB004375466AF17C6282F05EB6A820577F75797820813C8AA
+.DEBUG 2 unconfirmed blocks! e.g. DD1057E676C1F07DF562218B45A10896A3D848C0BC9ED66819587DC4BACF7CD2
+.DEBUG 2 unconfirmed blocks! e.g. 10C553E6082C5FC505D56DEF19B933ED1375799C0ED6DA65FD937AF6E5DFDB9F
+.DEBUG 2 unconfirmed blocks! e.g. 3A37B5006A0788B15C706AA83EFD9634380B03E636306B484D9A76FD3F403BB1
+.DEBUG 2 unconfirmed blocks! e.g. BD81716AED613962A73391B16901374A6DFAD9C2F84E3865DF4F6FB3388116E7
+.DEBUG 2 unconfirmed blocks! e.g. 2B0857E2C5F483F77152DE499EDE091911E53EDD27BA1A666AABA884D7F329DC
+.DEBUG 2 unconfirmed blocks! e.g. 12C6455A77EC96AE6AC7935B693808DC89336013BB1F8764F6FCE945BAB58A88
+.DEBUG 2 unconfirmed blocks! e.g. B4A16896621B4A34F2D1375AD0B45AAB7761E5B70BE0D9DC86089FB3CD87C44A
+.DEBUG 2 unconfirmed blocks! e.g. 8DA999A230625A4C46DFEED1FF4122C5741A109ABC7E45DFBE0F2C1A8577D6E7
+.DEBUG 2 unconfirmed blocks! e.g. 5B13A87AB62E6678116542A2F0E8DB9809CD5768C7538751EE81C9BE050E0649
+.DEBUG 2 unconfirmed blocks! e.g. A5A34C38F6285FC1CA3C0CA4B8E4FAECC494F905D2E5EE21174D55FAD1AE9940
+.DEBUG 2 unconfirmed blocks! e.g. 3903F91520B56D86146219D223B847C285FDAE378CFF6B1D8295CF686A37CF1E
+.DEBUG 2 unconfirmed blocks! e.g. 3E2303D07E516C538598D21F5AB536F4922C2B9CBA90D465240CE3375E7342FB
+.DEBUG 2 unconfirmed blocks! e.g. 6131AA594D862EBC306035BBE296D6A7F8784AC38A87CC922A7F107D22DB0650
+.DEBUG 2 unconfirmed blocks! e.g. 1225F482615D7274C72185698FF821176C6C73E557E84F18E21ECF3D256C1BAF
+.DEBUG 2 unconfirmed blocks! e.g. 2E0E9A0D6745630E9CBE231F90711DC2F105EAFA1BC9D33CF8E9EEEB2A36CEB8
+.DEBUG 2 unconfirmed blocks! e.g. B5CE3C4A2175880FABDB304D9A99D073E0BD278751AB4B9FFA486D5D9ABBB5D4
+.DEBUG 2 unconfirmed blocks! e.g. C0DE6C4BA8B0C574024F8426F873D06842E514958F42794E88C3E0177F604FDC
+.DEBUG 2 unconfirmed blocks! e.g. 13C2C481BEFBE5C05B4A3A5EB895E82CA9B94234D34AAFD07F29F20E65D232B2
+.DEBUG 2 unconfirmed blocks! e.g. 9D813AD70A2D5F6A253010BC6D8A1A4F00A5560BF917A613B6F7A434F2E9A65A
+.DEBUG 2 unconfirmed blocks! e.g. 29AB502EE1B1945962DA5C8700E9D871599064F7189A0005D14EBF4C1D7CFF55
+.DEBUG 2 unconfirmed blocks! e.g. 6306911D189BBEE35652ABE10AF8F78C851755C17317AABE360CD07FF4EAEF72
+.DEBUG 2 unconfirmed blocks! e.g. A8E5B024E1E801A1C7D14E4BE70B9729CC054FA2B0BD3BFBF7422D211F5DC1A1
+.DEBUG 2 unconfirmed blocks! e.g. 6AEE355DBC70849621D034114074BD1515AE2BB8011E7330021579FD4712B731
+.DEBUG 2 unconfirmed blocks! e.g. 3D0B4E3F6DF7E38B0233017C40343C43EABE67C7E595A8CA0EB668819D43E7C7
+.DEBUG 2 unconfirmed blocks! e.g. C5B74C802C1A7E3D6080B376428F26618FECCCE0FBCD1FEDB6C3761414E76EBE
+.DEBUG 2 unconfirmed blocks! e.g. D0B620D18D193FAC1CDF80603D300220995DAD3D8E53AA1C0DD6CF8D3D02C5A8
+.DEBUG 2 unconfirmed blocks! e.g. A798AD5811B41637FCD81CBADED9BEECF46FA8EA199CBFF04BE6ECD64659B438
+.DEBUG 2 unconfirmed blocks! e.g. 1770F5B3F7B227685C87ADE05AD6BA922F31A57CE32F03B48FA27A1ADD7A0C17
+.DEBUG 2 unconfirmed blocks! e.g. 222BF02A114C9017610025D4894FFE62F90CCE1A99DE04D0C0F9E99CBBEADC15
+.DEBUG 2 unconfirmed blocks! e.g. 5533A3BE94CB7DC18697D2B6323FDF849ABE0F8BF6CE53BFDCE9AEC45D6ED217
+.DEBUG 2 unconfirmed blocks! e.g. 6A395A63E2A15D31AB4908D5FFDE7C18ED48B887E9A0CD80CEA14206A271EE00
+
+
+13:23:23 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+13:23:23 0        | 100      | 0.49     | 0.0      | -1         | -1         | -1        | -1        | -1        | -1        | 5               | 251.82   | 124        | 0            |
+.DEBUG 2 unconfirmed blocks! e.g. 8E2E2757DA8328038A78826249D465AE552D021B1C05E091CE3FEB73A4EF80E9
+.DEBUG 2 unconfirmed blocks! e.g. F9871DE2EEADF22E57BFCB32305B378745DB3AC4B2A89B02771AEC081E6D623B
+.DEBUG 2 unconfirmed blocks! e.g. A3832BD83EE9815B8CFCBA261F69A0DED0149E7AAD79CD13E96410E5279DA9CD
+.DEBUG 2 unconfirmed blocks! e.g. FC010D4C42686D286B3563D6061A07F40133C8B68EC7707952EE460046A335FD
+.DEBUG 2 unconfirmed blocks! e.g. 3E37414C5D52FEEEE0AF54A32C754FF7CE627A87A5FA8BBEC156190B0AC2AFBC
+.DEBUG 2 unconfirmed blocks! e.g. 916E16A3170DEEF288707D886F285DD4F6F220F627E255DC39C7BB8088ACF509
+.DEBUG 2 unconfirmed blocks! e.g. F22DAEEFFB030CD5E55FF68C5D30E17DAB7FF533127FB66A19B57422C58517F5
+.DEBUG 2 unconfirmed blocks! e.g. 46DCA0D566132D9F15A8F51D0A79D748BEF8520178D629412E4976308C69EC19
+.DEBUG 2 unconfirmed blocks! e.g. 01CA81EC45A534E54BF7459D5C807B310A57C9DF485A5EE940F5BFB43EAAA016
+.DEBUG 2 unconfirmed blocks! e.g. B199490C52B4B84AB3F0519820E04C37957B8A3E53EBCFE2E686B3CBDD579AC2
+.DEBUG 2 unconfirmed blocks! e.g. FC23C753AF4F93398284DE4E50BBFFBCDE8B6CFABBCB030DCBEFD047B2903BFC
+.DEBUG 2 unconfirmed blocks! e.g. E19D8E1A859A151B06013AC89CBD006189759212EAD46828EC6CE016E6138819
+.DEBUG 2 unconfirmed blocks! e.g. F770527B8BDCFD72C3B874D09D5020D5E4EEE020171A9D37E6458BD926AF1DA2
+.DEBUG 2 unconfirmed blocks! e.g. 0D6E48EAF404466EB24D9FCEE63688EF558E5A44444C7F447A98A23F63A143AE
+.DEBUG 2 unconfirmed blocks! e.g. 721DED2E01220E2D8AF329709A908E23C1929AFDDB23CD2008EE696A0E2DC1EA
+.DEBUG 2 unconfirmed blocks! e.g. 53F15CB5542AF0D27A95F0367BFCCA17F126F83746D11847A92A3333BBA3E50F
+.DEBUG 2 unconfirmed blocks! e.g. EA2C159EA9CD61D57F61063B589013217C6841D93561D861FB51643B60AB78FE
+.DEBUG 2 unconfirmed blocks! e.g. 6CE03D1009112A1F88CCBB64F752467D2DD1862D7DEB81C0A44082D1C77E84EB
+.DEBUG 2 unconfirmed blocks! e.g. 26CBB88DFD176940E621C56B5B65FC87F163B513BBE8A38647700758FF611FB2
+.DEBUG 2 unconfirmed blocks! e.g. 94FE27282D35AD5B84E5EC85915C93AD5BE046F990416A8E6EB136A08CA58CDD
+.DEBUG 2 unconfirmed blocks! e.g. 3D4E65043FD4935B13AA7A84CD45F84A8C965DEB8B3FB39A3100A7DB7C7B5F04
+.DEBUG 2 unconfirmed blocks! e.g. 12DB2657900A7246BCCC67B184AAC49C0A8341847C6439B2B7E1AF3AAACA44B5
+.DEBUG 2 unconfirmed blocks! e.g. 5A686CA4B0C8838E2520D31F1ACFAAFB8C2A1D986E711884CD195409197AA5B2
+.DEBUG 2 unconfirmed blocks! e.g. DEB66B0FAD6F86531C1230BC826D9B710D1B7C383671DEF436E5F929DAF67B30
+.DEBUG 2 unconfirmed blocks! e.g. 1812B7DCCF0F14E52D3EFCA2262590FD93EAA857B8C1B7BD16605BB0FA79BBF0
+.DEBUG 2 unconfirmed blocks! e.g. 6E85C744E4F7467126AD28D1A5A47248AFC2CC262C639DA601D47C74CE4EE7A1
+.DEBUG 2 unconfirmed blocks! e.g. DE3FA95AE37D4FD7CE70BD7B54A497768472BD96F13E99FCB5526E7EC9369CDA
+.DEBUG 2 unconfirmed blocks! e.g. 1538B3DAD0CAFF9F9CB0723A119D7BC2345ABAE895B90F89441E818D07EF1500
+.DEBUG 2 unconfirmed blocks! e.g. FF58F462B52FF0D919A2E3A1B196AE3783FEB2F8DFF7A99139C560E4D4DA1006
+.DEBUG 2 unconfirmed blocks! e.g. C47C2B9ECB0C5A003E0686C3A96D892C120E0B5E7EF8D6E7851EB041171998C3
+.DEBUG 2 unconfirmed blocks! e.g. 1B24970BCBEE87CC9A6D64E63E48F64492142410CCBA3728CEBE83832FE70E26
+.DEBUG 2 unconfirmed blocks! e.g. 86A728E8E9FB455C5E49C2B04D4728D27B1AD824E6E6866A29EE1160193CA033
+.DEBUG 2 unconfirmed blocks! e.g. B6777E1B37C86B15E703822FA601310A32BA6CCA5E149A6E339AFF95458C2464
+.DEBUG 2 unconfirmed blocks! e.g. 36245DB8A02734C342EF1188103D67A4D3B621B5A1EBA75A093EA399A52D3C5C
+.DEBUG 2 unconfirmed blocks! e.g. A034812DE7C35B28204C2DBEBD0FF4FD7C0EAD41DBBB66D42E5B53218D0653F2
+.DEBUG 2 unconfirmed blocks! e.g. 708CB067456185CB7DF7AA490381FA1A8BBF2B585CB1C6E812C512FD26BD3B1E
+.DEBUG 2 unconfirmed blocks! e.g. E856E5FACF3659FC5A1FC1C25C9AF4D1452D4FE7FEC12EB9FF4A0349B566B4E9
+.DEBUG 2 unconfirmed blocks! e.g. 0729ACE5EAB36B940E13A56BCEED1918F8C510D9CBED3C1A127748DF425B7CCB
+.DEBUG 2 unconfirmed blocks! e.g. DF9FCDB46E0F605B4444007145A3ACC7E8B2151E21BACCC7728A09B7BF9A171A
+.DEBUG 2 unconfirmed blocks! e.g. 22AC72AC83CDA4A3027772B1A2E5A5DEFB9CE0E262D68A74F98D5FB988E5C41E
+.DEBUG 2 unconfirmed blocks! e.g. BFD2AFABDB7A5E6B788AF0FF20FB1F92DA8513E9F38B12E00BBA1F6DC94683A2
+.DEBUG 2 unconfirmed blocks! e.g. BA7ECBE5C283036333CAB6BB2436EB8D64100C63D9A0834A0DFAF0654F7EA723
+.DEBUG 2 unconfirmed blocks! e.g. 67CD632FCF3BBFBA4B021F0AD7F4A477F60ECEBCC0A2DD098A844419C8C37F8C
+.DEBUG 2 unconfirmed blocks! e.g. 9FB1D6AC78F5FA518DE0EB314DCEC060D4EA41D43A1B8CECEF535FB39ED1DFA5
+.DEBUG 2 unconfirmed blocks! e.g. C69428A12ABA8D06AB549759858A138689650A0C68C95EC3C3979C7EBAB1D40B
+.DEBUG 2 unconfirmed blocks! e.g. 84C68DCAC4340B0BE1979805008F6934AA6E10EEE11A11296841CD5A33B97B40
+.DEBUG 2 unconfirmed blocks! e.g. 2B9D568A043818A2209816936C7E6DD0CEC46486BE6324D4160644FC908C4E74
+.DEBUG 2 unconfirmed blocks! e.g. 31448BA31547A9020959FB60845DE14D80A33B79073DE115A64C71C4AD939DE5
+.DEBUG 2 unconfirmed blocks! e.g. 5CBBD3DAF5655D7BF1876CD2DB35E05B84B359E096940A2EAB516E4CAC3900D8
+.DEBUG 2 unconfirmed blocks! e.g. 3AC3983EE576E91D727CD1BDCF773719456F20145959CC7FA867D5EA957BADB7
+
+
+13:27:35 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+13:27:35 0        | 100      | 0.4      | 0.0      | -1         | -1         | -1        | -1        | -1        | -1        | 5               | 251.66   | 100        | 0            |
