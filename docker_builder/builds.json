@@ -2849,6 +2849,22 @@
     "run_id": "8284576723"
   },
   {
+    "hash": "271e953986dcf7f7823b533980c6618ca9991894",
+    "type": "pull_request",
+    "title": "Add `NANO_TRACING` argument to Dockerfile",
+    "author": "gr0vity-dev",
+    "body": "To allow docker images with tracing support, we need to be able to pass `NANO_TRACING` via build-arg like this :\r\n\r\n`docker build --build-arg NANO_TRACING=ON -f docker/node/Dockerfile -t NODE_NAME .`\r\n\r\nDuring testing I sometimes need docker images with tracing enabled.",
+    "draft": false,
+    "pull_request": 4603,
+    "label": "gr0vity-dev:prs/add_tracing_to_docker",
+    "created_at": "2024-05-06T07:17:13Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-06T07:32:19Z",
+    "run_id": null
+  },
+  {
     "hash": "274c6714cacc567087a01f954826f498ff560463",
     "type": "commit",
     "author": "dsiganos",
