@@ -1359,6 +1359,22 @@
     "docker_tag": null
   },
   {
+    "hash": "1205538a26173c1fb76cd05b006cff18c4fc06b2",
+    "type": "pull_request",
+    "title": "Directly confirm blocks within unit tests rather than starting/forcing elections",
+    "author": "clemahieu",
+    "body": "Replaces nano::test::force_confirm with nano::test::confirm and overrides. The action was renamed to test::confirm because the action is to confirm.  election::force_confirm is an action specific to an election where the normal path causes confirmation after the vote tally has quorum and force_confirm simulates this.\r\n\r\nThis removes ledger::force_confirm as it was inappropriately calling the private ledger::confirm(block) rather than the public ledger::confirm(hash).\r\n\r\nWhile this doesn't fix any test specifically it should help with general unit test reliability by not running election functionality when setting up tests.",
+    "draft": false,
+    "pull_request": 4605,
+    "label": "clemahieu:testing_direct_confirmation",
+    "created_at": "2024-05-06T22:14:55Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-06T22:48:05Z",
+    "run_id": null
+  },
+  {
     "hash": "124421bfefe8add44058caf628b8046a699b9dfe",
     "type": "pull_request",
     "pull_request": 4424,
