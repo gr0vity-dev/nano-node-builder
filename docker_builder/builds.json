@@ -5926,6 +5926,22 @@
     "docker_tag": "gr0v1ty/nano-node:49b8ccea28682a4412b2533a1b29f27eb145c93e"
   },
   {
+    "hash": "4a00f05a759ed095d676fe2c930f2501b81a480b",
+    "type": "pull_request",
+    "title": "Introduce `active_transactions_config`",
+    "author": "gr0vity-dev",
+    "body": "Introduce `active_transactions_config` :\r\n\r\n\r\n| Old config                                | New config                                   |\r\n|-------------------------------------------|----------------------------------------------|\r\n| active_elections_size                     | active_transactions.size                     |\r\n| active_elections_hinted_limit_percentage | active_transactions.hinted_limit_percentage |\r\n| active_elections_optimistic_limit_percentage | active_transactions.optimistic_limit_percentage |\r\n| confirmation_history_size                 | active_transactions.confirmation_history_size|\r\n|  /                 | active_transactions.confirmation_cache|\r\n\r\n\r\n\r\nNewly introduced `confirmation_cache` is used in `recently_confirmed{ config.confirmation_cache },`  instead of the hardcoded value `65536`\r\n",
+    "draft": false,
+    "pull_request": 4604,
+    "label": "gr0vity-dev:prs/active_transactions_config",
+    "created_at": "2024-05-06T10:16:04Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-07T13:51:35Z",
+    "run_id": null
+  },
+  {
     "hash": "4a14086454d991f6bc4c3f5b0685732682f623dc",
     "type": "commit",
     "created_at": "2023-02-01T16:38:27Z",
@@ -12952,6 +12968,22 @@
     "built_at": "2023-09-05T12:24:43Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:a42aaf9db86d8e5196673073b66ea9741fa3137b"
+  },
+  {
+    "hash": "a464acce417334491404b4726921140cdd29c436",
+    "type": "pull_request",
+    "title": "Separate vote_router from active_transactions",
+    "author": "clemahieu",
+    "body": "This change is to simplify the active_transactions class which has many responsibilities around election management. This change separates the responsibility of routing votes to their respective elections from other responsibilities inside active_transactions.\r\n\r\nThe mapping hash -> election in nano::active_transactions::blocks is moved into a new class nano::vote_router. Vote processing logic is moved from nano::active_transactions::vote to nano::vote_router::vote.\r\n\r\nnano::vote_router changes the behavior from active_transactions::blocks in that it does not own the lifetime of elections. Only a weak_ptr to election is held and a background thread cleans up orphaned routes periodically.\r\n\r\nnano::vote_code and nano::vote_source are moved into the vote_router.hpp file and forward declared when possible.",
+    "draft": false,
+    "pull_request": 4607,
+    "label": "clemahieu:vote_router",
+    "created_at": "2024-05-07T13:47:40Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-07T13:51:35Z",
+    "run_id": null
   },
   {
     "hash": "a47da679a9de942ae77cfdac61c12a1c83cf313d",
