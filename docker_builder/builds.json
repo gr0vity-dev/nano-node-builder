@@ -8115,7 +8115,7 @@
     "pull_request": "4600",
     "created_at": "2024-05-07T07:44:31Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2024-05-07T07:50:20Z",
     "run_id": null
@@ -9422,6 +9422,22 @@
     "docker_tag": ""
   },
   {
+    "hash": "78dabf8385fb796d29a134b74ddf387c3547a3f3",
+    "type": "pull_request",
+    "title": "Fair queuing for request aggregator",
+    "author": "pwojcikdev",
+    "body": "This implements fair queuing for request aggregator. The benefit is that it removes a small delay that was there due to buffering of requests. This is unnecessary, because client side (`confirmation_solicitor` class) already bundles requests.\r\nI believe that the principle of client->server communication should be that the server does the least processing possible. If client requests data inefficiently, then it will just receive less data and fewer resources will be spent servicing them.",
+    "draft": false,
+    "pull_request": 4598,
+    "label": "pwojcikdev:fair-queuing/request-aggregator-3",
+    "created_at": "2024-05-03T07:15:46Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-07T07:57:36Z",
+    "run_id": null
+  },
+  {
     "hash": "78e7a521ccd4333455abfae690bac2638ab3fe7f",
     "type": "pull_request",
     "title": "Use strand for socket operations",
@@ -10666,6 +10682,19 @@
     "built_at": "2023-03-15T03:54:40Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:87f61d83821f324eddcde1ea906a6fc287991a1b"
+  },
+  {
+    "hash": "881adfdd53a748f87481cd622cf28c00b569278c",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Enum utils (#4601)\n\n* Move to `enum_utils` header\r\n\r\n* Add `enum_cast` helper\r\n\r\n* Rename to `enum_parse`\r\n\r\n* Add `ignore_reserved` flag\r\n\r\n* Enum name helper\r\n\r\n* Namespace\r\n\r\n* Convert usages\r\n\r\n* Simplify `enum_util::values ()`\r\n\r\n* Parsing\r\n\r\n* Enum casting\r\n\r\n* Tests\r\n\r\n* Naming consistency\r\n\r\n* Fix",
+    "pull_request": "4601",
+    "created_at": "2024-05-07T07:56:26Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-07T07:57:36Z",
+    "run_id": null
   },
   {
     "hash": "889c4cd1975404fc3ceb724aa312985ba409249d",
