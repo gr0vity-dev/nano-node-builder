@@ -14542,6 +14542,22 @@
     "docker_tag": "gr0v1ty/nano-node:b8b72d477fd40a21b45a8427e89b6b983a6e3e05"
   },
   {
+    "hash": "b8d1b027307818ec7a7138cd94a4a99c294a844f",
+    "type": "pull_request",
+    "title": "Separate vote_router from active_transactions",
+    "author": "clemahieu",
+    "body": "This change is to simplify the active_transactions class which has many responsibilities around election management. This change separates the responsibility of routing votes to their respective elections from other responsibilities inside active_transactions.\r\n\r\nThe mapping hash -> election in nano::active_transactions::blocks is moved into a new class nano::vote_router. Vote processing logic is moved from nano::active_transactions::vote to nano::vote_router::vote.\r\n\r\nnano::vote_router changes the behavior from active_transactions::blocks in that it does not own the lifetime of elections. Only a weak_ptr to election is held and a background thread cleans up orphaned routes periodically.\r\n\r\nnano::vote_code and nano::vote_source are moved into the vote_router.hpp file and forward declared when possible.",
+    "draft": false,
+    "pull_request": 4607,
+    "label": "clemahieu:vote_router",
+    "created_at": "2024-05-07T13:47:40Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-07T22:32:14Z",
+    "run_id": null
+  },
+  {
     "hash": "b90618ca13b026103d71ab662b6152baa9c36973",
     "type": "pull_request",
     "pull_request": 4149,
