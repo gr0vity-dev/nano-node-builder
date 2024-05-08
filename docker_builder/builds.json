@@ -6198,6 +6198,22 @@
     "docker_tag": "gr0v1ty/nano-node:4c6b0766a6cfb28fd2eaf37a917be12edf8398b0"
   },
   {
+    "hash": "4d2412e54dd894885d6649bc2f5e2c11736c557f",
+    "type": "pull_request",
+    "title": "Fix race condition between election creation and vote_cache triggering",
+    "author": "clemahieu",
+    "body": "The vote_cache is triggered after an election is created, and specifically after the active_elections mutex is released, which causes a race condition when checking the votes in an election.",
+    "draft": false,
+    "pull_request": 4610,
+    "label": "clemahieu:fix_inactive_votes_cache_multiple_votes",
+    "created_at": "2024-05-08T22:13:59Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-08T22:26:45Z",
+    "run_id": null
+  },
+  {
     "hash": "4d52049219342bd2708d81ea03b3cc95447463eb",
     "type": "pull_request",
     "pull_request": 4339,
