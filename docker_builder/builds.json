@@ -15704,6 +15704,22 @@
     "run_id": "8011932260"
   },
   {
+    "hash": "c962248a21448a888b4d6cb3310fb7b1a3aed4a0",
+    "type": "pull_request",
+    "title": "Replace `tcp_message_manager`",
+    "author": "pwojcikdev",
+    "body": "This replaces `tcp_message_manager` with a new `message_processor` component based around fair queue. There are two major differences:\r\n- Instead of a single, large shared message queue each peer gets its own smaller, dedicated queue. \r\n- The producer/consumer condition behavior is changed, so that when overfilled it no longer blocks, instead dropping new messages. (With channels ideally throttling receiving new messages, but that's a todo for future network refactorings)\r\n\r\nIn the future it should be explored if message dispatch can be done directly from IO threads, thus saving one intermediate queue. This requires simulating real live network contention conditions, ie. 200+ peers.",
+    "draft": false,
+    "pull_request": 4609,
+    "label": "pwojcikdev:fair-queuing/message-processor-3",
+    "created_at": "2024-05-08T20:17:58Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-08T20:24:47Z",
+    "run_id": null
+  },
+  {
     "hash": "c988438f2297664ca604b13970844e8122a49228",
     "type": "pull_request",
     "pull_request": 4143,
