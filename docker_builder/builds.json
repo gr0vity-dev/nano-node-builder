@@ -20244,6 +20244,22 @@
     "docker_tag": "gr0v1ty/nano-node:ff851937a30d4e0f1b7e13575659643c4b5cb66f"
   },
   {
+    "hash": "ff9612d702f725ee2d43a7ebbb569f3bd4c22761",
+    "type": "pull_request",
+    "title": "Extend election lifetime when receiving new votes",
+    "author": "RickiNano",
+    "body": "This PR adds a dynamic Time-To-Live on elections to improve the AEC alignment and efficiency during heavy load. \r\n\r\nThe TTL has been reduced to 30 seconds for normal elections and 10 seconds for hinted and optimistic elections but is extended every time a new vote arrive.\r\n\r\nBlocks that are not getting any votes are getting evicted from AEC much earlier, while blocks with active voting have a higher chance of staying in the AEC and reach confirmation.\r\n\r\nRelated issue: #4352",
+    "draft": false,
+    "pull_request": 4527,
+    "label": "RickiNano:Active-election-time-out",
+    "created_at": "2024-03-30T09:30:57Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-08T16:39:21Z",
+    "run_id": null
+  },
+  {
     "hash": "ff9681e62d836f82fc673ada8b61b0b80ff7fc7e",
     "type": "pull_request",
     "pull_request": 4386,
