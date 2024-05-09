@@ -2183,6 +2183,19 @@
     "run_id": "8806207151"
   },
   {
+    "hash": "1c44ade2aa31ee61fbc7d106fc79abb0dcd715d0",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Use ledger::confirm interface",
+    "pull_request": "4605",
+    "created_at": "2024-05-06T21:30:51Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-09T12:44:20Z",
+    "run_id": null
+  },
+  {
     "hash": "1c4864798d462222fe6e2802ef64646d2003cd93",
     "type": "pull_request",
     "pull_request": 4177,
@@ -2655,6 +2668,19 @@
     "built_at": "2023-09-01T13:26:10Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:21b77a88290d5b1c15cfc6e1ebb01fa4c2706b6d"
+  },
+  {
+    "hash": "21e48cdbc4c33193342df30a460c3bd8149a6be8",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Merge pull request #4605 from clemahieu/testing_direct_confirmation\n\nDirectly confirm blocks within unit tests rather than starting/forcing elections",
+    "pull_request": "4605",
+    "created_at": "2024-05-09T12:37:52Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-09T12:44:20Z",
+    "run_id": null
   },
   {
     "hash": "220ac3de022c61ead2611a1fe2703b3fe4726eae",
@@ -11752,6 +11778,19 @@
     "docker_tag": "gr0v1ty/nano-node:92733c21b23baad746c1bfc4fd556d1f565a0f2d"
   },
   {
+    "hash": "92764ee8a47f39e7d5f4f783f244b90fd7235c8f",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "During setup, use direct ledger confirmation rather than starting / forcing an election.\n\nTests wanting to test election behaviour directly can start their own elections.\nThough this doesn't fix any specific test problem, this change should be friendly to reducing intermittent test failure due to object interaction effects of running actual network elections.",
+    "pull_request": "4605",
+    "created_at": "2024-05-06T19:45:16Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-09T12:44:20Z",
+    "run_id": null
+  },
+  {
     "hash": "927e50d43963624845d745aedb1d963425464d68",
     "type": "pull_request",
     "pull_request": 4181,
@@ -13694,6 +13733,19 @@
     "docker_tag": "gr0v1ty/nano-node:ab4e51de8fdd85ae8b88f06eb21c2a34f508ff97",
     "build_started_at": "2024-03-20T08:13:47Z",
     "run_id": "8355682154"
+  },
+  {
+    "hash": "ab8d3a7a414997561c37125a5039574d149413fb",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Convert unit tests to directly confirm blocks\n\nTests modified:\nactive_transactions.confirm_frontier\nactive_transactions.keep_local\nbootstrap_processor.lazy_hash_pruning\nbootstrap_processor.lazy_hash_pruning\nfrontier_req.confirmed_frontier\nelection.continuous_voting\nnode.vote_by_hash_bundle\nnode.epoch_conflict_confirm\nnode.rollback_vote_self\noptimistic_scheduler.activate_one\noptimistic_scheduler.under_gap_threshold\nrpc.receivable_unconfirmed\nrpc.history_pruning\nrpc.accounts_receivable_confirmed\nrpc.block_confirmed\nnode.aggressive_flooding",
+    "pull_request": "4605",
+    "created_at": "2024-05-06T19:52:11Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-09T12:44:20Z",
+    "run_id": null
   },
   {
     "hash": "ab995e4ec6965fd7a913019e3ce1b157922d84ba",
