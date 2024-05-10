@@ -5470,6 +5470,22 @@
     "run_id": "8377740510"
   },
   {
+    "hash": "43a575e2895599df2081a5ee12443bfddb2421aa",
+    "type": "pull_request",
+    "title": "Add ability for channels to pause/resume processing of incoming messages",
+    "author": "clemahieu",
+    "body": "This is a follow on to PR https://github.com/nanocurrency/nano-node/pull/4609 and responds to the fair queue for a channel being full by pausing incoming message processing for the channel.\r\n\r\nPausing incoming message handling will cause TCP flow control to back up to the sender and limit incoming data.",
+    "draft": false,
+    "pull_request": 4612,
+    "label": "clemahieu:pause_channel",
+    "created_at": "2024-05-10T11:32:25Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-10T11:35:42Z",
+    "run_id": null
+  },
+  {
     "hash": "43ae1f2aadd7eb7362a7fa7f1d4db3ca989e2be0",
     "type": "pull_request",
     "pull_request": 4465,
