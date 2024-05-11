@@ -10876,6 +10876,22 @@
     "run_id": "8908905981"
   },
   {
+    "hash": "864177f08ad806df3278810055be92c0976fa223",
+    "type": "pull_request",
+    "title": "Add ability for channels to pause/resume processing of incoming messages",
+    "author": "clemahieu",
+    "body": "This is a follow on to PR https://github.com/nanocurrency/nano-node/pull/4609 and responds to the fair queue for a channel being full by pausing incoming message processing for the channel.\r\n\r\nPausing incoming message handling will cause TCP flow control to back up to the sender and limit incoming data.",
+    "draft": false,
+    "pull_request": 4612,
+    "label": "clemahieu:pause_channel",
+    "created_at": "2024-05-10T11:32:25Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-11T14:39:03Z",
+    "run_id": null
+  },
+  {
     "hash": "86438ddb125036cb7fd6cf025d597f26b23fe201",
     "type": "commit",
     "title": "Fix and re-enable unit test rpc.wallet_history (#4552)\n\nIt appears that the problem was that a timestamp was checked for exactness\r\ninstead of checking for a time range.",
