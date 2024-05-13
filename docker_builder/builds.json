@@ -12368,6 +12368,22 @@
     "run_id": "8234733865"
   },
   {
+    "hash": "978683534b850ca4974ac39e5de6983faf98d64d",
+    "type": "pull_request",
+    "title": "Configuration and environment variable improvements",
+    "author": "pwojcikdev",
+    "body": "This cleans up code related to overriding node configuration:\r\n- Extracts environment variable reading, which is now done in a more generic, C++ way.\r\n- Always prints info when an environment variable overrides config.\r\n- Ensures that configured thread counts are in reasonable ranges. (And slightly tweaks default for `request_aggregator`)\r\n- Converts `is_<sanitizer>` calls to constevals\r\n- Adds ability to configure number of IO threads by environment variable",
+    "draft": false,
+    "pull_request": 4613,
+    "label": "pwojcikdev:env-utils",
+    "created_at": "2024-05-11T08:40:34Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-13T08:53:55Z",
+    "run_id": null
+  },
+  {
     "hash": "97abf643c8393a9a372e7c17b4158ffdfe6085c5",
     "type": "commit",
     "created_at": "2023-03-02T11:33:28Z",
