@@ -435,6 +435,19 @@
     "run_id": "8298619683"
   },
   {
+    "hash": "06143a6c8828c088745c7aea427bad01ab2e05ae",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Fix receivable_processor tests that weren't testing anything",
+    "pull_request": "4619",
+    "created_at": "2024-05-13T15:58:20Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-14T11:41:17Z",
+    "run_id": null
+  },
+  {
     "hash": "062cbff5d7521353a5ce6b9e77aa71c4230c704b",
     "type": "commit",
     "author": "clemahieu",
@@ -1561,6 +1574,19 @@
     "docker_tag": "gr0v1ty/nano-node:13af56e6757b1d431e7641633e8fe027bb94b0dc",
     "build_started_at": "2023-12-12T18:08:37Z",
     "run_id": "7185514549"
+  },
+  {
+    "hash": "143c7b06e4a9e82a1f9a99600270dca0d7e44617",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Merge pull request #4619 from clemahieu/scheduler_test_cleanup\n\nScheduler test cleanup",
+    "pull_request": "4619",
+    "created_at": "2024-05-14T11:34:49Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-14T11:41:17Z",
+    "run_id": null
   },
   {
     "hash": "144c602b66f217d7deae4897130bfa610fe6ae91",
@@ -5622,6 +5648,19 @@
     "run_id": "8377740510"
   },
   {
+    "hash": "43938618e721fc3ab4015e62c1217074a2d6d9df",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Rewrite inactive_vote_cache.existing_vote to directly process blocks and start elections.",
+    "pull_request": "4619",
+    "created_at": "2024-05-13T17:44:55Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-14T11:41:17Z",
+    "run_id": null
+  },
+  {
     "hash": "43a575e2895599df2081a5ee12443bfddb2421aa",
     "type": "pull_request",
     "title": "Add ability for channels to pause/resume processing of incoming messages",
@@ -6085,6 +6124,19 @@
     "built_at": "2023-08-30T17:57:15Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:48a4bf885f0ae2dba56785fb2271f3c66e0123bc"
+  },
+  {
+    "hash": "48c98a2aa76540640b2a0d84d885f22e87333305",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Fix active_elections.activate_account_chain\n\nThis test is supposed to be testing the node's internal election activation logic but this is being circumvented by activating elections within the test itself.",
+    "pull_request": "4619",
+    "created_at": "2024-05-13T15:33:25Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-14T11:41:17Z",
+    "run_id": null
   },
   {
     "hash": "48d390cc2cd990a37d4df6b9e3824d0c98ba696b",
@@ -8858,6 +8910,19 @@
     "built_at": "2023-04-13T17:26:45Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:6c9f9d680e32e22764419fed306dbd4756f8748b"
+  },
+  {
+    "hash": "6cbb97fac4cf60906ddf15badb9e503b798df23c",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Replace manual testing loop with ASSERT_TIMELY.",
+    "pull_request": "4619",
+    "created_at": "2024-05-13T16:56:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-14T11:41:17Z",
+    "run_id": null
   },
   {
     "hash": "6ceacc14ae3cc115939028f75cf53c90d5e057a4",
@@ -17704,6 +17769,19 @@
     "docker_tag": ""
   },
   {
+    "hash": "d9bdec707f515a70b6cef5014ecf57b2de86dfa9",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Use nano::test::start_election to manually start elections instead of directly calling scheduler.",
+    "pull_request": "4619",
+    "created_at": "2024-05-13T16:05:01Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-14T11:41:17Z",
+    "run_id": null
+  },
+  {
     "hash": "da4e9eb66a0fd723c06d1690e17aba2601755988",
     "type": "commit",
     "created_at": "2024-03-12T11:50:33Z",
@@ -18077,6 +18155,19 @@
     "built_at": "2023-03-23T18:05:45Z",
     "build_status": "fail",
     "docker_tag": ""
+  },
+  {
+    "hash": "def7f0b7489f5d302da94cee9c4634bf948ffc79",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Remove manual election activation and confirmation height checking from rpc.account_representative_set_epoch_2_insufficient_work\n\nComment about slow confirmation seems out of date as there is no performance difference simply checking confirmed status.",
+    "pull_request": "4619",
+    "created_at": "2024-05-13T16:48:45Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-14T11:41:17Z",
+    "run_id": null
   },
   {
     "hash": "df1416db1f8ee20bee01bb977dba8b4d554f7997",
