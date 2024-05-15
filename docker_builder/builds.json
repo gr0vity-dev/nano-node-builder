@@ -16969,6 +16969,22 @@
     "run_id": "7669393019"
   },
   {
+    "hash": "ce18686104aa6ab1317172520dc422596d414d50",
+    "type": "pull_request",
+    "title": "Bounded election buckets with dynamic reprioritization",
+    "author": "pwojcikdev",
+    "body": "Based on:\r\n- Elections sets (can't find PR, Colin's initial attempt at bucket limiting)\r\n- Bobs bucket vacancy branch https://github.com/nanocurrency/nano-node/compare/develop...gr0vity-dev:nano-node:wip/bucket_vacancy \r\n\r\nbut simpler, more robust and allows for dynamically dropping and scheduling higher priority elections. Also, buckets can be configured to opportunistically use more available space if AEC is underutilized.",
+    "draft": false,
+    "pull_request": 4626,
+    "label": "pwojcikdev:election-bounding-2",
+    "created_at": "2024-05-15T16:21:38Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-15T16:34:40Z",
+    "run_id": null
+  },
+  {
     "hash": "ce4ea05407d932e089880709823d2e539a8eebe0",
     "type": "commit",
     "title": "Make nano::ledger::account_balance() const",
