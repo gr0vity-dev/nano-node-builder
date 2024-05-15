@@ -1171,6 +1171,22 @@
     "docker_tag": "gr0v1ty/nano-node:0e80477d2ab079c229c41215d3e8c39e860a0ade"
   },
   {
+    "hash": "0e83188d5d08295bff9017181189a561013dec99",
+    "type": "pull_request",
+    "title": "Add per-bucket election limiter",
+    "author": "clemahieu",
+    "body": "This change is a simpler version of the priority scheduler per-bucket limiter that tracks the number of elections it's started while retaining the ability to queue blocks for activation once elections already started for the bucket complete.\r\n\r\nThis removes the priority scheduler thread. Elections are activated at time of call to ::activate or when a different election is being cleaned up.",
+    "draft": true,
+    "pull_request": 4623,
+    "label": "clemahieu:merge_buckets_priority",
+    "created_at": "2024-05-14T22:54:24Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-15T01:07:17Z",
+    "run_id": null
+  },
+  {
     "hash": "0e9206162703ff57c2de85859ae04112548b9770",
     "type": "pull_request",
     "pull_request": 4185,
