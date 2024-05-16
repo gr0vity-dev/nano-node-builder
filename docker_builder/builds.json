@@ -3744,6 +3744,22 @@
     "run_id": "8224504096"
   },
   {
+    "hash": "2e025fed7e43fccc80b513032187b00fc44a328e",
+    "type": "pull_request",
+    "title": "Avoid creating temporary inproc channels",
+    "author": "pwojcikdev",
+    "body": "This avoids allocating a new inproc channel for each generated vote. Also, a bug where fair queue wouldn't clean up expired channels is fixed. ",
+    "draft": false,
+    "pull_request": 4625,
+    "label": "pwojcikdev:vote-generator-inproc",
+    "created_at": "2024-05-15T14:43:32Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-16T09:22:01Z",
+    "run_id": null
+  },
+  {
     "hash": "2e118dd16eca34210c2ad4deb7b94dc60a366fd5",
     "type": "commit",
     "created_at": "2023-11-07T17:09:24Z",
