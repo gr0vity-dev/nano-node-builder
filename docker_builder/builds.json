@@ -6898,6 +6898,22 @@
     "docker_tag": "gr0v1ty/nano-node:50648b27ee71c4b924c27c368e070d14d8034f99"
   },
   {
+    "hash": "51420475d0ea6359e19db09a4f8205406d54d398",
+    "type": "pull_request",
+    "title": "Address performance regression in vote_cache::top",
+    "author": "clemahieu",
+    "body": "Revert https://github.com/nanocurrency/nano-node/pull/4518/commits/c734caf4d1ad840df83983e40b86e5d2c1f56a69 which removed loop short-circuit checking for top voted-for elections.\r\nEliminate duplicate expression evaluation.\r\nUse deque rather than vector for results to reduce backing reallocation.",
+    "draft": false,
+    "pull_request": 4627,
+    "label": "clemahieu:revert_remove_tally_tag",
+    "created_at": "2024-05-17T13:23:23Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-17T13:26:23Z",
+    "run_id": null
+  },
+  {
     "hash": "51640961a807dd75aee5df063178abf99747fadd",
     "type": "pull_request",
     "pull_request": 4376,
