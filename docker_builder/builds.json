@@ -9070,6 +9070,22 @@
     "run_id": "8017972262"
   },
   {
+    "hash": "6a66da923a559382d399262430d1adbb6adb7a4f",
+    "type": "pull_request",
+    "title": "Clean up priority scheduler bucket look ups",
+    "author": "clemahieu",
+    "body": "This combines elements of changes from https://github.com/nanocurrency/nano-node/pull/4626 and https://github.com/nanocurrency/nano-node/pull/4623.\r\n\r\nBucket setup is encapsulated in its own function which cleans up the constructor.\r\n\r\n\"minimums\" container is eliminated and each bucket object holds its minimum range value.\r\nSearching for the bucket is done as a search on a sorted vector which should give the most efficient lookups given the vector contents doesn't change.",
+    "draft": false,
+    "pull_request": 4632,
+    "label": "clemahieu:priority_sorting_cleanup",
+    "created_at": "2024-05-20T23:48:16Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-20T23:53:50Z",
+    "run_id": null
+  },
+  {
     "hash": "6acfdee8e3bb62370b069c071e7bb3747d79d389",
     "type": "commit",
     "author": "pwojcikdev",
