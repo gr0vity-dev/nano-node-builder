@@ -237,7 +237,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh
+      
+      - name: Fetch latest commit SHA
+        id: fetch_latest_sha
+        run: |
+          LATEST_SHA=$(gh api repos/nanocurrency/nano-node/commits/develop --jq '.sha')
+          echo "::set-output name=latest_sha::$LATEST_SHA"
+
       - name: Post-processing
+        id: post_processing
         run: |
           HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
           TEST_FILE=continuous_testing/$HASH.json
@@ -248,9 +258,18 @@ jobs:
               exit 0
           fi
 
+          # Fetch the latest SHA
+          LATEST_SHA=${{ steps.fetch_latest_sha.outputs.latest_sha }}
+          
+
           git pull origin main
 
-          if [[ $(jq '[.testcases[].status == "FAIL"] | any' $TEST_FILE) == "true" ]]; then
+          # Count passed and failed tests
+          PASSED_COUNT=$(jq '[.testcases[] | select(.status == "PASS")] | length' $TEST_FILE)
+          FAILED_COUNT=$(jq '[.testcases[] | select(.status == "FAIL")] | length' $TEST_FILE)
+
+          # Determine overall status
+          if [[ $FAILED_COUNT -gt 0 ]]; then
             OVERALL_STATUS="FAIL"
           else
             OVERALL_STATUS="PASS"
@@ -258,12 +277,35 @@ jobs:
 
           COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
+          # Update the test file with overall status and completed_at
           jq --arg overall_status "$OVERALL_STATUS" \
             --arg completed_at "$COMPLETED_AT" \
             '.overall_status = $overall_status | .completed_at = $completed_at' $TEST_FILE > tmp.json && mv tmp.json $TEST_FILE
 
+          
+
+          # Compare HASH with LATEST_SHA
+          if [[ "$HASH" != "$LATEST_SHA" ]]; then
+              echo "HASH does not match the latest commit. Keep current badge."
+              exit 0
+          fi
+
+          # Generate badge URL based on conditions
+          if [[ $FAILED_COUNT -eq 0 ]]; then
+            BADGE_URL="https://img.shields.io/badge/gr0vity_Continuous-${HASH:0:7}%20|%20${PASSED_COUNT}_passed-brightgreen"
+          elif [[ $PASSED_COUNT -eq 0 ]]; then
+            BADGE_URL="https://img.shields.io/badge/gr0vity_Continuous-${HASH:0:7}%20|%20${FAILED_COUNT}_failed-red"
+          else
+            BADGE_URL="https://img.shields.io/badge/gr0vity_Continuous-${HASH:0:7}%20|%20${PASSED_COUNT}_passed,%20${FAILED_COUNT}_failed-red"
+          fi
+
+          # Fetch the badge SVG and save it as status_latest.svg
+          curl -o status_latest.svg "$BADGE_URL"
+
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
+
+          git add status_latest.svg          
           git add $TEST_FILE
           git commit -m "Set overall status to $OVERALL_STATUS for build $HASH"
           git pull
