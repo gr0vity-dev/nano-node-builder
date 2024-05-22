@@ -285,12 +285,7 @@ jobs:
             '.overall_status = $overall_status | .completed_at = $completed_at' $TEST_FILE > tmp.json && mv tmp.json $TEST_FILE
 
           
-
-          # Compare HASH with LATEST_SHA
-          if [[ "$HASH" != "$LATEST_SHA" ]]; then
-              echo "HASH does not match the latest commit. Keep current badge."
-              exit 0
-          fi
+          
 
           # Generate badge URL based on conditions
           if [[ $FAILED_COUNT -eq 0 ]]; then
@@ -299,15 +294,18 @@ jobs:
             BADGE_URL="https://img.shields.io/badge/gr0vity_Continuous-${HASH:0:7}%20|%20${FAILED_COUNT}_failed-red"
           else
             BADGE_URL="https://img.shields.io/badge/gr0vity_Continuous-${HASH:0:7}%20|%20${PASSED_COUNT}_passed,%20${FAILED_COUNT}_failed-red"
-          fi
-
-          # Fetch the badge SVG and save it as status_latest.svg
-          curl -o status_latest.svg "$BADGE_URL"
+          fi         
 
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
 
-          git add status_latest.svg          
+          # Update badge if latest commit
+          if [[ "$HASH" == "$LATEST_SHA" ]]; then
+              # Fetch the badge SVG and save it as status_latest.svg
+              curl -o status_latest.svg "$BADGE_URL"
+              git add status_latest.svg              
+          fi
+            
           git add $TEST_FILE
           git commit -m "Set overall status to $OVERALL_STATUS for build $HASH"
           git pull
