@@ -9194,6 +9194,22 @@
     "run_id": "8576469917"
   },
   {
+    "hash": "6b8d80ffe533fa03dbb8e196be9deb918f728484",
+    "type": "pull_request",
+    "title": "Optimize `active_elections::notify_observers`",
+    "author": "pwojcikdev",
+    "body": "This avoids a redundant database lookup in `block_amount` call and avoids it altogether in the common case where no websocket observers are configured.",
+    "draft": false,
+    "pull_request": 4637,
+    "label": "pwojcikdev:notify-observers-optimize",
+    "created_at": "2024-05-22T20:33:59Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-22T20:34:18Z",
+    "run_id": null
+  },
+  {
     "hash": "6bb1191d10aa7420f7ca86c12f3f4be272b129c1",
     "type": "commit",
     "created_at": "2023-03-07T21:15:33Z",
