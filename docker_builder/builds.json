@@ -13077,6 +13077,22 @@
     "docker_tag": "gr0v1ty/nano-node:96aa93882704bf0f61523c8b3c36e721328d8b2d"
   },
   {
+    "hash": "9702ecd9362bd6f2ed831f9c52670a4ed2b09109",
+    "type": "pull_request",
+    "title": "Optimize election scheduler activate function",
+    "author": "pwojcikdev",
+    "body": "This reverts some of the changes made during refactoring to block sets. The new versions were doing many redundant database lookups, which started to become a bottleneck.",
+    "draft": false,
+    "pull_request": 4636,
+    "label": "pwojcikdev:revert-activate-develop",
+    "created_at": "2024-05-22T12:48:37Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-22T12:58:29Z",
+    "run_id": null
+  },
+  {
     "hash": "970b048052c2cc0470bace686e881aa6b9ccf514",
     "type": "commit",
     "created_at": "2024-03-19T10:00:11Z",
