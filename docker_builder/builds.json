@@ -15354,6 +15354,22 @@
     "run_id": "8988216223"
   },
   {
+    "hash": "b3c2f6de0145ccc1e12d8a28ad4c71fc25ee88a4",
+    "type": "pull_request",
+    "title": "Optimize election scheduler activate function",
+    "author": "pwojcikdev",
+    "body": "This reverts some of the changes made during refactoring to block sets. The new versions were doing many redundant database lookups, which started to become a bottleneck.",
+    "draft": false,
+    "pull_request": 4636,
+    "label": "pwojcikdev:revert-activate-develop",
+    "created_at": "2024-05-22T12:48:37Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-22T17:23:49Z",
+    "run_id": null
+  },
+  {
     "hash": "b3eaaa6b6b7be03adbabf50e26a7d61d55d4a1ef",
     "type": "pull_request",
     "pull_request": 4316,
