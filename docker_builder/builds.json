@@ -11956,6 +11956,22 @@
     "run_id": "8178674422"
   },
   {
+    "hash": "899fb12e743663aec46d2fd2ee7251797891313b",
+    "type": "pull_request",
+    "title": "Add flamegraph generation in CI build",
+    "author": "clemahieu",
+    "body": "Flamegraphs are attached to the workflow build as artifacts.\r\n\r\nNew tests can be added by creating a new gtest in slow_test.\r\nTests like TEST (flamegraph, testname_x) will be executed if testname_x is added to the flamegraph.yml file test matrix.",
+    "draft": false,
+    "pull_request": 4638,
+    "label": "clemahieu:flamegraph_test",
+    "created_at": "2024-05-23T01:21:53Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-23T12:59:16Z",
+    "run_id": null
+  },
+  {
     "hash": "89aa09daab4b686483c027c38aa365deb30e641a",
     "type": "pull_request",
     "pull_request": 4158,
@@ -16602,6 +16618,19 @@
     "run_id": "8420893800"
   },
   {
+    "hash": "c16f020af4124762d0187a8950f8146d00cb1adc",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Add environment variable NANO_MEMORY_INTENSIVE to explicitly enable/disable the memory_intensive_instrumentation check. (#4640)\n\nrunning_within_valgrind doesn't always play well with arm and there may be other reasons to enable/disable this option.",
+    "pull_request": "4640",
+    "created_at": "2024-05-23T12:54:44Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-23T12:59:16Z",
+    "run_id": null
+  },
+  {
     "hash": "c1713dcbfacf7196bd7f83f67569c77c8a535f29",
     "type": "pull_request",
     "pull_request": 4345,
@@ -19745,6 +19774,19 @@
     "built_at": "2023-05-03T20:21:24Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:e98d99ea1cdf896a7d909da9cba68299e3f39b3a"
+  },
+  {
+    "hash": "e9adb744b881af113d94472cf9d34020110b0319",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Use deque rather than vector to support large initialization sequences (#4641)",
+    "pull_request": "4641",
+    "created_at": "2024-05-23T12:54:28Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-23T12:59:16Z",
+    "run_id": null
   },
   {
     "hash": "e9c26c9fbb29948ab36e5d256f6a4a3ecfc13912",
