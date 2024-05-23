@@ -7538,6 +7538,22 @@
     "docker_tag": ""
   },
   {
+    "hash": "581f8f8487b1f07f14aba2c1645c5b411743d342",
+    "type": "pull_request",
+    "title": "Add environment variable NANO_MEMORY_INTENSIVE",
+    "author": "clemahieu",
+    "body": "Add environment variable NANO_MEMORY_INTENSIVE to explicitly enable/disable the memory_intensive_instrumentation check.\r\n\r\nrunning_within_valgrind doesn't always play well with arm and there may be other reasons to enable/disable this option.",
+    "draft": false,
+    "pull_request": 4640,
+    "label": "clemahieu:memory_intensive_env",
+    "created_at": "2024-05-23T12:06:08Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-23T12:23:50Z",
+    "run_id": null
+  },
+  {
     "hash": "586248686f94c1a0b16833e8b8bc0621a8864fec",
     "type": "pull_request",
     "pull_request": 4289,
@@ -17941,6 +17957,22 @@
     "built_at": "2023-05-17T18:15:46Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:d24699313b681c281393abe1260a1eb98920a8e1"
+  },
+  {
+    "hash": "d283c100ce42fd4dae6d86f2f039cdaef9ae2860",
+    "type": "pull_request",
+    "title": "Use deque rather than vector to support large initialization sequences",
+    "author": "clemahieu",
+    "body": null,
+    "draft": false,
+    "pull_request": 4641,
+    "label": "clemahieu:ledger_initialization_deque",
+    "created_at": "2024-05-23T12:06:56Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-05-23T12:23:50Z",
+    "run_id": null
   },
   {
     "hash": "d29032a839601ae1143891800447046304c4975b",
