@@ -15039,6 +15039,22 @@
     "run_id": "9146778042"
   },
   {
+    "hash": "ad0cdb7bebbeda2d9f4090673aa775c03bcc9c93",
+    "type": "pull_request",
+    "title": "Add flamegraph generation in CI build",
+    "author": "clemahieu",
+    "body": "Flamegraphs are attached to the workflow build as artifacts.\r\n\r\nNew tests can be added by creating a new gtest in slow_test.\r\nTests like TEST (flamegraph, testname_x) will be executed if testname_x is added to the flamegraph.yml file test matrix.",
+    "draft": false,
+    "pull_request": 4638,
+    "label": "clemahieu:flamegraph_test",
+    "created_at": "2024-05-23T01:21:53Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-23T13:17:53Z",
+    "run_id": null
+  },
+  {
     "hash": "ad18ecc9586653d461567dfdf754336fd4330aa7",
     "type": "pull_request",
     "pull_request": 4272,
