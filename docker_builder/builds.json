@@ -6489,6 +6489,22 @@
     "run_id": "8822237944"
   },
   {
+    "hash": "48f4b0c7cde11321ef67621981194d0611bdf8eb",
+    "type": "pull_request",
+    "title": "Optimize cemented callbacks",
+    "author": "pwojcikdev",
+    "body": "This attempts to optimize the election cementing callbacks. It often takes as long or even longer to cement a confirmed election as it takes to get it confirmed in the first place. This is not a complete solution, there is still a delay, but I hope it's a step in the right direction. \r\nWe're debugging this together with @gr0vity-dev who really is doing incredible work to dig deep into this issue.\r\n\r\n![image](https://github.com/nanocurrency/nano-node/assets/3044353/006a4fc1-d499-478a-a372-7b5240b7ef01)\r\n",
+    "draft": false,
+    "pull_request": 4642,
+    "label": "pwojcikdev:cemented-observers-optimize",
+    "created_at": "2024-05-24T13:34:30Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-24T16:09:38Z",
+    "run_id": null
+  },
+  {
     "hash": "49009d77aedbeeacca686f29d7b9b778f7a013db",
     "type": "commit",
     "created_at": "2023-02-02T17:52:01Z",
