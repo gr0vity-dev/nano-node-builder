@@ -7102,6 +7102,22 @@
     "docker_tag": "gr0v1ty/nano-node:4fdc0ce08e4cd30ee54d2b473d3fbd7ac2cb0cfd"
   },
   {
+    "hash": "4fe6e27ad868c7eb9298348f1c771f338a7c9a52",
+    "type": "pull_request",
+    "title": "Optimize cemented callbacks",
+    "author": "pwojcikdev",
+    "body": "This attempts to optimize the election cementing callbacks. It often takes as long or even longer to cement a confirmed election as it takes to get it confirmed in the first place. This is not a complete solution, there is still a delay, but I hope it's a step in the right direction. \r\nWe're debugging this together with @gr0vity-dev who really is doing incredible work to dig deep into this issue.\r\n\r\n![image](https://github.com/nanocurrency/nano-node/assets/3044353/006a4fc1-d499-478a-a372-7b5240b7ef01)\r\n",
+    "draft": false,
+    "pull_request": 4642,
+    "label": "pwojcikdev:cemented-observers-optimize",
+    "created_at": "2024-05-24T13:34:30Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-25T15:37:34Z",
+    "run_id": null
+  },
+  {
     "hash": "4feb0be9775ea104dc4040b417daf469a5fd1072",
     "type": "pull_request",
     "title": "Redesign the priority scheduler to maintain a 1-to-1 link with running elections",
