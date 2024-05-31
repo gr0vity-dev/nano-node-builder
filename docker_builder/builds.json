@@ -16075,6 +16075,22 @@
     "run_id": "8469735349"
   },
   {
+    "hash": "b749ef526ac082563f3f4329b9024317ba4806b1",
+    "type": "pull_request",
+    "title": "Fix rocksdb migration",
+    "author": "RickiNano",
+    "body": "Database migrations are currently failing on RocksDb because the rep_weights table does not exist. This PR creates the table if it does not exist.\r\nIt also fixes the wrong log types in the same migration",
+    "draft": false,
+    "pull_request": 4645,
+    "label": "RickiNano:fix-rocksdb-migration",
+    "created_at": "2024-05-31T21:08:33Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-05-31T21:08:57Z",
+    "run_id": null
+  },
+  {
     "hash": "b7816bada085356f95b5ed6c481d4bfb61a07fe0",
     "type": "commit",
     "created_at": "2023-03-05T01:11:26Z",
