@@ -16889,6 +16889,22 @@
     "run_id": "8410057339"
   },
   {
+    "hash": "c11def0489757dfffcd9cc4c048d518f0b6b826b",
+    "type": "pull_request",
+    "title": "Final vote requests/replies only",
+    "author": "pwojcikdev",
+    "body": "There are two main changes:  \r\n- We are only replying with final votes, for blocks that are either confirmed or marked as final.\r\n- We are not using cached votes for replies.\r\n\r\nDuring testing it was shown that the above changes reduce vote traffic by an order of magnitude.\r\n\r\nThe rationale for abandoning replies from vote cache is that it causes excessive bandwidth usage. A vote request might contain 12 hashes (255 hashes after upcoming network upgrade) and the chance that a vote with exactly these hashes is already cached is low. This in turn requires replying with multiple votes, which is incredibly inefficient. Pessimistic bandwidth usage in such scenario is number of hashes squared.\r\n\r\n",
+    "draft": false,
+    "pull_request": 4648,
+    "label": "pwojcikdev:final-replies-only",
+    "created_at": "2024-06-14T19:32:55Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-06-14T19:33:32Z",
+    "run_id": null
+  },
+  {
     "hash": "c11dfba37a169a076b601b867d6b5044fef6eec8",
     "type": "pull_request",
     "pull_request": 3923,
