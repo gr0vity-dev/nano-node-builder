@@ -18045,6 +18045,22 @@
     "run_id": "7671774527"
   },
   {
+    "hash": "cb60b5a90772305b25124dfaec89a87d8feadff6",
+    "type": "pull_request",
+    "title": "Add `is_originator` flag to publish messages",
+    "author": "pwojcikdev",
+    "body": "This adds a new flag to `publish` messages that indicates whether a block is coming from a node that performed initial flooding. This helps avoid a situation when under a high load, a legitimate block is dropped because blockprocessor queue for a peer is full of rebroadcasted blocks. However, the potential for exploiting this is limited, as both rebroadcasted and originator queues have the same max size and priority, so effectively this gives each peer two queues to spam the network - which is not much, but should be plenty for legitimate traffic.\r\n\r\nFormat of extended publish message:\r\n```\r\n/*\r\n * Binary Format:\r\n * [message_header] Common message header\r\n * [variable] Block (serialized according to the block type specified in the header)\r\n *\r\n * Header extensions:\r\n * - [0x0f00] Block type: Identifies the specific type of the block.\r\n * - [0x0004] Originator flag\r\n */\r\n```",
+    "draft": false,
+    "pull_request": 4654,
+    "label": "pwojcikdev:publish-originator",
+    "created_at": "2024-06-23T16:07:14Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-06-23T16:42:44Z",
+    "run_id": null
+  },
+  {
     "hash": "cbb0126e6a871286006a310df3d2a5d2e681ccb9",
     "type": "commit",
     "created_at": "2023-02-20T15:35:53Z",
