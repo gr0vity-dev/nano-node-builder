@@ -7883,6 +7883,22 @@
     "docker_tag": "gr0v1ty/nano-node:586248686f94c1a0b16833e8b8bc0621a8864fec"
   },
   {
+    "hash": "588397e52e9a4835721308303eca0f9955d1a2a5",
+    "type": "pull_request",
+    "title": "Limit batch size for block processor",
+    "author": "pwojcikdev",
+    "body": "This limits a single block processor batch size to 256 blocks. This makes batch sizes uniform across all components. Additionally, if disk is slow and database transaction is held longer than 500ms, the transaction is refreshed during batch processing.",
+    "draft": false,
+    "pull_request": 4655,
+    "label": "pwojcikdev:blockprocessor-batch-size",
+    "created_at": "2024-06-23T17:00:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-06-23T17:11:22Z",
+    "run_id": null
+  },
+  {
     "hash": "58844ed30857b1ba07261b32987eacc486aa7079",
     "type": "pull_request",
     "pull_request": 4309,
