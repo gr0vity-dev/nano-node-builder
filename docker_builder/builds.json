@@ -6274,6 +6274,22 @@
     "run_id": "8334444480"
   },
   {
+    "hash": "455de92574d7084ef4e9f5e82c6bd82b414cb30e",
+    "type": "pull_request",
+    "title": "Limit batch size for block processor",
+    "author": "pwojcikdev",
+    "body": "This limits a single block processor batch size to 256 blocks. This makes batch sizes uniform across all components. Additionally, if disk is slow and database transaction is held longer than 500ms, the transaction is refreshed during batch processing.",
+    "draft": false,
+    "pull_request": 4655,
+    "label": "pwojcikdev:blockprocessor-batch-size",
+    "created_at": "2024-06-23T17:00:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-06-23T20:38:49Z",
+    "run_id": null
+  },
+  {
     "hash": "456acf9e4ad38126e64e84c023e610938fb2877d",
     "type": "pull_request",
     "title": "Redesign the priority scheduler to maintain a 1-to-1 link with running elections",
