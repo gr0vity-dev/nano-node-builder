@@ -21267,6 +21267,22 @@
     "run_id": "7261985761"
   },
   {
+    "hash": "ef0268d3f9c72da75c550d979153e48d8ced587d",
+    "type": "pull_request",
+    "title": "Limit number of rocksdb background threads",
+    "author": "pwojcikdev",
+    "body": "It seems like rocksdb has a tendency for higher CPU usage compared to lmdb. This modifies the default limit to use half the available CPU threads.",
+    "draft": false,
+    "pull_request": 4660,
+    "label": "pwojcikdev:rocksdb-threads-config",
+    "created_at": "2024-06-27T10:50:03Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-06-27T10:55:01Z",
+    "run_id": null
+  },
+  {
     "hash": "ef0dde689ea7c585787f5f721573e357b465c3dc",
     "type": "commit",
     "created_at": "2023-11-06T15:21:18Z",
