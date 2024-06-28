@@ -5377,6 +5377,22 @@
     "run_id": "8176435828"
   },
   {
+    "hash": "3d18d0b2c18660288decad801d225760da6cf9b4",
+    "type": "pull_request",
+    "title": "Add New Bucket for Specific Amount Range",
+    "author": "gr0vity-dev",
+    "body": "Related Issue: #4472\r\n\r\n**Description:**\r\n\r\nThis PR adds an additional bucket for amounts between >Ӿ0.000001 and Ӿ0.0003. The implementation details are as follows:\r\n\r\n    - Amounts of Ӿ0.000001 or less would still fall in the very first bucket.\r\n    - More precisely amounts above Ӿ0.00000121 and below Ӿ0.000309 will fall in this new bucket.\r\n    - All existing buckets remain unchanged to minimize the impact of bucket reallocation.\r\n\r\nThe reasoning behind adding an additional bucket is to ensure that all existing buckets retain their current allocation criteria.\r\n",
+    "draft": false,
+    "pull_request": 4661,
+    "label": "gr0vity-dev:prs/additional_bucket",
+    "created_at": "2024-06-28T11:23:05Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-06-28T11:51:26Z",
+    "run_id": null
+  },
+  {
     "hash": "3d50471725c2a202458f6858902ecc2eab912eb6",
     "type": "pull_request",
     "pull_request": 4362,
