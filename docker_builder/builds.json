@@ -19068,6 +19068,22 @@
     "run_id": "7974792127"
   },
   {
+    "hash": "d556a3f78547b467c6f3546c409a31da9fbc3fe8",
+    "type": "pull_request",
+    "title": "Incremental backoff for `local_block_broadcaster`",
+    "author": "pwojcikdev",
+    "body": "This implements incremental backoff for block rebroadcasting. Previously block rebroadcasts happened every 60 seconds. This changes it, so that early on rebroadcasts happen more frequently, with 3 second interval increase. Ie. first rebroadcast happens after 3 seconds, second after 9, third after 18 etc.\r\n\r\nAdditionally there are improvements that were necessary to implement the above: avoiding unnecessary locking and config cleanup.",
+    "draft": false,
+    "pull_request": 4662,
+    "label": "pwojcikdev:aggressive-block-broadcasts",
+    "created_at": "2024-06-29T16:22:17Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-06-29T16:35:22Z",
+    "run_id": null
+  },
+  {
     "hash": "d570e645fa75e20be43069af4aced47d38360feb",
     "type": "commit",
     "created_at": "2023-05-18T18:57:38Z",
