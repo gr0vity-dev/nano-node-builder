@@ -6027,6 +6027,22 @@
     "docker_tag": "gr0v1ty/nano-node:42e8c30a5f3e9977c0f03077bd28a88d989472c3"
   },
   {
+    "hash": "42f03b12160f3ce83fc161e800bd8470f9b6b307",
+    "type": "pull_request",
+    "title": "Incremental backoff for `local_block_broadcaster`",
+    "author": "pwojcikdev",
+    "body": "This implements incremental backoff for block rebroadcasting. Previously block rebroadcasts happened every 60 seconds. This changes it, so that early on rebroadcasts happen more frequently, with 3 second interval increase. Ie. first rebroadcast happens after 3 seconds, second after 9, third after 18 etc.\r\n\r\nAdditionally there are improvements that were necessary to implement the above: avoiding unnecessary locking and config cleanup.",
+    "draft": false,
+    "pull_request": 4662,
+    "label": "pwojcikdev:aggressive-block-broadcasts",
+    "created_at": "2024-06-29T16:22:17Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-06-29T17:39:16Z",
+    "run_id": null
+  },
+  {
     "hash": "42f0d465c689b983d8073951f91efd86c1cd89bc",
     "type": "commit",
     "author": "pwojcikdev",
