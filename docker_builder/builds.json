@@ -11042,6 +11042,22 @@
     "docker_tag": ""
   },
   {
+    "hash": "78cfbc30973d0cae6ac464edbac0f884b75f3027",
+    "type": "pull_request",
+    "title": "Incremental backoff for `local_block_broadcaster`",
+    "author": "pwojcikdev",
+    "body": "This implements incremental backoff for block rebroadcasting. Previously block rebroadcasts happened every 60 seconds. This changes it, so that early on rebroadcasts happen more frequently, with 3 second interval increase. Ie. first rebroadcast happens after 3 seconds, second after 9, third after 18 etc.\r\n\r\nAdditionally there are improvements that were necessary to implement the above: avoiding unnecessary locking and config cleanup.",
+    "draft": false,
+    "pull_request": 4662,
+    "label": "pwojcikdev:aggressive-block-broadcasts",
+    "created_at": "2024-06-29T16:22:17Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-06-29T17:31:40Z",
+    "run_id": null
+  },
+  {
     "hash": "78dabf8385fb796d29a134b74ddf387c3547a3f3",
     "type": "pull_request",
     "title": "Fair queuing for request aggregator",
