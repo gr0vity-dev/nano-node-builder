@@ -14562,6 +14562,22 @@
     "docker_tag": "gr0v1ty/nano-node:9cbb811fbc66cb36aa3101d798874d1144d2b092"
   },
   {
+    "hash": "9cc4b953fe6c1d2a49b9564dc03d91ccfef521df",
+    "type": "pull_request",
+    "title": "Fix stopping of bootstrap workers",
+    "author": "pwojcikdev",
+    "body": "Without this node attempting to stop live node would sometimes get stuck on `bootstrap_workers.stop ();` call.",
+    "draft": false,
+    "pull_request": 4667,
+    "label": "pwojcikdev:fix-node-stopping",
+    "created_at": "2024-07-02T17:14:46Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-07-02T17:27:39Z",
+    "run_id": null
+  },
+  {
     "hash": "9cd662cc702ded070395f0c9610c75414bcbcaeb",
     "type": "commit",
     "author": "clemahieu",
