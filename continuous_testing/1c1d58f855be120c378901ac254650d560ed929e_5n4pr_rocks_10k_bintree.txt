@@ -1,0 +1,244 @@
+1c1d58f855be120c378901ac254650d560ed929e: Pulling from gr0v1ty/nano-node
+7646c8da3324: Already exists
+2a07ca3d289a: Pulling fs layer
+f3bbb03a31a4: Pulling fs layer
+a114657c753e: Pulling fs layer
+8fa64673090c: Pulling fs layer
+e881bbe550b6: Pulling fs layer
+09a0c1677a2f: Pulling fs layer
+db1c98a119b5: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+0ba515cab89f: Pulling fs layer
+4f9f8d56a37b: Pulling fs layer
+db1c98a119b5: Waiting
+4f4fb700ef54: Waiting
+0ba515cab89f: Waiting
+4f9f8d56a37b: Waiting
+8fa64673090c: Waiting
+e881bbe550b6: Waiting
+09a0c1677a2f: Waiting
+2a07ca3d289a: Download complete
+a114657c753e: Verifying Checksum
+a114657c753e: Download complete
+2a07ca3d289a: Pull complete
+8fa64673090c: Verifying Checksum
+8fa64673090c: Download complete
+e881bbe550b6: Verifying Checksum
+e881bbe550b6: Download complete
+09a0c1677a2f: Verifying Checksum
+09a0c1677a2f: Download complete
+db1c98a119b5: Verifying Checksum
+db1c98a119b5: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+0ba515cab89f: Verifying Checksum
+0ba515cab89f: Download complete
+f3bbb03a31a4: Verifying Checksum
+f3bbb03a31a4: Download complete
+4f9f8d56a37b: Verifying Checksum
+4f9f8d56a37b: Download complete
+f3bbb03a31a4: Pull complete
+a114657c753e: Pull complete
+8fa64673090c: Pull complete
+e881bbe550b6: Pull complete
+09a0c1677a2f: Pull complete
+db1c98a119b5: Pull complete
+4f4fb700ef54: Pull complete
+0ba515cab89f: Pull complete
+4f9f8d56a37b: Pull complete
+Digest: sha256:93847e648ee4df81946f77f1f089a9b94678bd500922740f6068b762effbc1c4
+Status: Downloaded newer image for gr0v1ty/nano-node:1c1d58f855be120c378901ac254650d560ed929e
+docker.io/gr0v1ty/nano-node:1c1d58f855be120c378901ac254650d560ed929e
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/selector_events.py", line 848, in _read_ready__data_received
+    data = self._sock.recv(self.max_size)
+ConnectionResetError: [Errno 104] Connection reset by peer
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/threading.py", line 870, in run
+    self._target(*self._args, **self._kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/command.py", line 49, in execute_another_command
+    another_command.execute()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/command.py", line 41, in execute
+    self.mixin.execute()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/mixins/python_command_mixin.py", line 40, in execute
+    method(**filtered_variables)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/pycmd.py", line 30, in start_logger
+    asyncio.run(nni.start_loggers(logger_params, sink_params))
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/node_interaction.py", line 16, in start_loggers
+    await logger_manager.start_logging()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/loggers/logger_manager.py", line 45, in start_logging
+    async for logger, storages in self.create_loggers():
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/loggers/logger_manager.py", line 41, in create_loggers
+    yield await self.create_logger_and_storages(current_params)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/loggers/logger_manager.py", line 22, in create_logger_and_storages
+    logger = await LoggerFactory.create_logger(self.logger_type,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/loggers/factories/logger_factory.py", line 21, in create_logger
+    return await builder.build()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/loggers/builders.py", line 44, in build
+    await logger.async_init()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/loggers/sources/rpc_logger.py", line 31, in async_init
+    self.count_start, self.cemented_start = await self._get_block_count()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/loggers/sources/rpc_logger.py", line 40, in _get_block_count
+    block_count = await self.nanorpc.block_count()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/modules/nl_rpc.py", line 37, in block_count
+    return await self.nanorpc.block_count(include_cemented=include_cemented)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client.py", line 50, in block_count
+    return await self.rpc.block_count(include_cemented=include_cemented)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 33, in method
+    return await self.process_payloads([payload])
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 119, in process_payloads
+    return await self._request_with_retry(self._request, payloads)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 101, in _request_with_retry
+    return await self._retry_on_exception(coroutine,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 92, in _retry_on_exception
+    return await coroutine(*args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 108, in _request
+    async with session.post(self.url, json=payloads[0], headers=self.headers) as response:
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/aiohttp/client.py", line 1197, in __aenter__
+    self._resp = await self._coro
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/aiohttp/client.py", line 608, in _request
+    await resp.start(conn)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/aiohttp/client_reqrep.py", line 976, in start
+    message, payload = await protocol.read()  # type: ignore[union-attr]
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/aiohttp/streams.py", line 640, in read
+    await self._waiter
+aiohttp.client_exceptions.ClientOSError: [Errno 104] Connection reset by peer
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_rocks_10k_bintree.json
+Start Fetching '5n4pr_rocks_10k_bintree_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_rocks_10k_bintree_config.json'
+Done  Fetching '5n4pr_rocks_10k_bintree_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_rocks_10k_bintree_config.json'
+Start Fetching '5n4pr_100k_bintree_short.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_100k_bintree_short.json'
+Done  Fetching '5n4pr_100k_bintree_short.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_100k_bintree_short.json'
+Start Fetching '5n4pr_init_rocksdb.tar.gz' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_init_rocksdb.tar.gz'
+Done  Fetching '5n4pr_init_rocksdb.tar.gz' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_init_rocksdb.tar.gz'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Start Fetching 'config-node_5n4pr_spam_buffer_rocks.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/config-node_5n4pr_spam_buffer_rocks.toml'
+Done  Fetching 'config-node_5n4pr_spam_buffer_rocks.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/config-node_5n4pr_spam_buffer_rocks.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-node.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+SUCCESS: stop_containers completed with None result.
+SUCCESS: reset_nodes_data completed with None result.
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+WARNING: No config-rpc.toml found. minimal version was created
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+Error executing command: nanomock start && nanomock init_wallets
+Error: ERROR: Command failed: docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d
+ERROR: Error output: Creating volume "nanomock_nl_default_volume" with default driver
+Creating nl_pr3 ... 
+Creating nl_pr4 ... 
+Creating nl_pr2 ... 
+Creating nl_pr1 ... 
+Creating nl_genesis ... 
+Creating nl_genesis ... done
+Creating nl_pr2     ... done
+Creating nl_pr3     ... done
+Creating nl_pr4     ... done
+Creating nl_pr1     ... done
+Creating nl_genesis_exporter ... 
+Creating nl_pr2_exporter     ... 
+Creating nl_pr3_exporter     ... 
+Creating nl_pr4_exporter     ... 
+Creating nl_pr1_exporter     ... 
+Creating nl_pr2_exporter     ... error
+
+ERROR: for nl_pr2_exporter  Cannot start service nl_pr2_exporter: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to create new parent process: namespace path: lstat /proc/7294/ns/pid: no such file or directory: unknown
+Creating nl_genesis_exporter ... error
+
+ERROR: for nl_genesis_exporter  Cannot start service nl_genesis_exporter: failed to join PID namespace: Container fb4779e2e57031ce738bfe52001960d8a066a0d57a23e3f480f89301367052f8 is restarting, wait until the container is running
+Creating nl_pr1_exporter     ... error
+
+ERROR: for nl_pr1_exporter  Cannot start service nl_pr1_exporter: failed to join PID namespace: Container 26b28e4b6bd95c75cc365b7bb65210fbb204d06a29ddebe99184df339b384d2c is restarting, wait until the container is running
+Creating nl_pr4_exporter     ... error
+
+ERROR: for nl_pr4_exporter  Cannot start service nl_pr4_exporter: failed to join PID namespace: Container 9840ec3d9aaa22ed859c279f51b21ca11b3528dcb5d3b844f49e3f677db779df is restarting, wait until the container is running
+Creating nl_pr3_exporter     ... error
+
+ERROR: for nl_pr3_exporter  Cannot start service nl_pr3_exporter: failed to join PID namespace: Container c74678079be539a2adf35cb09f8ac546c9c9dceacfab46205e5bdd944f1ca04b is restarting, wait until the container is running
+
+ERROR: for nl_pr2_exporter  Cannot start service nl_pr2_exporter: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to create new parent process: namespace path: lstat /proc/7294/ns/pid: no such file or directory: unknown
+
+ERROR: for nl_genesis_exporter  Cannot start service nl_genesis_exporter: failed to join PID namespace: Container fb4779e2e57031ce738bfe52001960d8a066a0d57a23e3f480f89301367052f8 is restarting, wait until the container is running
+
+ERROR: for nl_pr1_exporter  Cannot start service nl_pr1_exporter: failed to join PID namespace: Container 26b28e4b6bd95c75cc365b7bb65210fbb204d06a29ddebe99184df339b384d2c is restarting, wait until the container is running
+
+ERROR: for nl_pr4_exporter  Cannot start service nl_pr4_exporter: failed to join PID namespace: Container 9840ec3d9aaa22ed859c279f51b21ca11b3528dcb5d3b844f49e3f677db779df is restarting, wait until the container is running
+
+ERROR: for nl_pr3_exporter  Cannot start service nl_pr3_exporter: failed to join PID namespace: Container c74678079be539a2adf35cb09f8ac546c9c9dceacfab46205e5bdd944f1ca04b is restarting, wait until the container is running
+Encountered errors while bringing up the project.
+
+ERROR: Return code: 1
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 198, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanomock", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 58, in main
+    asyncio.run(main_async(args))
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 54, in main_async
+    await manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 506, in execute_command
+    await command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 435, in start_containers
+    self.docker_interface.compose_start(nodes)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 56, in compose_start
+    return self._run_command(cmd)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 33, in _run_command
+    subprocess_run_capture_output(base_command)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 209, in subprocess_run_capture_output
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: <exception str() failed>
+Connecting to [::ffff:172.17.0.1]:44100
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44101
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44102
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44103
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44104
+read_socket] Error reading 136 bytes, data=, msg=[Errno 104] Connection reset by peer
+HandshakeExchangeFail
