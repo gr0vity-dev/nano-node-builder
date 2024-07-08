@@ -1188,6 +1188,22 @@
     "run_id": "8140364972"
   },
   {
+    "hash": "0ced6809396dec8df9de7ec5ea44433b5ce84f68",
+    "type": "pull_request",
+    "title": "Add database information to telemetry data",
+    "author": "RickiNano",
+    "body": "Adds telemetry information about the type of database backend the node is using.\r\nThe telemetry RPC function reports both individual database backend information or consolidated (average). The reported database backend for each node will be either 'RocksDb' , 'LMDB' or \"Unknown\". \r\n'Unknown' is for nodes running v26.1 or earlier that does not send any database information in telemetry data.",
+    "draft": false,
+    "pull_request": 4675,
+    "label": "RickiNano:Telemetry-db-backend",
+    "created_at": "2024-07-08T18:09:12Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-07-08T18:09:36Z",
+    "run_id": null
+  },
+  {
     "hash": "0d109e36e07361636c41462343f44accadb3a252",
     "type": "commit",
     "created_at": "2024-02-19T11:48:38Z",
