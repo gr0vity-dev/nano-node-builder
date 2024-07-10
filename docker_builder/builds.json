@@ -7664,6 +7664,19 @@
     "run_id": "8190540931"
   },
   {
+    "hash": "4f450ae5119094800e58b44b109584cacf6f2f05",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Raise file descriptor limit at entry points rather than just within daemon code. (#4677)",
+    "pull_request": "4677",
+    "created_at": "2024-07-10T11:13:41Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-07-10T11:19:51Z",
+    "run_id": null
+  },
+  {
     "hash": "4f4ccf76498f8786ec414d03cfa39aa6d511fd7b",
     "type": "commit",
     "created_at": "2023-04-11T14:13:54Z",
@@ -11848,6 +11861,22 @@
     "built_at": "2023-02-09T09:32:00Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:7b3e7698b351ce571976299c0b05cc526063e44c"
+  },
+  {
+    "hash": "7b454df15df3ceb46a54ec2a6f716c350deb0a9b",
+    "type": "pull_request",
+    "title": "Bounded election buckets with dynamic reprioritization",
+    "author": "pwojcikdev",
+    "body": "Based on:\r\n- Elections sets (can't find PR, Colin's initial attempt at bucket limiting)\r\n- Bobs bucket vacancy branch https://github.com/nanocurrency/nano-node/compare/develop...gr0vity-dev:nano-node:wip/bucket_vacancy \r\n\r\nbut simpler, more robust and allows for dynamically dropping and scheduling higher priority elections. Also, buckets can be configured to opportunistically use more available space if AEC is underutilized.",
+    "draft": false,
+    "pull_request": 4626,
+    "label": "pwojcikdev:election-bounding-2",
+    "created_at": "2024-05-15T16:21:38Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-07-10T11:19:51Z",
+    "run_id": null
   },
   {
     "hash": "7b540db780ce3452516067e1ed534987d0ba65e3",
