@@ -11889,7 +11889,7 @@
     "label": "pwojcikdev:election-bounding-2",
     "created_at": "2024-05-15T16:21:38Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2024-07-10T11:19:51Z",
     "run_id": null
@@ -15428,6 +15428,22 @@
     "built_at": "2023-02-15T13:03:31Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:a0dd56cc8ad07832d4f494ab627dae6eb1472089"
+  },
+  {
+    "hash": "a126fcc6c9be748fb52946dcbee6f7a9719a3cfc",
+    "type": "pull_request",
+    "title": "Bounded election buckets with dynamic reprioritization",
+    "author": "pwojcikdev",
+    "body": "Based on:\r\n- Elections sets (can't find PR, Colin's initial attempt at bucket limiting)\r\n- Bobs bucket vacancy branch https://github.com/nanocurrency/nano-node/compare/develop...gr0vity-dev:nano-node:wip/bucket_vacancy \r\n\r\nbut simpler, more robust and allows for dynamically dropping and scheduling higher priority elections. Also, buckets can be configured to opportunistically use more available space if AEC is underutilized.",
+    "draft": false,
+    "pull_request": 4626,
+    "label": "pwojcikdev:election-bounding-2",
+    "created_at": "2024-05-15T16:21:38Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-07-10T11:36:20Z",
+    "run_id": null
   },
   {
     "hash": "a16fd71ae60295653882ce96681e46427dbe8719",
