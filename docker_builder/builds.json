@@ -7168,6 +7168,22 @@
     "docker_tag": "gr0v1ty/nano-node:49540bf947c3f12a28559a324b2a642d7bdf8eab"
   },
   {
+    "hash": "496539cf184171d06a4d3430eb198d1653a36a29",
+    "type": "pull_request",
+    "title": "Bounded election buckets with dynamic reprioritization",
+    "author": "pwojcikdev",
+    "body": "Based on:\r\n- Elections sets (can't find PR, Colin's initial attempt at bucket limiting)\r\n- Bobs bucket vacancy branch https://github.com/nanocurrency/nano-node/compare/develop...gr0vity-dev:nano-node:wip/bucket_vacancy \r\n\r\nbut simpler, more robust and allows for dynamically dropping and scheduling higher priority elections. Also, buckets can be configured to opportunistically use more available space if AEC is underutilized.",
+    "draft": false,
+    "pull_request": 4626,
+    "label": "pwojcikdev:election-bounding-2",
+    "created_at": "2024-05-15T16:21:38Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-07-10T16:49:45Z",
+    "run_id": null
+  },
+  {
     "hash": "4986ae3914de57aec4b366f9890d6108615b3c8e",
     "type": "commit",
     "created_at": "2023-04-06T21:37:06Z",
@@ -17838,6 +17854,22 @@
     "built_at": "2023-03-29T17:41:22Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:bc9f74b3dfff5b8affd7fffb4c754d7665788f4b"
+  },
+  {
+    "hash": "bcb53695e8c079aa3ea92989075c41810160ea0b",
+    "type": "pull_request",
+    "title": "migrate_database_lmdb_to_rocksdb improvements",
+    "author": "RickiNano",
+    "body": "The `migrate_database_lmdb_to_rocksdb` option is running for a very long time with the current ledger size (almost 200 million blocks). On my local machine it took 65 minutes to complete. Nothing is written on screen during this process and users may think the process has stalled.\r\nThis PR adds some progress feedback. One update for each of the 7 tables that are migrated.\r\nIt also adds a simple disk space check to warn users if they might not have enough space to complete the migration.\r\n~~The current converted RocksDb database is 73 GB, and the warning is given if the system has less than 75GB available.~~\r\nThe warning is given based on the size of the LMDB database that is being migrated. The final RocksDb size is approximately 65% of the LMDB space.",
+    "draft": false,
+    "pull_request": 4647,
+    "label": "RickiNano:lmdb-to-rocksdb",
+    "created_at": "2024-06-13T10:47:31Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-07-10T16:49:45Z",
+    "run_id": null
   },
   {
     "hash": "bccbf39d8c7d62ad333496fe6bc1c4b14750b53e",
