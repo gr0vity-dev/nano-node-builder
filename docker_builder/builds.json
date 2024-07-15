@@ -11335,6 +11335,22 @@
     "run_id": "8021462760"
   },
   {
+    "hash": "75f60daeba2858bacbce8e1fa4178ccfd5467b44",
+    "type": "pull_request",
+    "title": "Add database information to telemetry data",
+    "author": "RickiNano",
+    "body": "Adds telemetry information about the type of database backend the node is using.\r\nThe telemetry RPC function reports both individual database backend information or consolidated (average). The reported database backend for each node will be either 'RocksDb' , 'LMDB' or \"Unknown\". \r\n'Unknown' is for nodes running v26.1 or earlier that does not send any database information in telemetry data.",
+    "draft": true,
+    "pull_request": 4675,
+    "label": "RickiNano:Telemetry-db-backend",
+    "created_at": "2024-07-08T18:09:12Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-07-15T18:33:37Z",
+    "run_id": null
+  },
+  {
     "hash": "75fce7e39947f6a5a4fce505fa1c6c1d2e7797d8",
     "type": "pull_request",
     "title": "Use a dedicated thread for tcp listener",
