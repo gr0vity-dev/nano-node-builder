@@ -20941,6 +20941,22 @@
     "docker_tag": "gr0v1ty/nano-node:de890546426a76e1fa5e29e7eb466e1702777653"
   },
   {
+    "hash": "deb7451e63aef4fa68b8030a74ba30cb7fa36c7d",
+    "type": "pull_request",
+    "title": "use shared libraries",
+    "author": "milahu",
+    "body": "i want to link `nano-node` against shared libraries, to speed up the build process\r\n\r\nso effectively, i have reverted #4030 (and some other commits)\r\n\r\nthe build is passing, but now i get this error on runtime... ideas?\r\n\r\n```\r\n$ /nix/store/4cw51sk7va4mx1nnbcfh61vba8i5jyvv-nano-node-26.1/bin/nano_wallet\r\nAssertion (global_initialized) failed\r\nnano::logger::logger(std::string)\r\n/build/source/nano/lib/logging.cpp:220\r\nError: logging should be initialized before creating a logger\r\n\r\n 0# 0x0000000000A11F07 in /nix/store/4cw51sk7va4mx1nnbcfh61vba8i5jyvv-nano-node-26.1/bin/nano_wallet\r\n 1# 0x0000000000A09DD8 in /nix/store/4cw51sk7va4mx1nnbcfh61vba8i5jyvv-nano-node-26.1/bin/nano_wallet\r\n 2# 0x00000000009ABAB2 in /nix/store/4cw51sk7va4mx1nnbcfh61vba8i5jyvv-nano-node-26.1/bin/nano_wallet\r\n 3# 0x000000000050CAAF in /nix/store/4cw51sk7va4mx1nnbcfh61vba8i5jyvv-nano-node-26.1/bin/nano_wallet\r\n 4# __libc_start_main in /nix/store/apab5i73dqa09wx0q27b6fbhd1r18ihl-glibc-2.39-31/lib/libc.so.6\r\n 5# 0x000000000052F915 in /nix/store/4cw51sk7va4mx1nnbcfh61vba8i5jyvv-nano-node-26.1/bin/nano_wallet\r\n\r\nAborted (core dumped)\r\n```\r\n\r\nit works as expected with the [nano-node with gitmodules](https://github.com/NixOS/nixpkgs/raw/master/pkgs/applications/blockchains/nano-wallet/default.nix) build\r\n(nixpkgs has only `nano-wallet` but not the full `nano-node`, dont ask me why)\r\n\r\n```\r\nnix-shell -p nano-wallet\r\nnano_wallet\r\n```\r\n\r\nmy build script is [nano-node.nix](https://github.com/milahu/nur-packages/raw/master/pkgs/applications/blockchains/nano-node/default.nix)\r\n\r\nyou will need [nix](https://github.com/NixOS/nix) to run that build script\r\n\r\n```\r\ngit clone --depth=1 https://github.com/milahu/nur-packages\r\ncd nur-packages\r\nnix-build . -A nano-node\r\n./result/bin/nano_wallet\r\n```\r\n\r\nit seems like `nano::logger::initialize` is not called\r\n\r\nnano/lib/logging.cpp\r\n\r\n```cpp\r\nvoid nano::logger::initialize (nano::log_config fallback, std::optional<std::filesystem::path> data_path, std::vector<std::string> const & config_overrides)\r\n{\r\n        // Only load log config from file if data_path is available (i.e. not running in cli mode)\r\n        nano::log_config config = data_path ? nano::load_log_config (fallback, *data_path, config_overrides) : fallback;\r\n        initialize_common (config, data_path);\r\n        global_initialized = true;\r\n}\r\n```\r\n\r\nso `nano::logger::logger` fails\r\n\r\n```cpp\r\nnano::logger::logger (std::string identifier) :\r\n  identifier{ std::move (identifier) }\r\n{\r\n  release_assert (global_initialized, \"logging should be initialized before creating a logger\");\r\n}\r\n```\r\n\r\n",
+    "draft": true,
+    "pull_request": 4679,
+    "label": "milahu:shared-libs",
+    "created_at": "2024-07-15T16:35:45Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-07-15T16:43:24Z",
+    "run_id": null
+  },
+  {
     "hash": "dece1bcb10eb084908b682a5f299291197199e51",
     "type": "commit",
     "created_at": "2024-03-08T00:32:17Z",
