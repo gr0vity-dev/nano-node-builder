@@ -236,6 +236,22 @@
     "run_id": "9003547141"
   },
   {
+    "hash": "02531aa0787c1af90c2a958844abea0cd8d687a1",
+    "type": "pull_request",
+    "title": "Remove telemetry data aggregation",
+    "author": "pwojcikdev",
+    "body": "This changes the behaviour of telemetry RPC to return local node telemetry by default, which is the expected behaviour in majority of cases.\r\nThis also removes telemetry data aggregation functions. All the data consolidation should be handled in a separate layer outside of the node, with aggregation implemented as appropriate for each use case.",
+    "draft": false,
+    "pull_request": 4684,
+    "label": "pwojcikdev:telemetry-remove-aggregation",
+    "created_at": "2024-07-17T16:33:32Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-07-17T16:43:53Z",
+    "run_id": null
+  },
+  {
     "hash": "0278131977f5ce11621067e62d4ed547f3fbcd9b",
     "type": "pull_request",
     "pull_request": 4442,
