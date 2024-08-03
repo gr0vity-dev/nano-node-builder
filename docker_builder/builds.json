@@ -830,6 +830,22 @@
     "run_id": "8904580619"
   },
   {
+    "hash": "089500cb6e7e33d5e306e3e4b5a76f14ec851ed8",
+    "type": "pull_request",
+    "title": "Revert account store iterator in `bootstrap_server`",
+    "author": "pwojcikdev",
+    "body": "There was an account iterator performance degradation introduced recently, especially visible when using rocksdb (~10x slowdown when iterating consecutive entries). This reverts code responsible for serving frontier responses until a proper fix can be implemented.",
+    "draft": false,
+    "pull_request": 4688,
+    "label": "pwojcikdev:revert-bootstrap-server",
+    "created_at": "2024-08-03T11:19:30Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-08-03T11:21:20Z",
+    "run_id": null
+  },
+  {
     "hash": "08979619041ebea0033b40bed10e7e21efea5bda",
     "type": "pull_request",
     "pull_request": 4413,
