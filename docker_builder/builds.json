@@ -16949,6 +16949,22 @@
     "docker_tag": "gr0v1ty/nano-node:af02fbeed61dea2b92384cd54176ca9b82c7dff1"
   },
   {
+    "hash": "af196cc1500280923d4dce46463bf12f07c99632",
+    "type": "pull_request",
+    "title": "Ascending bootstrap dependency resolution",
+    "author": "pwojcikdev",
+    "body": "This is the first part of our (mine & @gr0vity-dev) work on improving ascending bootstrapper. This part contains a new dependency resolution strategy among a few other smaller improvements.\r\n\r\nAn example of how it dependency resolution process works: let's have three accounts A, B, C. A depends on a transaction sent by B, and B depends on a transaction sent by C. Let's now assume we have a ledger that is not synced 100%, might be because we're doing an initial sync or our node was offline for a while. If account A performs a new live transaction, we can't process it immediately, because we're still missing chains for B & C. In the previous version resolving these dependencies was slow, as it was relying on sequential sampling of the whole ledger. With this improved algorithm, we first add account A to the blocking set, resolve its dependency as account B, since B is blocked we repeat the same process for B, finally arriving at account C that unblocks all these chains.",
+    "draft": false,
+    "pull_request": 4692,
+    "label": "pwojcikdev:dependency-walking-rebased",
+    "created_at": "2024-08-05T16:36:15Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-08-05T21:15:21Z",
+    "run_id": null
+  },
+  {
     "hash": "af36d9ff358f9a3ba7fc9f7a915c33cb3c1839e9",
     "type": "commit",
     "created_at": "2024-03-10T16:49:32Z",
