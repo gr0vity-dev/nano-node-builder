@@ -4259,6 +4259,22 @@
     "run_id": "7615011509"
   },
   {
+    "hash": "2cba578576eebfd5c004db8f3a4e177c2f307aa7",
+    "type": "pull_request",
+    "title": "Telemetry database backend",
+    "author": "pwojcikdev",
+    "body": "Improved version of stalled #4675 that should be backwards compatible.",
+    "draft": false,
+    "pull_request": 4694,
+    "label": "pwojcikdev:telemetry-database-backend",
+    "created_at": "2024-08-06T09:24:05Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-08-06T16:23:45Z",
+    "run_id": null
+  },
+  {
     "hash": "2ccba41baeb2a4b487b5709e9a898699b613bd00",
     "type": "commit",
     "created_at": "2023-02-18T12:25:04Z",
@@ -18566,6 +18582,22 @@
     "docker_tag": "gr0v1ty/nano-node:c0dbcb45834c5dd29ab6dc4798de85373d871a36",
     "build_started_at": "2024-03-24T14:36:49Z",
     "run_id": "8410057339"
+  },
+  {
+    "hash": "c10ecd8f1058aecbc5b3c8f353fdb893187b56c3",
+    "type": "pull_request",
+    "title": "Disable telemetry replies",
+    "author": "pwojcikdev",
+    "body": "Since V25, telemetry is always periodically rebroadcasted. Peers should just listen for it passively. Sending replies directly in response to network messages is a bad practice.",
+    "draft": false,
+    "pull_request": 4695,
+    "label": "pwojcikdev:disable-telemetry-replies",
+    "created_at": "2024-08-06T16:16:35Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-08-06T16:23:45Z",
+    "run_id": null
   },
   {
     "hash": "c11def0489757dfffcd9cc4c048d518f0b6b826b",
