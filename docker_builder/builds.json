@@ -8925,6 +8925,22 @@
     "run_id": "8897121615"
   },
   {
+    "hash": "5af47d20aeadceb149abe4e99d910944b32400fb",
+    "type": "pull_request",
+    "title": "Use channel as telemetry data key",
+    "author": "pwojcikdev",
+    "body": "This fixes a problem where telemetry data from a single peer would be duplicated, one under ephemeral and the other under peering port, like this: \r\n\r\n(thanks to @gr0vity-dev for noticing this problem)\r\n```\r\n{\r\n    \"metrics\": [\r\n      {\r\n        \"block_count\": \"300014\",\r\n        \"cemented_count\": \"300014\",\r\n        \"unchecked_count\": \"0\",\r\n        \"account_count\": \"100006\",\r\n        \"bandwidth_cap\": \"10485760\",\r\n        \"peer_count\": \"4\",\r\n        \"protocol_version\": \"21\",\r\n        \"uptime\": \"180\",\r\n        \"genesis_block\": \"E670DF81878460B76B3425EC399800E1219A4387B11A4841B16CE260A9F36917\",\r\n        \"major_version\": \"28\",\r\n        \"minor_version\": \"0\",\r\n        \"patch_version\": \"0\",\r\n        \"pre_release_version\": \"99\",\r\n        \"maker\": \"0\",\r\n        \"timestamp\": \"1723035548025\",\r\n        \"active_difficulty\": \"000000000000000f\",\r\n        \"node_id\": \"node_1wp7kh4cmz5adwwh8b6rujrh48kp8gaijjf1hadgsrpa3assj6uio8p66oj1\",\r\n        \"signature\": \"89EC509E21A1CC3EBF970D57D520BE0420EC4B61E0AB00E12100EA1103C92B6A498C2D8BFD1357680F8000539CFD6C2C6EFD7209614BC01B70603A6C757FD508\",\r\n        \"address\": \"::ffff:172.19.0.3\",\r\n        \"port\": \"17075\"\r\n      },\r\n...\r\n      {\r\n        \"block_count\": \"300014\",\r\n        \"cemented_count\": \"300014\",\r\n        \"unchecked_count\": \"0\",\r\n        \"account_count\": \"100006\",\r\n        \"bandwidth_cap\": \"10485760\",\r\n        \"peer_count\": \"4\",\r\n        \"protocol_version\": \"21\",\r\n        \"uptime\": \"240\",\r\n        \"genesis_block\": \"E670DF81878460B76B3425EC399800E1219A4387B11A4841B16CE260A9F36917\",\r\n        \"major_version\": \"28\",\r\n        \"minor_version\": \"0\",\r\n        \"patch_version\": \"0\",\r\n        \"pre_release_version\": \"99\",\r\n        \"maker\": \"0\",\r\n        \"timestamp\": \"1723035608284\",\r\n        \"active_difficulty\": \"000000000000000f\",\r\n        \"node_id\": \"node_1wp7kh4cmz5adwwh8b6rujrh48kp8gaijjf1hadgsrpa3assj6uio8p66oj1\",\r\n        \"signature\": \"F8F2E9337BD94C72A9F6482390D87912993E679E9D4848DE734C358134A1CB0122EE768BCFA1267F926B08354197A7A450F5AEC2FF727D8B822B5775043AEB0A\",\r\n        \"address\": \"::ffff:172.19.0.3\",\r\n        \"port\": \"35816\"\r\n      }\r\n```",
+    "draft": false,
+    "pull_request": 4697,
+    "label": "pwojcikdev:telemetry-by-channel",
+    "created_at": "2024-08-07T15:03:07Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-08-07T15:19:15Z",
+    "run_id": null
+  },
+  {
     "hash": "5aff36eef5290fe949b10a8c5f75cd18a0dd9623",
     "type": "commit",
     "author": "github-actions[bot]",
