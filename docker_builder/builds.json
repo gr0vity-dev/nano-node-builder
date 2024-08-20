@@ -23070,6 +23070,22 @@
     "docker_tag": "gr0v1ty/nano-node:ed0fe0bbdb9ccfdbc7c99f47f68aa48cfd195b0a"
   },
   {
+    "hash": "ed11b943930ffb4363a73412a5e5f1b21d6b6471",
+    "type": "pull_request",
+    "title": "Fix regression account history when querying open state blocks",
+    "author": "clemahieu",
+    "body": "This regression was identified when querying the history of open state blocks https://github.com/nanocurrency/nano-node/pull/4708.  The issue was introduced when cleaning up the semantics related to querying block balances https://github.com/nanocurrency/nano-node/pull/4461/commits/4bac9419795f8a2789c240e25fae8fad55c3b671\r\n\r\nA test was added to ensure no future regression.",
+    "draft": false,
+    "pull_request": 4709,
+    "label": "clemahieu:state_open_account_history",
+    "created_at": "2024-08-20T11:48:04Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-08-20T11:54:41Z",
+    "run_id": null
+  },
+  {
     "hash": "ed3856717aed9d4949dc83eed30187563f6b6b44",
     "type": "commit",
     "title": "Remove conditional compiling. (#4544)",
