@@ -840,6 +840,19 @@
     "run_id": "8895528271"
   },
   {
+    "hash": "08575c5b041783c9a0d22205770e4c03f316f2c5",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Add test to ensure state open blocks have type receive",
+    "pull_request": "4709",
+    "created_at": "2024-08-20T10:33:02Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-08-20T12:17:20Z",
+    "run_id": null
+  },
+  {
     "hash": "0861102e92982f0aea8ea03f71d0a65d86bb09ad",
     "type": "pull_request",
     "title": "Redesign the priority scheduler to maintain a 1-to-1 link with running elections",
@@ -4185,6 +4198,19 @@
     "built_at": "2023-09-03T14:16:56Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:2b8245c81580ec3faa37b31b04164a6ef90cdcf3"
+  },
+  {
+    "hash": "2ba14ed395fddcc4c40949d16b38cd3244a55793",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Add test to verify the \"unopened\" rpc can seek past the requested account",
+    "pull_request": "4707",
+    "created_at": "2024-08-19T14:06:17Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-08-20T12:17:20Z",
+    "run_id": null
   },
   {
     "hash": "2ba48077785d25ac007cc62c8a9876c2dc31320e",
@@ -10296,6 +10322,19 @@
     "docker_tag": "",
     "build_started_at": "2024-03-28T10:52:16Z",
     "run_id": "8466164570"
+  },
+  {
+    "hash": "67c88aac4a4e041ccdcd1bd32f1d3ab57b5019a5",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Merge pull request #4707 from clemahieu/rpc_unopened_seek\n\nRevert \"Rewrite json_handler::unopened in terms of receivable iterators\"",
+    "pull_request": "4707",
+    "created_at": "2024-08-20T11:55:45Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-08-20T12:17:20Z",
+    "run_id": null
   },
   {
     "hash": "67eeac3115796b9eaebda6fc34d54a003dd7e1e4",
@@ -18735,6 +18774,19 @@
     "built_at": "2023-02-16T01:33:54Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:be75108dbb9fe01060ea87808658b53237b7c5be"
+  },
+  {
+    "hash": "be764b0408c630476f910024c1ecfb1c0fb7057c",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Merge pull request #4709 from clemahieu/state_open_account_history\n\nFix regression account history when querying open state blocks",
+    "pull_request": "4709",
+    "created_at": "2024-08-20T11:55:57Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-08-20T12:17:20Z",
+    "run_id": null
   },
   {
     "hash": "beb0133af6373885159a3c67b072b5be192c6dad",
