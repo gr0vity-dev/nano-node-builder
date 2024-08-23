@@ -9912,6 +9912,22 @@
     "run_id": "8224504096"
   },
   {
+    "hash": "6420c0a1049e50722f8713abb448d4d3aab11c2f",
+    "type": "pull_request",
+    "title": "Fix database iterator-transaction lifetimes",
+    "author": "pwojcikdev",
+    "body": "This adds debug assertions that ensure database iterators can't be used after their corresponding transaction gets committed / released.\r\n\r\nThe `nano::node::collect_ledger_pruning_targets ()` is still triggering the assert, so I invite someone to have a look at it.",
+    "draft": false,
+    "pull_request": 4713,
+    "label": "pwojcikdev:iterator-transaction-lifetimes",
+    "created_at": "2024-08-23T09:39:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-08-23T13:10:47Z",
+    "run_id": null
+  },
+  {
     "hash": "6441f5ddccbfc103bdd454b2fbc6e92a5dc2ac53",
     "type": "pull_request",
     "pull_request": 3727,
