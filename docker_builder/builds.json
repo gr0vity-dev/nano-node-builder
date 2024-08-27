@@ -20013,6 +20013,22 @@
     "run_id": "9634972721"
   },
   {
+    "hash": "cb8c901a26f559cd1bcb0fa617d5fd1b9731f47b",
+    "type": "pull_request",
+    "title": "Fix database iterator-transaction lifetimes",
+    "author": "pwojcikdev",
+    "body": "This adds debug assertions that ensure database iterators can't be used after their corresponding transaction gets committed / released.\r\n\r\nThe `nano::node::collect_ledger_pruning_targets ()` is still triggering the assert, so I invite someone to have a look at it.",
+    "draft": false,
+    "pull_request": 4713,
+    "label": "pwojcikdev:iterator-transaction-lifetimes",
+    "created_at": "2024-08-23T09:39:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-08-27T09:06:41Z",
+    "run_id": null
+  },
+  {
     "hash": "cbb0126e6a871286006a310df3d2a5d2e681ccb9",
     "type": "commit",
     "created_at": "2023-02-20T15:35:53Z",
@@ -22730,6 +22746,22 @@
     "docker_tag": "gr0v1ty/nano-node:e877de187bc37449fd43ff17a30ce336276768c9",
     "build_started_at": "2024-07-16T09:12:50Z",
     "run_id": "9954041711"
+  },
+  {
+    "hash": "e8a8bb8d3c30dd6df7e92ac5ae5c6df94910b12d",
+    "type": "pull_request",
+    "title": "Perform ledger upgrade in batches",
+    "author": "pwojcikdev",
+    "body": "There was a problem with ledger upgrade process where due to a large number of new rep weight entires, nodes with low ram (2-4GB) were having trouble upgrading and were crashing due to out of memory errors. This should fix it.\r\n\r\nThis builds on https://github.com/nanocurrency/nano-node/pull/4713 and disables prunning unit tests, which were failing.",
+    "draft": false,
+    "pull_request": 4714,
+    "label": "pwojcikdev:batched-ledger-upgrade",
+    "created_at": "2024-08-27T08:55:51Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-08-27T09:06:41Z",
+    "run_id": null
   },
   {
     "hash": "e8ba8ba58d175a76f1845f9fdd0bc59648520abc",
