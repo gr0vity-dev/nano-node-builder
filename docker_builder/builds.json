@@ -18989,6 +18989,22 @@
     "run_id": "10472506500"
   },
   {
+    "hash": "bea03769e7723e625cd60ee2f88b59395fcfa59b",
+    "type": "pull_request",
+    "title": "Perform ledger upgrade in batches",
+    "author": "pwojcikdev",
+    "body": "There was a problem with ledger upgrade process where due to a large number of new rep weight entires, nodes with low ram (2-4GB) were having trouble upgrading and were crashing due to out of memory errors. This should fix it.\r\n\r\nThis builds on https://github.com/nanocurrency/nano-node/pull/4713 and disables prunning unit tests, which were failing.",
+    "draft": false,
+    "pull_request": 4714,
+    "label": "pwojcikdev:batched-ledger-upgrade",
+    "created_at": "2024-08-27T08:55:51Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-08-27T14:30:09Z",
+    "run_id": null
+  },
+  {
     "hash": "beb0133af6373885159a3c67b072b5be192c6dad",
     "type": "pull_request",
     "pull_request": 4464,
