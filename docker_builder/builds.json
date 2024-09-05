@@ -18085,6 +18085,19 @@
     "run_id": "8330437043"
   },
   {
+    "hash": "b362c7ca40cc9faa67c265b475e085c9c0779b8a",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Merge pull request #4719 from clemahieu/tsan_fixes\n\nFix correctness, sanity check, and resolve shutdown issue.",
+    "pull_request": "4719",
+    "created_at": "2024-09-05T08:11:42Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-09-05T08:19:09Z",
+    "run_id": null
+  },
+  {
     "hash": "b3bb7af9ff8af31797a8863d103ea47d34511bfd",
     "type": "commit",
     "author": "homebot",
@@ -19183,6 +19196,19 @@
     "built_at": "2023-05-02T18:09:55Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:be310b630ff2da509e9d64ca89c9bf49aab462e8"
+  },
+  {
+    "hash": "be53f611a7421bbe0bbfee50f865d2b9bac0e06c",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Add sanity check",
+    "pull_request": "4719",
+    "created_at": "2024-09-03T00:27:39Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-09-05T08:19:09Z",
+    "run_id": null
   },
   {
     "hash": "be75108dbb9fe01060ea87808658b53237b7c5be",
@@ -21240,6 +21266,19 @@
     "run_id": "9030880822"
   },
   {
+    "hash": "d4ff55bff7582c57cfa62fa4c522dd47d81ff015",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Fix negative-wraparound issue when converting size_t to ptrdiff_t which is used by std::views::take.\n\nThis issue was flagged by VisualStudio debug asserts",
+    "pull_request": "4719",
+    "created_at": "2024-09-03T17:23:07Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-09-05T08:19:09Z",
+    "run_id": null
+  },
+  {
     "hash": "d55445bedadd6b7f87d726942d714cb9ea1a9387",
     "type": "pull_request",
     "pull_request": 4345,
@@ -21794,6 +21833,19 @@
     "docker_tag": "gr0v1ty/nano-node:d975781e90c527a1583790580d104e527eb64937",
     "build_started_at": "2024-09-03T17:28:11Z",
     "run_id": "10687742938"
+  },
+  {
+    "hash": "d9b8593ad12f19c48006d72aa71b1abd223184ea",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Fix issue where unchecked_map::entries was being accessed for container information without acquiring the entries_mutex.",
+    "pull_request": "4719",
+    "created_at": "2024-09-02T19:59:23Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-09-05T08:19:09Z",
+    "run_id": null
   },
   {
     "hash": "d9bdec707f515a70b6cef5014ecf57b2de86dfa9",
@@ -23484,6 +23536,19 @@
     "docker_tag": "",
     "build_started_at": "2024-04-04T14:09:08Z",
     "run_id": "8556080717"
+  },
+  {
+    "hash": "ebea02d94ae2a99bdac86df2f052a4053abb87d1",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Remove this_thread::sleep_for and instead use condition_variable::wait.\n\nFixes checking whether the component is stopped.",
+    "pull_request": "4719",
+    "created_at": "2024-09-03T00:43:28Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-09-05T08:19:09Z",
+    "run_id": null
   },
   {
     "hash": "ebfda269310757f64aa8830d373c71431286bf8e",
