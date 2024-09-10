@@ -15673,6 +15673,22 @@
     "run_id": "9060049910"
   },
   {
+    "hash": "978f0784648d859552fc98382f9f7ba8301858a6",
+    "type": "pull_request",
+    "title": "Add submodule lmdbxx which is a c++ wrapper for lmdb",
+    "author": "clemahieu",
+    "body": "This change adds the lmdbxx submodule which is a c++ wrapper for LMDB. https://github.com/hoytech/lmdbxx\r\n\r\nCurrently we're using an amalgamation of direct access to the LMDB C API and some custom c++ wrapping of select portions of functionality.\r\n\r\nMajor motivations for using this library:\r\n- Header-only\r\n- C++17 language support\r\n- Errors are exceptions\r\n- RAII for LMDB resources\r\n- Uses std::string_view for exchanging serialised objects which is compatible with rocksdb::Slice\r\n\r\nThe library has two implementation strategies, a near 1-to-1 wrapping of the C API with exception handling, and full RAII types. Migrating existing code to use the direct API was relatively painless and some of the RAII types can already be used.\r\n\r\nThe primary motivation for the change is to get a clear separation of the lmdb c++ wrapper from node-specific logic. Additionally, this removes the burden of wrapping the C API from the node code.\r\n\r\nThe library itself seems to make good design decisions and is reasonably maintained.\r\n\r\nThere are parts of the library which are not fully complete e.g. ::lmdb::dbi does not fully implement RAII, it is both copyable and doesn't destroy the underlying resources when it goes out of scope. To get full benefits we will likely have to upstream some patches which they will hopefully be receptive and responsive to.",
+    "draft": false,
+    "pull_request": 4724,
+    "label": "clemahieu:lmdbxx",
+    "created_at": "2024-09-09T19:26:59Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-09-10T02:54:08Z",
+    "run_id": null
+  },
+  {
     "hash": "97abf643c8393a9a372e7c17b4158ffdfe6085c5",
     "type": "commit",
     "created_at": "2023-03-02T11:33:28Z",
