@@ -1,0 +1,192 @@
+978f0784648d859552fc98382f9f7ba8301858a6: Pulling from gr0v1ty/nano-node
+857cc8cb19c0: Already exists
+690b7cd72c68: Pulling fs layer
+1f070b1c1b90: Pulling fs layer
+74a897737923: Pulling fs layer
+471bbd262581: Pulling fs layer
+95a82bd74b39: Pulling fs layer
+7da023dd582f: Pulling fs layer
+2112fc63e207: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+b77048fbcc37: Pulling fs layer
+8cd9880269cd: Pulling fs layer
+4f4fb700ef54: Waiting
+95a82bd74b39: Waiting
+b77048fbcc37: Waiting
+8cd9880269cd: Waiting
+7da023dd582f: Waiting
+2112fc63e207: Waiting
+471bbd262581: Waiting
+690b7cd72c68: Verifying Checksum
+690b7cd72c68: Download complete
+74a897737923: Verifying Checksum
+74a897737923: Download complete
+471bbd262581: Verifying Checksum
+471bbd262581: Download complete
+95a82bd74b39: Download complete
+690b7cd72c68: Pull complete
+7da023dd582f: Verifying Checksum
+7da023dd582f: Download complete
+2112fc63e207: Verifying Checksum
+2112fc63e207: Download complete
+4f4fb700ef54: Download complete
+b77048fbcc37: Download complete
+8cd9880269cd: Download complete
+1f070b1c1b90: Verifying Checksum
+1f070b1c1b90: Download complete
+1f070b1c1b90: Pull complete
+74a897737923: Pull complete
+471bbd262581: Pull complete
+95a82bd74b39: Pull complete
+7da023dd582f: Pull complete
+2112fc63e207: Pull complete
+4f4fb700ef54: Pull complete
+b77048fbcc37: Pull complete
+8cd9880269cd: Pull complete
+Digest: sha256:5167c964f17a1ae314db6e2bcc9ca2e46aa772a6d758d907003222079587119f
+Status: Downloaded newer image for gr0v1ty/nano-node:978f0784648d859552fc98382f9f7ba8301858a6
+docker.io/gr0v1ty/nano-node:978f0784648d859552fc98382f9f7ba8301858a6
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/threading.py", line 870, in run
+    self._target(*self._args, **self._kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/mixins/threaded_command_mixin.py", line 26, in _execute_command_sequence
+    self.command_instance.execute_another_command(command_config)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/command.py", line 49, in execute_another_command
+    another_command.execute()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/command.py", line 41, in execute
+    self.mixin.execute()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/mixins/python_command_mixin.py", line 40, in execute
+    method(**filtered_variables)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/pycmd.py", line 35, in publish_create
+    asyncio.run(test_case.run())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/publisher/test_case.py", line 115, in run
+    await self.stats_manager.initialize(self.node_name)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/publisher/confirmation_stats.py", line 17, in initialize
+    start_block_count = await self.nanorpc.block_count()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client.py", line 50, in block_count
+    return await self.rpc.block_count(include_cemented=include_cemented)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 33, in method
+    return await self.process_payloads([payload])
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 119, in process_payloads
+    return await self._request_with_retry(self._request, payloads)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 101, in _request_with_retry
+    return await self._retry_on_exception(coroutine,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 95, in _retry_on_exception
+    raise MaxRetriesExceededError(
+nanorpc.client_dynamic.MaxRetriesExceededError: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45101 ssl:default [Connect call failed ('172.17.0.1', 45101)]
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_send_independant.json
+Start Fetching '5n4pr_conf_send_independant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_send_independant_config.json'
+Done  Fetching '5n4pr_conf_send_independant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_send_independant_config.json'
+Start Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Done  Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+SUCCESS: stop_containers completed with None result.
+SUCCESS: reset_nodes_data completed with None result.
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+Error executing command: nanomock start && nanomock init_wallets
+Error: ERROR: Command failed: docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d
+ERROR: Error output: Creating volume "nanomock_nl_default_volume" with default driver
+Creating nl_pr2 ... 
+Creating nl_pr3 ... 
+Creating nl_genesis ... 
+Creating nl_pr1     ... 
+Creating nl_pr4     ... 
+Creating nl_genesis ... done
+Creating nl_genesis_exporter ... 
+Creating nl_pr4              ... done
+Creating nl_pr3              ... done
+Creating nl_pr4_exporter     ... 
+Creating nl_pr1              ... done
+Creating nl_pr3_exporter     ... 
+Creating nl_pr2              ... done
+Creating nl_pr1_exporter     ... 
+Creating nl_pr2_exporter     ... 
+Creating nl_pr3_exporter     ... error
+
+ERROR: for nl_pr3_exporter  Cannot start service nl_pr3_exporter: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: can't get final child's PID from pipe: EOF: unknown
+Creating nl_genesis_exporter ... error
+
+ERROR: for nl_genesis_exporter  Cannot start service nl_genesis_exporter: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: writing syncT "procResume": write init-p: broken pipe: unknown
+Creating nl_pr2_exporter     ... error
+
+ERROR: for nl_pr2_exporter  Cannot start service nl_pr2_exporter: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #0: error running hook: exit status 1, stdout: , stderr: bind-mount /proc/8292/ns/net -> /var/run/docker/netns/4ac7205356fe: no such file or directory: unknown
+Creating nl_pr1_exporter     ... error
+
+ERROR: for nl_pr1_exporter  Cannot start service nl_pr1_exporter: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #0: error running hook: exit status 1, stdout: , stderr: bind-mount /proc/8290/ns/net -> /var/run/docker/netns/50a38b8571ac: no such file or directory: unknown
+Creating nl_pr4_exporter     ... error
+
+ERROR: for nl_pr4_exporter  Cannot start service nl_pr4_exporter: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #0: error running hook: exit status 1, stdout: , stderr: bind-mount /proc/8291/ns/net -> /var/run/docker/netns/1b075147a64d: no such file or directory: unknown
+
+ERROR: for nl_pr3_exporter  Cannot start service nl_pr3_exporter: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: can't get final child's PID from pipe: EOF: unknown
+
+ERROR: for nl_genesis_exporter  Cannot start service nl_genesis_exporter: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: writing syncT "procResume": write init-p: broken pipe: unknown
+
+ERROR: for nl_pr2_exporter  Cannot start service nl_pr2_exporter: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #0: error running hook: exit status 1, stdout: , stderr: bind-mount /proc/8292/ns/net -> /var/run/docker/netns/4ac7205356fe: no such file or directory: unknown
+
+ERROR: for nl_pr1_exporter  Cannot start service nl_pr1_exporter: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #0: error running hook: exit status 1, stdout: , stderr: bind-mount /proc/8290/ns/net -> /var/run/docker/netns/50a38b8571ac: no such file or directory: unknown
+
+ERROR: for nl_pr4_exporter  Cannot start service nl_pr4_exporter: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #0: error running hook: exit status 1, stdout: , stderr: bind-mount /proc/8291/ns/net -> /var/run/docker/netns/1b075147a64d: no such file or directory: unknown
+Encountered errors while bringing up the project.
+
+ERROR: Return code: 1
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 198, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanomock", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 58, in main
+    asyncio.run(main_async(args))
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 54, in main_async
+    await manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 544, in execute_command
+    await command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 473, in start_containers
+    self.docker_interface.compose_start(nodes)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 56, in compose_start
+    return self._run_command(cmd)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 33, in _run_command
+    subprocess_run_capture_output(base_command)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 209, in subprocess_run_capture_output
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: <exception str() failed>
