@@ -1,0 +1,281 @@
+6a01a97f651018dfb9d4f5ef0cec92885cd8c2d5: Pulling from gr0v1ty/nano-node
+857cc8cb19c0: Already exists
+379b3798ba1f: Pulling fs layer
+c2663e313e54: Pulling fs layer
+ba276f2f90a7: Pulling fs layer
+e9d46377142a: Pulling fs layer
+a081316ce0fa: Pulling fs layer
+8c059179da97: Pulling fs layer
+14501095bc63: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+f728a99328c7: Pulling fs layer
+45b475b54f29: Pulling fs layer
+8c059179da97: Waiting
+14501095bc63: Waiting
+4f4fb700ef54: Waiting
+f728a99328c7: Waiting
+45b475b54f29: Waiting
+e9d46377142a: Waiting
+a081316ce0fa: Waiting
+379b3798ba1f: Verifying Checksum
+379b3798ba1f: Download complete
+e9d46377142a: Verifying Checksum
+e9d46377142a: Download complete
+ba276f2f90a7: Verifying Checksum
+ba276f2f90a7: Download complete
+8c059179da97: Verifying Checksum
+8c059179da97: Download complete
+14501095bc63: Verifying Checksum
+14501095bc63: Download complete
+f728a99328c7: Verifying Checksum
+f728a99328c7: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+379b3798ba1f: Pull complete
+45b475b54f29: Verifying Checksum
+45b475b54f29: Download complete
+c2663e313e54: Verifying Checksum
+c2663e313e54: Download complete
+c2663e313e54: Pull complete
+ba276f2f90a7: Pull complete
+e9d46377142a: Pull complete
+a081316ce0fa: Pull complete
+8c059179da97: Pull complete
+14501095bc63: Pull complete
+4f4fb700ef54: Pull complete
+f728a99328c7: Pull complete
+45b475b54f29: Pull complete
+Digest: sha256:98ea613a117fe7743b6a25efa5fc8d4847d384dc5c3cf3c5980e5e295802bfd5
+Status: Downloaded newer image for gr0v1ty/nano-node:6a01a97f651018dfb9d4f5ef0cec92885cd8c2d5
+docker.io/gr0v1ty/nano-node:6a01a97f651018dfb9d4f5ef0cec92885cd8c2d5
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_change_dependant.json
+Start Fetching '5n4pr_conf_change_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_change_dependant_config.json'
+Done  Fetching '5n4pr_conf_change_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_change_dependant_config.json'
+Start Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Done  Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+SUCCESS: stop_containers completed with None result.
+SUCCESS: reset_nodes_data completed with None result.
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+Error executing command: nanomock start && nanomock init_wallets
+Error: ERROR: Command failed: docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d
+ERROR: Error output: Creating volume "nanomock_nl_default_volume" with default driver
+Creating nl_pr4 ... 
+Creating nl_pr2 ... 
+Creating nl_pr1 ... 
+Creating nl_genesis ... 
+Creating nl_pr3     ... 
+Host is already in use by another container
+Creating nl_pr2     ... error
+
+ERROR: for nl_pr2  Cannot start service nl_pr2: driver failed programming external connectivity on endpoint nl_pr2 (a38cf80bd69faa43227a144696c6e0b9a38e7101fd9bc2469ecc6caad497c4d0): failed to bind port 0.0.0.0:44102/tcp: Error starting userland proxy: listen tcp4 0.0.0.0:44102: bind: address already in use
+Creating nl_pr1     ... done
+Creating nl_pr4     ... done
+Creating nl_pr3     ... done
+Creating nl_genesis      ... done
+Creating nl_pr1_exporter ... 
+Creating nl_pr3_exporter ... 
+Creating nl_pr4_exporter ... 
+Creating nl_genesis_exporter ... 
+Creating nl_genesis_exporter ... done
+Creating nl_pr3_exporter     ... done
+Creating nl_pr1_exporter     ... done
+Creating nl_pr4_exporter     ... done
+
+ERROR: for nl_pr2  Cannot start service nl_pr2: driver failed programming external connectivity on endpoint nl_pr2 (a38cf80bd69faa43227a144696c6e0b9a38e7101fd9bc2469ecc6caad497c4d0): failed to bind port 0.0.0.0:44102/tcp: Error starting userland proxy: listen tcp4 0.0.0.0:44102: bind: address already in use
+Encountered errors while bringing up the project.
+
+ERROR: Return code: 1
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 198, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanomock", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 58, in main
+    asyncio.run(main_async(args))
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 54, in main_async
+    await manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 544, in execute_command
+    await command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 473, in start_containers
+    self.docker_interface.compose_start(nodes)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 56, in compose_start
+    return self._run_command(cmd)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 33, in _run_command
+    subprocess_run_capture_output(base_command)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 209, in subprocess_run_capture_output
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: <exception str() failed>
+.DEBUG 1 unconfirmed blocks! e.g. 38DC3882E3FE42259AC7A85DDB7CEA83270345077009007897FAB37CC208A091
+.DEBUG 1 unconfirmed blocks! e.g. 1FA11BD9D00898923EB70426B3C050F57080077048188F91447C77523506EFC2
+.DEBUG 1 unconfirmed blocks! e.g. 05C70EF492EFA0847DF6B0CCEBFEF4B9C656AA77EBEEADF6979E705EA221D628
+.DEBUG 1 unconfirmed blocks! e.g. 5E254691B3B5ADCF031245269A1743802536E481121404722B5D9C8E82D7F7E7
+.DEBUG 1 unconfirmed blocks! e.g. 8F3751D1A2F9A63CE66FEE97C6A58531FF70099D99FC688FEBAF6DBFD4DF9FDB
+.DEBUG 1 unconfirmed blocks! e.g. 3EB9C706EF81DD65C8DD2C9EB0F680F7C45E334EF53947F4557CEB33FDF56B0E
+.DEBUG 1 unconfirmed blocks! e.g. 5293FF6BC246A243E6B4D0B23EDC55E49EF11691733100EECA9F951F25FFACD8
+.DEBUG 1 unconfirmed blocks! e.g. BF5A20C05CA788490EF9CB63239B1DF56DCAB7ED975AFD7EB9A97FEE64749576
+.DEBUG 1 unconfirmed blocks! e.g. E52D70E4E222E567A48051882DEA13BCEE77E3C99CF3FBC640150803DAD56EB0
+.DEBUG 1 unconfirmed blocks! e.g. F7A65DFB611C53D3F8D092220F7491FF01E616DEAB4552AA8A1303C8AA3C555C
+.DEBUG 1 unconfirmed blocks! e.g. 9505A3EDF78D90499A8BEC720BCB3C224BEAFF7F22458AF2C4440DE7C02A6F05
+.DEBUG 1 unconfirmed blocks! e.g. BF191CC496CD4DEBA62B758F96127C546C1FEFDF5024831EF27D6BF5BC110848
+.DEBUG 1 unconfirmed blocks! e.g. A3E275C58FAF1FCC3A21CFD2D8D934838CEBBF208F2F0300F4EAE87D8AA571C6
+.DEBUG 1 unconfirmed blocks! e.g. EC8B33935BF8B9A3D955E1EC77E269022FA518585FF5A78F8FEAC96BCFFAA197
+.DEBUG 1 unconfirmed blocks! e.g. 7614919760119AB3995EBACF71442102BE7AD0E579E37218012EAD55B36A94A4
+.DEBUG 1 unconfirmed blocks! e.g. A99801097367834AB7F785CA039C555B65E02BDFAC67ECAA3C1B2211C1D70C75
+.DEBUG 1 unconfirmed blocks! e.g. 5E88C6C29CD5FBFE0A6904F75F753531B532196CF2DCEAFBAE15B8F6F4719703
+.DEBUG 1 unconfirmed blocks! e.g. 5231A7BEB22E84B14CCD67B16791815B262D167BF76AE5CD9D6ADAE3EAD8872B
+.DEBUG 1 unconfirmed blocks! e.g. 04CBC42C3EB8608C98CBF37DBA5476E21FDF7DE76C9360A922D034CD258DE2F7
+.DEBUG 1 unconfirmed blocks! e.g. AF983E0145DF016F46B497ADE926ABBC20539F8EAD7C3764C63BC21AD100870E
+.DEBUG 1 unconfirmed blocks! e.g. FCEB9437814C9446508B9F036648D9B6FB22CF6E1D8B58E6D7B9D7D930D54B71
+.DEBUG 1 unconfirmed blocks! e.g. 31A71DF1DEABC0238549FDAFF418D631A7BA1713B6CD9CC3603A9F4B741909E5
+.DEBUG 1 unconfirmed blocks! e.g. 8EFBCDBEEB7B967A4C37371CEC4A20994395CF3C3231F887D9BD62340736EC13
+.DEBUG 1 unconfirmed blocks! e.g. 748F5893C0B69E2010761746CEEACAE2A225BB20B5C9038AEA392448C3544C44
+.DEBUG 1 unconfirmed blocks! e.g. F276FA5E599124D022C5948B9BCCBFE25EBE8A8207986F66E706CD2CC26EB56A
+.DEBUG 1 unconfirmed blocks! e.g. 4DF171B9BE20EFED237DA92908A5C35D8055047433EC1A8C0D997A04CA9C2ABE
+.DEBUG 1 unconfirmed blocks! e.g. 0DE15C5FB09F66D600BF8D8048CB1EEBC5ACA7E3E9CEAD94D6DB30D6C81C06C1
+.DEBUG 1 unconfirmed blocks! e.g. DA84B51C1059F170504936ECA8756A11D49D6D4C1CB20FA198DDC86E2821F43F
+.DEBUG 1 unconfirmed blocks! e.g. 70CC0621510ABD7B144FBE0FCB88D5D19A1DD82E29DF2FB44E53A045453641CE
+.DEBUG 1 unconfirmed blocks! e.g. B7AB7A5880CF76453299EB6FD5CF659841A3003D27C83878A82DCA163B248ACD
+.DEBUG 1 unconfirmed blocks! e.g. 5A7BFA9F864DFECD3BBE4AE005EF6F19E5583DFC5F4C4583E7EF9D5224737F2A
+.DEBUG 1 unconfirmed blocks! e.g. 694A234087BD85701E9B098BFF11EDC8813D9732CBEEAAD72AC98FC144BEE891
+.DEBUG 1 unconfirmed blocks! e.g. 9AB8C296159A734578FC3B97D8C0A5DDF0CF7A5B74BC44D68CB74BDB2E75B660
+.DEBUG 1 unconfirmed blocks! e.g. F48D91FA9614791FC1DCC838B88C499DC3CCDCC863862D748C1D1F5FED6D2B32
+.DEBUG 1 unconfirmed blocks! e.g. 46B0D4C42ECF26B56EA20A927F29DA81A4542A70F5940F8A9687CFF162870B27
+.DEBUG 1 unconfirmed blocks! e.g. 43D8B905631DFC7937192C9A8CFFFBEECFADC2525591DAC150DA8A049C5D4D8C
+.DEBUG 1 unconfirmed blocks! e.g. E46512A00F3259DD1DD8E021BA97751BC8E44D83D40DA6C2BBFFD5302E93CE0F
+.DEBUG 1 unconfirmed blocks! e.g. 06530647143ADA384814313D69CB18D5FC5839E7C7D530F886AE23ECAD1F5B79
+.DEBUG 1 unconfirmed blocks! e.g. 258B9A8C23917732B84ED1114DBAEA10C1AB707927E0ACD877BA9D7379A9364E
+.DEBUG 1 unconfirmed blocks! e.g. D2E3CC1458CC5FD595EB42B96DEC9324BB31FBC7689E985B896AFA3644F8E818
+.DEBUG 1 unconfirmed blocks! e.g. F5B0E7D37BFA70049AB8AAC1F0E91AC8735C62B4534057CD80A975140FA87BC9
+.DEBUG 1 unconfirmed blocks! e.g. 57A0F50CE94F24A3B9CDEF23E21070B678EA850F1AF360E1C578CB0984F44971
+.DEBUG 1 unconfirmed blocks! e.g. D26C4A2F4A03FEF840725365E6E0EA9F4593A068F93490DF802898DA9F37A3AE
+.DEBUG 1 unconfirmed blocks! e.g. 08A7D3B21E73B8F65EB4248F84D6E8C79EDCFA8B4C99E55BB8DAC5405F018AA3
+.DEBUG 1 unconfirmed blocks! e.g. F547CD7F4E21423917A4BD137FB7C014CD21902FB64B4235EB1D2B1198E1248F
+.DEBUG 1 unconfirmed blocks! e.g. 1201F45155748C69EADFE751AC4EE4568C953AB19C8851DE1E10D0A274E2B099
+.DEBUG 1 unconfirmed blocks! e.g. 523589A9F1CDBC0B2E758264876EA1A359E70BF496520B386D07C01968A75791
+.DEBUG 1 unconfirmed blocks! e.g. 5BFF6D1CD1A2E729018A00C967DF31F4AD03B0EC8689ACC2FAC2766EB5FAC94C
+.DEBUG 1 unconfirmed blocks! e.g. B65B37A6D2C536E1E44F5BCAB15C5A37CE729C0AF1757C6A2DA8889A84F34F8F
+.DEBUG 1 unconfirmed blocks! e.g. 961AC4DCD2A4C8B3021C991745CBEC9ED47B8A07C2F7B0202425BBF24AA0BA8E
+.DEBUG 1 unconfirmed blocks! e.g. A3514F597B464FCE19F27309D194B5BEDA0F3D279F6E20F28EF2BE9B7F8D1A05
+.DEBUG 1 unconfirmed blocks! e.g. 8AC0FD24BD3584AEA8354110DB450DD26E0E54936893F5373B57AF50BF38F5F0
+.DEBUG 1 unconfirmed blocks! e.g. CEE1CFD502127AA9E2AFA22AE9CA231BCD8209EC470F428FD3740A952F5C0C2D
+.DEBUG 1 unconfirmed blocks! e.g. 4AF636C9861FA8328E04FE599340E31780DDEB4A0B9696DA2223403E4EDB1B97
+.DEBUG 1 unconfirmed blocks! e.g. CC6B796CCC2D6B9A22887B04292C2CD329F5AD88B128CA81D644D0E0234F883C
+.DEBUG 1 unconfirmed blocks! e.g. B9E9672ADBCDDB2040F46BA4B1C833298352E8B836E57B64A6041E8F8ECC36A4
+.DEBUG 1 unconfirmed blocks! e.g. C9D8BAC0BE0917C4F08C50B31AA4A0FFEA28354530173044F2CC63B6B989D811
+.DEBUG 1 unconfirmed blocks! e.g. 2A1CD4C36D8BA9206927A75ED7F0F10716F2DE09E72FB47391BB60107EF2C03D
+.DEBUG 1 unconfirmed blocks! e.g. 44C2B45C2DFE63CDE7257ECC2ADE416A8B6CA16EDFF4F2AF5BC30765AADD90D9
+.DEBUG 1 unconfirmed blocks! e.g. 7B7B8E428DC1F0DC8259606D13E04E9A68E403B6F39613BEF097F6F256221141
+.DEBUG 1 unconfirmed blocks! e.g. 77B385E017BB3C1EFBF6867AEC8A0D886380E624D0B1226A3A654B16A42EE9AA
+.DEBUG 1 unconfirmed blocks! e.g. 4636C2F65FF97EEFF24659F3191376F9086B04BFE866419A1E3F3C10251F997A
+.DEBUG 1 unconfirmed blocks! e.g. CBEA0E3500C0CF59DEE5125BDD673D6C6024BE2F1C5DCBF37F9ADF669AC06DA4
+.DEBUG 1 unconfirmed blocks! e.g. 4CACA655AA3CDED3205CB9344A73FB6B3233B14F2EA6288EA7FFC8AEBB7A9819
+.DEBUG 1 unconfirmed blocks! e.g. 9B59339953FEE82E2F1D46DBFD3C070EA2E53863650CCF4BCE01CE836CB47E9B
+.DEBUG 1 unconfirmed blocks! e.g. 79EDF69EA4EF3F127BD1682F038672AC67E9F76DC709ED04079A62FEBBCF096A
+.DEBUG 1 unconfirmed blocks! e.g. 808780633942283BBA760B46D8979FB9C99CA8DF727E8F773BA92FAE714C14F9
+.DEBUG 1 unconfirmed blocks! e.g. 2652FF713A38E3CA37B3DB5DE4F6C72B616822464A8ED0085047C96E1235A3DC
+.DEBUG 1 unconfirmed blocks! e.g. 9F52693DCA64CBD0C4D84B319FE1B572E4BBB2BDF90F1443CA2339FB4D52EBB5
+.DEBUG 1 unconfirmed blocks! e.g. 251E92BF739161BE962E5F011D4B30CFFA2ACE4C41EC9B9002154A365D6A9F12
+.DEBUG 1 unconfirmed blocks! e.g. CB937A8849225A73F1CC64A050BFE02C5D572936F1FFEC1B659A97CE48CD5FFF
+.DEBUG 1 unconfirmed blocks! e.g. DBBE1D76BAF459DB87A468132677632FD2E2DCE0AD5E9333DB3FFF351E019713
+.DEBUG 1 unconfirmed blocks! e.g. 2BBECF9F59D48D1C0C9C00A96B7FD85DCC678CF2169892A780883787AA2D4232
+.DEBUG 1 unconfirmed blocks! e.g. FB1E25B381BB7AC99AE36C95CF1169C68BE3F0C5B300244078117B739FB8CF37
+.DEBUG 1 unconfirmed blocks! e.g. E5A77E7F9FD2F4428CE10DCF7E1E67EC15700FD876C9F5D3A3D34A1B9C882FC5
+.DEBUG 1 unconfirmed blocks! e.g. B6E965D6677C81D4725F926BBEF4166801666852C69F810F52438023AEADD5DC
+.DEBUG 1 unconfirmed blocks! e.g. 3BDE171BF3EF3344756FA4B630A3D4731AA7699CB9C8632AB27A471727614E53
+.DEBUG 1 unconfirmed blocks! e.g. 28FFC02F1CE75706360F21E4A829F9EF501D423EF83C030C8AD61B4B991F079D
+.DEBUG 1 unconfirmed blocks! e.g. BDDC69C6FD7EBB06489E9A3C89745C67C51307C9EC7C34C1B0BE21FDBA2010E6
+.DEBUG 1 unconfirmed blocks! e.g. 70CC927EC2AD40C766CC95A609C40B50F43E12D2314AAB9E14CBB08602EC145C
+.DEBUG 1 unconfirmed blocks! e.g. 88EECAE8E8CA583DE7A96F6C7BDA5E6D87613BAF92CC1A2495109E96D65624B9
+.DEBUG 1 unconfirmed blocks! e.g. 3384150F704126AD4E104EB75360525A894190530069D17EAA18F9BEA24F502C
+.DEBUG 1 unconfirmed blocks! e.g. F4EF08915AB392D79BB6F76B43D4F82C5412660CD4373C68E9FBD4D1270AF23A
+.DEBUG 1 unconfirmed blocks! e.g. 143FDDF79524F7342555623DA4D384E6A325682CEF32CED59F434EE1552481FF
+.DEBUG 1 unconfirmed blocks! e.g. D39477D1E9C09E2926066FC21695869690F2661EAE7EE8A5668A711FD659211A
+.DEBUG 1 unconfirmed blocks! e.g. AA4CCF11AE2C62E43E5D8DC3D8A0A344ECE2EC9A6928BE3D1337C3C12D30D591
+.DEBUG 1 unconfirmed blocks! e.g. F8B0B787DFE8FEDF81F747F7B1F28A29448F08F87F43F8AB08DF0C64964EA607
+.DEBUG 1 unconfirmed blocks! e.g. 31BFA4BD64305FEF72ABF5EEBE1914A67B7A4E354C6B5475E86396B207F9A149
+.DEBUG 1 unconfirmed blocks! e.g. DAD284204A10143B10B630AA370FD7E6F165DFE73571F2866380533C148B79B2
+.DEBUG 1 unconfirmed blocks! e.g. 285E5137EE0AC4F60B5943AEC060BBDF6D84D7E42C29679CE1A8709F036821BE
+.DEBUG 1 unconfirmed blocks! e.g. F4757BBDC2CCDF3629D1A37F39EC584160C714924522E1559BEA2025AA0501BC
+.DEBUG 1 unconfirmed blocks! e.g. 4C277658BB7FC0CF2D923E5E06EBEA1F367BCCF32329708C052242BD95E77443
+.DEBUG 1 unconfirmed blocks! e.g. F831715EEE5646D271770F1EAD32CA8CCAACF5E88AF3C2E59D982FBEE27DA497
+.DEBUG 1 unconfirmed blocks! e.g. 9F1249D0B3D92DA5AA9A3C051EFBDB9F6DDA331AE59D04FC6F5AC7FB707A5E09
+.DEBUG 1 unconfirmed blocks! e.g. BBCDD0B8DCCA7D7344F1A4879DC994AF8938C7D2BD2E1806CCD0699C8CD8608C
+.DEBUG 1 unconfirmed blocks! e.g. 30818924134C3A8E6CC111735455AB07F08D8136B5099A2A938D2DB7936ED6F8
+.DEBUG 1 unconfirmed blocks! e.g. 1FB239E16E85786155CBAD27C39D12027C6C82BE78BC5302DE7891DB3F275379
+.DEBUG 1 unconfirmed blocks! e.g. 1E9CD82F842FC501A7934BEC639486ED4C267BAAA12BCE02B6166B3587C94961
+.DEBUG 1 unconfirmed blocks! e.g. 644A99BF4F61579463578930DF640FA7F5BFE83F5D83C67D50331C8B837A263A
+.Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/threading.py", line 870, in run
+    self._target(*self._args, **self._kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/mixins/threaded_command_mixin.py", line 26, in _execute_command_sequence
+    self.command_instance.execute_another_command(command_config)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/command.py", line 49, in execute_another_command
+    another_command.execute()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/command.py", line 41, in execute
+    self.mixin.execute()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/mixins/python_command_mixin.py", line 40, in execute
+    method(**filtered_variables)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/pycmd.py", line 35, in publish_create
+    asyncio.run(test_case.run())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/publisher/test_case.py", line 69, in run
+    await self.stats_manager.initialize(self.node_name)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/publisher/confirmation_stats.py", line 17, in initialize
+    start_block_count = await self.nanorpc.block_count()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client.py", line 50, in block_count
+    return await self.rpc.block_count(include_cemented=include_cemented)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 33, in method
+    return await self.process_payloads([payload])
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 119, in process_payloads
+    return await self._request_with_retry(self._request, payloads)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 101, in _request_with_retry
+    return await self._retry_on_exception(coroutine,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 95, in _retry_on_exception
+    raise MaxRetriesExceededError(
+nanorpc.client_dynamic.MaxRetriesExceededError: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45102 ssl:default [Connect call failed ('172.17.0.1', 45102)]
+DEBUG 1 unconfirmed blocks! e.g. 3D3296CA15452B6DC72F96D8B31819A99200594A5083D290CA587F308722C53C
+
+
+11:45:40 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+11:45:40 0        | 100      | 0.2      | 0.0      | -1         | -1         | -1        | -1        | -1        | -1        | 5               | 504.43   | 100        | 0            |
