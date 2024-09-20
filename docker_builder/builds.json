@@ -24060,6 +24060,22 @@
     "run_id": "8719881726"
   },
   {
+    "hash": "ec45ff4eaece4cad0a1322647f9c3289d2b24686",
+    "type": "pull_request",
+    "title": "Improve `nano::test::system::add_node (...)`",
+    "author": "pwojcikdev",
+    "body": "I encountered a problem where `nano::test::system::add_node (...)` wouldn't properly connect all nodes. I simplified the code, removing legacy bootstrap waits, and it seems to work fine. Additionally I extended the initialization blocks list to\r\n```\r\nvoid set_initialization_blocks (std::deque<std::shared_ptr<nano::block>> blocks);\r\nvoid set_cemented_initialization_blocks (std::deque<std::shared_ptr<nano::block>> blocks);\r\n```\r\nin order to simplify setting up multiple nodes with the same set of blocks.",
+    "draft": false,
+    "pull_request": 4731,
+    "label": "pwojcikdev:system-connect-node-fixes",
+    "created_at": "2024-09-20T16:19:49Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-09-20T16:34:19Z",
+    "run_id": null
+  },
+  {
     "hash": "ec4706afc9c0f832595f00ea5eea41465319554d",
     "type": "pull_request",
     "pull_request": 4465,
