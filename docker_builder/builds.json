@@ -21713,6 +21713,22 @@
     "run_id": "9001299070"
   },
   {
+    "hash": "d4cac87a248d9732dd07a257571f37912bc0b88d",
+    "type": "pull_request",
+    "title": "Rework `collect_container_info (..)` functions",
+    "author": "pwojcikdev",
+    "body": "This simplifies how container info functionality is implemented for node components, avoiding unnecessary and annoying boilerplate.\r\n\r\nPreviously:\r\n```\r\nstd::unique_ptr<nano::container_info_component> nano::block_processor::collect_container_info (std::string const & name)\r\n{\r\n\tnano::lock_guard<nano::mutex> guard{ mutex };\r\n\r\n\tauto composite = std::make_unique<container_info_composite> (name);\r\n\tcomposite->add_component (std::make_unique<container_info_leaf> (container_info_entry{ \"blocks\", queue.size (), 0 }));\r\n\tcomposite->add_component (std::make_unique<container_info_leaf> (container_info_entry{ \"forced\", queue.size ({ nano::block_source::forced }), 0 }));\r\n\tcomposite->add_component (queue.collect_container_info (\"queue\"));\r\n\treturn composite;\r\n}\r\n```\r\n\r\n\r\nNow:\r\n```\r\nnano::container_info nano::block_processor::container_info () const\r\n{\r\n\tnano::lock_guard<nano::mutex> guard{ mutex };\r\n\r\n\tnano::container_info info;\r\n\tinfo.put (\"blocks\", queue.size ());\r\n\tinfo.put (\"forced\", queue.size ({ nano::block_source::forced }));\r\n\tinfo.add (\"queue\", queue.container_info ());\r\n\treturn info;\r\n}\r\n```\r\n",
+    "draft": false,
+    "pull_request": 4736,
+    "label": "pwojcikdev:container-infos-5",
+    "created_at": "2024-09-24T19:43:06Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-09-24T19:44:00Z",
+    "run_id": null
+  },
+  {
     "hash": "d4cbf1eaf3b1f95629761976debdf0d65006f78d",
     "type": "commit",
     "created_at": "2024-03-07T00:32:00Z",
