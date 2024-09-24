@@ -12622,6 +12622,22 @@
     "docker_tag": "gr0v1ty/nano-node:788a53f296fe8a407fd5902cb80c7aa136a8777a"
   },
   {
+    "hash": "78975aa6c9445be60761dddf5258a7da10f935aa",
+    "type": "pull_request",
+    "title": "Replace legacy XRB ratios",
+    "author": "RickiNano",
+    "body": "This PR cleans up the old xrb ratios and replaces them with nano_ratio.\r\n\r\n| Existing name  | ratio | Value | New name |\r\n| ------------- | ------------- |------------- |------------- |\r\n| Gxrb_ratio  | 10^33|  1000 nano | Knano_ratio |\r\n| Mxrb_ratio | 10^30|  1 nano | nano_ratio |\r\n| kxrb_ratio | 10^27|  0.001 nano | _*removed*_ |\r\n| xrb_ratio |  10^24|  0.000001 | _*removed*_ |\r\n\r\nIdeally we would want to have only Nano and Raw ratios, but Gxrb_ratio (1000 nano) was referenced so many places in code that I kept it but renamed it to Knano_ratio. \r\n\r\nThe following deprecated RPC endpoints for conversion has been removed:\r\n- krai_from_raw\r\n- krai_to_raw\r\n- mrai_from_raw\r\n- mrai_to_raw\r\n- rai_from_raw\r\n- rai_to_raw",
+    "draft": false,
+    "pull_request": 4733,
+    "label": "RickiNano:xrb-ratios",
+    "created_at": "2024-09-23T06:46:58Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-09-24T14:53:17Z",
+    "run_id": null
+  },
+  {
     "hash": "789a029ba949f7b3106314575375c2da3d766e34",
     "type": "pull_request",
     "pull_request": 3928,
