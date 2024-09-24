@@ -2928,6 +2928,22 @@
     "run_id": "9075369468"
   },
   {
+    "hash": "1d07e46bd9815709b1b1542c3b7d19b2a95d02e6",
+    "type": "pull_request",
+    "title": "Network filter for votes",
+    "author": "pwojcikdev",
+    "body": "This filters out vote duplicates early on during packet processing. This showed significant reduction in number of processed votes for synthetic network simulations and when running on a live network representative.\r\n\r\nThe network filter now implements an age cutoff for its entries, so rebroadcasts are allowed after 60 seconds by default. This should remove the need for explicit clearing in case entries are dropped further in the pipeline.\r\n\r\nTest results from @gr0vity-dev:\r\n![image](https://github.com/user-attachments/assets/a6b3c148-ee22-4508-9f30-e18c06613ecd)\r\n\r\n",
+    "draft": false,
+    "pull_request": 4735,
+    "label": "pwojcikdev:vote-duplicate-filter",
+    "created_at": "2024-09-24T18:15:03Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-09-24T18:16:53Z",
+    "run_id": null
+  },
+  {
     "hash": "1d0b671c9f338e90f3a14bfeb80f0c161e48bf16",
     "type": "commit",
     "created_at": "2023-02-16T18:14:12Z",
