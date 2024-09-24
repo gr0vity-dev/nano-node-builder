@@ -20641,6 +20641,22 @@
     "docker_tag": "gr0v1ty/nano-node:c9e052fe581cdd65ee7a05584288673e902110e0"
   },
   {
+    "hash": "c9ee5365e3935db30c99b58da86c9a2568fc2301",
+    "type": "pull_request",
+    "title": "Network filter for votes",
+    "author": "pwojcikdev",
+    "body": "This filters out vote duplicates early on during packet processing. This showed significant reduction in number of processed votes for synthetic network simulations and when running on a live network representative.\r\n\r\nThe network filter now implements an age cutoff for its entries, so rebroadcasts are allowed after 60 seconds by default. This should remove the need for explicit clearing in case entries are dropped further in the pipeline.\r\n\r\nTest results from @gr0vity-dev, his help was invaluable in detecting and fixing this inefficiency:\r\n\r\n![image](https://github.com/user-attachments/assets/a6b3c148-ee22-4508-9f30-e18c06613ecd)\r\n\r\n",
+    "draft": false,
+    "pull_request": 4735,
+    "label": "pwojcikdev:vote-duplicate-filter",
+    "created_at": "2024-09-24T18:15:03Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-09-24T18:38:33Z",
+    "run_id": null
+  },
+  {
     "hash": "ca0bfdf92a65d61461e4d27d62ede2b756ffc8f0",
     "type": "pull_request",
     "pull_request": 4238,
