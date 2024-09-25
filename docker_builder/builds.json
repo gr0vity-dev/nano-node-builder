@@ -1771,7 +1771,7 @@
     "pull_request": "N/A",
     "created_at": "2024-09-23T15:08:25Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2024-09-25T13:41:38Z",
     "run_id": null
@@ -4946,6 +4946,22 @@
     "docker_tag": "gr0v1ty/nano-node:3045222b11e378aec48f4f099b7c3e5ffb86192f",
     "build_started_at": "2024-01-24T21:06:49Z",
     "run_id": "7646245790"
+  },
+  {
+    "hash": "3048b95fdf2a6abb7311a8075a90e9de7aaf4aa8",
+    "type": "pull_request",
+    "title": "Database scan improvements",
+    "author": "pwojcikdev",
+    "body": "This uses iterators for fetching accounts for ascending bootstrap database scan. This significantly reduces the load on the database backend in case of RocksDB.",
+    "draft": false,
+    "pull_request": 4734,
+    "label": "pwojcikdev:database-scan-improvements",
+    "created_at": "2024-09-24T14:44:18Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-09-25T13:49:10Z",
+    "run_id": null
   },
   {
     "hash": "30552660601c275c984b7a19358cfba7c5ab5df7",
@@ -26065,6 +26081,22 @@
     "docker_tag": "gr0v1ty/nano-node:f8812085d1c2b9a8ea886fc7cf3070f0e2fa67ea",
     "build_started_at": "2024-05-01T11:45:05Z",
     "run_id": "8909019304"
+  },
+  {
+    "hash": "f897eeac3727909842911d4ae440ff512e546d5a",
+    "type": "pull_request",
+    "title": "Rework `collect_container_info (..)` functions",
+    "author": "pwojcikdev",
+    "body": "This simplifies how container info functionality is implemented for node components, avoiding unnecessary and annoying boilerplate.\r\n\r\nPreviously:\r\n```\r\nstd::unique_ptr<nano::container_info_component> nano::block_processor::collect_container_info (std::string const & name)\r\n{\r\n\tnano::lock_guard<nano::mutex> guard{ mutex };\r\n\r\n\tauto composite = std::make_unique<container_info_composite> (name);\r\n\tcomposite->add_component (std::make_unique<container_info_leaf> (container_info_entry{ \"blocks\", queue.size (), 0 }));\r\n\tcomposite->add_component (std::make_unique<container_info_leaf> (container_info_entry{ \"forced\", queue.size ({ nano::block_source::forced }), 0 }));\r\n\tcomposite->add_component (queue.collect_container_info (\"queue\"));\r\n\treturn composite;\r\n}\r\n```\r\n\r\n\r\nNow:\r\n```\r\nnano::container_info nano::block_processor::container_info () const\r\n{\r\n\tnano::lock_guard<nano::mutex> guard{ mutex };\r\n\r\n\tnano::container_info info;\r\n\tinfo.put (\"blocks\", queue.size ());\r\n\tinfo.put (\"forced\", queue.size ({ nano::block_source::forced }));\r\n\tinfo.add (\"queue\", queue.container_info ());\r\n\treturn info;\r\n}\r\n```\r\n",
+    "draft": false,
+    "pull_request": 4736,
+    "label": "pwojcikdev:container-infos-5",
+    "created_at": "2024-09-24T19:43:06Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-09-25T13:49:10Z",
+    "run_id": null
   },
   {
     "hash": "f8ab9be833236c6be8910af51645dff605b48f5f",
