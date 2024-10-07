@@ -1,0 +1,305 @@
+5e9ca8425c390e9327b598473d453d8c4a22db5e: Pulling from gr0v1ty/nano-node
+6414378b6477: Already exists
+15238a1be76e: Pulling fs layer
+596ce9f6bd72: Pulling fs layer
+8017cd33595f: Pulling fs layer
+96971ee76dac: Pulling fs layer
+9a264275e8be: Pulling fs layer
+741f4c808036: Pulling fs layer
+c126338fd8f8: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+5c89efea07a1: Pulling fs layer
+b8398aedb0a6: Pulling fs layer
+741f4c808036: Waiting
+c126338fd8f8: Waiting
+b8398aedb0a6: Waiting
+4f4fb700ef54: Waiting
+5c89efea07a1: Waiting
+96971ee76dac: Waiting
+9a264275e8be: Waiting
+15238a1be76e: Download complete
+8017cd33595f: Verifying Checksum
+8017cd33595f: Download complete
+96971ee76dac: Verifying Checksum
+96971ee76dac: Download complete
+15238a1be76e: Pull complete
+9a264275e8be: Verifying Checksum
+9a264275e8be: Download complete
+741f4c808036: Verifying Checksum
+741f4c808036: Download complete
+c126338fd8f8: Verifying Checksum
+c126338fd8f8: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+5c89efea07a1: Verifying Checksum
+5c89efea07a1: Download complete
+b8398aedb0a6: Verifying Checksum
+b8398aedb0a6: Download complete
+596ce9f6bd72: Verifying Checksum
+596ce9f6bd72: Download complete
+596ce9f6bd72: Pull complete
+8017cd33595f: Pull complete
+96971ee76dac: Pull complete
+9a264275e8be: Pull complete
+741f4c808036: Pull complete
+c126338fd8f8: Pull complete
+4f4fb700ef54: Pull complete
+5c89efea07a1: Pull complete
+b8398aedb0a6: Pull complete
+Digest: sha256:75e5e8a071b4059c74a9c5a9ea1d4dff56ab24a5275b80ce511c4eeb288dc3ed
+Status: Downloaded newer image for gr0v1ty/nano-node:5e9ca8425c390e9327b598473d453d8c4a22db5e
+docker.io/gr0v1ty/nano-node:5e9ca8425c390e9327b598473d453d8c4a22db5e
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_send_dependant.json
+Start Fetching '5n4pr_conf_send_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_send_dependant_config.json'
+Done  Fetching '5n4pr_conf_send_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_send_dependant_config.json'
+Start Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Done  Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+SUCCESS: stop_containers completed with None result.
+SUCCESS: reset_nodes_data completed with None result.
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+Error executing command: nanomock start && nanomock init_wallets
+Error: ERROR: Command failed: docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d
+ERROR: Error output: Creating volume "nanomock_nl_default_volume" with default driver
+Creating nl_pr2 ... 
+Creating nl_genesis ... 
+Creating nl_pr1     ... 
+Creating nl_pr4     ... 
+Creating nl_pr3     ... 
+Host is already in use by another container
+Creating nl_pr4     ... error
+
+ERROR: for nl_pr4  Cannot start service nl_pr4: driver failed programming external connectivity on endpoint nl_pr4 (5d00cfd30ff2e94b225cac1c685acb39f969933e770939253226e5d79698d54b): failed to bind port 0.0.0.0:44104/tcp: Error starting userland proxy: listen tcp4 0.0.0.0:44104: bind: address already in use
+Creating nl_pr2     ... done
+Creating nl_pr2_exporter ... 
+Creating nl_genesis      ... done
+Creating nl_genesis_exporter ... 
+Creating nl_pr1              ... done
+Creating nl_pr3              ... done
+Creating nl_pr1_exporter     ... 
+Creating nl_pr3_exporter     ... 
+Creating nl_pr2_exporter     ... done
+Creating nl_genesis_exporter ... done
+Creating nl_pr1_exporter     ... done
+Creating nl_pr3_exporter     ... done
+
+ERROR: for nl_pr4  Cannot start service nl_pr4: driver failed programming external connectivity on endpoint nl_pr4 (5d00cfd30ff2e94b225cac1c685acb39f969933e770939253226e5d79698d54b): failed to bind port 0.0.0.0:44104/tcp: Error starting userland proxy: listen tcp4 0.0.0.0:44104: bind: address already in use
+Encountered errors while bringing up the project.
+
+ERROR: Return code: 1
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 198, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanomock", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 58, in main
+    asyncio.run(main_async(args))
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 54, in main_async
+    await manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 544, in execute_command
+    await command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 473, in start_containers
+    self.docker_interface.compose_start(nodes)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 56, in compose_start
+    return self._run_command(cmd)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 33, in _run_command
+    subprocess_run_capture_output(base_command)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 209, in subprocess_run_capture_output
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: <exception str() failed>
+.DEBUG 2 unconfirmed blocks! e.g. D548B54334631B003F7F8E9C93B5C82259B9B13DE03FB6A402612C3D281D77DC
+.DEBUG 2 unconfirmed blocks! e.g. F4B35180AA9195CFCC5CCEB2CB97A5449CCE4F2BC5AE8787C9C3D964C080948B
+.DEBUG 2 unconfirmed blocks! e.g. 0ED53C894CC4080A618B2AFF1E011D1F117ED6251711D5AE22F09BFD9B7F095D
+.DEBUG 2 unconfirmed blocks! e.g. 45089B868D32B1E192D510E45510B1AAD78BA7071C1263471B43F81A01EA4569
+.DEBUG 2 unconfirmed blocks! e.g. A26FBF37F7F198C1626FB8340D416060E834A35A689FB067FE9231D03F42FD7F
+.DEBUG 2 unconfirmed blocks! e.g. 95BA65E10B681263C6D8E6E11820E12D8E15ED02457E627AA79F18B90370C66F
+.DEBUG 2 unconfirmed blocks! e.g. 45B2475463DD5FA44E88EF8EEBAFF9CE27FC8DCB3445C2D4F27FDBF821CF308E
+.DEBUG 2 unconfirmed blocks! e.g. 3FC5D66AB91161F9A6A0514DBD110D38A3DAFC5B375EDDD80225851FADD9A01A
+.DEBUG 2 unconfirmed blocks! e.g. B9B2F12EB525DDE96D58F4CD0237A19EE1404FE8CDD26A0BFD9D4D86863D3A70
+.DEBUG 2 unconfirmed blocks! e.g. 52B60DCB88C68892B5AE2A2DCBC44CE404D8212426461F54A8576978735205F1
+.DEBUG 2 unconfirmed blocks! e.g. DB6CE9A338F169F72F3F633FE044A850763A13EE42F03551DCCE2A94F07977C1
+.DEBUG 2 unconfirmed blocks! e.g. 68975DB74B17E9D79AA7AB4EBE9E9D5AA99678511EA700802C7E59FC5ADFFC29
+.DEBUG 2 unconfirmed blocks! e.g. 8AF9CF3D9AAA1F674740C62AE246BA7D27A3BB5EF66A1D8CEE22102DB651DFC3
+.DEBUG 2 unconfirmed blocks! e.g. 74A76569AF2BEBEF55DFC58EB756A431E72F74DFC0A4E88754B3756E4FD1FF8B
+.DEBUG 2 unconfirmed blocks! e.g. 75E34C4C7EFB325311B42ADC5B39C9E79B47DCBA2FDEB2DFAC7A69F24CD1EF76
+.DEBUG 2 unconfirmed blocks! e.g. 25C222F7D664670448E9010A7BA9270301EA8B81AFBC2E3E1DD582DA4524FC4A
+.DEBUG 2 unconfirmed blocks! e.g. 7B18836181D16FF53A3ACF145671755513E10462B95741F15D4EBADAC8D7B5D3
+.DEBUG 2 unconfirmed blocks! e.g. 808A6EEB01C90E3993A69FA0A1B553850DBCC0CB6BEC2913CAB1360CE564F0C8
+.DEBUG 2 unconfirmed blocks! e.g. EF56C4AA73E6984AB40F4925CEC493146E45F347328F7257E9E9FD17BB20B719
+.DEBUG 2 unconfirmed blocks! e.g. 37FBBBDB9EFFC8A95E068AE3DDC810DCE5A2F73099FE5107619F2E390773FF5F
+.DEBUG 2 unconfirmed blocks! e.g. 69724F79274CCC22F498F01306ED9BFBBD68FA58DA7AF8B61A5318A899A728C7
+.DEBUG 2 unconfirmed blocks! e.g. 30733EF99D56355773061E95C0D5EFD2B9284C5ED8C8BDA60A93D0868AFCF4E7
+.DEBUG 2 unconfirmed blocks! e.g. 9BB5359353A7B24087326529A903827630F61587F1E7F48B3BF6AC008C9628FB
+.DEBUG 2 unconfirmed blocks! e.g. 1C71D6C8EC4F14D8D09D772B38493ADB8377DF1D122BCD0BC4755EAB07046457
+.DEBUG 2 unconfirmed blocks! e.g. D10CF78FAF291EBA13012AABEDD7F42B5D443376F37E6C7CE06CD2DBECC7125E
+.DEBUG 2 unconfirmed blocks! e.g. 20D663F09166186F4B11F020A2F932D493F3DD65E534E6D78302BA15E308FBC6
+.DEBUG 2 unconfirmed blocks! e.g. 22CD8EBC77920FC6899A289592B83592EBB304883FF767C2279A8D74763DFBBB
+.DEBUG 2 unconfirmed blocks! e.g. 3B3A61A93AC12E5F3C7B14CDAB69CE5FA3BAA8E270E12430EFEDE73B11A98BE7
+.DEBUG 2 unconfirmed blocks! e.g. 57CB3981F2C43AD446B4778EDA3948986A483B7293815BF30FD4C4D7AB551D45
+.DEBUG 2 unconfirmed blocks! e.g. CF33ADFA9708D930443B9CA87D72108D52688082F79C51C02FD242F04817237F
+.DEBUG 2 unconfirmed blocks! e.g. 0CAC5DF6743A8936CEE0922C2B98841008DC25DC882CEAF470A5B9C68E26428E
+.DEBUG 2 unconfirmed blocks! e.g. 1D38BE5A8ABE12FAFEB9940D4DF6BC31454435EEA64FB85A7765AC5158782BF3
+.DEBUG 2 unconfirmed blocks! e.g. 4C36DE793C7283A97C0F5D90E32064D4B4687213FE49F3DDD326B931CB4D3C66
+.DEBUG 2 unconfirmed blocks! e.g. 56FFD0B9C57131F79B59827CE8C63FAB31E7ACCEE084FD79E29788FA0B569C4B
+.DEBUG 2 unconfirmed blocks! e.g. EA3E1217C52BF4453E0B1479D37DA99D47DAAF1E73271687A25A2E7ABA60BB13
+.DEBUG 2 unconfirmed blocks! e.g. B25815F0D4EB594BAF24A66A822198F1BAB60A2FFE05612A8AE8BA424BD4C7D0
+.DEBUG 2 unconfirmed blocks! e.g. C1E291AC4FED25227384486D6E7EE9A11E8BFD617C665F02D38891DB588CCD60
+.DEBUG 2 unconfirmed blocks! e.g. 12ACB483C16BD54A9E4D6ED16C9E075ED46A17EBB61F4216DF6A6933DD8BB11E
+.DEBUG 2 unconfirmed blocks! e.g. A7C3124678B03A09A9C531CB8351B3584FF7C9FB0318E6418338A5A0C692D576
+.DEBUG 2 unconfirmed blocks! e.g. 11662E3BB6F1A0510C41B0105BC34B3EE1E98B723C95088762F95BEAE7F484A8
+.DEBUG 2 unconfirmed blocks! e.g. 234FF12DF6F5323B704946D0F6F984056813A3B57C2685B8A1E2C3C6F43456B2
+.DEBUG 2 unconfirmed blocks! e.g. 1391428D855641A52E294D51BD3B7681F56D010CB3A9917341B9E6135A3CC8B5
+.DEBUG 2 unconfirmed blocks! e.g. 2FDD8A8AD4533C52EE85518C4EB34975E613C8573A84752C30254A174E877540
+.DEBUG 2 unconfirmed blocks! e.g. 8D43151D233001D9D25961DEB8C4FFF2555D567C0E85ACD8A49BBAF44D7B9FB4
+.DEBUG 2 unconfirmed blocks! e.g. 2DC5EF9A17973FBD81A22BCD89BC1BD99744A4AED2E01FB619650034E1AFB0F2
+.DEBUG 2 unconfirmed blocks! e.g. 8F6ED9EDA8907DF5E4CA1351E6051D02A32198D5E1BDA98667E4162BB0A81698
+.DEBUG 2 unconfirmed blocks! e.g. 13F5E18D2C844B3F0B44EEDC9ED48A9DF2CBB7003C10C438B7CB04468E7764F0
+.DEBUG 2 unconfirmed blocks! e.g. D558D8DDE159610FE8B71B294B714987E5D302FFCB88DC86CD20D3611533F083
+.DEBUG 2 unconfirmed blocks! e.g. 450066D2717CF13CEF2923FB2936D2E57E80FC759ECC839CFC09E909724D5505
+.DEBUG 2 unconfirmed blocks! e.g. 63EE2054FB31EDB77A726D9BD5DFB069F95E8F1621CAFE4603F69BC28AB20B3B
+
+
+17:38:02 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+17:38:02 0        | 100      | 0.4      | 0.0      | -1         | -1         | -1        | -1        | -1        | -1        | 5               | 252.89   | 100        | 0            |
+.DEBUG 2 unconfirmed blocks! e.g. C38CE95CEA02B7B7E0CDD58E5A9D9CC1A7DBD129C5C2A13928832F0B396C2ED3
+.DEBUG 2 unconfirmed blocks! e.g. 72EA1F7186CC96DCA0366983498F0BF303ECA03911C813FA3FC6DBD472599DAD
+.DEBUG 2 unconfirmed blocks! e.g. C85354E774A80A8118E2AB36E4154E87A59F2E5B5487DBEBD24CB8A0D910E162
+.DEBUG 2 unconfirmed blocks! e.g. A29F43E5C0BC1D7307A7E948EFDC35F0BC37B52A414D7693FBA788FBFE515084
+.DEBUG 2 unconfirmed blocks! e.g. 5F23C94ED9CA59EBD3B63C09F70D69938FFEE4640E546F0AB3ECADD074DE6D4C
+.DEBUG 2 unconfirmed blocks! e.g. F04C1D47B1B587A79BBAF130422FF407D2C64DC0140CC8CD5576B99591B22989
+.DEBUG 2 unconfirmed blocks! e.g. 50D38EE46B3D3390FFC4197A0C6D7AD5684CDD6D9DD4D3E4AAF746F545E90207
+.DEBUG 2 unconfirmed blocks! e.g. E27816F6898599A3C281E4783B3FCA2D5788CA8F6E9653D1A913FB8D0F4D92CC
+.DEBUG 2 unconfirmed blocks! e.g. DCEFD27F1C9D51AF88B689ED8C31C091217B96534F744498E47E78BE21D089D6
+.DEBUG 2 unconfirmed blocks! e.g. B5C45C2A3A8239EEB419FF70F967AF7FA0C004CE76EC14926A2D7C4CC682AEE9
+.DEBUG 2 unconfirmed blocks! e.g. 2609CE8E2E4007B1DF391E497B032AC89318D6CD9B46A26083375DD0F1B4528F
+.DEBUG 2 unconfirmed blocks! e.g. A9A79673ADFE52D38F1E529FD29C1B70351379FE4FFFFCB2134D554215274628
+.DEBUG 2 unconfirmed blocks! e.g. 39B1D25CD3C0B7B8E225123609AD13E285E75E7E504D0651240773258496D1E7
+.DEBUG 2 unconfirmed blocks! e.g. 15AF1656014DC0F1CC355AD12DA52D54FBA5E5654B45E98C31D25B4E53104A05
+.DEBUG 2 unconfirmed blocks! e.g. F9439E8692FF5F1FAFBECE6F1703F9B1635CD82D2F1A765A89248BB0F8383C3E
+.DEBUG 2 unconfirmed blocks! e.g. 4EB156F462F26BD07484A4BF89E532E8490BBDCE196F2DB630D221D60D661D99
+.DEBUG 2 unconfirmed blocks! e.g. 92CD5922A70682BE8713CC2CA0C25BA99C02F5972DE89F19438C2E9BE88F8A04
+.DEBUG 2 unconfirmed blocks! e.g. 8718FAAE7DC7F47907FBA5AD466FA700D64A71C59F89F2DABEFBF7A67610E749
+.DEBUG 2 unconfirmed blocks! e.g. B6A02B4F99F3B65A3AC5515DA7A9F9064DD7D1FDA7A9020FCF5E9B1716E9F149
+.DEBUG 2 unconfirmed blocks! e.g. 52D9D3A18079D3C19FCA1DBA727BD1DB0F83AAB3801BD98423E45614B96A5345
+.DEBUG 2 unconfirmed blocks! e.g. 0CC8F577864FE1E9BD9E90C089F85E56A551FB4A4A2EB3B9E2F3E68F832EAE0B
+.DEBUG 2 unconfirmed blocks! e.g. 90F9670B72846867AD7FA7910B489C2BF6D73E37EA5F8792F68B0890D8A3C22D
+.DEBUG 2 unconfirmed blocks! e.g. 313C791A25CB43EA1AE0F376A3EB94164C716BA37E73BE416268C2E47A114CED
+.DEBUG 2 unconfirmed blocks! e.g. B0BCDF97B2F0793795678FB04EF90B8B9608F164F70140A958C7235C73ABDDE2
+.DEBUG 2 unconfirmed blocks! e.g. 93887EA83631C62E2F1A052D77ED4A15B2081B3D1A88023F208899D0256F13C1
+.DEBUG 2 unconfirmed blocks! e.g. E1BF0222C49802EC406509395D5166179C0834EEECD61002C5118CC5D0B83C50
+.DEBUG 2 unconfirmed blocks! e.g. 93BA11B23B4F4B970FE50C4E27C5E588439B983BA9CDB950B671605A1F4AB476
+.DEBUG 2 unconfirmed blocks! e.g. 89ACA80D8A92FF47683ED2D73B5C068B5DC18479E87513FCCC210565C4031904
+.DEBUG 2 unconfirmed blocks! e.g. 5402A0301ED52D3784C754C2D6AC0447063FA7D9E303253423148DC8C682FB39
+.DEBUG 2 unconfirmed blocks! e.g. 93B22C5EACC7F7BA1BCFB0C2CCB62E104D10D8BFBAC6C582A3C496B3BE7F7321
+.DEBUG 2 unconfirmed blocks! e.g. 3EA2774B2E1AB0BEA46ACB5134ABBC282E708EE1F88E8C799CCE4F3FDD643486
+.DEBUG 2 unconfirmed blocks! e.g. 67AFDBEAD8816F2F2FFD2119C30F43258414515C76DFB3184DD35303FD099E25
+.DEBUG 2 unconfirmed blocks! e.g. B83ED87CE80402D45CC7461F0D0116FC514C9C0E25F25CDE7DCCB5D88B5D65F6
+.DEBUG 2 unconfirmed blocks! e.g. 06E386CA3FE073ACB43BCFB88C12B60BEEA9819916F5146B7ECCE974DCE49D50
+.DEBUG 2 unconfirmed blocks! e.g. 45374FF2AF8B577DE0FEE93AB05E0EFB4215A145A1CC32D1FC184D50DE223765
+.DEBUG 2 unconfirmed blocks! e.g. 8F8ED537B69E7006F23411E157B183542B1F08F28DF67429769C954F8BBCCB03
+.DEBUG 2 unconfirmed blocks! e.g. FA9116744F3DC0F76C433E579E7A8A274800EEE578CC91947AAE77C66532215F
+.DEBUG 2 unconfirmed blocks! e.g. 8AAF00D7A30688A7FE57B7467F77871B5C483266B01FF9D90C674D35E523A978
+.DEBUG 2 unconfirmed blocks! e.g. 348B7F018BD3EA8CD425A4AB9116207F3292185A56A37AA4DD7E0F2C4FC4ECDE
+.DEBUG 2 unconfirmed blocks! e.g. BFA3DDF4D93C928B8A55DE12CBFB7AEB87285C7C1D17D38C1D8A3FDA50605778
+.DEBUG 2 unconfirmed blocks! e.g. 6FAF04248B67B1AC558AF20A729C2E06D1684A482A23018F52BF044B693B22AC
+.DEBUG 2 unconfirmed blocks! e.g. FF8A680C3921FDD1068D699F41B5F3F3268805894B535BAA329674324738876E
+.DEBUG 2 unconfirmed blocks! e.g. AB24610253B1FCBE9988EAFBA6F34B3966266FF780B9D993C01BA0763DA3C3F6
+.DEBUG 2 unconfirmed blocks! e.g. 289AAE36FAAB62490DF5D96DCD355A91106034471697E710F79D2B7A228428FA
+.DEBUG 2 unconfirmed blocks! e.g. 6ADEE875928383173AEB06984E61439222BDCAC784ED8DECCAA77B0A72CC0941
+.DEBUG 2 unconfirmed blocks! e.g. B8B988833B13F0F22204ECBFC1F90FA2CAE3411B3047382DAA64BEE6B488FF46
+.DEBUG 2 unconfirmed blocks! e.g. 43C2464F4A32D92745260A1698FF7125EFE3ABB299EDA634C5B26CA266F4BC99
+.DEBUG 2 unconfirmed blocks! e.g. EDEB474110DD2672DD066E1E003DC69460E2D7FCAE62D6AE6700F49D0BC95E64
+.DEBUG 2 unconfirmed blocks! e.g. 79D08A1ADB68EB5F95ACE5F7470E99379B43097E307B6711ABB4CF87089E5A6D
+.DEBUG 2 unconfirmed blocks! e.g. 10427E81474A21F8AEB328676C07EE3D5B1C3037E24871F476F6DFEBBD8762F5
+
+
+17:42:15 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+17:42:15 0        | 100      | 0.4      | 0.0      | -1         | -1         | -1        | -1        | -1        | -1        | 5               | 252.37   | 100        | 0            |
+.DEBUG 2 unconfirmed blocks! e.g. 422500F6AE2AF835ED0EEF8B940D9119256F8B5E5B301173F84F7C2B9DBB3D15
+.DEBUG 2 unconfirmed blocks! e.g. 973ADFBC6F2DB1B911EC0E8E78AF09FA688E1F5BAD005A33B93910935A839A15
+.DEBUG 2 unconfirmed blocks! e.g. 9BB0A0820510AB464B0E2E755D9AE71D726E863C833F3C2D1F65FFB78F9442D0
+.DEBUG 2 unconfirmed blocks! e.g. D591F2EEA3873915AE435C1219A40EA337F774F9ECA4AD0D8C6308925C49BC00
+.DEBUG 2 unconfirmed blocks! e.g. D7CC3EF73FD5DCEE8F49D4631F8CB67B61E8CD06A7F639448BD8E31DFD1FDF74
+.DEBUG 2 unconfirmed blocks! e.g. 80FBD7CD40C5B92C984553B42BE8968DC4F54EFF09B3A3A925BBC8ED3CE1A8BB
+.DEBUG 2 unconfirmed blocks! e.g. 05C4D5066464588A84D01566D89E08F64F283AE54F1085FC13E3AC1ACC5B8C49
+.DEBUG 2 unconfirmed blocks! e.g. 771AF1920EDAA06ECEA930435DC4ABA3081169176D5FFA776E986FD712C2B078
+.DEBUG 2 unconfirmed blocks! e.g. C5D0325857D622E631317B03A47AA4A886353C95702F3568052AEA04928E988E
+.DEBUG 2 unconfirmed blocks! e.g. 174B3B8CF9466B528BB10DDF076A530CBC9FCF8D7198FE9268D4F54A603E4FA9
+.DEBUG 2 unconfirmed blocks! e.g. 7D171DF49FCC85BFD720B7AE72CDE715C0EBA82F41F8349DBAB17CA9868D4326
+.DEBUG 2 unconfirmed blocks! e.g. 7FEB41CA89FCCBBD4E46D1016A463B92C6E0B3E9D36DE39FBF806E9952AB6AD3
+.DEBUG 2 unconfirmed blocks! e.g. 738DE566DBBB67D87700633717EA6A26308310DDC287D0E8B19D43F811304052
+.DEBUG 2 unconfirmed blocks! e.g. 3A315CDE4B7FB011E7100E6ED3ECF752B2A0C9D30516E878B92E19F097A62BDB
+.DEBUG 2 unconfirmed blocks! e.g. 6DB9B8D2DEC29992CED3FD181D8A5B366907145331826663EABBEE7F133E5BAD
+.DEBUG 2 unconfirmed blocks! e.g. AB0277F277CCF6640B21DFC9C852929BE0D72ECB70E3799FBFCF00AC0410937A
+.DEBUG 2 unconfirmed blocks! e.g. 7A5405657264F7E5066BB193620D431042B9770BEE21DBAC176329A0DBEB5C7D
+.DEBUG 2 unconfirmed blocks! e.g. 4F3B46F8724CA78D93791E0E8201CBF7F130D0E2A201E507E2E01E7A82A77B2D
+.DEBUG 2 unconfirmed blocks! e.g. 4CA7FA4F2266CEE8CFBBD50228A10E30ADF78190D307F4CD43130DE01D9898C1
+.DEBUG 2 unconfirmed blocks! e.g. 275DEEAC16D96155611CADBEA709358085BACC508CAC3AA228F0B127442F48C6
+.DEBUG 2 unconfirmed blocks! e.g. 477C3D3C23080FBD8EA5E8EE84FC5E2C81A93FB004DEB9D91246C6C150B365C5
+.DEBUG 2 unconfirmed blocks! e.g. A18530FF320E21B5D495305626FF71798C2047300FFD52E04715F73BF1791360
+.DEBUG 2 unconfirmed blocks! e.g. 78B4426AAAD5F5AA298865B907BB354C45759ACF0B7E11619D06C142B9571973
+.DEBUG 2 unconfirmed blocks! e.g. B5D665DAAF2747F2DD6AB36057CFB00A6BBBA776E64D5FD2B1F846798BF723E3
+.DEBUG 2 unconfirmed blocks! e.g. 34BF588BFA714D3E0D1FB6289F701967FF8C19477291F372E9526C368F8484AA
+.DEBUG 2 unconfirmed blocks! e.g. 3A5928D31D9AA93F056ED9D02E94D9AB63E94EE2C9A2EA302AC883DDCFC1FFD6
+.DEBUG 2 unconfirmed blocks! e.g. B9144D799AB70785D4288F8A53857219098976CF576518D142B861343B97C916
+.DEBUG 2 unconfirmed blocks! e.g. DF3A70B65A9A0E2D3779426253E967FE5B302F749CB40E4A26D61461EB82E90C
+.DEBUG 2 unconfirmed blocks! e.g. C056C2BEA45B940F951D989535B127DA80A0A65B312F9AF3693FDF58EAE30466
+.DEBUG 2 unconfirmed blocks! e.g. 3914CABE59B5D5A85ED0CBF1204268BC1F081CDF1ECE27C0DD413A580C0A3AE1
+.DEBUG 2 unconfirmed blocks! e.g. 9EC382833D65CA547A598A0924FAC6301C6E0CC21846B3C83784CEE0F53C9E1C
+.DEBUG 2 unconfirmed blocks! e.g. 84B423E16EC322DB6F0735CBCA63E8E4317019D8B00BABE2D956371B179163CC
+.DEBUG 2 unconfirmed blocks! e.g. 9DDAB293D3151A555468847B69FEA2F725AC16407826AF46B9E29A46BB848B9B
+.DEBUG 2 unconfirmed blocks! e.g. E9495B1ADDD9BF0F3A921D0F11F81F38EA119A57E5D772AD4B632CFCDE759B8A
+.DEBUG 2 unconfirmed blocks! e.g. 2B6426DEC37E288620A0C6CFDDB1C5F0B0066672E52D35018E9B07941AA0620D
+.DEBUG 2 unconfirmed blocks! e.g. D259963637EE9E636D40B625C4E988D577E883D41CBE6C9F3705E51E4E16BCF8
+.DEBUG 2 unconfirmed blocks! e.g. CAAD5D084CDAEE8450BCA60ADBA17F53FD78AFA4509B95A466660CD9BFD62BC3
+.DEBUG 2 unconfirmed blocks! e.g. 4B8859EF9F45C9CE1F0FCA76FBE7EFD942DCBE24B52DFBCFB5BDF9CEA78740D1
+.DEBUG 2 unconfirmed blocks! e.g. 95C429D08F4835FD96621A014D203FC256174BB94E03A3B9376FA5B73F4D7600
+.DEBUG 2 unconfirmed blocks! e.g. E2AE99005F25100C051C13BBBB7C0633073B7299731939C9C22D28780A577E65
+.DEBUG 2 unconfirmed blocks! e.g. 14772F3312065196A878CAD8FC1CB4B969886D95CAF76E6D70D15618EE89BF92
+.DEBUG 2 unconfirmed blocks! e.g. 2DB31E03905EA401585C69E2B6C2F4F0816D0CF4D53F05D5B7C5BF0747692BF2
+.DEBUG 2 unconfirmed blocks! e.g. 22ED2B25D771436571FB76349282F04707EB02969E10488F6A17477C672BEA7D
+.DEBUG 2 unconfirmed blocks! e.g. FDDB4F09B2E93E6961D48EA165E6B8159B3CF29CCEB24B57C1022C2BA01C4FE5
+.DEBUG 2 unconfirmed blocks! e.g. 6275D5CFF2D7C93182BDD875296A0F62DAA17D5307380B1079FA1A96CC9CFF48
+.DEBUG 2 unconfirmed blocks! e.g. BEA0C0C171AAC4A676B1313261101ECBCC657D6A274FB07C280BCBFE7DFF8928
+.DEBUG 2 unconfirmed blocks! e.g. 620C4561FC34C0EEF698C265BCE8AF22ECE20D3E806C1D1E52782674A26B2E19
+.DEBUG 2 unconfirmed blocks! e.g. 9802B0A9D99B347595664732D1B7EFF461C8850366627D569E4B1526619584DD
+.DEBUG 2 unconfirmed blocks! e.g. 2C79116D3AFC4D0C3B66D504A073FD25AFE4BE8B0FC7E308A3BCD454CD130086
+.DEBUG 2 unconfirmed blocks! e.g. 83B740C769C874E01E823D2AED4757E1C6DCE6B90B49F99BE0AC72AD7B85EDA6
+
+
+17:46:27 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+17:46:27 0        | 100      | 0.4      | 0.0      | -1         | -1         | -1        | -1        | -1        | -1        | 5               | 251.77   | 100        | 0            |
