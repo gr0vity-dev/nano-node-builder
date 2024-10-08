@@ -12956,6 +12956,22 @@
     "docker_tag": "gr0v1ty/nano-node:76fe3bf5ef0846892ce8a23edba5749918859a6e"
   },
   {
+    "hash": "7730d9adf1838a31d384467e107482f8d9be00bb",
+    "type": "pull_request",
+    "title": "Fix mismatched channel owners",
+    "author": "pwojcikdev",
+    "body": "There were a few testcases where messages were passed with channels belonging to other nodes, which was causing strange lifetime issues. This adds asserts to ensure this won't happen.",
+    "draft": false,
+    "pull_request": 4750,
+    "label": "pwojcikdev:channel-owner-asserts",
+    "created_at": "2024-10-08T15:53:22Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-08T15:57:56Z",
+    "run_id": null
+  },
+  {
     "hash": "773cd91f1bff8da6f097203c38881924d29d7000",
     "type": "commit",
     "created_at": "2024-03-16T19:13:51Z",
