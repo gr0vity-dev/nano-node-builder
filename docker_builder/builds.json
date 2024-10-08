@@ -19550,6 +19550,22 @@
     "run_id": "10269727200"
   },
   {
+    "hash": "b7b0395a03e1c1a8ff51b842e5ab9e975c0c569a",
+    "type": "pull_request",
+    "title": "Simplify vote generator",
+    "author": "RickiNano",
+    "body": "This PR removes the vote_generator_threshold that generates an additional wait to bundle more votes into each message. That wait period adds voting latency.\r\nThe logic that handles processing of requests and candidates have also been simplified.\r\nBob has performance tested this branch and found no performance improvement nor degredatation\r\n![screenshot_2024-10-08_at_08 18 29](https://github.com/user-attachments/assets/f061f655-319f-45de-8cfb-76e0cd50a0fe)\r\n\r\nAn interesting side effect is that the amount of active election timeouts dropped with this branch\r\n![screenshot_2024-10-08_at_08 21 18](https://github.com/user-attachments/assets/41cd50a5-727a-4e40-bf71-96cb8d2d5626)\r\n\r\nI've marked this PR as draft to discuss benefits and drawbacks of this change",
+    "draft": true,
+    "pull_request": 4748,
+    "label": "RickiNano:Vote-wait",
+    "created_at": "2024-10-08T10:50:59Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-08T10:51:03Z",
+    "run_id": null
+  },
+  {
     "hash": "b7c3a78de40c47aeeb85c4ab5a0559c292fcba9c",
     "type": "pull_request",
     "pull_request": 4513,
