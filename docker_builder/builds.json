@@ -18050,6 +18050,22 @@
     "run_id": "8674876384"
   },
   {
+    "hash": "a6b32f525bdd859e23b897fe513333f695d43e30",
+    "type": "pull_request",
+    "title": "Automatic database backend",
+    "author": "RickiNano",
+    "body": "Switching database backend between LMDB and RocksDb is currently done by setting `RocksDb.enabled` to true or false in the config.\r\n\r\nThis PR removes that setting and adds a new `Database_backend` config setting.\r\n`Database_backend` can be set to one of the following:\r\n* lmdb\r\n* rocksdb\r\n* auto\r\n\r\nThe first two are self explanitory. \r\nWhen using auto mode the node will look for an existing ledger and use this. If no ledger is found it will initialize a new RocksDb ledger. If multiple ledgers are found it will display a warning message and use the RocksDb ledger.\r\nThe main purpose is to make new node operators use RocksDb but without forcing existing LMDB users to make changes.\r\nIn future node versions (V29?) we can show messages to LMDB users that encourage them to update to RocksDb and instructions on how to do this.\r\nEven later versions (V30?) could halt the node initialization if LMDB is used and display instructions on updating. If they insist on using LMDB they can set `Database_backend` to lmdb ",
+    "draft": false,
+    "pull_request": 4754,
+    "label": "RickiNano:Automatic-database-backend",
+    "created_at": "2024-10-15T08:37:17Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-15T16:38:33Z",
+    "run_id": null
+  },
+  {
     "hash": "a6da6b8b0936e8f84361413bd685468a13558f33",
     "type": "pull_request",
     "pull_request": 4243,
