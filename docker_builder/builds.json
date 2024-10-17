@@ -8369,6 +8369,22 @@
     "docker_tag": "gr0v1ty/nano-node:4b7f91f191a347d386e6d42348c461171104ed6f"
   },
   {
+    "hash": "4b9a64211f48d6c44637490c341de240cdde9a68",
+    "type": "pull_request",
+    "title": "Remove `election_winner_details` container",
+    "author": "pwojcikdev",
+    "body": "This removes `election_winner_details` container which proved to be difficult to keep in sync and was leaking entires when rollbacks were performed (as part of bounded backlog work). The election that triggered the cementing is now passed as part of context, ie. the flow of cementing is: `election::confirm_once (...) > confirming_set::add (...) > confirming_set::batch_cemented event > active_elections::block_cemented callback (...)` where election is passed through the pipeline.",
+    "draft": false,
+    "pull_request": 4755,
+    "label": "pwojcikdev:remove-election-winner-details",
+    "created_at": "2024-10-16T15:15:58Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-17T22:14:34Z",
+    "run_id": null
+  },
+  {
     "hash": "4bac9419795f8a2789c240e25fae8fad55c3b671",
     "type": "commit",
     "created_at": "2024-02-27T15:43:55Z",
