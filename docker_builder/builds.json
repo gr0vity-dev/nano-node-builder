@@ -14493,6 +14493,22 @@
     "run_id": "8699699711"
   },
   {
+    "hash": "82d9d2d323abf2821032b7d88d21b3369957b814",
+    "type": "pull_request",
+    "title": "Activate cemented blocks",
+    "author": "pwojcikdev",
+    "body": "This makes a few adjustments to the way active elections are handled that I believe should be changed. \r\n\r\nFirst, it activates accounts whenever a block is cemented, either directly via election or indirectly via confirmation height. Previously activations were performed only for blocks that were part of an active election, which I believe can lead to some accounts not being prioritized properly (missed activation = long confirmation time for legit blocks). \r\n\r\nSecond, it adjusts how cemented blocks are handled in active election container. The handling is modified, so that it all happens under exclusive lock (prevents new election insertions while cemented blocks are processed), which is a step towards making interaction of `cementing_set` <-> `active_elections` components simpler to reason about.",
+    "draft": false,
+    "pull_request": 4757,
+    "label": "pwojcikdev:activate-cemented-blocks",
+    "created_at": "2024-10-18T12:26:01Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-18T12:57:38Z",
+    "run_id": null
+  },
+  {
     "hash": "82db34ca040a4a49e44be0855ff5772eb63d1834",
     "type": "pull_request",
     "pull_request": 4341,
