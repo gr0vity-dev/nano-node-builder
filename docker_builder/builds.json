@@ -17951,6 +17951,22 @@
     "run_id": "8143765258"
   },
   {
+    "hash": "a2368a6ccd7828bfa878081a42220a0fd711d969",
+    "type": "pull_request",
+    "title": "Remove `node::process_confirmed (...)`",
+    "author": "pwojcikdev",
+    "body": "This removes the `node::process_confirmed (...)` function. Blocks queued there could briefly find themselves in a limbo state, neither part of an active election or cementing set, which was racy.",
+    "draft": false,
+    "pull_request": 4758,
+    "label": "pwojcikdev:remove-process-confirmed",
+    "created_at": "2024-10-18T16:23:32Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-20T14:27:52Z",
+    "run_id": null
+  },
+  {
     "hash": "a249a9791c5228f704261287bda603031220fae3",
     "type": "pull_request",
     "pull_request": 3923,
