@@ -24174,6 +24174,22 @@
     "run_id": "8543006467"
   },
   {
+    "hash": "dd08220e2ccdc3092b4594bcc37aecda2007d1c1",
+    "type": "pull_request",
+    "title": "Simplify vote generator",
+    "author": "RickiNano",
+    "body": "This PR removes the vote_generator_threshold that generates an additional wait to bundle more votes into each message. That wait period adds voting latency.\r\nThe logic that handles processing of requests and candidates have also been simplified. There was also a bug that request would only process when candidates were empty.\r\nBob has performance tested this branch and found no performance improvement nor degredatation\r\n![screenshot_2024-10-08_at_08 18 29](https://github.com/user-attachments/assets/f061f655-319f-45de-8cfb-76e0cd50a0fe)\r\n\r\nAn interesting side effect is that the amount of active election timeouts dropped with this branch\r\n![screenshot_2024-10-08_at_08 21 18](https://github.com/user-attachments/assets/41cd50a5-727a-4e40-bf71-96cb8d2d5626)\r\n\r\nHere is some testing on the NanoTicker node on live network. The screenshots are taken right after the daily saturation test. \r\n![image](https://github.com/user-attachments/assets/753dcaef-bb83-40fc-85a3-8c6b1c5e37e1)\r\n",
+    "draft": false,
+    "pull_request": 4748,
+    "label": "RickiNano:Vote-wait",
+    "created_at": "2024-10-08T10:50:59Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-21T14:29:40Z",
+    "run_id": null
+  },
+  {
     "hash": "dd121a84db6329bd428ea89a7cea9c575d8c4b62",
     "type": "commit",
     "created_at": "2023-11-06T10:33:58Z",
