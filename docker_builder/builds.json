@@ -4600,6 +4600,22 @@
     "run_id": "11112529464"
   },
   {
+    "hash": "2a1b37996eb74ad7523a4fa87a071cfbe1686713",
+    "type": "pull_request",
+    "title": "Offload block processor notifications",
+    "author": "pwojcikdev",
+    "body": "This offloads block processors notifications to be processed on a background thread, so that block processor can continue checking new blocks without waiting for other components to do their work. Checking new blocks requires a write-transaction, while handling `batch_processed` event is done with read-only transaction, both can happen in parallel.\r\n\r\nThe changes here are based on top of https://github.com/nanocurrency/nano-node/pull/4762 which is a necessary prerequisite.",
+    "draft": false,
+    "pull_request": 4763,
+    "label": "pwojcikdev:offload-block-processor-notifications",
+    "created_at": "2024-10-22T15:43:39Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-22T17:11:08Z",
+    "run_id": null
+  },
+  {
     "hash": "2a201efdc3f6e70571b99053d495c2e22fb15d05",
     "type": "pull_request",
     "title": "Encapsulate ledger cache counts",
