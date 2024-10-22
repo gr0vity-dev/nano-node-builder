@@ -23485,6 +23485,22 @@
     "run_id": "10004368881"
   },
   {
+    "hash": "d71b556aa842a34900b1ddeceaa1ead9862fb8e1",
+    "type": "pull_request",
+    "title": "Convert store iterators to variants rather than using polymorphism.",
+    "author": "clemahieu",
+    "body": "This converts the store iterators from version that use polymorphism to using std::variant.\r\n\r\nThe primary drivers for this change is to simplify and allow more complex iterators to be created where this was previously fairly difficult to do.\r\n\r\nThe iterators are separated in the 3 parts:\r\n- The base database iterators LMDB/RocksDB that use the library's native data type, MDB_val/Slice.\r\n- A variant database iterator that can hold any of the raw database iterators and adapts the native database type to std::span<uint8_t>\r\n- A strong-typed database iterator that mirrors existing iterator behavior with strong typing for key/value pairs.\r\n\r\nThe iterators are bi-directional with a sentinel value to signify end of iteration. The iterators are also circular so after reaching the end-sentinel value, further incrementing will wrap around to the beginning, or decrementing will position the iterator at the last key/value.\r\n\r\nUsing std::variant also eliminates heap allocations when constructing iterators which can improve performance in some circumstances.",
+    "draft": true,
+    "pull_request": 4759,
+    "label": "clemahieu:store_iterator_cleanup",
+    "created_at": "2024-10-20T19:24:20Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-22T23:14:08Z",
+    "run_id": null
+  },
+  {
     "hash": "d72f9d75882286b5132fd310c2a4dac656ac4be1",
     "type": "pull_request",
     "title": "Overhaul of `online_reps` class",
