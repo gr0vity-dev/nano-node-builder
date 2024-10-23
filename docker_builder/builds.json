@@ -25568,6 +25568,22 @@
     "run_id": "9209013470"
   },
   {
+    "hash": "e9b07516ff1dba1df2acdf661c38c1bc1cccb386",
+    "type": "pull_request",
+    "title": "Rework `nano::thread_pool`",
+    "author": "pwojcikdev",
+    "body": "The main issue with previous code was that it copied queued functions, which was inefficient and prevented using move-only function handlers. This also does some cleanup.",
+    "draft": false,
+    "pull_request": 4762,
+    "label": "pwojcikdev:thread-pool-work",
+    "created_at": "2024-10-22T15:39:25Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-23T10:30:32Z",
+    "run_id": null
+  },
+  {
     "hash": "e9c26c9fbb29948ab36e5d256f6a4a3ecfc13912",
     "type": "commit",
     "created_at": "2023-09-01T11:43:35Z",
