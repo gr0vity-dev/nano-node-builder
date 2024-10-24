@@ -10250,6 +10250,22 @@
     "run_id": "6762262495"
   },
   {
+    "hash": "5bc04e842fb116ec17018ed95c26905d91ab3dbd",
+    "type": "pull_request",
+    "title": "Optimize vote distribution between PRs and non-PRs",
+    "author": "gr0vity-dev",
+    "body": "Currently, PRs receive votes both from flood_vote and flood_vote_pr, leading to duplicate voting, while fewer non-PR receive votes. This is particularly noticeable in small test networks.\r\n\r\nThis change ensures votes are distributed more efficiently:\r\n- PRs receive votes only through flood_vote_pr\r\n- Non-PRs receive votes through flood_vote_non_pr\r\n- Overall outgoing vote load remains unchanged\r\n\r\nHere is the difference seen in a local test network:\r\n\r\n<img width=\"925\" alt=\"Screenshot 2024-10-24 at 20 38 12\" src=\"https://github.com/user-attachments/assets/e4e93558-25a4-4ad7-b052-dbaeb11d876c\">\r\n\r\n\r\nI included a small optimization to `nano::network::list_non_pr` since it's called often.\r\n\r\n```\r\nTest Configuration & Benchmark Results:\r\nPR Count: 100\r\nNon-PR Count: 200\r\nIterations: 10000\r\n\r\n--------------------------------------------------\r\nCurrent method   - Duration: -- 521 ms\r\nPartition method - Duration: -- 354 ms\r\n--------------------------------------------------\r\n\r\nTarget count per iteration: 29 [ceil( 2* sqrt(200))]\r\nActual Current method:      29\r\nActual Partition method:    29\r\n```",
+    "draft": false,
+    "pull_request": 4766,
+    "label": "gr0vity-dev:prs/vote_flood_non_pr",
+    "created_at": "2024-10-24T18:52:30Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-24T19:12:47Z",
+    "run_id": null
+  },
+  {
     "hash": "5bc61a29a3b6934ed5e70b438d1f755c9932bcad",
     "type": "commit",
     "created_at": "2023-10-09T15:20:12Z",
