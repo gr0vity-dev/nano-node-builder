@@ -28377,6 +28377,22 @@
     "run_id": "9634873952"
   },
   {
+    "hash": "fe35fd6da5a11c0c490b757227cfe6df5d848dce",
+    "type": "pull_request",
+    "title": "QT wallet: proper display of state open block in GUI history",
+    "author": "SergiySW",
+    "body": "State open block should be marked as \"Receive\".\r\nFor open blocks `previous` == 0 and function `nano::ledger_set_any::block_balance ()` will return `std::nullopt` resulting in displaying \"Unknown\" block type.",
+    "draft": false,
+    "pull_request": 4744,
+    "label": "SergiySW:qt_state_open",
+    "created_at": "2024-10-06T20:20:47Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-25T16:25:04Z",
+    "run_id": null
+  },
+  {
     "hash": "fe4d47d08ddfc406666cf6cf6ead9aa256f642ca",
     "type": "pull_request",
     "title": "Move write database queue",
