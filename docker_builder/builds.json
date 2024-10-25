@@ -10469,6 +10469,22 @@
     "run_id": "11030981617"
   },
   {
+    "hash": "5d341f44b88425ca782b00f87a7acabe3ed2b29e",
+    "type": "pull_request",
+    "title": "Use spaceship comparisons",
+    "author": "pwojcikdev",
+    "body": "The reason for starting this work was that `nano::account` didn't provide an ordering operators, but this reworks several aspects of other nano primitive types like `nano::block_hash`, `nano::hash_or_account` etc:\r\n- Implements strong ordering of values for all types with the use of C++ `<=>` spaceship operator. Previously some types could not be ordered, like the mentioned `nano::account`\r\n- Remove the use of `reinterpret_cast` 😬\r\n- Keep definitions of commonly used functions inline in the header to hopefully enable more aggressive compiler optimizations\r\n- Ensure that all types provide hashing adapters, for both std::hash and boost::hash\r\n",
+    "draft": false,
+    "pull_request": 4767,
+    "label": "pwojcikdev:spaceship-comparisons",
+    "created_at": "2024-10-25T18:31:41Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-25T18:34:46Z",
+    "run_id": null
+  },
+  {
     "hash": "5d34dfd7f85d1fb2d85f770362ca8a58b373996a",
     "type": "pull_request",
     "pull_request": 4372,
