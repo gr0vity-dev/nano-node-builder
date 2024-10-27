@@ -1152,6 +1152,19 @@
     "run_id": "8298619683"
   },
   {
+    "hash": "09b635f217940c651e3de8e50d49de8982c0aaee",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Merge pull request #4759 from clemahieu/store_iterator_cleanup\n\nConvert store iterators to variants rather than using polymorphism.",
+    "pull_request": "4759",
+    "created_at": "2024-10-27T08:34:10Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-27T08:45:28Z",
+    "run_id": null
+  },
+  {
     "hash": "09bd4d29c5d0c19dcac398d49d164f2230588f05",
     "type": "commit",
     "author": "clemahieu",
@@ -24348,6 +24361,19 @@
     "docker_tag": "gr0v1ty/nano-node:db4e89075ce7fcf94680646865b1c5ca88ea74ea",
     "build_started_at": "2024-05-16T14:50:43Z",
     "run_id": "9113942794"
+  },
+  {
+    "hash": "db7405f580af21b6ad98741430054ee04419b453",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "This adds strong typing via std::variant to extracting internals via transaction->GetHandle()\n\nReturning either Transaction * or ReadOptions * seems dubious, the intent of this commit is to retain 1-to-1 compatibility while adding strong typing.",
+    "pull_request": "4759",
+    "created_at": "2024-09-30T10:44:50Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-10-27T08:45:28Z",
+    "run_id": null
   },
   {
     "hash": "db90344f36cc50cc18c4d21525b3d6f83b81ea21",
