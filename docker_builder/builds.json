@@ -6879,6 +6879,22 @@
     "run_id": "11016244255"
   },
   {
+    "hash": "3d72ae91f138fbb4b6bd42fef8f164bd16956696",
+    "type": "pull_request",
+    "title": "Disallow database operations on network IO threads",
+    "author": "pwojcikdev",
+    "body": "Doing synchronous disk IO on network IO threads can introduce very long delays, blocking network thread pool. This adds an assert that will detect this.\r\n\r\nCurrently this doesn't pass tests nicely because legacy bootstrap trips the assert.",
+    "draft": false,
+    "pull_request": 4772,
+    "label": "pwojcikdev:prevent-db-on-io-threads",
+    "created_at": "2024-10-27T16:02:45Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-27T16:26:12Z",
+    "run_id": null
+  },
+  {
     "hash": "3d8338763fa8bf931c783da515ac9eba8729835f",
     "type": "commit",
     "author": "pwojcikdev",
@@ -15639,6 +15655,22 @@
     "docker_tag": "gr0v1ty/nano-node:885447fedb8f08e1a4d2d7175aa1b0b4c7290e8c",
     "build_started_at": "2024-10-15T11:17:19Z",
     "run_id": "11344936486"
+  },
+  {
+    "hash": "88659b513832d647fa18aa64ab40e31209565850",
+    "type": "pull_request",
+    "title": "QT wallet: proper display of state open block in GUI history",
+    "author": "SergiySW",
+    "body": "State open block should be marked as \"Receive\".\r\nFor open blocks `previous` == 0 and function `nano::ledger_set_any::block_balance ()` will return `std::nullopt` resulting in displaying \"Unknown\" block type.",
+    "draft": false,
+    "pull_request": 4744,
+    "label": "SergiySW:qt_state_open",
+    "created_at": "2024-10-06T20:20:47Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-10-27T16:26:12Z",
+    "run_id": null
   },
   {
     "hash": "889c4cd1975404fc3ceb724aa312985ba409249d",
