@@ -24676,6 +24676,22 @@
     "run_id": "7901382013"
   },
   {
+    "hash": "dd668ad1880e5b1d90b16f0db429384ec77e4771",
+    "type": "pull_request",
+    "title": "Modify `observer_set` to only accept and pass const ref arguments",
+    "author": "pwojcikdev",
+    "body": "This avoids copying parameters when notifying observers. \r\nIt's the first part of the refactoring, the second will be dropping redundant `const &` qualifications from observer set events, eg: `nano::observer_set<processed_batch_t const &> batch_processed;` to just `nano::observer_set<processed_batch_t> batch_processed;` should be fine now, the batch will be passed by reference by default. I'll do this refactoring after bounded backlog changes as it will mess a lot of existing commits.",
+    "draft": false,
+    "pull_request": 4768,
+    "label": "pwojcikdev:observer-set-const-refs",
+    "created_at": "2024-10-27T10:39:37Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-27T10:42:01Z",
+    "run_id": null
+  },
+  {
     "hash": "dd7a4e11b91635fe4a5633644cb2ad54d4cdbaff",
     "type": "commit",
     "created_at": "2023-08-22T11:41:49Z",
