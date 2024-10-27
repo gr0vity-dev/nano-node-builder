@@ -10649,6 +10649,22 @@
     "docker_tag": "gr0v1ty/nano-node:5e0ee324da950e1b8186773efe1d35218b232292"
   },
   {
+    "hash": "5e206ec9c2f32d9d13ffa557c0780bd802dafcbb",
+    "type": "pull_request",
+    "title": "Offload block processor notifications",
+    "author": "pwojcikdev",
+    "body": "This offloads block processors notifications to be processed on a background thread, so that block processor can continue checking new blocks without waiting for other components to do their work. Checking new blocks requires a write-transaction, while handling `batch_processed` event is done with read-only transaction, both can happen in parallel.\r\n\r\nThe changes here are based on top of https://github.com/nanocurrency/nano-node/pull/4762 which is a necessary prerequisite.",
+    "draft": false,
+    "pull_request": 4763,
+    "label": "pwojcikdev:offload-block-processor-notifications",
+    "created_at": "2024-10-22T15:43:39Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-27T10:18:08Z",
+    "run_id": null
+  },
+  {
     "hash": "5e5cd3703246a176e27c1571d6402c94d2679795",
     "type": "commit",
     "author": "clemahieu",
