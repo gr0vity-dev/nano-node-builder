@@ -8359,6 +8359,22 @@
     "run_id": "8688402572"
   },
   {
+    "hash": "48293b86b27f77508d2c2fcd057b969b982e3cad",
+    "type": "pull_request",
+    "title": "Remove legacy bootstrap",
+    "author": "pwojcikdev",
+    "body": "This removes legacy bootstrap, which was replaced by the new ascending bootstrap. Legacy bootstrap implementation was unnecessarily complicated with many inefficiencies. Debugging it was a pain and slowed down development of new features. \r\n\r\nAll the `bootstrap_ascending*` classes and stats are renamed to simply `bootstrap`.\r\n\r\nTODO for the future is porting previous `bootstrap_processor` test suite to use the new bootstrapper.",
+    "draft": false,
+    "pull_request": 4777,
+    "label": "pwojcikdev:remove-legacy-bootstrap-2",
+    "created_at": "2024-10-29T17:20:20Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-29T21:24:26Z",
+    "run_id": null
+  },
+  {
     "hash": "483c6906e8fe556a2347f225c1af16fc04f702aa",
     "type": "commit",
     "author": "clemahieu",
