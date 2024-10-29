@@ -12147,6 +12147,22 @@
     "docker_tag": "gr0v1ty/nano-node:685ce4626c544baa88495b8e011a5c66a9deb112"
   },
   {
+    "hash": "686174604c822beb16e7dddcd8918cbf34124e79",
+    "type": "pull_request",
+    "title": "Remove legacy bootstrap",
+    "author": "pwojcikdev",
+    "body": "This removes legacy bootstrap, which was replaced by the new ascending bootstrap. Legacy bootstrap implementation was unnecessarily complicated with many inefficiencies. Debugging it was a pain and slowed down development of new features. \r\n\r\nAll the `bootstrap_ascending*` classes and stats are renamed to simply `bootstrap`.\r\n\r\nTODO for the future is porting previous `bootstrap_processor` testsuite to use the new bootstrapper.",
+    "draft": false,
+    "pull_request": 4777,
+    "label": "pwojcikdev:remove-legacy-bootstrap-2",
+    "created_at": "2024-10-29T17:20:20Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-10-29T17:32:51Z",
+    "run_id": null
+  },
+  {
     "hash": "6877a57de84d642757e88b130a43bda8618b66a1",
     "type": "pull_request",
     "pull_request": 4256,
