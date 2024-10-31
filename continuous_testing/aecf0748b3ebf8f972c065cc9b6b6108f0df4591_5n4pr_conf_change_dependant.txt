@@ -1,0 +1,750 @@
+aecf0748b3ebf8f972c065cc9b6b6108f0df4591: Pulling from gr0v1ty/nano-node
+6414378b6477: Already exists
+a43d78808515: Pulling fs layer
+1f15c77a395a: Pulling fs layer
+cbad5539cdb3: Pulling fs layer
+4a29a7c966bf: Pulling fs layer
+1f20dbfbdd4c: Pulling fs layer
+a311fce58b3a: Pulling fs layer
+aa3747833372: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+3f08fda1b064: Pulling fs layer
+23d75f77fe0c: Pulling fs layer
+aa3747833372: Waiting
+4f4fb700ef54: Waiting
+3f08fda1b064: Waiting
+4a29a7c966bf: Waiting
+23d75f77fe0c: Waiting
+1f20dbfbdd4c: Waiting
+a311fce58b3a: Waiting
+a43d78808515: Verifying Checksum
+a43d78808515: Pull complete
+4a29a7c966bf: Verifying Checksum
+4a29a7c966bf: Download complete
+cbad5539cdb3: Verifying Checksum
+cbad5539cdb3: Download complete
+1f20dbfbdd4c: Download complete
+aa3747833372: Verifying Checksum
+aa3747833372: Download complete
+a311fce58b3a: Download complete
+3f08fda1b064: Verifying Checksum
+3f08fda1b064: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+23d75f77fe0c: Download complete
+1f15c77a395a: Verifying Checksum
+1f15c77a395a: Download complete
+1f15c77a395a: Pull complete
+cbad5539cdb3: Pull complete
+4a29a7c966bf: Pull complete
+1f20dbfbdd4c: Pull complete
+a311fce58b3a: Pull complete
+aa3747833372: Pull complete
+4f4fb700ef54: Pull complete
+3f08fda1b064: Pull complete
+23d75f77fe0c: Pull complete
+Digest: sha256:440ff504356b10adda5c98e7455e0bb883b938a1be64e9f1d449f849e0e0c02e
+Status: Downloaded newer image for gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_change_dependant.json
+Start Fetching '5n4pr_conf_change_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_change_dependant_config.json'
+Done  Fetching '5n4pr_conf_change_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_change_dependant_config.json'
+Start Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Done  Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+ERROR: Command failed: docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock build
+ERROR: Error output: Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 DONE 0.2s
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 DONE 0.3s
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 0.202 /bin/sh: 1: [[: not found
+#7 0.715 Get:1 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
+#7 0.733 Get:2 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+#7 1.045 Get:3 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1162 kB]
+#7 1.143 Get:4 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+#7 1.161 Get:5 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [3227 kB]
+#7 1.196 Get:6 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [2389 kB]
+#7 1.212 Get:7 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [44.7 kB]
+#7 1.219 Get:8 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+#7 1.331 Get:9 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
+#7 1.368 Get:10 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
+#7 1.429 Get:11 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
+#7 1.609 Get:12 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
+#7 2.140 Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [3305 kB]
+#7 2.238 Get:14 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1450 kB]
+#7 2.285 Get:15 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [51.8 kB]
+#7 2.286 Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [2665 kB]
+#7 2.363 Get:17 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [33.7 kB]
+#7 2.368 Get:18 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [81.4 kB]
+#7 2.949 Fetched 34.8 MB in 2s (14.0 MB/s)
+#7 2.949 Reading package lists...
+#7 3.708 Reading package lists...
+#7 4.377 Building dependency tree...
+#7 4.506 Reading state information...
+#7 4.615 The following additional packages will be installed:
+#7 4.616   libatm1 libbpf0 libbsd0 libcap2-bin libelf1 libmd0 libmnl0 libpam-cap
+#7 4.616   libxtables12
+#7 4.616 Suggested packages:
+#7 4.616   iproute2-doc
+#7 4.640 The following NEW packages will be installed:
+#7 4.640   iproute2 libatm1 libbpf0 libbsd0 libcap2-bin libelf1 libmd0 libmnl0
+#7 4.640   libpam-cap libxtables12
+#7 4.814 0 upgraded, 10 newly installed, 0 to remove and 0 not upgraded.
+#7 4.814 Need to get 1430 kB of archives.
+#7 4.814 After this operation, 4151 kB of additional disk space will be used.
+#7 4.814 Get:1 http://archive.ubuntu.com/ubuntu jammy/main amd64 libelf1 amd64 0.186-1build1 [51.0 kB]
+#7 5.061 Get:2 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libbpf0 amd64 1:0.5.0-1ubuntu22.04.1 [140 kB]
+#7 5.203 Get:3 http://archive.ubuntu.com/ubuntu jammy/main amd64 libmd0 amd64 1.0.4-1build1 [23.0 kB]
+#7 5.220 Get:4 http://archive.ubuntu.com/ubuntu jammy/main amd64 libbsd0 amd64 0.11.5-1 [44.8 kB]
+#7 5.240 Get:5 http://archive.ubuntu.com/ubuntu jammy/main amd64 libmnl0 amd64 1.0.4-3build2 [13.2 kB]
+#7 5.246 Get:6 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libxtables12 amd64 1.8.7-1ubuntu5.2 [31.3 kB]
+#7 5.260 Get:7 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcap2-bin amd64 1:2.44-1ubuntu0.22.04.1 [26.0 kB]
+#7 5.270 Get:8 http://archive.ubuntu.com/ubuntu jammy/main amd64 iproute2 amd64 5.15.0-1ubuntu2 [1070 kB]
+#7 5.447 Get:9 http://archive.ubuntu.com/ubuntu jammy/main amd64 libatm1 amd64 1:2.5.1-4build2 [22.8 kB]
+#7 5.448 Get:10 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpam-cap amd64 1:2.44-1ubuntu0.22.04.1 [7928 B]
+#7 6.354 debconf: delaying package configuration, since apt-utils is not installed
+#7 6.383 Fetched 1430 kB in 1s (1778 kB/s)
+#7 6.566 Selecting previously unselected package libelf1:amd64.
+#7 6.566 (Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 4393 files and directories currently installed.)
+#7 6.850 Preparing to unpack .../0-libelf1_0.186-1build1_amd64.deb ...
+#7 6.852 Unpacking libelf1:amd64 (0.186-1build1) ...
+#7 6.866 Selecting previously unselected package libbpf0:amd64.
+#7 6.867 Preparing to unpack .../1-libbpf0_1%3a0.5.0-1ubuntu22.04.1_amd64.deb ...
+#7 6.868 Unpacking libbpf0:amd64 (1:0.5.0-1ubuntu22.04.1) ...
+#7 6.882 Selecting previously unselected package libmd0:amd64.
+#7 6.882 Preparing to unpack .../2-libmd0_1.0.4-1build1_amd64.deb ...
+#7 6.883 Unpacking libmd0:amd64 (1.0.4-1build1) ...
+#7 6.896 Selecting previously unselected package libbsd0:amd64.
+#7 6.897 Preparing to unpack .../3-libbsd0_0.11.5-1_amd64.deb ...
+#7 6.897 Unpacking libbsd0:amd64 (0.11.5-1) ...
+#7 6.911 Selecting previously unselected package libmnl0:amd64.
+#7 6.912 Preparing to unpack .../4-libmnl0_1.0.4-3build2_amd64.deb ...
+#7 6.912 Unpacking libmnl0:amd64 (1.0.4-3build2) ...
+#7 6.926 Selecting previously unselected package libxtables12:amd64.
+#7 6.926 Preparing to unpack .../5-libxtables12_1.8.7-1ubuntu5.2_amd64.deb ...
+#7 6.927 Unpacking libxtables12:amd64 (1.8.7-1ubuntu5.2) ...
+#7 6.941 Selecting previously unselected package libcap2-bin.
+#7 6.941 Preparing to unpack .../6-libcap2-bin_1%3a2.44-1ubuntu0.22.04.1_amd64.deb ...
+#7 6.942 Unpacking libcap2-bin (1:2.44-1ubuntu0.22.04.1) ...
+#7 6.958 Selecting previously unselected package iproute2.
+#7 6.959 Preparing to unpack .../7-iproute2_5.15.0-1ubuntu2_amd64.deb ...
+#7 6.960 Unpacking iproute2 (5.15.0-1ubuntu2) ...
+#7 6.996 Selecting previously unselected package libatm1:amd64.
+#7 6.997 Preparing to unpack .../8-libatm1_1%3a2.5.1-4build2_amd64.deb ...
+#7 6.998 Unpacking libatm1:amd64 (1:2.5.1-4build2) ...
+#7 7.011 Selecting previously unselected package libpam-cap:amd64.
+#7 7.011 Preparing to unpack .../9-libpam-cap_1%3a2.44-1ubuntu0.22.04.1_amd64.deb ...
+#7 7.012 Unpacking libpam-cap:amd64 (1:2.44-1ubuntu0.22.04.1) ...
+#7 7.029 Setting up libatm1:amd64 (1:2.5.1-4build2) ...
+#7 7.031 Setting up libcap2-bin (1:2.44-1ubuntu0.22.04.1) ...
+#7 7.033 Setting up libmnl0:amd64 (1.0.4-3build2) ...
+#7 7.036 Setting up libxtables12:amd64 (1.8.7-1ubuntu5.2) ...
+#7 7.038 Setting up libmd0:amd64 (1.0.4-1build1) ...
+#7 7.041 Setting up libbsd0:amd64 (0.11.5-1) ...
+#7 7.043 Setting up libelf1:amd64 (0.186-1build1) ...
+#7 7.045 Setting up libpam-cap:amd64 (1:2.44-1ubuntu0.22.04.1) ...
+#7 7.219 debconf: unable to initialize frontend: Dialog
+#7 7.219 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#7 7.219 debconf: falling back to frontend: Readline
+#7 7.223 debconf: unable to initialize frontend: Readline
+#7 7.223 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#7 7.223 debconf: falling back to frontend: Teletype
+#7 7.346 Setting up libbpf0:amd64 (1:0.5.0-1ubuntu22.04.1) ...
+#7 7.349 Setting up iproute2 (5.15.0-1ubuntu2) ...
+#7 7.421 debconf: unable to initialize frontend: Dialog
+#7 7.421 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#7 7.421 debconf: falling back to frontend: Readline
+#7 7.422 debconf: unable to initialize frontend: Readline
+#7 7.422 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+#7 7.422 debconf: falling back to frontend: Teletype
+#7 7.442 Processing triggers for libc-bin (2.35-0ubuntu3.8) ...
+#7 DONE 7.5s
+
+#8 exporting to image
+#8 exporting layers
+#8 exporting layers 0.4s done
+#8 writing image sha256:0dde91c35900c4de08535740f347a9b4faa5173e0a59399686c54974275f2bd2 done
+#8 naming to docker.io/library/nanomock_nl_genesis done
+#8 DONE 0.4s
+Building nl_pr1
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 CACHED
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 CACHED
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 writing image sha256:0dde91c35900c4de08535740f347a9b4faa5173e0a59399686c54974275f2bd2 done
+#8 naming to docker.io/library/nanomock_nl_pr1 done
+#8 DONE 0.0s
+Building nl_pr2
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 CACHED
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 CACHED
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 writing image sha256:0dde91c35900c4de08535740f347a9b4faa5173e0a59399686c54974275f2bd2 done
+#8 naming to docker.io/library/nanomock_nl_pr2 done
+#8 DONE 0.0s
+Building nl_pr3
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 CACHED
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 CACHED
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 writing image sha256:0dde91c35900c4de08535740f347a9b4faa5173e0a59399686c54974275f2bd2 done
+#8 naming to docker.io/library/nanomock_nl_pr3 done
+#8 DONE 0.0s
+Building nl_pr4
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 CACHED
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 CACHED
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 writing image sha256:0dde91c35900c4de08535740f347a9b4faa5173e0a59399686c54974275f2bd2 done
+#8 naming to docker.io/library/nanomock_nl_pr4 done
+#8 DONE 0.0s
+Building nl_genesis_exporter
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 487B done
+#1 DONE 0.0s
+
+#2 [auth] library/python:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.8-alpine
+#3 DONE 0.3s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/9] FROM docker.io/library/python:3.8-alpine@sha256:3d93b1f77efce339aa77db726656872517b0d67837989aa7c4b35bd5ae7e81ba
+#5 resolve docker.io/library/python:3.8-alpine@sha256:3d93b1f77efce339aa77db726656872517b0d67837989aa7c4b35bd5ae7e81ba done
+#5 sha256:cd39247b02f92df84605637e0f1b7887434169aca105b8ee9cbcd2dbfc988ed5 4.95kB / 4.95kB done
+#5 sha256:bbd039b2f2dc0cbe5a1fb925d1006dc58892cd76b385af7243c1d668d7ce2491 0B / 455.12kB 0.1s
+#5 sha256:2fe9ed713579c200eb3576e25f4604247c6b5d36482a5bb477de3c8339274f0f 1.05MB / 14.22MB 0.1s
+#5 sha256:86e037ebf8b67184256b8126401150c6d34e6d9977b5f320cb4a52e91e31fc41 247B / 247B 0.0s done
+#5 sha256:3d93b1f77efce339aa77db726656872517b0d67837989aa7c4b35bd5ae7e81ba 10.29kB / 10.29kB done
+#5 sha256:9f956f4ecf00137962b8da05d2ced2181cf22e23036a81daa61610e16ddd1078 1.73kB / 1.73kB done
+#5 sha256:bbd039b2f2dc0cbe5a1fb925d1006dc58892cd76b385af7243c1d668d7ce2491 455.12kB / 455.12kB 0.1s done
+#5 sha256:2fe9ed713579c200eb3576e25f4604247c6b5d36482a5bb477de3c8339274f0f 14.22MB / 14.22MB 0.2s done
+#5 extracting sha256:bbd039b2f2dc0cbe5a1fb925d1006dc58892cd76b385af7243c1d668d7ce2491 0.1s done
+#5 extracting sha256:2fe9ed713579c200eb3576e25f4604247c6b5d36482a5bb477de3c8339274f0f
+#5 extracting sha256:2fe9ed713579c200eb3576e25f4604247c6b5d36482a5bb477de3c8339274f0f 0.6s done
+#5 extracting sha256:86e037ebf8b67184256b8126401150c6d34e6d9977b5f320cb4a52e91e31fc41
+#5 extracting sha256:86e037ebf8b67184256b8126401150c6d34e6d9977b5f320cb4a52e91e31fc41 done
+#5 DONE 1.0s
+
+#6 [2/9] RUN apk update
+#6 0.161 fetch https://dl-cdn.alpinelinux.org/alpine/v3.20/main/x86_64/APKINDEX.tar.gz
+#6 0.289 fetch https://dl-cdn.alpinelinux.org/alpine/v3.20/community/x86_64/APKINDEX.tar.gz
+#6 0.592 v3.20.3-235-gcfe78cf5f7a [https://dl-cdn.alpinelinux.org/alpine/v3.20/main]
+#6 0.592 v3.20.3-238-gec151eee3c7 [https://dl-cdn.alpinelinux.org/alpine/v3.20/community]
+#6 0.592 OK: 24166 distinct packages available
+#6 DONE 0.7s
+
+#7 [3/9] RUN apk add git gcc musl-dev linux-headers
+#7 0.438 (1/24) Installing libgcc (13.2.1_git20240309-r0)
+#7 0.495 (2/24) Installing jansson (2.14-r4)
+#7 0.501 (3/24) Installing libstdc++ (13.2.1_git20240309-r0)
+#7 0.529 (4/24) Installing zstd-libs (1.5.6-r0)
+#7 0.540 (5/24) Installing binutils (2.42-r0)
+#7 0.608 (6/24) Installing libgomp (13.2.1_git20240309-r0)
+#7 0.617 (7/24) Installing libatomic (13.2.1_git20240309-r0)
+#7 0.623 (8/24) Installing gmp (6.3.0-r1)
+#7 0.635 (9/24) Installing isl26 (0.26-r1)
+#7 0.654 (10/24) Installing mpfr4 (4.2.1-r0)
+#7 0.665 (11/24) Installing mpc1 (1.3.1-r1)
+#7 0.672 (12/24) Installing gcc (13.2.1_git20240309-r0)
+#7 1.410 (13/24) Installing brotli-libs (1.1.0-r2)
+#7 1.423 (14/24) Installing c-ares (1.33.1-r0)
+#7 1.431 (15/24) Installing libunistring (1.2-r0)
+#7 1.447 (16/24) Installing libidn2 (2.3.7-r0)
+#7 1.454 (17/24) Installing nghttp2-libs (1.62.1-r0)
+#7 1.462 (18/24) Installing libpsl (0.21.5-r1)
+#7 1.468 (19/24) Installing libcurl (8.10.1-r0)
+#7 1.479 (20/24) Installing pcre2 (10.43-r0)
+#7 1.491 (21/24) Installing git (2.45.2-r0)
+#7 1.556 (22/24) Installing git-init-template (2.45.2-r0)
+#7 1.563 (23/24) Installing linux-headers (6.6-r0)
+#7 1.683 (24/24) Installing musl-dev (1.2.5-r0)
+#7 1.752 Executing busybox-1.36.1-r29.trigger
+#7 1.761 OK: 184 MiB in 61 packages
+#7 DONE 2.0s
+
+#8 [4/9] RUN git clone https://github.com/gr0vity-dev/bnano-prom-exporter.git app
+#8 0.171 Cloning into 'app'...
+#8 133.9 fatal: unable to access 'https://github.com/gr0vity-dev/bnano-prom-exporter.git/': Failed to connect to github.com port 443 after 133749 ms: Could not connect to server
+#8 ERROR: process "/bin/sh -c git clone https://github.com/gr0vity-dev/bnano-prom-exporter.git app" did not complete successfully: exit code: 128
+------
+ > [4/9] RUN git clone https://github.com/gr0vity-dev/bnano-prom-exporter.git app:
+0.171 Cloning into 'app'...
+133.9 fatal: unable to access 'https://github.com/gr0vity-dev/bnano-prom-exporter.git/': Failed to connect to github.com port 443 after 133749 ms: Could not connect to server
+------
+Dockerfile:9
+--------------------
+   7 |     
+   8 |     ARG hash_value=45e3efcd090f93e416504403fbf1474a753873db
+   9 | >>> RUN git clone https://github.com/gr0vity-dev/bnano-prom-exporter.git app
+  10 |     
+  11 |     WORKDIR /app
+--------------------
+ERROR: failed to solve: process "/bin/sh -c git clone https://github.com/gr0vity-dev/bnano-prom-exporter.git app" did not complete successfully: exit code: 128
+Service 'nl_genesis_exporter' failed to build
+
+ERROR: Return code: 1
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 198, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock build' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanomock", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 58, in main
+    asyncio.run(main_async(args))
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 54, in main_async
+    await manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 544, in execute_command
+    await command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 461, in init_containers
+    await self.build_containers()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 469, in build_containers
+    return None, self.docker_interface.compose_build()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 72, in compose_build
+    return self._run_command(cmd)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 33, in _run_command
+    subprocess_run_capture_output(base_command)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 209, in subprocess_run_capture_output
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: <exception str() failed>
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+ERROR: Command failed: docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock build
+ERROR: Error output: Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 2B done
+#3 DONE 1.6s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#4 DONE 0.0s
+
+#5 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#5 CACHED
+
+#6 [2/4] RUN groupadd -g 1001 nanolocal
+#6 CACHED
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 writing image sha256:0dde91c35900c4de08535740f347a9b4faa5173e0a59399686c54974275f2bd2 done
+#8 naming to docker.io/library/nanomock_nl_genesis done
+#8 DONE 0.0s
+Building nl_pr1
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 CACHED
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 CACHED
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 writing image sha256:0dde91c35900c4de08535740f347a9b4faa5173e0a59399686c54974275f2bd2 done
+#8 naming to docker.io/library/nanomock_nl_pr1 done
+#8 DONE 0.0s
+Building nl_pr2
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#4 DONE 0.0s
+
+#5 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#5 CACHED
+
+#6 [2/4] RUN groupadd -g 1001 nanolocal
+#6 CACHED
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 writing image sha256:0dde91c35900c4de08535740f347a9b4faa5173e0a59399686c54974275f2bd2 done
+#8 naming to docker.io/library/nanomock_nl_pr2 done
+#8 DONE 0.0s
+Building nl_pr3
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 CACHED
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 CACHED
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 writing image sha256:0dde91c35900c4de08535740f347a9b4faa5173e0a59399686c54974275f2bd2 done
+#8 naming to docker.io/library/nanomock_nl_pr3 done
+#8 DONE 0.0s
+Building nl_pr4
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:aecf0748b3ebf8f972c065cc9b6b6108f0df4591
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 CACHED
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 CACHED
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 writing image sha256:0dde91c35900c4de08535740f347a9b4faa5173e0a59399686c54974275f2bd2 done
+#8 naming to docker.io/library/nanomock_nl_pr4 done
+#8 DONE 0.0s
+Building nl_genesis_exporter
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 487B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.8-alpine
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/9] FROM docker.io/library/python:3.8-alpine@sha256:3d93b1f77efce339aa77db726656872517b0d67837989aa7c4b35bd5ae7e81ba
+#4 DONE 0.0s
+
+#5 [2/9] RUN apk update
+#5 CACHED
+
+#6 [3/9] RUN apk add git gcc musl-dev linux-headers
+#6 CACHED
+
+#7 [4/9] RUN git clone https://github.com/gr0vity-dev/bnano-prom-exporter.git app
+#7 0.150 Cloning into 'app'...
+#7 134.7 fatal: unable to access 'https://github.com/gr0vity-dev/bnano-prom-exporter.git/': Failed to connect to github.com port 443 after 134574 ms: Could not connect to server
+#7 ERROR: process "/bin/sh -c git clone https://github.com/gr0vity-dev/bnano-prom-exporter.git app" did not complete successfully: exit code: 128
+------
+ > [4/9] RUN git clone https://github.com/gr0vity-dev/bnano-prom-exporter.git app:
+0.150 Cloning into 'app'...
+134.7 fatal: unable to access 'https://github.com/gr0vity-dev/bnano-prom-exporter.git/': Failed to connect to github.com port 443 after 134574 ms: Could not connect to server
+------
+Dockerfile:9
+--------------------
+   7 |     
+   8 |     ARG hash_value=45e3efcd090f93e416504403fbf1474a753873db
+   9 | >>> RUN git clone https://github.com/gr0vity-dev/bnano-prom-exporter.git app
+  10 |     
+  11 |     WORKDIR /app
+--------------------
+ERROR: failed to solve: process "/bin/sh -c git clone https://github.com/gr0vity-dev/bnano-prom-exporter.git app" did not complete successfully: exit code: 128
+Service 'nl_genesis_exporter' failed to build
+
+ERROR: Return code: 1
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 198, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock build' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanomock", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 58, in main
+    asyncio.run(main_async(args))
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 54, in main_async
+    await manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 544, in execute_command
+    await command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 461, in init_containers
+    await self.build_containers()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 469, in build_containers
+    return None, self.docker_interface.compose_build()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 72, in compose_build
+    return self._run_command(cmd)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 33, in _run_command
+    subprocess_run_capture_output(base_command)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 209, in subprocess_run_capture_output
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: <exception str() failed>
+Error executing command: nanomock start && nanomock init_wallets
+Error: WARNING: ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4']
+INFO: Nodes ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4'] reachable
+SUCCESS: start_containers completed with None result.
+WARNING: ['nl_genesis']
+WARNING: ['nl_pr1']
+WARNING: ['nl_pr2']
+WARNING: ['nl_pr3']
+WARNING: ['nl_pr4']
+INFO: Nodes ['nl_genesis'] reachable
+INFO: Nodes ['nl_pr1'] reachable
+INFO: Nodes ['nl_pr2'] reachable
+INFO: Nodes ['nl_pr3'] reachable
+INFO: Nodes ['nl_pr4'] reachable
+INFO: WALLET E35D34502A0724A9DA9872ADA9435EBE5AB1AE069B5BA2099A6CB4A753EF6C65 CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8
+INFO: WALLET C67AEA132895643CA80D7D3D0ADFACDC73491D29A7DBFEED179711625458BD2B CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p
+INFO: WALLET D90086E219D936E55C86CCE17DBDC704DA1057B1FFC722551BC57C8DF5BA458E CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6
+INFO: WALLET 0609EB27891126E409F1B7394D5AAEA7B4F33C9470E9F4F7DF09ECD0AAFDE92C CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h
+INFO: WALLET C6C8D538B9E69B196107C543B9F1FB999C7A089D7F90FB2F91240FCA4C5CF086 CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub
+SUCCESS: ['WALLET E35D34502A0724A9DA9872ADA9435EBE5AB1AE069B5BA2099A6CB4A753EF6C65 CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8', 'WALLET C67AEA132895643CA80D7D3D0ADFACDC73491D29A7DBFEED179711625458BD2B CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p', 'WALLET D90086E219D936E55C86CCE17DBDC704DA1057B1FFC722551BC57C8DF5BA458E CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6', 'WALLET 0609EB27891126E409F1B7394D5AAEA7B4F33C9470E9F4F7DF09ECD0AAFDE92C CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h', 'WALLET C6C8D538B9E69B196107C543B9F1FB999C7A089D7F90FB2F91240FCA4C5CF086 CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub']
+....................................................................................................
+
+07:45:24 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+07:45:24 100      | 0        | 3.87     | 3.87     | 0.1        | 0.3        | 0.24      | 0.29      | 0.29      | 0.3       | 5               | 25.81    | 100        | 100          |
+....................................................................................................
+
+07:45:44 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+07:45:44 100      | 0        | 5.02     | 5.02     | 0.1        | 0.23       | 0.21      | 0.21      | 0.21      | 0.23      | 5               | 19.91    | 100        | 100          |
+....................................................................................................
+
+07:46:06 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+07:46:06 100      | 0        | 4.57     | 4.57     | 0.15       | 0.3        | 0.21      | 0.21      | 0.29      | 0.3       | 5               | 21.88    | 100        | 100          |
