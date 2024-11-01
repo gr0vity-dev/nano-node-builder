@@ -22116,6 +22116,22 @@
     "docker_tag": "gr0v1ty/nano-node:bc9f74b3dfff5b8affd7fffb4c754d7665788f4b"
   },
   {
+    "hash": "bcb5159530e3b76eb8893b3f1cdc78a34cbf3c5c",
+    "type": "pull_request",
+    "title": "Remove `node::process_confirmed (...)`",
+    "author": "pwojcikdev",
+    "body": "This removes the `node::process_confirmed (...)` function. Blocks queued there could briefly find themselves in a limbo state, neither part of an active election or cementing set, which was racy.",
+    "draft": false,
+    "pull_request": 4758,
+    "label": "pwojcikdev:remove-process-confirmed",
+    "created_at": "2024-10-18T16:23:32Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-11-01T15:13:01Z",
+    "run_id": null
+  },
+  {
     "hash": "bcb53695e8c079aa3ea92989075c41810160ea0b",
     "type": "pull_request",
     "title": "migrate_database_lmdb_to_rocksdb improvements",
