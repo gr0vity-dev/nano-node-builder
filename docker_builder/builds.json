@@ -15965,6 +15965,22 @@
     "docker_tag": "gr0v1ty/nano-node:84aeff43b61d30396e8e57e2ef82893d7bbf1ad4"
   },
   {
+    "hash": "84e4555dfc93d0a9112ec3091e888e697e140886",
+    "type": "pull_request",
+    "title": "Bootstrap tuning",
+    "author": "pwojcikdev",
+    "body": "This contains a few bootstrap improvements that should prevent edge case stalls. The main fix is giving accounts inserted from frontier / database scan the lowest possible priority, so that they cannot preempt existing priority accounts.",
+    "draft": false,
+    "pull_request": 4784,
+    "label": "pwojcikdev:bootstrap-tuning-3",
+    "created_at": "2024-11-11T20:51:52Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-11-11T20:52:12Z",
+    "run_id": null
+  },
+  {
     "hash": "8513ba89bc9cc031f3ac602e4aaa2cb58ee7550e",
     "type": "pull_request",
     "pull_request": 4476,
