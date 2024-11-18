@@ -1,0 +1,113 @@
+5d48dd9ce3f802c8d6080e947fb6f09b39ed243c: Pulling from gr0v1ty/nano-node
+6414378b6477: Already exists
+c04a7887a976: Pulling fs layer
+4c089a73f727: Pulling fs layer
+e66ea44c6bbc: Pulling fs layer
+3957cfbe4280: Pulling fs layer
+6b6ee6611dc9: Pulling fs layer
+5cb8a08e3538: Pulling fs layer
+9673b3534feb: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+e7376fd5c1bf: Pulling fs layer
+b2da79748e97: Pulling fs layer
+5cb8a08e3538: Waiting
+e7376fd5c1bf: Waiting
+9673b3534feb: Waiting
+b2da79748e97: Waiting
+4f4fb700ef54: Waiting
+3957cfbe4280: Waiting
+6b6ee6611dc9: Waiting
+c04a7887a976: Verifying Checksum
+c04a7887a976: Download complete
+3957cfbe4280: Verifying Checksum
+3957cfbe4280: Download complete
+6b6ee6611dc9: Verifying Checksum
+6b6ee6611dc9: Download complete
+e66ea44c6bbc: Verifying Checksum
+e66ea44c6bbc: Download complete
+c04a7887a976: Pull complete
+5cb8a08e3538: Verifying Checksum
+5cb8a08e3538: Download complete
+9673b3534feb: Verifying Checksum
+9673b3534feb: Download complete
+e7376fd5c1bf: Verifying Checksum
+e7376fd5c1bf: Download complete
+4f4fb700ef54: Download complete
+b2da79748e97: Download complete
+4c089a73f727: Verifying Checksum
+4c089a73f727: Download complete
+4c089a73f727: Pull complete
+e66ea44c6bbc: Pull complete
+3957cfbe4280: Pull complete
+6b6ee6611dc9: Pull complete
+5cb8a08e3538: Pull complete
+9673b3534feb: Pull complete
+4f4fb700ef54: Pull complete
+e7376fd5c1bf: Pull complete
+b2da79748e97: Pull complete
+Digest: sha256:ea58ccc753da47b8eee85d21adb4d784046a2136bcda20f7b6ad97c77ca28a34
+Status: Downloaded newer image for gr0v1ty/nano-node:5d48dd9ce3f802c8d6080e947fb6f09b39ed243c
+docker.io/gr0v1ty/nano-node:5d48dd9ce3f802c8d6080e947fb6f09b39ed243c
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_send_independant.json
+Start Fetching '5n4pr_conf_send_independant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_send_independant_config.json'
+Done  Fetching '5n4pr_conf_send_independant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_send_independant_config.json'
+Start Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Done  Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+SUCCESS: stop_containers completed with None result.
+SUCCESS: reset_nodes_data completed with None result.
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+Error executing command: nanomock start && nanomock init_wallets
+Error: WARNING: ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4']
+INFO: Nodes ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4'] reachable
+SUCCESS: start_containers completed with None result.
+WARNING: ['nl_genesis']
+WARNING: ['nl_pr1']
+WARNING: ['nl_pr2']
+WARNING: ['nl_pr3']
+WARNING: ['nl_pr4']
+INFO: Nodes ['nl_genesis'] reachable
+INFO: Nodes ['nl_pr1'] reachable
+INFO: Nodes ['nl_pr2'] reachable
+INFO: Nodes ['nl_pr4'] reachable
+INFO: Nodes ['nl_pr3'] reachable
+INFO: WALLET DE4DDD87BEC1FC0BEA17EFDE0D918117F4A1F8620ADEA98339C5A25093FC366C CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p
+INFO: WALLET 8CAFDE47456AC9FA49E85F4FD41DF05A439A9E813823F935FD91B6488D56325C CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8
+INFO: WALLET 052B65664C875F58B6E34F061C44D42023D71C9A16D22491B392771CAF89FF20 CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6
+INFO: WALLET 52DCDAF838B3B128E377B6D224CBB6646D7F250AB8EFE0A8D343720B89265405 CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub
+INFO: WALLET BCF2505277C5E66A5697A87F6D8B19371E2800BEBD650A41E4612D6AEEF6B46A CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h
+SUCCESS: ['WALLET DE4DDD87BEC1FC0BEA17EFDE0D918117F4A1F8620ADEA98339C5A25093FC366C CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p', 'WALLET 8CAFDE47456AC9FA49E85F4FD41DF05A439A9E813823F935FD91B6488D56325C CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8', 'WALLET 052B65664C875F58B6E34F061C44D42023D71C9A16D22491B392771CAF89FF20 CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6', 'WALLET 52DCDAF838B3B128E377B6D224CBB6646D7F250AB8EFE0A8D343720B89265405 CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub', 'WALLET BCF2505277C5E66A5697A87F6D8B19371E2800BEBD650A41E4612D6AEEF6B46A CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h']
+..............DEBUG 1 unconfirmed blocks! e.g. 29127EE304BD40C83D50193A25C7994E305809925093CA99E7D59E04C5BAD609
+....................................
+
+23:32:03 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+23:32:03 99       | 1        | 4.35     | 4.35     | 0.06       | 1.38       | 0.22      | 0.32      | 0.37      | 1.38      | 5               | 22.97    | 100        | 100          |
+..................................................
+
+23:32:21 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+23:32:21 100      | 0        | 5.47     | 5.47     | 0.16       | 0.42       | 0.26      | 0.37      | 0.37      | 0.42      | 5               | 18.29    | 100        | 100          |
+..................................................
+
+23:32:44 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+23:32:44 100      | 0        | 4.52     | 4.52     | 0.16       | 2.44       | 0.26      | 0.37      | 0.37      | 2.44      | 5               | 22.1     | 100        | 100          |
