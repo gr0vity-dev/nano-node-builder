@@ -15945,6 +15945,22 @@
     "run_id": "7639686867"
   },
   {
+    "hash": "81cd7aa6c592da8075b710837ad24efb3a435ad1",
+    "type": "pull_request",
+    "title": "Bucketing component",
+    "author": "pwojcikdev",
+    "body": "This extracts block bucketing logic into a separate `bucketing` component and introduces `ledger::block_priority ( .. )` function. This function provides stable block priorities independent of account info timestamp, which had the problem that it changed after block rollbacks. This made the previous logic unsuitable for bounded backlog. ",
+    "draft": false,
+    "pull_request": 4794,
+    "label": "pwojcikdev:bucketing",
+    "created_at": "2024-11-25T21:01:42Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-11-25T21:46:09Z",
+    "run_id": null
+  },
+  {
     "hash": "81e6b5747cb398439be5049757e4b63d09d3d006",
     "type": "pull_request",
     "pull_request": 4375,
