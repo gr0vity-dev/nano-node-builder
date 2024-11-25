@@ -3521,6 +3521,22 @@
     "run_id": "11469677257"
   },
   {
+    "hash": "1d6e2e0a1d485db9655a8c27e35563a5e6a51cbf",
+    "type": "pull_request",
+    "title": "Backlog scan refactoring",
+    "author": "pwojcikdev",
+    "body": "This modifies backlog scan process to use batch events which are more efficient compared to 1-by-1 events and also renames the component from `backlog` to `backlog_scan` to avoid confusion with bounded backlog.\r\n\r\nPart of https://github.com/nanocurrency/nano-node/pull/4787 work.",
+    "draft": false,
+    "pull_request": 4790,
+    "label": "pwojcikdev:backlog-scan-reworks",
+    "created_at": "2024-11-25T16:07:34Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-11-25T16:28:08Z",
+    "run_id": null
+  },
+  {
     "hash": "1d87b4fe7d9f010dae36d4de003660b170acae8c",
     "type": "pull_request",
     "pull_request": 4404,
@@ -9177,6 +9193,22 @@
     "docker_tag": "gr0v1ty/nano-node:4aa3cf42b4ab561514be85dff8b5aec71a35bdce",
     "build_started_at": "2023-11-07T17:59:44Z",
     "run_id": "6788456144"
+  },
+  {
+    "hash": "4ad3629218a21327ba0d2fcde4366346e7d90ae4",
+    "type": "pull_request",
+    "title": "Rework random block sampling for rep crawler",
+    "author": "pwojcikdev",
+    "body": "This improves how random blocks are sampled for rep crawler. The issue with previous way was that it sometimes caused tests to fail, simply because block hashes were too close together and it was improbable for some to be chosen. \r\n\r\nThis was never a problem for live network where there are many more blocks, but randomly failing tests are annoying nevertheless. The new way avoids some code repetition so that's a plus.",
+    "draft": false,
+    "pull_request": 4792,
+    "label": "pwojcikdev:random-block-sampling",
+    "created_at": "2024-11-25T16:25:21Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-11-25T16:28:08Z",
+    "run_id": null
   },
   {
     "hash": "4ad900ec31abf5245a50da65f30038742479fb27",
@@ -22632,6 +22664,22 @@
     "built_at": "2023-02-09T12:11:51Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:bb79f69f2906fac6972da93ac413959d7b0b4e64"
+  },
+  {
+    "hash": "bb9ddeced94671396ab50df2c57113cb48120983",
+    "type": "pull_request",
+    "title": "Offload rollback notifications to background thread",
+    "author": "pwojcikdev",
+    "body": "This avoids holding the database write lock when issuing block rollback notifications.",
+    "draft": false,
+    "pull_request": 4791,
+    "label": "pwojcikdev:block-processor-rolled-back-notif",
+    "created_at": "2024-11-25T16:18:42Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-11-25T16:28:08Z",
+    "run_id": null
   },
   {
     "hash": "bba68b5fe36ead9242ee0551d0ca7b7b1245dfe6",
