@@ -2856,6 +2856,19 @@
     "run_id": "9861661588"
   },
   {
+    "hash": "1727e0dd16daee4fbb1087f97ce218f9c2b1a493",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Merge pull request #4791 from pwojcikdev/block-processor-rolled-back-notif\n\nOffload rollback notifications to background thread",
+    "pull_request": "4791",
+    "created_at": "2024-11-26T20:34:59Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-11-26T20:41:54Z",
+    "run_id": null
+  },
+  {
     "hash": "172fd59958d05decac31259d41022978d78881cd",
     "type": "pull_request",
     "pull_request": 4219,
@@ -7289,6 +7302,19 @@
     "docker_tag": "gr0v1ty/nano-node:3ce52fc49af80dbb73187fe903da1e7b3c0a719d",
     "build_started_at": "2024-03-06T17:44:51Z",
     "run_id": "8176435828"
+  },
+  {
+    "hash": "3d14f1e46d960d255355da1fcf3c26f1bfe907e2",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Block processor batch rolled back event",
+    "pull_request": "4791",
+    "created_at": "2024-10-26T21:57:16Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-11-26T20:41:54Z",
+    "run_id": null
   },
   {
     "hash": "3d18d0b2c18660288decad801d225760da6cf9b4",
@@ -24477,6 +24503,22 @@
     "docker_tag": "gr0v1ty/nano-node:cafaadfeeecf021ef964cbb95926033e4cc46878",
     "build_started_at": "2024-04-30T13:34:48Z",
     "run_id": "8899322100"
+  },
+  {
+    "hash": "cb103c5d205596c13f8fd1621cf54ed32a99b6e3",
+    "type": "pull_request",
+    "title": "Bounded backlog",
+    "author": "pwojcikdev",
+    "body": "This is ongoing work for bounded backlog. This limits the number of unconfirmed blocks that the node needs to store. The implementation of this mechanism is nontrivial because the node relies heavily on the fact that unconfirmed blocks are present in the ledger.\r\n\r\nDepends on PRs:\r\nhttps://github.com/nanocurrency/nano-node/pull/4758",
+    "draft": true,
+    "pull_request": 4787,
+    "label": "pwojcikdev:bounded-backlog-pr",
+    "created_at": "2024-11-18T20:36:19Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-11-26T20:41:54Z",
+    "run_id": null
   },
   {
     "hash": "cb1893a424d407f18a009e682e902d8ea525ea59",
