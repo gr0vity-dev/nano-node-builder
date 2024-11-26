@@ -299,11 +299,11 @@ jobs:
 
           # Generate badge URL based on conditions
           if [[ $FAILED_COUNT -eq 0 ]]; then
-            BADGE_URL="https://img.shields.io/badge/gr0vity_Continuous-${HASH:0:7}%20|%20${PASSED_COUNT}_passed-brightgreen"
+            BADGE_URL="https://img.shields.io/badge/continuous_testing-${HASH:0:7}%20|%20${PASSED_COUNT}_passed-brightgreen"
           elif [[ $PASSED_COUNT -eq 0 ]]; then
-            BADGE_URL="https://img.shields.io/badge/gr0vity_Continuous-${HASH:0:7}%20|%20${FAILED_COUNT}_failed-red"
+            BADGE_URL="https://img.shields.io/badge/continuous_testing-${HASH:0:7}%20|%20${FAILED_COUNT}_failed-red"
           else
-            BADGE_URL="https://img.shields.io/badge/gr0vity_Continuous-${HASH:0:7}%20|%20${PASSED_COUNT}_passed,%20${FAILED_COUNT}_failed-red"
+            BADGE_URL="https://img.shields.io/badge/continuous_testing-${HASH:0:7}%20|%20${PASSED_COUNT}_passed,%20${FAILED_COUNT}_failed-red"
           fi
 
           git config user.name "GitHub Actions Bot"
