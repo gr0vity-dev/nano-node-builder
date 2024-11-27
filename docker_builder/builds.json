@@ -21703,6 +21703,22 @@
     "run_id": "11082972055"
   },
   {
+    "hash": "b07d3db243dd441fc71a187adaf775549d7d2553",
+    "type": "pull_request",
+    "title": "Disallow database operations on network IO threads",
+    "author": "pwojcikdev",
+    "body": "Doing synchronous disk IO on network IO threads can introduce very long delays, blocking network thread pool. This adds an assert that will detect this.\r\n\r\nCurrently this doesn't pass tests nicely because legacy bootstrap trips the assert.",
+    "draft": false,
+    "pull_request": 4772,
+    "label": "pwojcikdev:prevent-db-on-io-threads",
+    "created_at": "2024-10-27T16:02:45Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-11-27T13:03:41Z",
+    "run_id": null
+  },
+  {
     "hash": "b07fa46536c46e6923e774349017115c9838082c",
     "type": "commit",
     "created_at": "2023-02-23T16:17:50Z",
