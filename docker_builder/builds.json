@@ -23637,6 +23637,22 @@
     "run_id": "10308432868"
   },
   {
+    "hash": "bcf8ac0464b693e1d51c02b02defb00edef8442b",
+    "type": "pull_request",
+    "title": "Make election behavior mutable to support dynamic behaviour transition",
+    "author": "gr0vity-dev",
+    "body": "Problem:\r\n- Elections are currently immutable and can't be transitioned to priority status\r\n- Causing delays for optimistic elections rescheduled by priority scheduler as the next Vote broadcast is fixed to 15-second intervals. (by `network.vote_broadcast_interval`)\r\n\r\nChanges:\r\n- Modifies election behavior to be mutable, allowing elections (optimistic/hinted/...) to be transitioned to priority status\r\n- Added ability to trigger immediate vote broadcasts on transition without waiting for the next 15-second round\r\n\r\nBenefits:\r\n- It would allow for more aggressive use of optimistic elections (to narrow the gap between checked and cemented during bootstrapping) \r\n  - currently configured to accounts with gap_threshold of 32 could be reduced to 4\r\n- Maintain quick response times for live traffic by allowing election behavior changes.",
+    "draft": false,
+    "pull_request": 4799,
+    "label": "gr0vity-dev:prs/upgrade_elections",
+    "created_at": "2024-11-30T09:50:16Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-12-03T15:29:42Z",
+    "run_id": null
+  },
+  {
     "hash": "bd11f930e5a24b707174cbf5fa43a3e8680d0a44",
     "type": "pull_request",
     "title": "Block checker",
