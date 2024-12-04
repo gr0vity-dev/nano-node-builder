@@ -30904,6 +30904,22 @@
     "run_id": "8412454876"
   },
   {
+    "hash": "f632d92c896c2ae192349a98f3f666bda73bba7b",
+    "type": "pull_request",
+    "title": "Fix timing issue in active_elections.fork_replacement_tally",
+    "author": "gr0vity-dev",
+    "body": "This testcase fails in ~10% of cases on my machine with\r\n```\r\nExpected equality of these values:\r\n  max_blocks\r\n    Which is: 10\r\n  election->blocks ().size ()\r\n    Which is: 1\r\n```\r\nBy waiting for election insertion for the first block, before processing forks, this timing issue is eliminated.",
+    "draft": false,
+    "pull_request": 4802,
+    "label": "gr0vity-dev:prs/fix-active_elections.fork_replacement_tally",
+    "created_at": "2024-12-04T21:05:22Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-12-04T21:25:23Z",
+    "run_id": null
+  },
+  {
     "hash": "f64a9616ccce0b7dfaa55e1ca056d6f8f7b6f801",
     "type": "pull_request",
     "pull_request": 4502,
