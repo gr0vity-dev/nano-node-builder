@@ -24310,6 +24310,22 @@
     "docker_tag": null
   },
   {
+    "hash": "c1c60f0fe754ffa3c4dbe1f27c19408fb5e2a440",
+    "type": "pull_request",
+    "title": "Fix flaky inactive_votes_cache.election_start test",
+    "author": "gr0vity-dev",
+    "body": "This testcase fails sometimes on the github runners. And in ~1/1000 cases on my machine.\r\n\r\n`nano::test::confirmed () ` checks for confirmation being written to disk while node.ledger.cemented_count () uses cached cemented_count.\r\n\r\nUse ASSERT_TIMELY to give some time for disk I/O completion.",
+    "draft": false,
+    "pull_request": 4803,
+    "label": "gr0vity-dev:prs/fix-inactive_votes_cache-election_start",
+    "created_at": "2024-12-05T16:01:47Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-12-05T16:27:19Z",
+    "run_id": null
+  },
+  {
     "hash": "c1fc6a22bdf95e2f9a55134f56e38cef02bbcbd6",
     "type": "pull_request",
     "pull_request": 4158,
