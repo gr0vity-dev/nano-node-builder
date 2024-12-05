@@ -3729,6 +3729,22 @@
     "docker_tag": "gr0v1ty/nano-node:1de26b61205d9ac3beb0c3d7ed1e77d09a0ced03"
   },
   {
+    "hash": "1e085920100dbdab563c0fdee04c6c2e2c451d7a",
+    "type": "pull_request",
+    "title": "Reduce likelyhood of race in node.fork_publish",
+    "author": "gr0vity-dev",
+    "body": "This testcase fails a lot on windows github runners and in **~3%** locally.\r\n\r\n1. Reorder block processing in direct succession to increase likelihood of fork handling before election confirmation. (With this change alone the testcase fails in ~**0.2%**)\r\n\r\n2. Reduce default poll interval from 50ms to 10ms to reduce internal node operations between 2 polls. (With this change alone the testcase fails in ~**0.2%**)\r\n\r\nBoth changes are needed - Reordering alone or poll interval changes alone were insufficient. With both changes applied, test passes reliably (10000/10000).",
+    "draft": false,
+    "pull_request": 4804,
+    "label": "gr0vity-dev:prs/fix-node-fork_publish",
+    "created_at": "2024-12-05T21:05:53Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-12-05T22:38:39Z",
+    "run_id": null
+  },
+  {
     "hash": "1e15e8d9523a5f2b4d30f0240d54b922d9b9a4b3",
     "type": "pull_request",
     "title": "Frontier scan client",
