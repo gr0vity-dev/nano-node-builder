@@ -13317,6 +13317,22 @@
     "run_id": "6790225316"
   },
   {
+    "hash": "6911c68be103233c3b51862cb9743a09a8861007",
+    "type": "pull_request",
+    "title": "Enable debug logging for core tests",
+    "author": "gr0vity-dev",
+    "body": "Failures on GitHub runners are sometimes hard to reproduce locally. Adding detailed logging helps analyze test failures directly from CI logs.\r\n\r\n- Enables NANO_LOG_STATS and debug level logging for core tests across all CI platforms\r\n- Helps diagnose intermittent test failures by providing more detailed execution traces",
+    "draft": false,
+    "pull_request": 4807,
+    "label": "gr0vity-dev:prs/enable-debug-log-for-core-tests",
+    "created_at": "2024-12-07T08:45:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-12-07T13:32:27Z",
+    "run_id": null
+  },
+  {
     "hash": "69285accf17076b2c0225d3eb80967a6eadd1755",
     "type": "pull_request",
     "title": "Constexpr check NANO_ASIO_HANDLER_TRACKING",
@@ -23901,6 +23917,19 @@
     "built_at": "2023-09-15T10:48:56Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:bd3c6b251653ed17e1d09ac22c8edecc211b3cb8"
+  },
+  {
+    "hash": "bdbefc601f4ecec4f807c431cd98adbec99bb2f7",
+    "type": "commit",
+    "author": "gr0vity-dev",
+    "title": "Fix ledger_priority.sequential_blocks testcase (#4805)\n\nDifferent account chains are ot guaranteed to have the same priority timestamp. Openening could happen much later, independant of the sending. It can be euqal or greater\r\n\r\nCo-authored-by: gr0vity <gr0vity.dev@gmail.com>",
+    "pull_request": "4805",
+    "created_at": "2024-12-07T12:14:00Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-12-07T13:32:27Z",
+    "run_id": null
   },
   {
     "hash": "bdc741141a4bff749383a022155eeaf1965cad8d",
