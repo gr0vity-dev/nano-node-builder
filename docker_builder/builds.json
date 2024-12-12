@@ -10620,6 +10620,22 @@
     "run_id": "9873330560"
   },
   {
+    "hash": "543db79d167ce9293a3a7a4552c51f2885cc8a8a",
+    "type": "pull_request",
+    "title": "Optimize Vote Request Behavior During Bootstrapping",
+    "author": "gr0vity-dev",
+    "body": "With bounded backlog there's a need to minimize the gap between checked and cemented blocks especially during bootstrapping phase. Currently, elections stay passive for 5 seconds by default, during which we don't request votes. However, during bootstrapping, we need to request votes to confirm blocks.\r\n\r\nThis PR implements a heuristic to identify if a block is actively being voted on. If there are no recent votes in the vote cache for a block, it likely indicates we're in bootstrapping phase, and we should request votes immediately rather than waiting for the default 5-second passive period.\r\n\r\nThe election will transition to active state immediately if the block's hash is not found in the vote cache. \r\n",
+    "draft": false,
+    "pull_request": 4798,
+    "label": "gr0vity-dev:prs/transition_active_fast",
+    "created_at": "2024-11-30T09:26:55Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-12-12T14:29:21Z",
+    "run_id": null
+  },
+  {
     "hash": "5455e3448dce5352d2c8004d8c3e3d4f167955bb",
     "type": "commit",
     "author": "pwojcikdev",
