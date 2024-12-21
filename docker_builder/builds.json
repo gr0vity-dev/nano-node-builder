@@ -31683,6 +31683,22 @@
     "run_id": "6773676504"
   },
   {
+    "hash": "f762d19d9ad0e37dcc0fbfcbb9e08e158252fd5e",
+    "type": "pull_request",
+    "title": "Overhaul of `online_reps` class",
+    "author": "pwojcikdev",
+    "body": "This is an overhaul of `online_reps` class:\r\n\r\n- Run periodic online weight sampling on a dedicated thread, which makes it more robust and easier to debug.\r\n- Eliminate use of `store.online_weight.count ()` and erasing entries based on their timestamps instead (2 weeks for live, 1 day for beta). \r\n- Add stats and logging to improve observability.\r\n- Add asserts to ensure data consistency.\r\n- Split and rewrite functions, so they are (subjectively) cleaner.\r\n- Ensure that `nano::online_reps::trended ()` can never return value lower than the limit configured via `online_weight_minimum`.",
+    "draft": false,
+    "pull_request": 4656,
+    "label": "pwojcikdev:online-reps-overhaul",
+    "created_at": "2024-06-26T08:29:08Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-12-21T20:27:26Z",
+    "run_id": null
+  },
+  {
     "hash": "f7aa48c003c283e5f6ef291d3a91ed20b350d7f0",
     "type": "commit",
     "author": "pwojcikdev",
