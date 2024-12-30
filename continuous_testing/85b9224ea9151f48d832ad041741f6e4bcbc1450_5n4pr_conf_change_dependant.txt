@@ -1,0 +1,224 @@
+85b9224ea9151f48d832ad041741f6e4bcbc1450: Pulling from gr0v1ty/nano-node
+6414378b6477: Already exists
+d12019d1e86a: Pulling fs layer
+cfb21728414b: Pulling fs layer
+b2242615f553: Pulling fs layer
+55c991412482: Pulling fs layer
+14edeb7761ec: Pulling fs layer
+530635cacb4f: Pulling fs layer
+8cd6dbaac168: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+df68d2261d6a: Pulling fs layer
+94b853de2d08: Pulling fs layer
+530635cacb4f: Waiting
+8cd6dbaac168: Waiting
+4f4fb700ef54: Waiting
+df68d2261d6a: Waiting
+94b853de2d08: Waiting
+55c991412482: Waiting
+14edeb7761ec: Waiting
+d12019d1e86a: Verifying Checksum
+d12019d1e86a: Download complete
+55c991412482: Download complete
+14edeb7761ec: Verifying Checksum
+14edeb7761ec: Download complete
+b2242615f553: Verifying Checksum
+b2242615f553: Download complete
+530635cacb4f: Verifying Checksum
+530635cacb4f: Download complete
+8cd6dbaac168: Verifying Checksum
+8cd6dbaac168: Download complete
+d12019d1e86a: Pull complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+df68d2261d6a: Verifying Checksum
+df68d2261d6a: Download complete
+94b853de2d08: Download complete
+cfb21728414b: Verifying Checksum
+cfb21728414b: Download complete
+cfb21728414b: Pull complete
+b2242615f553: Pull complete
+55c991412482: Pull complete
+14edeb7761ec: Pull complete
+530635cacb4f: Pull complete
+8cd6dbaac168: Pull complete
+4f4fb700ef54: Pull complete
+df68d2261d6a: Pull complete
+94b853de2d08: Pull complete
+Digest: sha256:ad67266e6aecc29d81e085c334a0d369eb166c89ea64cc886d467c406ff255cb
+Status: Downloaded newer image for gr0v1ty/nano-node:85b9224ea9151f48d832ad041741f6e4bcbc1450
+docker.io/gr0v1ty/nano-node:85b9224ea9151f48d832ad041741f6e4bcbc1450
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/selector_events.py", line 848, in _read_ready__data_received
+    data = self._sock.recv(self.max_size)
+ConnectionResetError: [Errno 104] Connection reset by peer
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/threading.py", line 870, in run
+    self._target(*self._args, **self._kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/mixins/threaded_command_mixin.py", line 26, in _execute_command_sequence
+    self.command_instance.execute_another_command(command_config)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/command.py", line 49, in execute_another_command
+    another_command.execute()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/command.py", line 41, in execute
+    self.mixin.execute()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/mixins/python_command_mixin.py", line 40, in execute
+    method(**filtered_variables)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/pycmd.py", line 35, in publish_create
+    asyncio.run(test_case.run())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/publisher/test_case.py", line 69, in run
+    await self.stats_manager.initialize(self.node_name)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/publisher/confirmation_stats.py", line 17, in initialize
+    start_block_count = await self.nanorpc.block_count()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client.py", line 86, in block_count
+    return await self.rpc.block_count(include_cemented=include_cemented)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 33, in method
+    return await self.process_payloads([payload])
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 119, in process_payloads
+    return await self._request_with_retry(self._request, payloads)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 101, in _request_with_retry
+    return await self._retry_on_exception(coroutine,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 92, in _retry_on_exception
+    return await coroutine(*args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 108, in _request
+    async with session.post(self.url, json=payloads[0], headers=self.headers) as response:
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/aiohttp/client.py", line 1360, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/aiohttp/client.py", line 690, in _request
+    await resp.start(conn)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/aiohttp/client_reqrep.py", line 1059, in start
+    message, payload = await protocol.read()  # type: ignore[union-attr]
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/aiohttp/streams.py", line 644, in read
+    await self._waiter
+aiohttp.client_exceptions.ClientOSError: [Errno 104] Connection reset by peer
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_change_dependant.json
+Start Fetching '5n4pr_conf_change_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_change_dependant_config.json'
+Done  Fetching '5n4pr_conf_change_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_change_dependant_config.json'
+Start Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Done  Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+SUCCESS: stop_containers completed with None result.
+SUCCESS: reset_nodes_data completed with None result.
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+Error executing command: nanomock start && nanomock init_wallets
+Error: WARNING: ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4']
+INFO: Nodes ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4'] reachable
+SUCCESS: start_containers completed with None result.
+WARNING: ['nl_genesis']
+WARNING: ['nl_pr1']
+WARNING: ['nl_pr2']
+WARNING: ['nl_pr3']
+WARNING: ['nl_pr4']
+INFO: Nodes ['nl_genesis'] reachable
+INFO: Nodes ['nl_pr1'] reachable
+INFO: Nodes ['nl_pr2'] reachable
+INFO: Nodes ['nl_pr3'] reachable
+INFO: Nodes ['nl_pr4'] reachable
+INFO: WALLET D3178D1DB0352C71F3C9997AF1864C98388B5A07CD98F916EEC4F5FCE6D6682D CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8
+INFO: WALLET CC73DD6BCE5485BF555B2A5C26AD76AA63EB1552955C14F90969ACE375C25F42 CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p
+INFO: WALLET 39E6D70C3A16A8AB1842564BB220D9FC6551612FB94F929A4CF25023526BCDC5 CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6
+INFO: WALLET B6E0DC53348EAEC42D96F056E761ABFBFC8398B8680D6B1AD7CD63C5BC9C94CA CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub
+INFO: WALLET 1A9227E738761229C9943709C6D3B660DA2B6E51AE2704CFEF7E9A198857B742 CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h
+SUCCESS: ['WALLET D3178D1DB0352C71F3C9997AF1864C98388B5A07CD98F916EEC4F5FCE6D6682D CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8', 'WALLET CC73DD6BCE5485BF555B2A5C26AD76AA63EB1552955C14F90969ACE375C25F42 CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p', 'WALLET 39E6D70C3A16A8AB1842564BB220D9FC6551612FB94F929A4CF25023526BCDC5 CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6', 'WALLET B6E0DC53348EAEC42D96F056E761ABFBFC8398B8680D6B1AD7CD63C5BC9C94CA CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub', 'WALLET 1A9227E738761229C9943709C6D3B660DA2B6E51AE2704CFEF7E9A198857B742 CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h']
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
