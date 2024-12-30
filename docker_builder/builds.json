@@ -31863,6 +31863,22 @@
     "docker_tag": "gr0v1ty/nano-node:f4ddd523e13c5429bf2167820d205d51033a7a96"
   },
   {
+    "hash": "f4e940feb47c6b7791cd3adc7e36231f582df809",
+    "type": "pull_request",
+    "title": "Use unique ptrs for all node components",
+    "author": "pwojcikdev",
+    "body": "This stores all node components as unique ptrs which means they do not need full class definitions included in node header.\r\n\r\nOne cleanup that is still left to do is removing unnecessary includes from `node.hpp` header. I attempted doing it in this PR but it was messy as a lot of components implicly rely on these includes; it's a larger refactoring.",
+    "draft": false,
+    "pull_request": 4814,
+    "label": "pwojcikdev:use-unique-ptrs",
+    "created_at": "2024-12-30T17:34:45Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-12-30T17:34:47Z",
+    "run_id": null
+  },
+  {
     "hash": "f4f51c3d246b7c5f44a449468bb2ac3a3cb4642c",
     "type": "pull_request",
     "title": "Block checker",
