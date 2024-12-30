@@ -1,0 +1,261 @@
+97ee5cab3b71646650ac65c6c5a642fb1ce25368: Pulling from gr0v1ty/nano-node
+6414378b6477: Already exists
+ae45af213309: Pulling fs layer
+136a8d751c1f: Pulling fs layer
+93d9c9eb98b7: Pulling fs layer
+fc7de38e57d1: Pulling fs layer
+b5177b5ff221: Pulling fs layer
+2f0fae1b7f10: Pulling fs layer
+4d8bb1b563bf: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+9a9740f34eb3: Pulling fs layer
+dc80d85bfc5b: Pulling fs layer
+b5177b5ff221: Waiting
+2f0fae1b7f10: Waiting
+4d8bb1b563bf: Waiting
+4f4fb700ef54: Waiting
+9a9740f34eb3: Waiting
+dc80d85bfc5b: Waiting
+fc7de38e57d1: Waiting
+ae45af213309: Verifying Checksum
+ae45af213309: Download complete
+ae45af213309: Pull complete
+fc7de38e57d1: Verifying Checksum
+fc7de38e57d1: Download complete
+93d9c9eb98b7: Verifying Checksum
+93d9c9eb98b7: Download complete
+b5177b5ff221: Verifying Checksum
+b5177b5ff221: Download complete
+2f0fae1b7f10: Verifying Checksum
+2f0fae1b7f10: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+4d8bb1b563bf: Verifying Checksum
+4d8bb1b563bf: Download complete
+9a9740f34eb3: Verifying Checksum
+9a9740f34eb3: Download complete
+dc80d85bfc5b: Download complete
+136a8d751c1f: Verifying Checksum
+136a8d751c1f: Download complete
+136a8d751c1f: Pull complete
+93d9c9eb98b7: Pull complete
+fc7de38e57d1: Pull complete
+b5177b5ff221: Pull complete
+2f0fae1b7f10: Pull complete
+4d8bb1b563bf: Pull complete
+4f4fb700ef54: Pull complete
+9a9740f34eb3: Pull complete
+dc80d85bfc5b: Pull complete
+Digest: sha256:da29e47ab3fdf2a6c19f02a1347c494a968f472966a7c642fa172ae8fe6b4c74
+Status: Downloaded newer image for gr0v1ty/nano-node:97ee5cab3b71646650ac65c6c5a642fb1ce25368
+docker.io/gr0v1ty/nano-node:97ee5cab3b71646650ac65c6c5a642fb1ce25368
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/threading.py", line 870, in run
+    self._target(*self._args, **self._kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/mixins/threaded_command_mixin.py", line 26, in _execute_command_sequence
+    self.command_instance.execute_another_command(command_config)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/command.py", line 49, in execute_another_command
+    another_command.execute()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/command.py", line 41, in execute
+    self.mixin.execute()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/command/mixins/python_command_mixin.py", line 40, in execute
+    method(**filtered_variables)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/pycmd.py", line 35, in publish_create
+    asyncio.run(test_case.run())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/publisher/test_case.py", line 69, in run
+    await self.stats_manager.initialize(self.node_name)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/publisher/confirmation_stats.py", line 17, in initialize
+    start_block_count = await self.nanorpc.block_count()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client.py", line 86, in block_count
+    return await self.rpc.block_count(include_cemented=include_cemented)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 33, in method
+    return await self.process_payloads([payload])
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 119, in process_payloads
+    return await self._request_with_retry(self._request, payloads)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 101, in _request_with_retry
+    return await self._retry_on_exception(coroutine,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanorpc/client_dynamic.py", line 95, in _retry_on_exception
+    raise MaxRetriesExceededError(
+nanorpc.client_dynamic.MaxRetriesExceededError: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45101 ssl:default [Connect call failed ('172.17.0.1', 45101)]
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_change_dependant.json
+Start Fetching '5n4pr_conf_change_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_change_dependant_config.json'
+Done  Fetching '5n4pr_conf_change_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_change_dependant_config.json'
+Start Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Done  Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+SUCCESS: stop_containers completed with None result.
+SUCCESS: reset_nodes_data completed with None result.
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+Error executing command: nanomock start && nanomock init_wallets
+Error: WARNING: ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4']
+WARNING: RPC http://172.17.0.1:45101 not yet reachable for node nl_pr1: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45101 ssl:default [Connect call failed ('172.17.0.1', 45101)]
+WARNING: RPC http://172.17.0.1:45102 not yet reachable for node nl_pr2: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45102 ssl:default [Connect call failed ('172.17.0.1', 45102)]
+WARNING: RPC http://172.17.0.1:45103 not yet reachable for node nl_pr3: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45103 ssl:default [Connect call failed ('172.17.0.1', 45103)]
+WARNING: RPC http://172.17.0.1:45104 not yet reachable for node nl_pr4: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45104 ssl:default [Connect call failed ('172.17.0.1', 45104)]
+WARNING: RPC http://172.17.0.1:45104 not yet reachable for node nl_pr4: [Errno 104] Connection reset by peer
+WARNING: RPC http://172.17.0.1:45101 not yet reachable for node nl_pr1: [Errno 104] Connection reset by peer
+WARNING: RPC http://172.17.0.1:45103 not yet reachable for node nl_pr3: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45103 ssl:default [Connect call failed ('172.17.0.1', 45103)]
+WARNING: RPC http://172.17.0.1:45102 not yet reachable for node nl_pr2: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45102 ssl:default [Connect call failed ('172.17.0.1', 45102)]
+WARNING: RPC http://172.17.0.1:45101 not yet reachable for node nl_pr1: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45101 ssl:default [Connect call failed ('172.17.0.1', 45101)]
+WARNING: RPC http://172.17.0.1:45103 not yet reachable for node nl_pr3: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45103 ssl:default [Connect call failed ('172.17.0.1', 45103)]
+WARNING: RPC http://172.17.0.1:45104 not yet reachable for node nl_pr4: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45104 ssl:default [Connect call failed ('172.17.0.1', 45104)]
+WARNING: RPC http://172.17.0.1:45102 not yet reachable for node nl_pr2: [Errno 104] Connection reset by peer
+WARNING: RPC http://172.17.0.1:45101 not yet reachable for node nl_pr1: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45101 ssl:default [Connect call failed ('172.17.0.1', 45101)]
+WARNING: RPC http://172.17.0.1:45104 not yet reachable for node nl_pr4: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45104 ssl:default [Connect call failed ('172.17.0.1', 45104)]
+WARNING: RPC http://172.17.0.1:45103 not yet reachable for node nl_pr3: [Errno 104] Connection reset by peer
+WARNING: RPC http://172.17.0.1:45102 not yet reachable for node nl_pr2: [Errno 104] Connection reset by peer
+WARNING: RPC http://172.17.0.1:45101 not yet reachable for node nl_pr1: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45101 ssl:default [Connect call failed ('172.17.0.1', 45101)]
+WARNING: RPC http://172.17.0.1:45102 not yet reachable for node nl_pr2: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45102 ssl:default [Connect call failed ('172.17.0.1', 45102)]
+WARNING: RPC http://172.17.0.1:45103 not yet reachable for node nl_pr3: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45103 ssl:default [Connect call failed ('172.17.0.1', 45103)]
+WARNING: RPC http://172.17.0.1:45104 not yet reachable for node nl_pr4: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45104 ssl:default [Connect call failed ('172.17.0.1', 45104)]
+WARNING: RPC http://172.17.0.1:45101 not yet reachable for node nl_pr1: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45101 ssl:default [Connect call failed ('172.17.0.1', 45101)]
+WARNING: RPC http://172.17.0.1:45102 not yet reachable for node nl_pr2: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45102 ssl:default [Connect call failed ('172.17.0.1', 45102)]
+WARNING: RPC http://172.17.0.1:45103 not yet reachable for node nl_pr3: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45103 ssl:default [Connect call failed ('172.17.0.1', 45103)]
+WARNING: RPC http://172.17.0.1:45104 not yet reachable for node nl_pr4: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45104 ssl:default [Connect call failed ('172.17.0.1', 45104)]
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanomock", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 58, in main
+    asyncio.run(main_async(args))
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 54, in main_async
+    await manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 544, in execute_command
+    await command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 474, in start_containers
+    await self._wait_for_rpc_availability(nodes)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 294, in _wait_for_rpc_availability
+    raise ValueError(
+ValueError: TIMEOUT: RPCs not reachable for nodes ['nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4']
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
