@@ -1319,6 +1319,19 @@
     "run_id": "8959241022"
   },
   {
+    "hash": "09ed256a8ea9041e52e2f88ba4f96ae7a0fbb6fe",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Merge pull request #4813 from pwojcikdev/move-tcp-config\n\nCleanup `tcp_config` class",
+    "pull_request": "4813",
+    "created_at": "2024-12-30T17:35:12Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2024-12-30T17:42:01Z",
+    "run_id": null
+  },
+  {
     "hash": "09f407c9267e995490ea35b021fe6beeb964338a",
     "type": "commit",
     "created_at": "2023-04-03T15:24:10Z",
@@ -2211,6 +2224,19 @@
     "docker_tag": "gr0v1ty/nano-node:115652607026d220c50b29572b2b585edd387b0b",
     "build_started_at": "2024-07-10T10:11:26Z",
     "run_id": "9872296365"
+  },
+  {
+    "hash": "11675c2e0e0cf910e4ca9b4135fb904d0205c1c1",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Cleanup config",
+    "pull_request": "4813",
+    "created_at": "2024-12-27T14:52:05Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-12-30T17:42:01Z",
+    "run_id": null
   },
   {
     "hash": "1170407c8dfd0e0076c455eac3b7eba582915211",
@@ -8365,6 +8391,19 @@
     "docker_tag": "gr0v1ty/nano-node:418c9b3b83190486a431843b10bbdc63c58d6f8e",
     "build_started_at": "2024-03-21T12:12:10Z",
     "run_id": "8374699756"
+  },
+  {
+    "hash": "41977106a20b0e08b62c630fffb0902c7f298a12",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Config serialization",
+    "pull_request": "4813",
+    "created_at": "2024-12-30T08:29:51Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-12-30T17:42:01Z",
+    "run_id": null
   },
   {
     "hash": "41986ffcc3bf5b560c223bce69a0770deb746830",
@@ -16277,6 +16316,22 @@
     "docker_tag": "gr0v1ty/nano-node:7cd86ccf62d67842d083cd0b8932362d9e4868da",
     "build_started_at": "2024-04-14T22:18:13Z",
     "run_id": "8683523223"
+  },
+  {
+    "hash": "7cdc57c087943c9528d413487a62dd4b6505364e",
+    "type": "pull_request",
+    "title": "Use unique ptrs for all node components",
+    "author": "pwojcikdev",
+    "body": "This stores all node components as unique ptrs which means they do not need full class definitions included in node header.\r\n\r\nOne cleanup that is still left to do is removing unnecessary includes from `node.hpp` header. I attempted doing it in this PR but it was messy as a lot of components implicly rely on these includes; it's a larger refactoring.",
+    "draft": false,
+    "pull_request": 4814,
+    "label": "pwojcikdev:use-unique-ptrs",
+    "created_at": "2024-12-30T17:34:45Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-12-30T17:42:01Z",
+    "run_id": null
   },
   {
     "hash": "7ce38c8ea4bbfd140ea98fd8dfe7486b3ce00522",
@@ -25534,6 +25589,19 @@
     "docker_tag": "gr0v1ty/nano-node:c572de1d1369141bebba38a9d43bb5c41556b003",
     "build_started_at": "2024-01-09T16:11:03Z",
     "run_id": "7463731771"
+  },
+  {
+    "hash": "c57e5ea92d955a83a8f7283877d5f3dc52f9c096",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Move tcp_config",
+    "pull_request": "4813",
+    "created_at": "2024-11-22T17:40:30Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2024-12-30T17:42:01Z",
+    "run_id": null
   },
   {
     "hash": "c58ec87dcd54751c521ef173137f5dd27acf4893",
