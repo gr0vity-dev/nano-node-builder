@@ -9988,6 +9988,22 @@
     "run_id": "9235532141"
   },
   {
+    "hash": "4d02fd860349cc49923288c1dc5777707fbf4af9",
+    "type": "pull_request",
+    "title": "Rate limiter for bootstrap server",
+    "author": "pwojcikdev",
+    "body": "This adds rate limiter for processing incoming requests in bootstrap server. This is meant to bound max disk io taken by this component and is in addition to the already present fair queuing logic which limits number of queued requests per peer.",
+    "draft": false,
+    "pull_request": 4818,
+    "label": "pwojcikdev:bootstrap-server-limiter",
+    "created_at": "2025-01-05T21:56:09Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-01-05T22:08:23Z",
+    "run_id": null
+  },
+  {
     "hash": "4d2412e54dd894885d6649bc2f5e2c11736c557f",
     "type": "pull_request",
     "title": "Fix race condition between election creation and vote_cache triggering",
@@ -16546,6 +16562,22 @@
     "docker_tag": "gr0v1ty/nano-node:7e32c33ad11c1723333b59301a789e4dd607489a",
     "build_started_at": "2024-01-26T20:22:47Z",
     "run_id": "7673022624"
+  },
+  {
+    "hash": "7e334d50190d4bdda4000fb3c03a860a20c258d0",
+    "type": "pull_request",
+    "title": "Unlimited bootstrap request rate",
+    "author": "pwojcikdev",
+    "body": "This changes the default bootstrap client request rate limit to unlimited. The rate is still limited indirectly by the ability of peers to process them in a timely manner, we use peer scoring to limit number of outstanding requests per peer to 16 by default.",
+    "draft": false,
+    "pull_request": 4819,
+    "label": "pwojcikdev:unlimited-bootstrap",
+    "created_at": "2025-01-05T22:00:20Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-01-05T22:08:23Z",
+    "run_id": null
   },
   {
     "hash": "7e58c50140921031ebb1f59a7fc8a3594ec6022b",
