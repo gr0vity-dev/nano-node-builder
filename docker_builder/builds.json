@@ -21386,6 +21386,22 @@
     "docker_tag": "gr0v1ty/nano-node:a249a9791c5228f704261287bda603031220fae3"
   },
   {
+    "hash": "a288a3a0ef35060e2b560263986c213331c76cdc",
+    "type": "pull_request",
+    "title": "Handle `gap_epoch_open_pending` block status when bootstrapping",
+    "author": "pwojcikdev",
+    "body": "We can't process blocks that have `gap_epoch_open_pending` status immediately, but instead need to wait until at least one pending send is available for their account chain. Epoch blocks do not link to the associated send block, so we have no way of pulling the dependency other than randomly sampling the rest of the ledger. Given this the proper behavior when encountering this status is to evict the priority account associated with the epoch open block.",
+    "draft": false,
+    "pull_request": 4821,
+    "label": "pwojcikdev:bootstrap-handle-gap-epoch-open",
+    "created_at": "2025-01-07T16:46:22Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-01-07T18:28:39Z",
+    "run_id": null
+  },
+  {
     "hash": "a29b618296c94e51588d85bf51ce8ee307239a48",
     "type": "pull_request",
     "title": "Optimize election scheduler activate function",
