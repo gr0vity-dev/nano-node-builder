@@ -15028,6 +15028,22 @@
     "docker_tag": "gr0v1ty/nano-node:725c8b3ca11d986849db1625657b0d7f3ea793ef"
   },
   {
+    "hash": "725f3cbfae81d8819e5cad048a89c5af00f5d924",
+    "type": "pull_request",
+    "title": "Fix activate immediately logic",
+    "author": "pwojcikdev",
+    "body": "The main intention of this PR is to fix the bug in activate immediately logic; the if statement needs to be inverted. However, fixing it made `TEST (node, bootstrap_fork_open)` testcase fail, which upon further investigation uncovered bugs in bootstrap service and request aggregator.\r\n\r\nTo debug the problems I added quite a bit of new debug logging points which I decided to keep. It might be worthwhile to profile the node to ensure none of the log statements are impacting hot path too much.",
+    "draft": false,
+    "pull_request": 4822,
+    "label": "pwojcikdev:fix-activate-immediately",
+    "created_at": "2025-01-09T19:38:35Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-01-09T19:43:21Z",
+    "run_id": null
+  },
+  {
     "hash": "7267ab02f5b3d2cf5765a8eeafeb3f913592bdbc",
     "type": "pull_request",
     "pull_request": 4433,
