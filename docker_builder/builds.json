@@ -12458,6 +12458,22 @@
     "docker_tag": "gr0v1ty/nano-node:5ecb8b4ae4f75868a817930c720edf01ccef44fe"
   },
   {
+    "hash": "5ed3aab1171f566fff5c6f848a1d1bbc383563b8",
+    "type": "pull_request",
+    "title": "Fix out of order ledger notifications",
+    "author": "pwojcikdev",
+    "body": "This fixes the issue with bootstrap stalls when bounded backlog is enabled.\r\n\r\nWe issue ledger notifications on a separate background thread for performance reasons to avoid unnecessary work on threads that perform ledger writes. Because of this both block processor and bounded backlog classes modify ledger and issue their notifications from their own background workers, which will as currently implemented will lead to some strange interleavings. \r\n\r\nThis implements a component that manages a single thread that issues ledger modification notifications in the same exact order they were performed.",
+    "draft": false,
+    "pull_request": 4824,
+    "label": "pwojcikdev:ledger-notifications-3",
+    "created_at": "2025-01-14T21:31:48Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-01-14T21:36:07Z",
+    "run_id": null
+  },
+  {
     "hash": "5ef471f2a79db0ce62f2c47c43f45e14776c6403",
     "type": "commit",
     "author": "dsiganos",
