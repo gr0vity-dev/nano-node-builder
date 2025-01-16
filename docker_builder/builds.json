@@ -3676,6 +3676,22 @@
     "docker_tag": "gr0v1ty/nano-node:1c83e83ac4b02abda0e7f36aa748d5527fc89802"
   },
   {
+    "hash": "1c9f930b7fd03b7e03948c37464cb616f24e9121",
+    "type": "pull_request",
+    "title": "Extract pruning class",
+    "author": "pwojcikdev",
+    "body": "This moves pruning logic out of node class and encapsulates it in a `pruning` class. This also means that pruning actions now run on a dedicated thread pool which avoids a problem of running potentially long io operations using shared workers.",
+    "draft": false,
+    "pull_request": 4825,
+    "label": "pwojcikdev:extract-pruning",
+    "created_at": "2025-01-16T17:45:17Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-01-16T17:45:58Z",
+    "run_id": null
+  },
+  {
     "hash": "1caf7fa09ca632189c660e335df5a6a0cb2c1596",
     "type": "pull_request",
     "title": "Optimize cemented callbacks",
