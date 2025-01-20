@@ -29919,6 +29919,22 @@
     "docker_tag": "gr0v1ty/nano-node:df590413b96fa2dd9b807df9c09f0c87d7fef43f"
   },
   {
+    "hash": "dfa6bd26ec605e8a74b1791beba540a66dcd7fcc",
+    "type": "pull_request",
+    "title": "Extract `vote_rebroadcaster`",
+    "author": "pwojcikdev",
+    "body": "This moves vote rebroadcasting code to a dedicated `vote_rebroadcaster` component. The benefit of having a separate component is that it offloads the actual \"flood\" network call to a dedicated rebroadcasting thread, before this happened on vote processor thread which is already congested.",
+    "draft": false,
+    "pull_request": 4830,
+    "label": "pwojcikdev:vote-rebroadcaster",
+    "created_at": "2025-01-20T16:14:56Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-01-20T16:22:45Z",
+    "run_id": null
+  },
+  {
     "hash": "dfc36690077bd368dd0e5157afdffed7dbf0c364",
     "type": "pull_request",
     "title": "Traffic shaping",
