@@ -25797,6 +25797,22 @@
     "run_id": "11531735307"
   },
   {
+    "hash": "c09eb219eb2edf620c4bac8e7f8db2c86e03321a",
+    "type": "pull_request",
+    "title": "Avoid unnecessary string allocations when logging",
+    "author": "pwojcikdev",
+    "body": "This implements both logging and to_string conversions of all nano primitive types in terms of basic std::ostream operations. This should eliminate a lot of string allocations in debug logging code.",
+    "draft": false,
+    "pull_request": 4832,
+    "label": "pwojcikdev:lazy-eval-format",
+    "created_at": "2025-01-21T20:13:03Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-01-21T20:14:32Z",
+    "run_id": null
+  },
+  {
     "hash": "c0bbbefb1eb8adc37499e9ae82b87410ab61ba58",
     "type": "pull_request",
     "pull_request": 4311,
