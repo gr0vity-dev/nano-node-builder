@@ -11426,6 +11426,22 @@
     "run_id": "8294361737"
   },
   {
+    "hash": "56cdf393b51598d73257f9f336f9e9c3f456aab6",
+    "type": "pull_request",
+    "title": "Database backend configuration",
+    "author": "RickiNano",
+    "body": "In the current implementation, the database backend is determined by the setting of `RocksDb.Enable` config setting which is not very intuitive.\r\nThis PR replaces that setting with a new `database_backend` setting. It can be set to either `lmdb` or `rocksdb`. If not set, it defaults to `lmdb`.\r\nTo make it easier for node operators that are currently using RocksDb, the node will notify the operator with an error message if the config file has the old `RocksDb.Enable` set to true and `database_backend` set to lmdb (for example when using an old config file that does not have the new database_backend property). The error message can be removed in future versions when operators have migrated to use the new `database_backend` type\r\nThis PR also makes it easier to add more backends in the future.",
+    "draft": false,
+    "pull_request": 4828,
+    "label": "RickiNano:Database-backend",
+    "created_at": "2025-01-19T15:59:37Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-01-21T22:30:11Z",
+    "run_id": null
+  },
+  {
     "hash": "56d1e62afe0ebaa9d87a1c5c0964118167244fc3",
     "type": "commit",
     "author": "pwojcikdev",
