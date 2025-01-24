@@ -31366,6 +31366,22 @@
     "run_id": "8899586418"
   },
   {
+    "hash": "ea467bab0873959d09031b96e25d60eca011a8e4",
+    "type": "pull_request",
+    "title": "Websocket: Add `linked_account` to block content of confirmation topic",
+    "author": "Exxenoz",
+    "body": "This PR introduces support for including a `linked_account` field in the block content of the websocket confirmation topic. Specifically:\r\n\r\n- The `linked_account` field is now included for all blocks when the `include_linked_account` option is enabled.\r\n- For change and epoch blocks, `linked_account` is set to `\"0\"`, ensuring consistency with the `source` field in the `blocks_info` RPC response.\r\n\r\n**Issues resolved**\r\nThis PR addresses the following issues:\r\n\r\n- https://github.com/nanocurrency/nano-node/issues/3523\r\n- https://github.com/nanocurrency/nano-node/pull/3538",
+    "draft": false,
+    "pull_request": 4833,
+    "label": "Exxenoz:websocket_linked_account",
+    "created_at": "2025-01-24T23:43:04Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-01-24T23:49:05Z",
+    "run_id": null
+  },
+  {
     "hash": "ea56d1006c3d49d391432a7b37246d48e6e0752a",
     "type": "pull_request",
     "title": "Telemetry database backend",
