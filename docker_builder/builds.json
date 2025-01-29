@@ -29958,6 +29958,22 @@
     "run_id": "6772887815"
   },
   {
+    "hash": "dd93542cd96e711d3ceee4c8e86fe0cba8cf5d37",
+    "type": "pull_request",
+    "title": "Only query confirmed blocks in rep crawler",
+    "author": "pwojcikdev",
+    "body": "At some point behavior of `request_aggregator` changed and now nodes will not respond to queries for blocks that are not confirmed. Because of this we need to adjust `rep_crawler` block selection logic.",
+    "draft": false,
+    "pull_request": 4837,
+    "label": "pwojcikdev:query-confirmed-only",
+    "created_at": "2025-01-29T19:19:25Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-01-29T19:21:03Z",
+    "run_id": null
+  },
+  {
     "hash": "ddb3cf55623b0be9c99b94052de353497dc1c22b",
     "type": "commit",
     "created_at": "2024-03-23T13:52:55Z",
