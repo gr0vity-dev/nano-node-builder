@@ -29244,6 +29244,22 @@
     "run_id": "10740148636"
   },
   {
+    "hash": "d7db86d8c9da06c3a5f1d0740a0a1c57b65b5745",
+    "type": "pull_request",
+    "title": "Fix vote_spacing logic ",
+    "author": "gr0vity-dev",
+    "body": "The `votable()` method had incorrect logic that allowed voting on recently\r\nvoted blocks when it should have prevented them. Fix inverts the logic to:\r\n- Prevent repeated votes on the same root/hash pairs within spacing window\r\n- Allow immediate voting on different blocks with same root (competing forks)\r\n\r\nAdditional changes:\r\n- Remove vote spacing check from vote_generator reply()\r\n- Update vote_spacing to track latest fork votes per root\r\n- Fix tests to reflect correct spacing behavior",
+    "draft": false,
+    "pull_request": 4840,
+    "label": "gr0vity-dev:prs/fix_vote_spacing",
+    "created_at": "2025-02-05T10:02:59Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-02-05T20:41:44Z",
+    "run_id": null
+  },
+  {
     "hash": "d7f2b8e23e16683affe39632abb478868a207200",
     "type": "commit",
     "created_at": "2023-10-31T12:51:53Z",
