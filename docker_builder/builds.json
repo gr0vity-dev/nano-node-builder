@@ -28398,6 +28398,22 @@
     "docker_tag": "gr0v1ty/nano-node:d24699313b681c281393abe1260a1eb98920a8e1"
   },
   {
+    "hash": "d2811db85bacfd6b7a3f29a0ee0fb83df0aa21ae",
+    "type": "pull_request",
+    "title": "Fix vote_spacing logic ",
+    "author": "gr0vity-dev",
+    "body": "The `votable()` method had incorrect logic that allowed voting on recently\r\nvoted blocks when it should have prevented them. Fix inverts the logic to:\r\n- Prevent repeated votes on the same root/hash pairs within spacing window\r\n- Allow immediate voting on different blocks with same root (competing forks)\r\n\r\nAdditional changes:\r\n- Remove vote spacing check from vote_generator reply()\r\n- Update vote_spacing to track latest fork votes per root\r\n- Fix tests to reflect correct spacing behavior",
+    "draft": false,
+    "pull_request": 4840,
+    "label": "gr0vity-dev:prs/fix_vote_spacing",
+    "created_at": "2025-02-05T10:02:59Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-02-05T10:25:33Z",
+    "run_id": null
+  },
+  {
     "hash": "d283c100ce42fd4dae6d86f2f039cdaef9ae2860",
     "type": "pull_request",
     "title": "Use deque rather than vector to support large initialization sequences",
