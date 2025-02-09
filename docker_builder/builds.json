@@ -7114,6 +7114,22 @@
     "run_id": "10576842207"
   },
   {
+    "hash": "34e0394b66fc2152089368794d08b30104c51c9a",
+    "type": "pull_request",
+    "title": "RPC: Include optional `linked_account` field in account_history, block_info, and blocks_info RPCs",
+    "author": "Exxenoz",
+    "body": "This PR adds an optional parameter `include_linked_account` to the account_history, block_info, and blocks_info RPC endpoints.\r\n\r\nWhen enabled, the response will include a new field `linked_account`, which returns the linked account associated with the block (or \"0\" if no linked account exists/was found e.g. due to pruning). The related tests have been updated accordingly.\r\n\r\n**Issues resolved**\r\nThis PR is an extension to PR #4833",
+    "draft": false,
+    "pull_request": 4841,
+    "label": "Exxenoz:rpc_add_linked_account",
+    "created_at": "2025-02-09T16:38:24Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-02-09T16:40:07Z",
+    "run_id": null
+  },
+  {
     "hash": "352f66a2070e22bb9900abd69f016095c58eb983",
     "type": "commit",
     "created_at": "2023-02-08T12:39:14Z",
@@ -10876,6 +10892,22 @@
     "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2024-12-23T19:06:03Z",
+    "run_id": null
+  },
+  {
+    "hash": "50fdca48e3778363d4f8503a91e1d3311465bf55",
+    "type": "pull_request",
+    "title": "Websocket: Add `linked_account` to block content of confirmation topic",
+    "author": "Exxenoz",
+    "body": "This PR introduces support for including a `linked_account` field in the block content of the websocket confirmation topic. Specifically:\r\n\r\n- The `linked_account` field is now included for all blocks when the `include_linked_account` option is enabled.\r\n- For change and epoch blocks, `linked_account` is set to `\"0\"`, ensuring consistency with the `source` field in the `blocks_info` RPC response.\r\n\r\n**Issues resolved**\r\nThis PR addresses the following issues:\r\n\r\n- https://github.com/nanocurrency/nano-node/issues/3523\r\n- https://github.com/nanocurrency/nano-node/pull/3538",
+    "draft": false,
+    "pull_request": 4833,
+    "label": "Exxenoz:websocket_linked_account",
+    "created_at": "2025-01-24T23:43:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-02-09T16:40:07Z",
     "run_id": null
   },
   {
