@@ -15061,6 +15061,22 @@
     "run_id": "12758124261"
   },
   {
+    "hash": "6de112d1a15d3f83edc731b71e33ad874d02d05a",
+    "type": "pull_request",
+    "title": "Ledger: Use representative for change blocks and epoch signer for epoch blocks in linked_account",
+    "author": "Exxenoz",
+    "body": "- For change blocks, `ledger::linked_account` now returns the block's representative\r\n- For epoch blocks, it returns the corresponding epoch signer\r\n\r\n**Issues resolved**\r\nThis PR is an extension to PR #4841\r\n\r\nThis PR simplifies the detection of related accounts for block explorer applications. As a result, the following logic can be completely removed, reducing complexity:\r\n\r\n```\r\nswitch (historyEntry.type) {\r\n  case \"change\":\r\n\trelatedAccount = historyEntry.representative;\r\n\tbreak;\r\n  case \"open\":\r\n  case \"receive\":\r\n\trelatedAccount = historyEntry.account;\r\n\tbreak;\r\n  case \"send\":\r\n\trelatedAccount = historyEntry.destination;\r\n\tbreak;\r\n  case \"state\":\r\n\tswitch (historyEntry.subtype) {\r\n\t  case \"change\":\r\n\t\trelatedAccount = historyEntry.representative;\r\n\t\tbreak;\r\n\t  case \"epoch\": // ToDo: Find epoch signer\r\n\t\trelatedAccount = historyEntry.account;\r\n\t\tbreak;\r\n\t  case \"receive\":\r\n\t  case \"send\":\r\n\t\trelatedAccount = historyEntry.account;\r\n\t\tbreak;\r\n\t}\r\n\tbreak;\r\n}\r\n```",
+    "draft": false,
+    "pull_request": 4842,
+    "label": "Exxenoz:ledger_extend_linked_account",
+    "created_at": "2025-02-09T16:49:57Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-02-09T17:07:24Z",
+    "run_id": null
+  },
+  {
     "hash": "6de90ff196c7aaaaf05c804067e3cb249a87801b",
     "type": "pull_request",
     "pull_request": 4296,
