@@ -21207,6 +21207,22 @@
     "run_id": "8854447582"
   },
   {
+    "hash": "98f86c8380a33e8eca39d29e65a5b926d782d3f2",
+    "type": "pull_request",
+    "title": "Decay bootstrap blocking set",
+    "author": "pwojcikdev",
+    "body": "This adds a mechanism by which entries in bootstrap blocking set can be cleaned up after a period of time. This is to make the bootstrap process more robust. By default the decay period is set to 15 minutes, which might require tweaking, and is configurable via `[node.bootstrap.account_sets] blocking_decay` configuration variable.",
+    "draft": false,
+    "pull_request": 4844,
+    "label": "pwojcikdev:blocking-set-decay-3",
+    "created_at": "2025-02-16T13:19:59Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-02-16T13:29:11Z",
+    "run_id": null
+  },
+  {
     "hash": "98f9a9279c3896c0826ef8f049b2d3564cf95eac",
     "type": "pull_request",
     "pull_request": 4158,
