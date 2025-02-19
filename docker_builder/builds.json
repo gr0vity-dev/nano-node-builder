@@ -33490,6 +33490,22 @@
     "run_id": "8373770720"
   },
   {
+    "hash": "f45210c813eceb4c5596ee0c8c11ee85b85b29b0",
+    "type": "pull_request",
+    "title": "Improve handling of rep weights snapshots",
+    "author": "pwojcikdev",
+    "body": "Calling `ledger.cache.rep_weights.get_rep_amounts ();` to capture rep weights snapshots always used on disk ledger weights. This PR makes the behavior consistent with `ledger.weight ()` function which uses bootstrap weights if the node isn't fully bootstrapped yet. We use these weights for vote processing prioritization.",
+    "draft": false,
+    "pull_request": 4847,
+    "label": "pwojcikdev:rep-weights-work",
+    "created_at": "2025-02-19T18:27:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-02-19T18:40:14Z",
+    "run_id": null
+  },
+  {
     "hash": "f45589f0fe88ee51dd6151e9551a7da0d6d94b13",
     "type": "pull_request",
     "pull_request": 4412,
