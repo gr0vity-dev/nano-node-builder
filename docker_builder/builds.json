@@ -12924,6 +12924,22 @@
     "run_id": "12864764358"
   },
   {
+    "hash": "5e5c5601042c147a809144f1094a43664ef5972e",
+    "type": "pull_request",
+    "title": "Log ledger data path on startup",
+    "author": "pwojcikdev",
+    "body": "This modifies startup log, so that there is an indication before a potentially long-running ledger store initialization takes place. For ease of debugging, a full data path is also logged.\r\n\r\n```\r\n[2025-02-23 22:59:56.572] [daemon] [info] Daemon started\r\n[2025-02-23 22:59:56.574] [daemon] [info] Starting up Nano node...\r\n[2025-02-23 22:59:56.574] [daemon] [info] Hardware concurrency: 20 ( configured: 20 )\r\n[2025-02-23 22:59:56.574] [daemon] [info] File descriptors limit: 16384\r\n[2025-02-23 22:59:56.574] [init] [info] Using data directory: /Users/xxx/Library/Nano\r\n[2025-02-23 22:59:56.575] [init] [info] Loaded local node ID: node_xxxxxxxxxx\r\n[2025-02-23 22:59:56.576] [lmdb] [info] Loading ledger from: /Users/xxx/Library/Nano/data.ldb, this might take a while...\r\n```",
+    "draft": false,
+    "pull_request": 4852,
+    "label": "pwojcikdev:log-ledger-path",
+    "created_at": "2025-02-23T22:03:54Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-02-23T22:14:33Z",
+    "run_id": null
+  },
+  {
     "hash": "5e5cd3703246a176e27c1571d6402c94d2679795",
     "type": "commit",
     "author": "clemahieu",
