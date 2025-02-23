@@ -1,0 +1,406 @@
+5e5c5601042c147a809144f1094a43664ef5972e: Pulling from gr0v1ty/nano-node
+9cb31e2e37ea: Pulling fs layer
+4cd5d276866b: Pulling fs layer
+ac55fdc074c9: Pulling fs layer
+b938916cdde9: Pulling fs layer
+124c3fd5bc38: Pulling fs layer
+9151d9541fe3: Pulling fs layer
+dbc6f8dec576: Pulling fs layer
+37b7bac8bf9a: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+80a7fdbf93ef: Pulling fs layer
+dd8ea976605b: Pulling fs layer
+9151d9541fe3: Waiting
+b938916cdde9: Waiting
+124c3fd5bc38: Waiting
+37b7bac8bf9a: Waiting
+4f4fb700ef54: Waiting
+80a7fdbf93ef: Waiting
+dd8ea976605b: Waiting
+dbc6f8dec576: Waiting
+4cd5d276866b: Download complete
+9cb31e2e37ea: Verifying Checksum
+9cb31e2e37ea: Download complete
+124c3fd5bc38: Verifying Checksum
+124c3fd5bc38: Download complete
+b938916cdde9: Verifying Checksum
+b938916cdde9: Download complete
+9151d9541fe3: Verifying Checksum
+9151d9541fe3: Download complete
+dbc6f8dec576: Verifying Checksum
+dbc6f8dec576: Download complete
+9cb31e2e37ea: Pull complete
+37b7bac8bf9a: Verifying Checksum
+37b7bac8bf9a: Download complete
+4f4fb700ef54: Download complete
+dd8ea976605b: Verifying Checksum
+dd8ea976605b: Download complete
+4cd5d276866b: Pull complete
+80a7fdbf93ef: Download complete
+ac55fdc074c9: Verifying Checksum
+ac55fdc074c9: Download complete
+ac55fdc074c9: Pull complete
+b938916cdde9: Pull complete
+124c3fd5bc38: Pull complete
+9151d9541fe3: Pull complete
+dbc6f8dec576: Pull complete
+37b7bac8bf9a: Pull complete
+4f4fb700ef54: Pull complete
+80a7fdbf93ef: Pull complete
+dd8ea976605b: Pull complete
+Digest: sha256:370ed182b770454205210874056f63f7ed24cd4c7b5f79c970935e8b811ceb90
+Status: Downloaded newer image for gr0v1ty/nano-node:5e5c5601042c147a809144f1094a43664ef5972e
+docker.io/gr0v1ty/nano-node:5e5c5601042c147a809144f1094a43664ef5972e
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_rocks_10k_bintree.json
+Start Fetching '5n4pr_rocks_10k_bintree_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_rocks_10k_bintree_config.json'
+Done  Fetching '5n4pr_rocks_10k_bintree_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_rocks_10k_bintree_config.json'
+Start Fetching '5n4pr_100k_bintree_short.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_100k_bintree_short.json'
+Done  Fetching '5n4pr_100k_bintree_short.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_100k_bintree_short.json'
+Start Fetching '5n4pr_init_rocksdb.tar.gz' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_init_rocksdb.tar.gz'
+Done  Fetching '5n4pr_init_rocksdb.tar.gz' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_init_rocksdb.tar.gz'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Start Fetching 'config-node_5n4pr_spam_buffer_rocks.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/config-node_5n4pr_spam_buffer_rocks.toml'
+Done  Fetching 'config-node_5n4pr_spam_buffer_rocks.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/config-node_5n4pr_spam_buffer_rocks.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+SUCCESS: stop_containers completed with None result.
+SUCCESS: reset_nodes_data completed with None result.
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+Error executing command: nanomock start && nanomock init_wallets
+Error: ERROR: Command failed: docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d
+ERROR: Error output: Creating volume "nanomock_nl_default_volume" with default driver
+Creating nl_pr4 ... 
+Creating nl_genesis ... 
+Creating nl_pr2     ... 
+Creating nl_pr1     ... 
+Creating nl_pr3     ... 
+Host is already in use by another container
+Creating nl_genesis ... error
+
+ERROR: for nl_genesis  Cannot start service nl_genesis: driver failed programming external connectivity on endpoint nl_genesis (f53a35d3682326b938c4d04cb0f52b5029b2a54b7e360fc430a99d7566e34d2f): failed to bind host port for 0.0.0.0:44100:172.18.0.3:17075/tcp: address already in use
+Creating nl_pr2     ... done
+Creating nl_pr2_exporter ... 
+Creating nl_pr1          ... done
+Creating nl_pr3          ... done
+Creating nl_pr1_exporter ... 
+Creating nl_pr4          ... done
+Creating nl_pr3_exporter ... 
+Creating nl_pr4_exporter ... 
+Creating nl_pr2_exporter ... done
+Creating nl_pr3_exporter ... done
+Creating nl_pr1_exporter ... done
+Creating nl_pr4_exporter ... done
+
+ERROR: for nl_genesis  Cannot start service nl_genesis: driver failed programming external connectivity on endpoint nl_genesis (f53a35d3682326b938c4d04cb0f52b5029b2a54b7e360fc430a99d7566e34d2f): failed to bind host port for 0.0.0.0:44100:172.18.0.3:17075/tcp: address already in use
+Encountered errors while bringing up the project.
+
+ERROR: Return code: 1
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 198, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanomock", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 58, in main
+    asyncio.run(main_async(args))
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 54, in main_async
+    await manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 544, in execute_command
+    await command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 473, in start_containers
+    self.docker_interface.compose_start(nodes)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 56, in compose_start
+    return self._run_command(cmd)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 33, in _run_command
+    subprocess_run_capture_output(base_command)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 209, in subprocess_run_capture_output
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: <exception str() failed>
+nanorpc.versions.v25_1
+nanorpc.versions.v26_0
+nanorpc.versions.v26_1
+2025-02-23 22:45:25     0 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.Connecting to [::ffff:172.17.0.1]:44100
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44101
+Connecting to [::ffff:172.17.0.1]:44102
+Connecting to [::ffff:172.17.0.1]:44103
+Connecting to [::ffff:172.17.0.1]:44104
+2025-02-23 22:45:26     1 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/    246 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   232.0 (avg  232.00) (  2.32%)
+.2025-02-23 22:45:27     2 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/    722 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   476.0 (avg  354.00) (  7.08%)
+.2025-02-23 22:45:29     3 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   1202 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   480.0 (avg  396.00) ( 11.88%)
+.2025-02-23 22:45:30     4 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   1664 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   462.0 (avg  412.50) ( 16.50%)
+.2025-02-23 22:45:31     5 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   2140 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   476.0 (avg  425.20) ( 21.26%)
+.2025-02-23 22:45:32     6 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   2614 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   474.0 (avg  433.33) ( 26.00%)
+.2025-02-23 22:45:33     7 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   3084 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   470.0 (avg  438.57) ( 30.70%)
+.2025-02-23 22:45:34     8 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   3545 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   461.0 (avg  441.38) ( 35.31%)
+.2025-02-23 22:45:35     9 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   4001 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   456.0 (avg  443.00) ( 39.87%)
+.2025-02-23 22:45:36    11 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   4479 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   239.0 (avg  405.91) ( 44.65%)
+.2025-02-23 22:45:37    12 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   4948 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   469.0 (avg  411.17) ( 49.34%)
+.2025-02-23 22:45:38    13 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   5405 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   457.0 (avg  414.69) ( 53.91%)
+.2025-02-23 22:45:40    14 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   5875 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   470.0 (avg  418.64) ( 58.61%)
+.2025-02-23 22:45:41    15 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   6348 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   473.0 (avg  422.27) ( 63.34%)
+.2025-02-23 22:45:42    16 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   6810 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   462.0 (avg  424.75) ( 67.96%)
+.2025-02-23 22:45:43    17 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   7269 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   459.0 (avg  426.76) ( 72.55%)
+.2025-02-23 22:45:44    18 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   7731 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   462.0 (avg  428.72) ( 77.17%)
+.2025-02-23 22:45:45    19 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   8200 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   469.0 (avg  430.84) ( 81.86%)
+.2025-02-23 22:45:46    20 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   8655 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   455.0 (avg  432.05) ( 86.41%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:45:47    22 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   9104 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   224.5 (avg  413.18) ( 90.90%)
+.2025-02-23 22:45:48    23 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/   9591 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   487.0 (avg  416.39) ( 95.77%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:45:50    24 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   423.0 (avg    0.00) (100.00%)
+.2025-02-23 22:45:51    25 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:45:52    26 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:45:53    27 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:45:54    28 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:45:55    29 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:45:56    30 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:45:57    32 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:45:58    33 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:45:59    34 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:01    35 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:46:02    36 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:03    37 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+2025-02-23 22:46:04    38 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:46:05    39 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:06    40 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:46:07    41 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:08    43 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+2025-02-23 22:46:09    44 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:10    45 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:12    46 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:13    47 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:14    48 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:15    49 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:16    50 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:17    51 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:46:18    52 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:19    54 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:20    55 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+2025-02-23 22:46:21    56 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:23    57 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+2025-02-23 22:46:24    58 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:46:25    59 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:26    60 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:27    61 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:28    62 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:29    64 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:30    65 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:31    66 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:33    67 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:34    68 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:35    69 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:36    70 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:37    71 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:38    72 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:39    73 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:40    75 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:41    76 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:42    77 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:44    78 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:45    79 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:46    80 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:47    81 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:48    82 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:49    83 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:46:50    84 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:51    86 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+2025-02-23 22:46:52    87 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:46:53    88 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:55    89 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:56    90 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:46:57    91 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+2025-02-23 22:46:58    92 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44102. Wait 100ms
+2025-02-23 22:46:59    93 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:47:00    94 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+2025-02-23 22:47:01    96 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:47:02    97 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+2025-02-23 22:47:03    98 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44104. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+2025-02-23 22:47:05    99 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:47:06   100 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:47:07   101 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+2025-02-23 22:47:08   102 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+2025-02-23 22:47:09   103 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:47:10   104 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:47:11   105 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:47:12   107 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:47:13   108 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:47:14   109 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:47:16   110 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:47:17   111 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:47:18   112 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:47:19   113 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2025-02-23 22:47:20   114 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+2025-02-23 22:47:21   115 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:47:22   116 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+2025-02-23 22:47:23   118 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2025-02-23 22:47:24   119 sec | nl_pr1           | Nano DEV_BUILD 5e5c560 |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.FAIL
