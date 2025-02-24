@@ -9322,6 +9322,22 @@
     "run_id": "12456600144"
   },
   {
+    "hash": "445a783c5c2349522c0a6845f43d3e4158340c3d",
+    "type": "pull_request",
+    "title": "RPC: Include optional `linked_account` field in account_history, block_info, and blocks_info RPCs",
+    "author": "Exxenoz",
+    "body": "This PR adds an optional parameter `include_linked_account` to the account_history, block_info, and blocks_info RPC endpoints.\r\n\r\nWhen enabled, the response will include a new field `linked_account`, which returns the linked account associated with the block (or \"0\" if no linked account exists/was found e.g. due to pruning). The related tests have been updated accordingly.\r\n\r\n**Issues resolved**\r\nThis PR is an extension to PR #4833",
+    "draft": false,
+    "pull_request": 4841,
+    "label": "Exxenoz:rpc_add_linked_account",
+    "created_at": "2025-02-09T16:38:24Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-02-24T02:43:47Z",
+    "run_id": null
+  },
+  {
     "hash": "4463ba756622b57c257cea4e271ae50f8ffbdfdf",
     "type": "pull_request",
     "title": "Use a dedicated thread for tcp listener",
