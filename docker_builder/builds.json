@@ -20053,6 +20053,22 @@
     "run_id": "8022093265"
   },
   {
+    "hash": "8ff4cc847cf05b90d8ddcd2557559493a77dc506",
+    "type": "pull_request",
+    "title": "Online weight tracking improvements",
+    "author": "pwojcikdev",
+    "body": "This fixes an edge case where online weight tracking would underreport the current online weight. The problem was that votes from slow representatives wouldn't be reliably counted toward online voting weight. By slow representative I mean a node that votes on elections after they already reach quorum and are evicted from active election container. We still want to count such votes as online weight if they arrive within a reasonable timeframe.",
+    "draft": false,
+    "pull_request": 4854,
+    "label": "pwojcikdev:online-reps-work",
+    "created_at": "2025-03-02T17:53:08Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-03-02T17:57:20Z",
+    "run_id": null
+  },
+  {
     "hash": "900dda838616af214be00cac37d54e16c732af27",
     "type": "commit",
     "created_at": "2023-02-28T16:16:36Z",
