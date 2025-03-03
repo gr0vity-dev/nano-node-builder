@@ -34711,6 +34711,22 @@
     "docker_tag": "gr0v1ty/nano-node:f9e5bbfb470e2c3ab45b3dd49d65e0192ca9c790"
   },
   {
+    "hash": "f9ed20c78ef77e9df90e6097ae5169a1362c0f1c",
+    "type": "pull_request",
+    "title": "Online weight tracking improvements",
+    "author": "pwojcikdev",
+    "body": "This fixes an edge case where online weight tracking would underreport the current online weight. The problem was that votes from slow representatives wouldn't be reliably counted toward online voting weight. By slow representative I mean a node that votes on elections after they already reach quorum and are evicted from active election container. We still want to count such votes as online weight if they arrive within a reasonable timeframe.",
+    "draft": false,
+    "pull_request": 4854,
+    "label": "pwojcikdev:online-reps-work",
+    "created_at": "2025-03-02T17:53:08Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-03-03T16:42:12Z",
+    "run_id": null
+  },
+  {
     "hash": "f9f5a41143ac919a07603a377beec5cb571ed58c",
     "type": "pull_request",
     "title": "Fix pruning tests that did not confirm blocks before pruning.",
