@@ -32599,6 +32599,22 @@
     "run_id": "13273249357"
   },
   {
+    "hash": "eb44991dc109ca0391c266fcda4e3f7e552654d3",
+    "type": "pull_request",
+    "title": "Vote rebroadcasting overhaul",
+    "author": "pwojcikdev",
+    "body": "This PR reworks the `vote_rebroadcaster` component, making vote rebroadcasting \"smarter\". Previously we used a simple queue with a naive filter which rebroadcasted all processed votes. Because a vote can contain up to 255 hashes and the same vote can be processed multiple times depending on the exact timing of election activation, this introduced a rather significant inefficiency where we could be rebroadcasting the same vote multiple times, wasting bandwidth.\r\n\r\nHere an index is added to track and filter rebroadcasts (with configurable limits, but here are the defaults):\r\n- tracking the top 100 representatives by weight\r\n- per-representative history of up to 32k most recent votes and block hashes\r\n- a 90-second minimum interval between rebroadcasts of the same hash from the same representative (if a vote switches to final vote we rebroadcast immediately, ignoring the cooldown)\r\n- additional vote deduplication by vote hash to avoid rebroadcasting identical votes\r\n\r\nQueuing of votes to rebroadcast is now using weighted fair queuing based on rep tiers. Under saturation higher weight reps' votes will get larger proportion of available bandwidth while still reserving some capacity for lower weight reps (by default, `tier_3` gets ~55%, `tier_2` gets ~30% and the rest goes to `tier_1` reps). Each tier's share scales with a configurable priority coefficient.",
+    "draft": false,
+    "pull_request": 4849,
+    "label": "pwojcikdev:vote-rebroadcasting-overhaul-2",
+    "created_at": "2025-02-20T13:25:57Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-03-03T22:19:26Z",
+    "run_id": null
+  },
+  {
     "hash": "eb458593fe2c55aca0ed650a8af8628852d3261a",
     "type": "pull_request",
     "pull_request": 4291,
