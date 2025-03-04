@@ -21063,6 +21063,22 @@
     "run_id": "10426111769"
   },
   {
+    "hash": "9617c192c012b725229aede29c280f43498a45d4",
+    "type": "pull_request",
+    "title": "Fix websocket confirmation options handling",
+    "author": "gr0vity-dev",
+    "body": "This PR fixes an issue with the websocket confirmation message handling. Previously, the system would cache messages based solely on the `include_block` option, causing other subscriber options (like `include_linked_account` and `include_sideband_info`) to be ignored if another subscriber had already created a cached message.\r\n\r\nChanges made:\r\n- Removed the message caching mechanism that was causing options to be ignored\r\n- Each subscriber now receives a message built specifically with their configuration options\r\n- Simplified parameter naming for better readability\r\n- Made options handling more consistent across the codebase\r\n- Added a failing testcase that is passing by the removal of the cache\r\n\r\nThese changes ensure that all subscribers receive confirmation messages that correctly respect their individual option settings.",
+    "draft": false,
+    "pull_request": 4855,
+    "label": "gr0vity-dev:prs/remove_websocket_confirmation_topic_cache",
+    "created_at": "2025-03-04T17:27:44Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-03-04T17:56:28Z",
+    "run_id": null
+  },
+  {
     "hash": "961cae3cf7c90dc2137da744e30f743a4b42c54d",
     "type": "commit",
     "author": "pwojcikdev",
