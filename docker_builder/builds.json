@@ -15757,6 +15757,22 @@
     "run_id": "7729573301"
   },
   {
+    "hash": "702ced1e438e9c9dbbf6c66b923537b4b04f1865",
+    "type": "pull_request",
+    "title": "Extend bootstrap related RPC commands",
+    "author": "pwojcikdev",
+    "body": "This extends, modifies or adds below RPC commands:\r\n- `bootstrap_status`: in the past this was returning status of legacy bootstrap, modified so that it returns status of ascending bootstrap.\r\n- `bootstrap_reset`: resets ascending bootstrap state, both priority and blocking sets are cleared\r\n- `bootstrap_priorities`: dumps info about priority and blocking sets to aid in debugging any potential problems\r\n\r\nAll the above commands have `@warning This is an internal/diagnostic RPC, do not rely on its interface being stable` annotation as they are meant for diagnosing node problems for advanced users.",
+    "draft": false,
+    "pull_request": 4820,
+    "label": "pwojcikdev:reset-bootstrap-rpc",
+    "created_at": "2025-01-07T16:33:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-03-04T21:24:23Z",
+    "run_id": null
+  },
+  {
     "hash": "702ee3ecab410578bb8a65d8ac6ed9c87fd93418",
     "type": "pull_request",
     "pull_request": 4272,
