@@ -3357,6 +3357,22 @@
     "run_id": "8214449124"
   },
   {
+    "hash": "18289551c6b18493274da1a8bd45bc21a8a0b50b",
+    "type": "pull_request",
+    "title": "Remove unnecessary com file for Win",
+    "author": "RickiNano",
+    "body": "The build process is creating both nano_wallet.exe and nano_wallet.com for the Windows build. The dot com file is not needed. \r\nRunning the gui wallet from the console doesn't make much sense. If you want to use the console you should be using nano_node.exe\r\nIt is also possible to add arguments to nano_wallet.exe if you launch it from a console.",
+    "draft": false,
+    "pull_request": 4863,
+    "label": "RickiNano:windows-wallet-build",
+    "created_at": "2025-03-17T21:08:00Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-03-17T21:29:33Z",
+    "run_id": null
+  },
+  {
     "hash": "1865d616fa37b1d14c457ff48cb05cb4e466dc1f",
     "type": "commit",
     "created_at": "2023-02-03T20:55:42Z",
