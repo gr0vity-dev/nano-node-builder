@@ -16320,6 +16320,22 @@
     "run_id": "8394248934"
   },
   {
+    "hash": "72bc32f0d5a5cf733637465441d1b2e1f2fd5f06",
+    "type": "pull_request",
+    "title": "Include status code in assertions",
+    "author": "pwojcikdev",
+    "body": "This includes info about error codes in assert statements for store operations. Additionally this ensures that asserts are also logged to standard output and persisted in log directory.\r\n\r\n\r\n```\r\n[2025-03-21 18:17:02.107] [assert] [critical] Assertion (false) failed: test assertion hit\r\n/Users/xxx/nano-node/nano/nano_node/entry.cpp:2053 [int main(int, char *const *)]'\r\n 0# nano::generate_stacktrace() in /Users/xxx/nano-node/cmake-build-debug/nano_node\r\n 1# assert_internal(char const*, char const*, char const*, unsigned int, bool, std::__1::basic_string_view<char, std::__1::char_traits<char>>) in /Users/xxx/nano-node/cmake-build-debug/nano_node\r\n 2# main in /Users/xxx/nano-node/cmake-build-debug/nano_node\r\n```",
+    "draft": false,
+    "pull_request": 4865,
+    "label": "pwojcikdev:release-assert-status-code",
+    "created_at": "2025-03-21T17:35:03Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-03-21T17:37:28Z",
+    "run_id": null
+  },
+  {
     "hash": "72dc379dea886c43d7e3ead59cf1f72e914c4d86",
     "type": "pull_request",
     "pull_request": 4308,
