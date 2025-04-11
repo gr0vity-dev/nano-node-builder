@@ -4364,6 +4364,22 @@
     "docker_tag": "gr0v1ty/nano-node:1ed7c33a52afc72c00a9f3e5edd8e2973419787d"
   },
   {
+    "hash": "1ee3a9d6ae99acb05f4535a5cfb4123007a510c2",
+    "type": "pull_request",
+    "title": "Rename `confirming_set` to `cementing_set`",
+    "author": "pwojcikdev",
+    "body": "Naming of the component was misleading. We distinguish two phases of finalizing blocks: confirmation and cementing. Block is confirmed if it receives quorum of votes from representatives and cemented if the confirmation status is durably written to disk. This distinction is important because a single confirmed block might implicitly cement many predecessors.",
+    "draft": false,
+    "pull_request": 4875,
+    "label": "pwojcikdev:confirming-set-rename",
+    "created_at": "2025-04-11T12:03:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-04-11T12:15:52Z",
+    "run_id": null
+  },
+  {
     "hash": "1eeae3a3b828910d70cf761b024e70f30c2c08d2",
     "type": "pull_request",
     "title": "Fair queuing for vote processor",
