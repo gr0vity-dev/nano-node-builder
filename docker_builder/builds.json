@@ -6433,6 +6433,22 @@
     "run_id": "6799598907"
   },
   {
+    "hash": "2e1e003e670b1d7171627e9e2e7546f60e8ef3b7",
+    "type": "pull_request",
+    "title": "Warn when external rpc process is enabled",
+    "author": "pwojcikdev",
+    "body": "It was impossible to tell if node is using in-process or external rpc just from node logs. Using external rpc process is not tested as part of our CI testsuite and should be considered experimental. This add a warning about that on node startup.",
+    "draft": false,
+    "pull_request": 4878,
+    "label": "pwojcikdev:warn-external-rpc-is-enabled",
+    "created_at": "2025-04-14T12:53:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-04-14T13:07:27Z",
+    "run_id": null
+  },
+  {
     "hash": "2e1f21b2a132ba287e4466924aefc5d59406c31b",
     "type": "commit",
     "created_at": "2023-03-03T17:45:50Z",
@@ -11563,6 +11579,22 @@
     "docker_tag": "gr0v1ty/nano-node:5107488d945667ee6343c62ba49c81ae5e2d8cea",
     "build_started_at": "2024-05-19T09:03:51Z",
     "run_id": "9146594352"
+  },
+  {
+    "hash": "513e856259466ec70e6e47f03bf6992b8b232e1e",
+    "type": "pull_request",
+    "title": "Immediately abort legacy bootstrap connections",
+    "author": "pwojcikdev",
+    "body": null,
+    "draft": false,
+    "pull_request": 4879,
+    "label": "pwojcikdev:abort-legacy-bootstrap-connections",
+    "created_at": "2025-04-14T13:01:42Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-04-14T13:07:27Z",
+    "run_id": null
   },
   {
     "hash": "51420475d0ea6359e19db09a4f8205406d54d398",
@@ -31075,6 +31107,22 @@
     "docker_tag": "gr0v1ty/nano-node:da8a50563e222c184d502a3b0d2250b4485ca3dc",
     "build_started_at": "2024-01-17T22:09:49Z",
     "run_id": "7562370754"
+  },
+  {
+    "hash": "da978d047cf04e1ee221da6174d39dcd94b1a8c2",
+    "type": "pull_request",
+    "title": "Log stale election info",
+    "author": "pwojcikdev",
+    "body": "This improves logging of certain election related events. Useful for retrospective debugging of node behaviour.",
+    "draft": false,
+    "pull_request": 4874,
+    "label": "pwojcikdev:stale-election-logging",
+    "created_at": "2025-04-11T11:53:01Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-04-14T13:07:27Z",
+    "run_id": null
   },
   {
     "hash": "da9cf6ac004dec6944c01f638bf70f620cc98e91",
