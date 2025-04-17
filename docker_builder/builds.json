@@ -14586,6 +14586,19 @@
     "run_id": "8712134261"
   },
   {
+    "hash": "65aa6bba0c13a8a95f2a51bcf25543a62f5aeef5",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Fix missing `database_backend` field in sample config (#4882)",
+    "pull_request": "4882",
+    "created_at": "2025-04-17T21:26:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-04-17T21:29:38Z",
+    "run_id": null
+  },
+  {
     "hash": "65c82926f7c8049073ea558a7a21d5fff1cf9237",
     "type": "pull_request",
     "pull_request": 4195,
@@ -27579,6 +27592,22 @@
     "docker_tag": "gr0v1ty/nano-node:c064dba914ea315411204b6421e1b782f98523e3",
     "build_started_at": "2024-12-20T16:54:20Z",
     "run_id": "12435293706"
+  },
+  {
+    "hash": "c07d84af6609acf6f0460859db8b28d59c8d1a0f",
+    "type": "pull_request",
+    "title": "Throttle block processing when backlog is above threshold",
+    "author": "pwojcikdev",
+    "body": "This reduces block processing rate when backlog limit is extended. This should remedy a situation where the background bounded backlog rollbacks can't keep up with the rate of newly processed blocks. However, it's important to keep in mind that even if backlog exceeds the limit, we still want to allow a certain non-zero block processing rate in case high-priority blocks are published.",
+    "draft": false,
+    "pull_request": 4881,
+    "label": "pwojcikdev:throttle-blockprocessor-when-bounded-backlog",
+    "created_at": "2025-04-15T10:08:29Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-04-17T21:29:38Z",
+    "run_id": null
   },
   {
     "hash": "c09e95b51696147a47ed5227d1507a75bf0c07e7",
