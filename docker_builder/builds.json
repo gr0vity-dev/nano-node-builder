@@ -29765,6 +29765,22 @@
     "run_id": "9002109348"
   },
   {
+    "hash": "ccda6d6675a046c1ea9098d40a520e9cf375c161",
+    "type": "pull_request",
+    "title": "Do not refresh transactions while holding iterators when pruning",
+    "author": "pwojcikdev",
+    "body": "Pruning code was refreshing database transactions without invalidating iterators:\r\n```\r\nif (++depth % batch_read_size_a == 0)\r\n{\r\n// FIXME: This is triggering an assertion where the iterator is still used after transaction is refreshed\r\ntransaction.refresh ();\r\n}\r\n```\r\nThis is a naive fix that simply removes the refresh call, with the obvious downside that this might result in long held read transactions.\r\n\r\nThat said the pruning code is unnecessarily convoluted which makes it error prone, as evidenced by this bug. The pruning feature should be considered experimental and node operators using it need to be aware that it can result in instability.",
+    "draft": false,
+    "pull_request": 4891,
+    "label": "pwojcikdev:fix-pruning",
+    "created_at": "2025-04-18T21:58:55Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-04-22T18:52:31Z",
+    "run_id": null
+  },
+  {
     "hash": "cce0b01f2d4a537839f68617c2de9c00dacdb340",
     "type": "pull_request",
     "pull_request": 4158,
