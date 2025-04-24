@@ -130,6 +130,22 @@
     "run_id": "13700070558"
   },
   {
+    "hash": "00b769882f55f28f40b2c841c811cf138f369045",
+    "type": "pull_request",
+    "title": "Relax block processor throttling behavior",
+    "author": "pwojcikdev",
+    "body": null,
+    "draft": false,
+    "pull_request": 4896,
+    "label": "pwojcikdev:relax-block-processor-throttling",
+    "created_at": "2025-04-24T11:46:23Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-04-24T12:37:26Z",
+    "run_id": null
+  },
+  {
     "hash": "00cf95f2044128f142ea2e5d5221b81f8df3f6ec",
     "type": "commit",
     "created_at": "2023-09-03T21:42:42Z",
@@ -25253,6 +25269,22 @@
     "docker_tag": "gr0v1ty/nano-node:aae52f6ac2e616a2cbb723607867d4b2a67af5f6",
     "build_started_at": "2024-09-04T16:21:13Z",
     "run_id": "10705634946"
+  },
+  {
+    "hash": "aaea6ff1c225553318b8fa332ffcb87030bd32ca",
+    "type": "pull_request",
+    "title": "Reduce logging of component queues",
+    "author": "pwojcikdev",
+    "body": "Logging queue sizes every 15 seconds was a bit excessive and majority of time is unwanted noise. Here I modify this to only log if queues exceed configurable threshold (configurable via `NANO_QUEUE_WARNING_THRESHOLD` environment variable; 100 by default).",
+    "draft": false,
+    "pull_request": 4897,
+    "label": "pwojcikdev:reduce-logging",
+    "created_at": "2025-04-24T12:23:50Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-04-24T12:37:26Z",
+    "run_id": null
   },
   {
     "hash": "ab093d58d6458f29648e1d49a1793cb7ccda9b30",
