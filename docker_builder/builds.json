@@ -30190,6 +30190,22 @@
     "run_id": "9002109348"
   },
   {
+    "hash": "ccc8d2e81685bb6065cb03950720dfadda9384a3",
+    "type": "pull_request",
+    "title": "Fix stats for blocks that failed cementing due to rollbacks",
+    "author": "pwojcikdev",
+    "body": "Assertion hit when running live node in debug mode. Non essential for V28 as the rest of the logic handles this case just fine.\r\n```\r\n[2025-04-27 14:10:08.472] [assert] [critical] Assertion `ledger.confirmed.block_exists (transaction, hash)` failed\r\n/tmp/src/nano/node/cementing_set.cpp:265 [void nano::cementing_set::run_batch(std::unique_lock<std::mutex>&)]'\r\n 0# nano::generate_stacktrace[abi:cxx11]() at /tmp/src/nano/lib/stacktrace.cpp:14\r\n 3# nano::cementing_set::run() at /tmp/src/nano/node/cementing_set.cpp:141\r\n 4# nano::cementing_set::start()::{lambda()#1}::operator()() const at /tmp/src/nano/node/cementing_set.cpp:90\r\n 5# void std::__invoke_impl<void, nano::cementing_set::start()::{lambda()#1}>(std::__invoke_other, nano::cementing_set::start()::{lambda()#1}&&) at /usr/include/c++/11/bits/invoke.h:61\r\n 6# std::__invoke_result<nano::cementing_set::start()::{lambda()#1}>::type std::__invoke<nano::cementing_set::start()::{lambda()#1}>(nano::cementing_set::start()::{lambda()#1}&&) at /usr/include/c++/11/bits/invoke.h:97\r\n 7# void std::thread::_Invoker<std::tuple<nano::cementing_set::start()::{lambda()#1}> >::_M_invoke<0ul>(std::_Index_tuple<0ul>) at /usr/include/c++/11/bits/std_thread.h:259\r\n 8# std::thread::_Invoker<std::tuple<nano::cementing_set::start()::{lambda()#1}> >::operator()() at /usr/include/c++/11/bits/std_thread.h:266\r\n 9# std::thread::_State_impl<std::thread::_Invoker<std::tuple<nano::cementing_set::start()::{lambda()#1}> > >::_M_run() at /usr/include/c++/11/bits/std_thread.h:211\r\n10# execute_native_thread_routine in nano_node\r\n11# 0x00007F2D262FFAC3 in /lib/x86_64-linux-gnu/libc.so.6\r\n12# __clone in /lib/x86_64-linux-gnu/libc.so.6\r\n```",
+    "draft": false,
+    "pull_request": 4901,
+    "label": "pwojcikdev:cementing-set-handle-rollback",
+    "created_at": "2025-04-27T16:17:47Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-04-27T16:22:43Z",
+    "run_id": null
+  },
+  {
     "hash": "ccda6d6675a046c1ea9098d40a520e9cf375c161",
     "type": "pull_request",
     "title": "Do not refresh transactions while holding iterators when pruning",
