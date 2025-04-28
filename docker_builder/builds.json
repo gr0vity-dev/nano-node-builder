@@ -12742,6 +12742,22 @@
     "docker_tag": "gr0v1ty/nano-node:55587535c2c60e2bc44fcdc0c721ccb4254f9155"
   },
   {
+    "hash": "5564115c3ceb2f0fe23fe26f4d0d70fc06864838",
+    "type": "pull_request",
+    "title": "Use least congested channels first for bootstrap requests",
+    "author": "pwojcikdev",
+    "body": "I noticed that very often multiple consecutive bootstrap request would go to the same peer. This was because `nano::bootstrap::peer_scoring::channel ()` wasn't randomizing peers that it returned properly, only randomizing the list every 60 seconds.",
+    "draft": false,
+    "pull_request": 4902,
+    "label": "pwojcikdev:bootstrap-randomize-channels",
+    "created_at": "2025-04-28T18:35:20Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-04-28T20:17:56Z",
+    "run_id": null
+  },
+  {
     "hash": "55ac5d9c3c8ed069ae36a92f204ced3c253cdf2f",
     "type": "pull_request",
     "pull_request": 4486,
