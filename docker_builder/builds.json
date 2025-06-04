@@ -27930,6 +27930,22 @@
     "docker_tag": "gr0v1ty/nano-node:b99a2a9fa1e89531aa1d18164502e40f4e47f5ad"
   },
   {
+    "hash": "b9a252b392168fbf3e6192827faf8af610ee04cb",
+    "type": "pull_request",
+    "title": "Ledger rep weights consistency checks",
+    "author": "pwojcikdev",
+    "body": "This adds a fail-fast consistency check for the representative-weight map, one of the node’s most critical components. Any divergence triggers an assert that aborts the process immediately and dumps information to the log.\r\n\r\nThis is the first part of an effort to protect against silent ledger-database corruption.\r\n\r\nWhy it matters\r\nSilent corruption can lead to incorrect quorum decisions. A stale or incorrect rep-weight map undermines consensus.\r\nDetecting discrepancies the moment they appear keeps the blast radius small.\r\nWe have historically observed database corruption on nodes running on the RocksDB backend. It is important to remember that RocksDB is still considered experimental, so no production services should rely on it. \r\n",
+    "draft": false,
+    "pull_request": 4914,
+    "label": "pwojcikdev:rep-weights-verify-consistency",
+    "created_at": "2025-06-04T14:27:58Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-06-04T14:48:03Z",
+    "run_id": null
+  },
+  {
     "hash": "b9b0e44db1b88ae184fd04d477063d77a3de14ec",
     "type": "pull_request",
     "title": "Transport classes cleanup",
