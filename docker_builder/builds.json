@@ -2466,6 +2466,22 @@
     "docker_tag": "gr0v1ty/nano-node:104d9aaa938370c41a79bca80e2b0f690b1824db"
   },
   {
+    "hash": "105567980e727dd36a416046dd89d99e33e7f7b4",
+    "type": "pull_request",
+    "title": "Refactor `db_val`",
+    "author": "pwojcikdev",
+    "body": "This refactors `db_val` class to avoid referencing database backend specific code in preparation for further decoupling node and wallet code from concrete database backends.",
+    "draft": false,
+    "pull_request": 4915,
+    "label": "pwojcikdev:db-val-refactor",
+    "created_at": "2025-06-22T13:44:13Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-06-22T17:36:15Z",
+    "run_id": null
+  },
+  {
     "hash": "106ad6b4d3e1122e4ad60ecb257ddeb4b1d43e78",
     "type": "pull_request",
     "pull_request": 4421,
@@ -22637,6 +22653,22 @@
     "built_at": "2023-03-21T12:21:14Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:9369e4e66b88922e2d0367f20b7c8c30c9ad1043"
+  },
+  {
+    "hash": "936c816be85568cfe2d7200d4ef7dd8882b44a96",
+    "type": "pull_request",
+    "title": "Verify ledger balance consistency on startup",
+    "author": "pwojcikdev",
+    "body": "This adds a fail-fast consistency check for ledger balances. Any discrepancies will cause immediate node crash.\r\nThis is the first part of an effort to protect against silent ledger-database corruption.\r\n\r\nWhy it matters\r\nSilent corruption can lead to incorrect quorum decisions. A stale or incorrect rep-weight map undermines consensus.\r\nDetecting discrepancies the moment they appear keeps the blast radius small.\r\nWe have historically observed database corruption on nodes running on the RocksDB backend. It is important to remember that RocksDB is still considered experimental, so no production services should rely on it.",
+    "draft": false,
+    "pull_request": 4916,
+    "label": "pwojcikdev:ledger-verify-consistency",
+    "created_at": "2025-06-22T15:44:11Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-06-22T17:36:15Z",
+    "run_id": null
   },
   {
     "hash": "937175fd1017523713345291bc79cb8bbbd1ba1e",
