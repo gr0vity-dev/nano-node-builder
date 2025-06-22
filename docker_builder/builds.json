@@ -25516,6 +25516,22 @@
     "run_id": "7183896262"
   },
   {
+    "hash": "a7818e5775414199f776c86c728be77c6cc19ad6",
+    "type": "pull_request",
+    "title": "Verify ledger balance consistency on startup",
+    "author": "pwojcikdev",
+    "body": "This adds a fail-fast consistency check for ledger balances. Any discrepancies will cause immediate node crash.\r\nThis is the first part of an effort to protect against silent ledger-database corruption.\r\n\r\nWhy it matters\r\nSilent corruption can lead to incorrect quorum decisions. A stale or incorrect rep-weight map undermines consensus.\r\nDetecting discrepancies the moment they appear keeps the blast radius small.\r\nWe have historically observed database corruption on nodes running on the RocksDB backend. It is important to remember that RocksDB is still considered experimental, so no production services should rely on it.",
+    "draft": false,
+    "pull_request": 4916,
+    "label": "pwojcikdev:ledger-verify-consistency",
+    "created_at": "2025-06-22T15:44:11Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-06-22T22:33:13Z",
+    "run_id": null
+  },
+  {
     "hash": "a7a078cbeda319c8c29f78631dd17095b324495d",
     "type": "pull_request",
     "title": "Modify `nano::locked` to work in const contexts",
