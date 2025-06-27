@@ -11161,6 +11161,22 @@
     "run_id": "8782379377"
   },
   {
+    "hash": "493b4a60f885d36a552f45d39bd48191c0313025",
+    "type": "pull_request",
+    "title": "Unlimited backlog when bootstrapping",
+    "author": "pwojcikdev",
+    "body": "Adding bounded backlog significantly decreased bootstrap performance due to the fixed 100k limit for unconfirmed blocks. This fixe limit reduces effectiveness of optimistic elections. This PR introduces a heuristic to dynamically increase the bounded backlog limit until the configured bootstrap block count is reached.\r\nOne caveat with this approach is that over time, the live network block count will drift from the preconfigured count (as of V28, it is 207107949). Despite this potential drift, the heuristic provides a substantial improvement in bootstrap performance.",
+    "draft": false,
+    "pull_request": 4922,
+    "label": "pwojcikdev:bootstrap-increase-backlog",
+    "created_at": "2025-06-27T11:34:49Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-06-27T11:41:23Z",
+    "run_id": null
+  },
+  {
     "hash": "49443419325e7386c2ee19b6705c25f66cef059a",
     "type": "commit",
     "created_at": "2023-02-18T01:12:20Z",
