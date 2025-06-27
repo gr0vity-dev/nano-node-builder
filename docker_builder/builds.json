@@ -5594,6 +5594,22 @@
     "run_id": "11613142356"
   },
   {
+    "hash": "262dd95e22ff65402f608556985bd18a1306f557",
+    "type": "pull_request",
+    "title": "Unlimited backlog when bootstrapping",
+    "author": "pwojcikdev",
+    "body": "Adding bounded backlog significantly decreased bootstrap performance due to the fixed 100k limit for unconfirmed blocks. This fixe limit reduces effectiveness of optimistic elections. This PR introduces a heuristic to dynamically increase the bounded backlog limit until the configured bootstrap block count is reached.\r\nOne caveat with this approach is that over time, the live network block count will drift from the preconfigured count (as of V28, it is 207107949). Despite this potential drift, the heuristic provides a substantial improvement in bootstrap performance.",
+    "draft": false,
+    "pull_request": 4922,
+    "label": "pwojcikdev:bootstrap-increase-backlog",
+    "created_at": "2025-06-27T11:34:49Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-06-27T12:28:01Z",
+    "run_id": null
+  },
+  {
     "hash": "264ce72637f508a42997bbfaa306fff9afe8ec6a",
     "type": "pull_request",
     "title": "Enum utils",
