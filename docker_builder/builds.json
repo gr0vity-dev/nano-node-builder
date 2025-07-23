@@ -34283,6 +34283,22 @@
     "run_id": "10725580463"
   },
   {
+    "hash": "de017269f9a9f9e05f25e3d788e4eef9cf6764a9",
+    "type": "pull_request",
+    "title": "Coroutine socket refactor",
+    "author": "pwojcikdev",
+    "body": "Refactored TCP socket implementation to use coroutines instead of callback-based async operations. The old network code was complex and difficult to reason about, as evidenced by the fact that we still encounter bugs in it, such as the leak here: https://github.com/nanocurrency/nano-node/actions/runs/16162888840/job/45617948522.\r\n\r\n- Coroutines: Added co_connect(), co_read(), co_write() methods using asio::awaitable\r\n- Removed queue system: Eliminated socket_queue class and write queue management. Previously queuing was done by both the socket and channel. This is now unnecessary with coroutines.\r\n- Simplified timeouts: Replaced previous timeout logic with timestamp and predicate based approach.\r\n- Backward compatibility: Kept async_* methods as adapters for existing code to allow gradual migration.\r\n- Tests updated for new implementation\r\n",
+    "draft": false,
+    "pull_request": 4929,
+    "label": "pwojcikdev:coroutine-socket-only-pr",
+    "created_at": "2025-07-12T11:27:57Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-07-23T11:59:38Z",
+    "run_id": null
+  },
+  {
     "hash": "de0d259b2b5d2919250272c25a279818afbb3b29",
     "type": "pull_request",
     "pull_request": 4444,
