@@ -2388,6 +2388,22 @@
     "run_id": "8997589433"
   },
   {
+    "hash": "0f2dd5025bf2765ec2967c325af9e1fb36527234",
+    "type": "pull_request",
+    "title": "Activate largest-gap optimistic elections first",
+    "author": "pwojcikdev",
+    "body": "This modifies the optimistic scheduler algorithm so that it activates accounts with the largest number of unconfirmed blocks first. It also reduces activation delays, which should help start more optimistic elections and speed up the bootstrap process.",
+    "draft": false,
+    "pull_request": 4939,
+    "label": "pwojcikdev:optimistic-scheduler-sorting",
+    "created_at": "2025-09-02T16:54:43Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-09-02T16:59:43Z",
+    "run_id": null
+  },
+  {
     "hash": "0f7d29cefd020b22cdb5420a81b4364f80e67147",
     "type": "pull_request",
     "title": "Redesign the priority scheduler to maintain a 1-to-1 link with running elections",
