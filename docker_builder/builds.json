@@ -4753,6 +4753,22 @@
     "run_id": "8404999346"
   },
   {
+    "hash": "1eb29058d0030cf8afb640cb1a2ca2e316021354",
+    "type": "pull_request",
+    "title": "Fix stop condition notifications",
+    "author": "pwojcikdev",
+    "body": null,
+    "draft": false,
+    "pull_request": 4940,
+    "label": "pwojcikdev:fix-stop-condtion-notif",
+    "created_at": "2025-09-03T12:07:52Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-09-03T12:29:08Z",
+    "run_id": null
+  },
+  {
     "hash": "1ebcec3ce25e30a3afa07bc778f7caaef6e77f6a",
     "type": "commit",
     "created_at": "2024-03-21T16:55:22Z",
@@ -12847,6 +12863,22 @@
     "docker_tag": "gr0v1ty/nano-node:5281252d55b4a38e84418e5c8bf64c7a113dc5ab",
     "build_started_at": "2024-04-30T13:34:48Z",
     "run_id": "8896945552"
+  },
+  {
+    "hash": "5288d08c9f344c604c76892e92e6b63f03d0b6ad",
+    "type": "pull_request",
+    "title": "Activate largest-gap optimistic elections first",
+    "author": "pwojcikdev",
+    "body": "This modifies the optimistic scheduler algorithm so that it activates accounts with the largest number of unconfirmed blocks first. It also reduces activation delays, which should help start more optimistic elections and speed up the bootstrap process.",
+    "draft": false,
+    "pull_request": 4939,
+    "label": "pwojcikdev:optimistic-scheduler-sorting",
+    "created_at": "2025-09-02T16:54:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-09-03T12:29:08Z",
+    "run_id": null
   },
   {
     "hash": "529033d2e1663c07cf9d797599e7b9aa63beae44",
