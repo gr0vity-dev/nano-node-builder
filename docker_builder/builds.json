@@ -2607,6 +2607,22 @@
     "docker_tag": "gr0v1ty/nano-node:10ce90d99ba1621c089aa0d74a0c84813daaacbf"
   },
   {
+    "hash": "11256f117df5d3100647411b131222a6b35708a4",
+    "type": "pull_request",
+    "title": "Activate largest-gap optimistic elections first",
+    "author": "pwojcikdev",
+    "body": "This modifies the optimistic scheduler algorithm so that it activates accounts with the largest number of unconfirmed blocks first. It also reduces activation delays, which should help start more optimistic elections and speed up the bootstrap process.",
+    "draft": false,
+    "pull_request": 4939,
+    "label": "pwojcikdev:optimistic-scheduler-sorting",
+    "created_at": "2025-09-02T16:54:43Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-09-03T20:31:48Z",
+    "run_id": null
+  },
+  {
     "hash": "11552cb16f00be09b16fcaa3f9be3a574e817517",
     "type": "pull_request",
     "pull_request": 4424,
