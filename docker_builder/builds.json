@@ -18397,7 +18397,7 @@
     "pull_request": "4941",
     "created_at": "2025-09-04T13:07:50Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2025-09-04T13:31:42Z",
     "run_id": null
@@ -34195,6 +34195,22 @@
     "docker_tag": "gr0v1ty/nano-node:dae83142a60f2833835b55ff10dcc9a2f1a9f48e",
     "build_started_at": "2024-05-23T07:11:40Z",
     "run_id": "9203977264"
+  },
+  {
+    "hash": "daea1c54637ddb96980277771527fa2e60e8ad7d",
+    "type": "pull_request",
+    "title": "Rework active election container",
+    "author": "pwojcikdev",
+    "body": "This PR refactors the active election container. There are two main motivations for this change: firstly, to split out the election indexing and querying logic from the main active_elections class. This provides better separation of concerns and testability. Secondly, the election update logic is now more efficient, avoiding unnecessary iteration over all elections while providing immediate updates for elections that need it.",
+    "draft": false,
+    "pull_request": 4943,
+    "label": "pwojcikdev:active-elections-index-pr",
+    "created_at": "2025-09-04T13:33:48Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-09-04T13:43:25Z",
+    "run_id": null
   },
   {
     "hash": "daf5b1e52c7e0a11be65ca0d88dc29d65175690a",
