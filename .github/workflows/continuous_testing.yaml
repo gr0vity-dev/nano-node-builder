@@ -137,6 +137,7 @@ jobs:
           # Install docker-compose v1.29 required for cpu limits to be applied in the testcases. docker-compose V2 ignores hardware limits
           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
+          pip install extradict==0.6.0
           pip install git+https://github.com/gr0vity-dev/python-ed25519-blake2b@151ad17b2a50a3329652bd4920c0db25eaeefeb1
           pip install git+https://github.com/gr0vity-dev/nanomock.git@9cc0f351ae4ccaf50d366d0fdbb183b1ee2ee6ef
           pip install git+https://github.com/gr0vity-dev/nanolab.git@b8d22c742480d2ccc60a2ae752328984c7ca3186
@@ -147,7 +148,6 @@ jobs:
           STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
           nanolab run -t ${{ matrix.testcase }} --gh-path quick_testing -i $DOCKER_TAG > $HOME/status.log 2>&1
-          cat $HOME/status.log
           STATUS=$(grep -E -q "FAIL|unconfirmed blocks|Traceback \(most recent call last\)|Encountered errors while bringing up the project" $HOME/status.log && echo "FAIL" || echo "PASS")
           COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
