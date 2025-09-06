@@ -31698,6 +31698,22 @@
     "run_id": "8224504096"
   },
   {
+    "hash": "caf874ba25bb8cf5d5f0a6c8b50517407e7c3ab3",
+    "type": "pull_request",
+    "title": "Rework active election container",
+    "author": "pwojcikdev",
+    "body": "This PR refactors the active election container. There are two main motivations for this change: firstly, to split out the election indexing and querying logic from the main active_elections class. This provides better separation of concerns and testability. Secondly, the election update logic is now more efficient, avoiding unnecessary iteration over all elections while providing immediate updates for elections that need it.",
+    "draft": false,
+    "pull_request": 4943,
+    "label": "pwojcikdev:active-elections-index-pr",
+    "created_at": "2025-09-04T13:33:48Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-09-06T20:18:48Z",
+    "run_id": null
+  },
+  {
     "hash": "cafaadfeeecf021ef964cbb95926033e4cc46878",
     "type": "commit",
     "author": "clemahieu",
