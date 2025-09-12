@@ -32174,6 +32174,22 @@
     "run_id": "14693961882"
   },
   {
+    "hash": "ccd3affbb5239e5d0c42902c424badca9ddeb189",
+    "type": "pull_request",
+    "title": "Fix active election cementing races and improve stale election handling",
+    "author": "pwojcikdev",
+    "body": "Fixes a bug where elections for blocks being cemented were inserted into AEC, unnecessarily consuming bucket space and slowing down confirmation rate.\r\n\r\n  - **Active Elections**: Added checkup thread to detect and cancel elections for already-cemented blocks and issue notifications about stale elections. Refactored recently_confirmed_cache and recently_cemented_cache.\r\n  - **Testing**: Tests for cementing race scenarios and cache behavior.",
+    "draft": false,
+    "pull_request": 4945,
+    "label": "pwojcikdev:aec-cementing-races-pr",
+    "created_at": "2025-09-07T11:49:26Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-09-12T22:50:37Z",
+    "run_id": null
+  },
+  {
     "hash": "ccda6d6675a046c1ea9098d40a520e9cf375c161",
     "type": "pull_request",
     "title": "Do not refresh transactions while holding iterators when pruning",
