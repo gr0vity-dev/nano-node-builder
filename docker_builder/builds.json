@@ -3950,6 +3950,22 @@
     "docker_tag": "gr0v1ty/nano-node:18ebbc1945b014575d697debe8021701d67944a8"
   },
   {
+    "hash": "18fa611422689ea3260c9674af2a707bb169ae11",
+    "type": "pull_request",
+    "title": "Fix active election cementing races and improve stale election handling",
+    "author": "pwojcikdev",
+    "body": "Fixes a bug where elections for blocks being cemented were inserted into AEC, unnecessarily consuming bucket space and slowing down confirmation rate.\r\n\r\n  - **Active Elections**: Added checkup thread to detect and cancel elections for already-cemented blocks and issue notifications about stale elections. Refactored recently_confirmed_cache and recently_cemented_cache.\r\n  - **Testing**: Tests for cementing race scenarios and cache behavior.",
+    "draft": false,
+    "pull_request": 4945,
+    "label": "pwojcikdev:aec-cementing-races-pr",
+    "created_at": "2025-09-07T11:49:26Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-09-12T20:31:26Z",
+    "run_id": null
+  },
+  {
     "hash": "192734aecff5774cdc93e8329c885e4fa36e46d0",
     "type": "pull_request",
     "title": "Remove `election_winner_details` container",
