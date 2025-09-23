@@ -30799,6 +30799,22 @@
     "run_id": "8334444480"
   },
   {
+    "hash": "c27b82e456322325bacfbdff0d6e095f4b5b5616",
+    "type": "pull_request",
+    "title": "Optimize stats",
+    "author": "pwojcikdev",
+    "body": "Replaces the mutex-protected map based counter storage with a lock-free flat array of atomic counters. This reduces overhead of acquiring shared lock and map lookup for the cost of having this small 4MB preallocated array.",
+    "draft": false,
+    "pull_request": 4951,
+    "label": "pwojcikdev:stats-optimizations",
+    "created_at": "2025-09-23T13:34:10Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-09-23T16:45:40Z",
+    "run_id": null
+  },
+  {
     "hash": "c288bb132743e31f282996bb87ee554f27a7ed0a",
     "type": "commit",
     "created_at": "2023-03-22T02:17:27Z",
