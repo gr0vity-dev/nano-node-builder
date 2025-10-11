@@ -21195,6 +21195,22 @@
     "run_id": "12140797259"
   },
   {
+    "hash": "8357dd5565deac3d49619491bda919a6568b17fd",
+    "type": "pull_request",
+    "title": "CLI benchmarks for node performance testing",
+    "author": "pwojcikdev",
+    "body": "Adds CLI benchmarking suite to measure and profile node performance under controlled conditions. The benchmarks cover critical paths: block processing, cementing, confirming elections, and the full pipeline (from block insertion to cementing).\r\n\r\n### Usage\r\n```bash\r\n# Block processing throughput\r\nnano_node --benchmark_block_processing\r\nnano_node --benchmark_block_processing --accounts 100000 --iterations 5 --batch_size 50000\r\n\r\n# Cementing throughput\r\nnano_node --benchmark_cementing\r\nnano_node --benchmark_cementing --accounts 200000 --batch_size 500000 --cementing_mode root\r\n\r\n# Elections confirmation\r\nnano_node --benchmark_elections\r\nnano_node --benchmark_elections --accounts 150000 --iterations 3 --batch_size 100000\r\n\r\n# Full pipeline\r\nnano_node --benchmark_pipeline\r\nnano_node --benchmark_pipeline --accounts 300000 --iterations 10\r\n```\r\n",
+    "draft": false,
+    "pull_request": 4953,
+    "label": "pwojcikdev:cli-benchmarks-2-pr",
+    "created_at": "2025-10-11T21:21:02Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-10-11T21:42:26Z",
+    "run_id": null
+  },
+  {
     "hash": "8375c6f050e5719f2c26675680123d6ff71dc946",
     "type": "pull_request",
     "pull_request": 4397,
