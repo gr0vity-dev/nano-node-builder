@@ -2056,6 +2056,22 @@
     "run_id": "11111193087"
   },
   {
+    "hash": "0d4ef5d7655ad6fbb3fb44c2a377209eff662a65",
+    "type": "pull_request",
+    "title": "Priority election scheduler with shared priority pool",
+    "author": "pwojcikdev",
+    "body": "This PR refactors the priority scheduler to use a new shared priority pool container for managing election candidates. Previously, each bucket maintained its own separate queue of candidates, which meant unused capacity in one bucket couldn't be utilized by others. The new\r\ndesign uses a single global pool with bucket-aware indexing, allowing more efficient resource utilization while still respecting per-bucket reserved capacity.",
+    "draft": false,
+    "pull_request": 4954,
+    "label": "pwojcikdev:priority-pool-simple",
+    "created_at": "2025-10-12T10:57:34Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-10-12T11:08:59Z",
+    "run_id": null
+  },
+  {
     "hash": "0d5ac110ac942acfc0843aec912372532fc49e18",
     "type": "pull_request",
     "title": "Bound the growth of `election_winner_details` set",
