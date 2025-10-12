@@ -2634,6 +2634,22 @@
     "docker_tag": "gr0v1ty/nano-node:109552f7fce1ee5c7953a1096dc70077252e670b"
   },
   {
+    "hash": "10bfa538225caa4c9653180fb2f4b94621893b39",
+    "type": "pull_request",
+    "title": "Priority election scheduler with shared priority pool",
+    "author": "pwojcikdev",
+    "body": "This PR refactors the priority scheduler to use a new shared priority pool container for managing election candidates. Previously, each bucket maintained its own separate queue of candidates, which meant unused capacity in one bucket couldn't be utilized by others. The new\r\ndesign uses a single global pool with bucket-aware indexing, allowing more efficient resource utilization while still respecting per-bucket reserved capacity.",
+    "draft": false,
+    "pull_request": 4954,
+    "label": "pwojcikdev:priority-pool-simple",
+    "created_at": "2025-10-12T10:57:34Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-10-12T23:35:54Z",
+    "run_id": null
+  },
+  {
     "hash": "10c06f8875c283d8d408d92ea7cbe264a5f1da96",
     "type": "commit",
     "author": "pwojcikdev",
@@ -7896,6 +7912,22 @@
     "built_at": "2023-08-22T15:59:10Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:32a2e4e3d5cefb19c1ff1cd72d914d6e3ef2f6f8"
+  },
+  {
+    "hash": "32a8dd7b8fca2da3214e9f7cea9518a3db2dd88d",
+    "type": "pull_request",
+    "title": "Fix build warnings",
+    "author": "pwojcikdev",
+    "body": "Fixes or silences unimportant build warnings to reduce noise during compilation.",
+    "draft": false,
+    "pull_request": 4956,
+    "label": "pwojcikdev:fix-boost-process-warning",
+    "created_at": "2025-10-12T23:30:16Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-10-12T23:35:54Z",
+    "run_id": null
   },
   {
     "hash": "32a914bf499e71712f9c0688789447ccf869b2f0",
