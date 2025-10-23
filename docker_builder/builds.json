@@ -22153,6 +22153,22 @@
     "run_id": "7862932128"
   },
   {
+    "hash": "87e3844fdc8858b7347d938cafbbc92cdbd1612d",
+    "type": "pull_request",
+    "title": "Docker entry script improvements",
+    "author": "pwojcikdev",
+    "body": "This gave the Docker entrypoint script an overhaul. Changed it so -l is a harmless no-op for backward compatibility, and introduced --entry-help to surface the usage text while letting -h/--help pass through to nano_node. Replaced the overloaded -v database vacuum flag (-v is usually used as shorthand for --help) with a clearer --vacuum-over option.",
+    "draft": false,
+    "pull_request": 4959,
+    "label": "pwojcikdev:docker-entry-improvements",
+    "created_at": "2025-10-23T14:19:18Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-10-23T14:33:43Z",
+    "run_id": null
+  },
+  {
     "hash": "87e7d4d7849799e2d05865910c9e13fb6c40d13d",
     "type": "commit",
     "created_at": "2024-01-19T17:54:33Z",
