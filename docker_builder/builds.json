@@ -13907,6 +13907,22 @@
     "docker_tag": "gr0v1ty/nano-node:55d61b97389441b898fd22bd601d415a85963d52"
   },
   {
+    "hash": "55e5818b4319d6406e358cb6d57aee18c025b8b1",
+    "type": "pull_request",
+    "title": "Priority election scheduler with shared priority pool",
+    "author": "pwojcikdev",
+    "body": "This PR refactors the priority scheduler to use a new shared priority pool container for managing election candidates. Previously, each bucket maintained its own separate queue of candidates, which meant unused capacity in one bucket couldn't be utilized by others. The new\r\ndesign uses a single global pool with bucket-aware indexing, allowing more efficient resource utilization while still respecting per-bucket reserved capacity.",
+    "draft": false,
+    "pull_request": 4954,
+    "label": "pwojcikdev:priority-pool-simple",
+    "created_at": "2025-10-12T10:57:34Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-11-06T19:50:26Z",
+    "run_id": null
+  },
+  {
     "hash": "55e906569a2aaa7ddd6628d6f92d973e0a07c0e7",
     "type": "commit",
     "author": "pwojcikdev",
