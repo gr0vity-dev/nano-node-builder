@@ -19265,6 +19265,22 @@
     "run_id": "19716216508"
   },
   {
+    "hash": "748a7f5d1f0d7c4e01cf132d4536e98042508457",
+    "type": "pull_request",
+    "title": "Ignore trended weight sampling if online weight is below minimum threshold",
+    "author": "pwojcikdev",
+    "body": "This change prevents the online weight sampling from recording samples when the current online weight is below the configured minimum threshold (`[node].online_weight_minimum`). The intent is to avoid skewing the trended weight calculation during network connectivity issues when the node can't see enough peers.",
+    "draft": false,
+    "pull_request": 4969,
+    "label": "pwojcikdev:ignore-sampling-online-if-zero",
+    "created_at": "2025-11-30T12:55:55Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-11-30T13:04:47Z",
+    "run_id": null
+  },
+  {
     "hash": "74a9fba6f7d4c21241c111003a6e4ecfcc993413",
     "type": "commit",
     "created_at": "2023-06-16T12:35:03Z",
