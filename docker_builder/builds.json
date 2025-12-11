@@ -14163,6 +14163,22 @@
     "docker_tag": "gr0v1ty/nano-node:563e40b19dea24c7a7df1f479b99ad337650cacc"
   },
   {
+    "hash": "56404af8697eb9b3c790373ed359cb8511fe6abf",
+    "type": "pull_request",
+    "title": "Fixing race condition in bootstrap rpc test",
+    "author": "RickiNano",
+    "body": "This test fails intermittently because of a race condition. Sometimes the bootstrap finishes before the rpc \"bootstrap_status\" action is sent\r\nThis PR increases the number of blocks from 10 to 40 but also calls the status RPC after just 25% of the blocks have been bootstrapped instead of 50%. This greatly reduces the risk of the race condition",
+    "draft": false,
+    "pull_request": 4973,
+    "label": "RickiNano:bootstrap_status",
+    "created_at": "2025-12-11T21:34:03Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-12-11T21:34:24Z",
+    "run_id": null
+  },
+  {
     "hash": "5681836f37bc7482826fc7bf5274dce77a9361e4",
     "type": "pull_request",
     "pull_request": 4484,
