@@ -696,6 +696,19 @@
     "run_id": "7463983901"
   },
   {
+    "hash": "05de81c0331a81b2fdf79541c331ce2fda15aa11",
+    "type": "commit",
+    "author": "Exxenoz",
+    "title": "Fix republish RPC crash on non-send blocks when using the 'destinations' parameter and extend tests (#4972)\n\nThe republish RPC previously called block_b->destination() unconditionally, which triggers a release_assert(false) when invoked on non-send blocks",
+    "pull_request": "4972",
+    "created_at": "2025-12-15T21:23:22Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-12-15T21:38:35Z",
+    "run_id": null
+  },
+  {
     "hash": "05fbd416e438550be5358ca5f2e2a462677df740",
     "type": "commit",
     "created_at": "2024-03-13T19:34:53Z",
@@ -16263,6 +16276,19 @@
     "docker_tag": "gr0v1ty/nano-node:6305af8df25be1a477497660b8ec2470e3a40fe5",
     "build_started_at": "2025-06-26T14:57:06Z",
     "run_id": "15905815795"
+  },
+  {
+    "hash": "63206358955835103ed9ec66a4b951af572d1136",
+    "type": "commit",
+    "author": "RickiNano",
+    "title": "Check bootstrap status earlier to avoid race condition (#4973)",
+    "pull_request": "4973",
+    "created_at": "2025-12-15T21:24:07Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-15T21:38:35Z",
+    "run_id": null
   },
   {
     "hash": "632b73e3e38219b9a5cf12a41db44c5ace44399a",
