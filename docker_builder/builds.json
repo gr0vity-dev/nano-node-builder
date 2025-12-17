@@ -20933,6 +20933,22 @@
     "run_id": "12457927993"
   },
   {
+    "hash": "7dc7fecb9939f12d8abee8bcf833b12fe0ccef2d",
+    "type": "pull_request",
+    "title": "Unified database backend",
+    "author": "pwojcikdev",
+    "body": "This introduces a unified key-value database backend abstraction that separates ledger table implementations from the underlying database engine (LMDB/RocksDB/potentially others in the future).\r\nThe previous implementation had significant code duplication between LMDB and RocksDB store classes, with each implementing nearly identical table operations. This abstraction:\r\n  - Consolidates hundreds of lines of duplicated code into shared implementations\r\n  - Provides a clean separation between low-level database operations and high-level ledger storage\r\n  - Enables seamless database backend migration\r\n  - Simplifies adding future database backends\r\n\r\nMain components:\r\n`nano::store::backend` (nano/store/backend.hpp) - Abstract polymorphic interface for key-value database operations\r\n`nano::store::ledger_store` (nano/store/ledger_store.hpp) - High-level store with ledger database logic (initialization, upgrades), composes backend + typed view classes.\r\n\r\nTyped views for each table (account, block, pending, etc.) in `nano/store/ledger/{account, block,...}`\r\n\r\nBackend implementations:\r\n`nano::store::lmdb::backend_lmdb` (nano/store/lmdb/backend_lmdb.hpp)\r\n`nano::store::rocksdb::backend_rocksdb` (nano/store/rocksdb/backend_rocksdb.hpp)\r\n\r\nNew test coverage: backend, migration, and ledger upgrade tests.\r\n\r\nThe new architecture throws nano::error(...) for expected errors like database not found (`throw nano::error (nano::error_backend::db_not_found)`).\r\n",
+    "draft": false,
+    "pull_request": 4975,
+    "label": "pwojcikdev:database-backend-pr",
+    "created_at": "2025-12-17T17:08:26Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-12-17T20:52:51Z",
+    "run_id": null
+  },
+  {
     "hash": "7dce2d73f42df4f794b5bf70f443fd02e50fbbe4",
     "type": "commit",
     "author": "clemahieu",
