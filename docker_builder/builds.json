@@ -5094,6 +5094,19 @@
     "docker_tag": "gr0v1ty/nano-node:1e57b5b4143d512109ec6dff5203fcada245e1cb"
   },
   {
+    "hash": "1e664fc8c32cf9f840c0ef6bca9092aaec806468",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Always deallocate db transactions when committed",
+    "pull_request": "N/A",
+    "created_at": "2025-12-16T21:24:04Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
+  },
+  {
     "hash": "1e88d4139a4591be1bcf03ac6c234bd73ea67d3c",
     "type": "commit",
     "author": "pwojcikdev",
@@ -8447,6 +8460,19 @@
     "built_at": "2023-06-12T12:59:27Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:33c4a33d6aea7c9eb29eb6977b5365b5b23d7cd1"
+  },
+  {
+    "hash": "33d2498e33159ec4451c2e9c364224d24069532c",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Use NANO_BACKEND env variable in CI",
+    "pull_request": "N/A",
+    "created_at": "2025-12-19T14:03:12Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
   },
   {
     "hash": "33d6a5b54cdd8433e00021fb4d784fc2c450c5e0",
@@ -16866,6 +16892,19 @@
     "run_id": "8156183169"
   },
   {
+    "hash": "65fcae27ff2c7a70215a7b9711d6514322ed4230",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Remove `--rebuild_database` cli option\n\n--vacuum should be used instead",
+    "pull_request": "4975",
+    "created_at": "2025-12-18T17:24:26Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
+  },
+  {
     "hash": "6602c7c2647ab768833b679a4d84f16d8e835059",
     "type": "pull_request",
     "pull_request": 4476,
@@ -18484,6 +18523,19 @@
     "run_id": "11315743319"
   },
   {
+    "hash": "6ec7c4d0f361bf7b7f82a67cf5d295b2680a1436",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Database backend statistics collection",
+    "pull_request": "4975",
+    "created_at": "2025-12-18T13:34:11Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
+  },
+  {
     "hash": "6eca8c5da016da04a4bd703a6c95c729812d6d23",
     "type": "commit",
     "created_at": "2023-03-20T23:08:04Z",
@@ -19151,6 +19203,19 @@
     "docker_tag": "gr0v1ty/nano-node:72773d72388cfc82f73a92679931b6db4ebb1d5a",
     "build_started_at": "2025-04-20T21:51:37Z",
     "run_id": "14563626519"
+  },
+  {
+    "hash": "7284bfe3d7769abe5d335a34f2d89462fb4a8ab0",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add LMDB to RocksDB database migration support",
+    "pull_request": "4975",
+    "created_at": "2025-12-05T21:48:46Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
   },
   {
     "hash": "7291347ef54e8819203572be95b3eef8dc6579df",
@@ -24726,6 +24791,19 @@
     "run_id": "6801813269"
   },
   {
+    "hash": "942b3209f498da69e1feb9a388cbcc14e00c2704",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add database backend unit tests",
+    "pull_request": "4975",
+    "created_at": "2025-12-16T19:14:09Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
+  },
+  {
     "hash": "9437bd839051971f7aed33cc1d8733e24af53019",
     "type": "pull_request",
     "title": "Increase stack size for ledger processing threads",
@@ -28071,6 +28149,19 @@
     "run_id": "6757724571"
   },
   {
+    "hash": "a97b47d4a194da7246ad0dccbea18694b986cc9b",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Optimize rocksdb clear operation",
+    "pull_request": "4975",
+    "created_at": "2025-12-17T13:41:36Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
+  },
+  {
     "hash": "a97cbff2c009a2f9e9ea1ea70c87b204d79d09c7",
     "type": "pull_request",
     "pull_request": 4375,
@@ -28081,6 +28172,19 @@
     "docker_tag": "gr0v1ty/nano-node:a97cbff2c009a2f9e9ea1ea70c87b204d79d09c7",
     "build_started_at": "2024-01-20T20:36:49Z",
     "run_id": "7596699221"
+  },
+  {
+    "hash": "a98fc63aacb1ce5218daa5fb750886278e756801",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Integrate database backend and remove legacy store implementations",
+    "pull_request": "N/A",
+    "created_at": "2025-11-26T19:27:45Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
   },
   {
     "hash": "a998ad6e34433023db6a08b4acaab7c3488bc79d",
@@ -29001,6 +29105,19 @@
     "built_at": "2023-05-24T16:14:12Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:afa74c33c0fe8b4ba62aea6fbb7f1741adcb5e50"
+  },
+  {
+    "hash": "afacc1e92f2ad1abe31a87041a4698243b731ab7",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Fix LMDB null pointer UB for empty values",
+    "pull_request": "4975",
+    "created_at": "2025-12-18T13:17:09Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
   },
   {
     "hash": "afb3de064edd7754a995f4bde5adff3d2f4ad2bb",
@@ -30878,6 +30995,19 @@
     "run_id": "11983991188"
   },
   {
+    "hash": "bc097f6543543453d28fcc1c16e445df52e210fd",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Merge pull request #4975 from pwojcikdev/database-backend-pr\n\nUnified database backend",
+    "pull_request": "4975",
+    "created_at": "2025-12-24T01:59:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
+  },
+  {
     "hash": "bc3865d39dd552e8e7654e1f1a1d7b7220334d87",
     "type": "commit",
     "created_at": "2023-12-19T20:08:20Z",
@@ -30944,6 +31074,19 @@
     "docker_tag": "gr0v1ty/nano-node:bc86e466243425b1d91150ed3d97da79eddc2547",
     "build_started_at": "2024-05-14T11:08:37Z",
     "run_id": "9081135199"
+  },
+  {
+    "hash": "bc959f5d0776019a2fcefaf93cbc01d1192311c3",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Introduce result type and error handling improvements",
+    "pull_request": "N/A",
+    "created_at": "2025-12-17T19:48:30Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
   },
   {
     "hash": "bc9bc82a8d63ca995e2c1ab3b67766686a7d39bb",
@@ -38280,6 +38423,19 @@
     "run_id": "8407326927"
   },
   {
+    "hash": "e97fc8c11df2b0ddfedd4ae13c88a041dbc4f6a9",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add ledger version upgrade tests",
+    "pull_request": "4975",
+    "created_at": "2025-12-03T20:19:12Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
+  },
+  {
     "hash": "e98d99ea1cdf896a7d909da9cba68299e3f39b3a",
     "type": "pull_request",
     "pull_request": 4223,
@@ -41360,6 +41516,19 @@
     "run_id": "8982478877"
   },
   {
+    "hash": "faffdd39a2e09a5b8990a714d0d33a7c7bb053de",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Introduce database backend abstraction layer",
+    "pull_request": "N/A",
+    "created_at": "2025-12-17T19:48:42Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
+  },
+  {
     "hash": "fb031cd3a6d31b6d0f8fe008924277096e6dfc64",
     "type": "pull_request",
     "title": "Encapsulate ledger cache counts",
@@ -42185,6 +42354,19 @@
     "run_id": "7613007939"
   },
   {
+    "hash": "ff98cbe4322dd37401a5d4b81b0b7fa759b44382",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Introduce `nano::default_database_backend ()` getter",
+    "pull_request": "N/A",
+    "created_at": "2025-12-05T17:59:31Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
+  },
+  {
     "hash": "ffd46598ad15a0968f3579455c40cb9170584068",
     "type": "commit",
     "author": "pwojcikdev",
@@ -42211,6 +42393,19 @@
     "docker_tag": "gr0v1ty/nano-node:fff93b2e8d95ba399b7c2776d4e0a68b6995ef88",
     "build_started_at": "2024-04-03T22:22:26Z",
     "run_id": "8546286512"
+  },
+  {
+    "hash": "fffa2fe95e608e3ec1db2c6cdee41ea3dbf21820",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Replace `using_rocksdb_in_tests ()` with `default_database_backend ()`",
+    "pull_request": "4975",
+    "created_at": "2025-12-19T15:01:14Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2025-12-24T02:59:44Z",
+    "run_id": null
   },
   {
     "hash": "fffcb76e68e07a9f825877f529cd01c9649b7409",
