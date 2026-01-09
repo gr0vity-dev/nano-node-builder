@@ -722,6 +722,22 @@
     "run_id": "20248307798"
   },
   {
+    "hash": "05f9bcdd4ef4cc85e8e82ac0add4d93b953832ea",
+    "type": "pull_request",
+    "title": "Introduce `block_rebroadcaster` component",
+    "author": "pwojcikdev",
+    "body": "Adds a new component that rebroadcasts blocks that are in active elections to help propagate them across the network. Blocks are queued for rebroadcast when elections start, become stale and at regular intervals as configured by block_broadcast_interval network parameter. A cooldown mechanism prevents the same block from being rebroadcast too frequently.",
+    "draft": false,
+    "pull_request": 4984,
+    "label": "pwojcikdev:block-rebroadcaster",
+    "created_at": "2026-01-08T13:56:58Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-01-09T14:16:22Z",
+    "run_id": null
+  },
+  {
     "hash": "05fbd416e438550be5358ca5f2e2a462677df740",
     "type": "commit",
     "created_at": "2024-03-13T19:34:53Z",
