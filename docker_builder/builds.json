@@ -4394,6 +4394,22 @@
     "run_id": "11558802099"
   },
   {
+    "hash": "1a34a7b539978c25506deebfb47785f7380749b2",
+    "type": "pull_request",
+    "title": "Super rebroadcaster mode",
+    "author": "pwojcikdev",
+    "body": "Introduces a new \"super rebroadcaster\" node mode that broadcasts all blocks and votes to all connected peers, bypassing the logarithmic fanout limitation. This is enabled via `--super_rebroadcaster` CLI flag.\r\n\r\n### Problem\r\nOn the live network, blocks and votes sometimes fail to propagate correctly across the network. The current fanout mechanism uses log(peer_count) to determine how many peers receive each message. This probabilistic approach can result in messages not reaching all nodes, especially during high network activity. Only representative nodes that are not behind NAT are guaranteed to receive all broadcasts.\r\n\r\n### Workaround\r\nThis is intended as a practical solution for the medium term. Running a few super rebroadcaster nodes on the network can significantly improve message propagation reliability without requiring changes to all nodes.\r\n\r\nFor the longer term, we plan to introduce proper network topology awareness, which would allow more intelligent message routing and reduce the need for brute-force broadcasting. However, that requires more substantial architectural changes.",
+    "draft": false,
+    "pull_request": 4985,
+    "label": "pwojcikdev:super-rebroadcaster",
+    "created_at": "2026-01-17T15:03:05Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-01-17T21:48:34Z",
+    "run_id": null
+  },
+  {
     "hash": "1a3aa359a03377f9757f40023a97ac65b42d44ab",
     "type": "pull_request",
     "pull_request": 4506,
