@@ -1,0 +1,2940 @@
+609cd155b5ff68b89541db86c0e77d72dce2494a: Pulling from gr0v1ty/nano-node
+6f4ebca3e823: Pulling fs layer
+fe78af62804c: Pulling fs layer
+c92870fe56de: Pulling fs layer
+8adffa33c5e9: Pulling fs layer
+7e8420aec42e: Pulling fs layer
+266eba5ae13d: Pulling fs layer
+fcce6efc58d5: Pulling fs layer
+4f208c4a9c0d: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+85c94b9bd8f9: Pulling fs layer
+4d065cd4305c: Pulling fs layer
+8adffa33c5e9: Waiting
+7e8420aec42e: Waiting
+266eba5ae13d: Waiting
+fcce6efc58d5: Waiting
+4f208c4a9c0d: Waiting
+4f4fb700ef54: Waiting
+85c94b9bd8f9: Waiting
+4d065cd4305c: Waiting
+6f4ebca3e823: Verifying Checksum
+6f4ebca3e823: Download complete
+fe78af62804c: Verifying Checksum
+fe78af62804c: Download complete
+7e8420aec42e: Download complete
+8adffa33c5e9: Verifying Checksum
+8adffa33c5e9: Download complete
+c92870fe56de: Verifying Checksum
+c92870fe56de: Download complete
+fcce6efc58d5: Download complete
+6f4ebca3e823: Pull complete
+266eba5ae13d: Verifying Checksum
+266eba5ae13d: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+4f208c4a9c0d: Verifying Checksum
+4f208c4a9c0d: Download complete
+85c94b9bd8f9: Verifying Checksum
+85c94b9bd8f9: Download complete
+4d065cd4305c: Verifying Checksum
+4d065cd4305c: Download complete
+fe78af62804c: Pull complete
+c92870fe56de: Pull complete
+8adffa33c5e9: Pull complete
+7e8420aec42e: Pull complete
+266eba5ae13d: Pull complete
+fcce6efc58d5: Pull complete
+4f208c4a9c0d: Pull complete
+4f4fb700ef54: Pull complete
+85c94b9bd8f9: Pull complete
+4d065cd4305c: Pull complete
+Digest: sha256:5bb66c4dba94248daffeb14faf21821f6d76c737626179f622101ed0ec0ecf03
+Status: Downloaded newer image for gr0v1ty/nano-node:609cd155b5ff68b89541db86c0e77d72dce2494a
+docker.io/gr0v1ty/nano-node:609cd155b5ff68b89541db86c0e77d72dce2494a
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_10k_bintree.json
+Start Fetching '5n4pr_conf_10k_bintree_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_10k_bintree_config.json'
+Done  Fetching '5n4pr_conf_10k_bintree_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_10k_bintree_config.json'
+Start Fetching '5n4pr_100k_bintree_short.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_100k_bintree_short.json'
+Done  Fetching '5n4pr_100k_bintree_short.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_100k_bintree_short.json'
+Start Fetching '5n4pr_init.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_init.ldb'
+Done  Fetching '5n4pr_init.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_init.ldb'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Start Fetching 'config-node_5n4pr_spam_buffer.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/config-node_5n4pr_spam_buffer.toml'
+Done  Fetching 'config-node_5n4pr_spam_buffer.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/config-node_5n4pr_spam_buffer.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+SUCCESS: stop_containers completed with None result.
+SUCCESS: reset_nodes_data completed with None result.
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+Error executing command: nanomock start && nanomock init_wallets
+Error: ERROR: Command failed: docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d
+ERROR: Error output: Creating volume "nanomock_nl_default_volume" with default driver
+Creating nl_pr3 ... 
+Creating nl_pr2 ... 
+Creating nl_pr1 ... 
+Creating nl_pr4 ... 
+Creating nl_genesis ... 
+Creating nl_genesis ... done
+Creating nl_genesis_exporter ... 
+Host is already in use by another container
+Creating nl_pr2              ... error
+
+ERROR: for nl_pr2  Cannot start service nl_pr2: failed to set up container networking: driver failed programming external connectivity on endpoint nl_pr2 (0a92ac737ea4e66259b830cd9c69d38aed5465fd3a34f2f7e325263d3a7898dd): failed to bind host port 0.0.0.0:44102/tcp: address already in use
+Creating nl_pr4              ... done
+Creating nl_pr4_exporter     ... 
+Creating nl_pr3              ... done
+Creating nl_pr3_exporter     ... 
+Creating nl_pr1              ... done
+Creating nl_pr1_exporter     ... 
+Creating nl_genesis_exporter ... done
+Creating nl_pr4_exporter     ... done
+Creating nl_pr3_exporter     ... done
+Creating nl_pr1_exporter     ... done
+
+ERROR: for nl_pr2  Cannot start service nl_pr2: failed to set up container networking: driver failed programming external connectivity on endpoint nl_pr2 (0a92ac737ea4e66259b830cd9c69d38aed5465fd3a34f2f7e325263d3a7898dd): failed to bind host port 0.0.0.0:44102/tcp: address already in use
+Encountered errors while bringing up the project.
+
+ERROR: Return code: 1
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 198, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanomock", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 58, in main
+    asyncio.run(main_async(args))
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 54, in main_async
+    await manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 544, in execute_command
+    await command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 473, in start_containers
+    self.docker_interface.compose_start(nodes)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 56, in compose_start
+    return self._run_command(cmd)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 33, in _run_command
+    subprocess_run_capture_output(base_command)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 209, in subprocess_run_capture_output
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: <exception str() failed>
+2026-01-18 11:57:20     0 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.Connecting to [::ffff:172.17.0.1]:44100
+Connecting to [::ffff:172.17.0.1]:44101
+Connecting to [::ffff:172.17.0.1]:44102
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44103
+Connecting to [::ffff:172.17.0.1]:44104
+2026-01-18 11:57:21     1 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/    289 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   275.0 (avg  275.00) (  2.75%)
+.2026-01-18 11:57:22     2 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/    786 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   497.0 (avg  386.00) (  7.72%)
+.2026-01-18 11:57:23     3 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   1279 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   493.0 (avg  421.67) ( 12.65%)
+.2026-01-18 11:57:24     4 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   1754 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   475.0 (avg  435.00) ( 17.40%)
+.2026-01-18 11:57:25     5 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   2248 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   494.0 (avg  446.80) ( 22.34%)
+.2026-01-18 11:57:26     6 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   2739 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   491.0 (avg  454.17) ( 27.25%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44100, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+2026-01-18 11:57:28     7 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   3222 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   483.0 (avg  458.29) ( 32.08%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+2026-01-18 11:57:29     8 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   3712 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   490.0 (avg  462.25) ( 36.98%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+2026-01-18 11:57:30     9 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   4202 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   490.0 (avg  465.33) ( 41.88%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44100, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+2026-01-18 11:57:31    11 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   4686 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   242.0 (avg  424.73) ( 46.72%)
+.2026-01-18 11:57:32    12 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   5183 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   497.0 (avg  430.75) ( 51.69%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+2026-01-18 11:57:33    13 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   5673 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   490.0 (avg  435.31) ( 56.59%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44100, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+2026-01-18 11:57:34    14 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   6156 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   483.0 (avg  438.71) ( 61.42%)
+.2026-01-18 11:57:35    15 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   6642 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   486.0 (avg  441.87) ( 66.28%)
+.2026-01-18 11:57:36    16 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   7138 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   496.0 (avg  445.25) ( 71.24%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44100, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+2026-01-18 11:57:38    17 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   7628 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   490.0 (avg  447.88) ( 76.14%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+2026-01-18 11:57:39    18 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   8118 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   490.0 (avg  450.22) ( 81.04%)
+.2026-01-18 11:57:40    19 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   8608 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   490.0 (avg  452.32) ( 85.94%)
+.2026-01-18 11:57:41    20 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   9099 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   491.0 (avg  454.25) ( 90.85%)
+.2026-01-18 11:57:42    22 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/   9582 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   241.5 (avg  434.91) ( 95.68%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44100, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+2026-01-18 11:57:43    23 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:   432.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44101. Wait 100ms
+2026-01-18 11:57:44    24 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:57:45    25 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:57:46    26 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:57:47    27 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44100, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+2026-01-18 11:57:49    28 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:57:50    29 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:57:51    30 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:57:52    31 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44100, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+2026-01-18 11:57:53    33 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+2026-01-18 11:57:54    34 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:57:55    35 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:57:56    36 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:57:57    37 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44100, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+2026-01-18 11:57:58    38 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:58:00    39 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:58:01    40 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:58:02    41 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44100, 0, 0)): timed out
+2026-01-18 11:58:03    43 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+2026-01-18 11:58:04    44 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+2026-01-18 11:58:05    45 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:58:06    46 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:58:07    47 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44100, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+2026-01-18 11:58:08    48 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:58:09    49 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:58:11    50 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:58:12    51 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:58:13    52 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.Error reading from socket (peer: ('::ffff:172.17.0.1', 44100, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+2026-01-18 11:58:14    54 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-01-18 11:58:15    55 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:16    56 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:17    57 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:18    58 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:19    59 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:21    60 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:22    61 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+2026-01-18 11:58:23    62 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+2026-01-18 11:58:24    64 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+2026-01-18 11:58:25    65 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+2026-01-18 11:58:26    66 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+2026-01-18 11:58:27    67 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+2026-01-18 11:58:28    68 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:29    69 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:30    70 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:32    71 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:33    72 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:34    73 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:35    75 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:36    76 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:37    77 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:38    78 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:39    79 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:40    80 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:42    81 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:43    82 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:44    83 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:45    84 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:46    86 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:47    87 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:48    88 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:49    89 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:50    90 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:51    91 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:53    92 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:54    93 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:55    94 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:56    95 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:57    97 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:58    98 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:58:59    99 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:00   100 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:01   101 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:02   102 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:04   103 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:05   104 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:06   105 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:07   107 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:08   108 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:09   109 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:10   110 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:11   111 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:12   112 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:13   113 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:15   114 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:16   115 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:17   116 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:18   118 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+2026-01-18 11:59:19   119 sec | nl_pr1           | Nano TAG_VERSION_STRING GIT_COM |      14/  10014 @ CPS:     0.0 (avg    0.00) (  0.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+FAIL
