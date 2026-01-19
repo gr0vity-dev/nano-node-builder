@@ -1417,6 +1417,22 @@
     "docker_tag": "gr0v1ty/nano-node:095df2c365e792fd4c1554baba8ba0e75664571a"
   },
   {
+    "hash": "097aabb0b26733c0815220b68b197c955d8d606e",
+    "type": "pull_request",
+    "title": "Refactor local wallet representative update flow",
+    "author": "pwojcikdev",
+    "body": "Local representative scan wasn't performed reliably on node startup, which meant node startup logging was incorrect.\r\n\r\n### Changes\r\n- Refactor wallets to receive explicit dependencies instead of accessing them through node reference\r\n- Call compute_reps() in the wallets constructor to ensure local representatives are scanned at startup\r\n- Individual key inserts (insert_adhoc, deterministic_insert) now trigger full rep recalculation instead of ad-hoc checking\r\n- Better logging of local representative changes",
+    "draft": false,
+    "pull_request": 4986,
+    "label": "pwojcikdev:fix-wallet-compute-reps",
+    "created_at": "2026-01-17T21:22:55Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-01-19T14:47:09Z",
+    "run_id": null
+  },
+  {
     "hash": "097e24ec4b9e9e30ded8fe1fc206bfc52e005e61",
     "type": "pull_request",
     "title": "Telemetry database backend",
