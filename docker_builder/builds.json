@@ -10165,6 +10165,19 @@
     "run_id": "8176435828"
   },
   {
+    "hash": "3cfae9c17e318f3eefbc8530a28892d4aaafc77d",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Log when peered stake is below quorum (#4991)\n\n* Warn when peered stake is below quorum\n\n* Log number of stale elections",
+    "pull_request": "4991",
+    "created_at": "2026-01-20T14:44:32Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-01-20T15:01:18Z",
+    "run_id": null
+  },
+  {
     "hash": "3d14f1e46d960d255355da1fcf3c26f1bfe907e2",
     "type": "commit",
     "author": "pwojcikdev",
@@ -19299,6 +19312,22 @@
     "docker_tag": "gr0v1ty/nano-node:701dbfd73f06a0a63d033ae24420602e010b4901",
     "build_started_at": "2024-01-31T16:56:18Z",
     "run_id": "7729573301"
+  },
+  {
+    "hash": "701deb0158d0c5a1201dd9eb25699a434872b075",
+    "type": "pull_request",
+    "title": "Refactor local wallet representative update flow",
+    "author": "pwojcikdev",
+    "body": "Local representative scan wasn't performed reliably on node startup, which meant node startup logging was incorrect.\r\n\r\n### Changes\r\n- Refactor wallets to receive explicit dependencies instead of accessing them through node reference\r\n- Call compute_reps() in the wallets constructor to ensure local representatives are scanned at startup\r\n- Individual key inserts (insert_adhoc, deterministic_insert) now trigger full rep recalculation instead of ad-hoc checking\r\n- Better logging of local representative changes",
+    "draft": false,
+    "pull_request": 4986,
+    "label": "pwojcikdev:fix-wallet-compute-reps",
+    "created_at": "2026-01-17T21:22:55Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-01-20T15:01:18Z",
+    "run_id": null
   },
   {
     "hash": "702ced1e438e9c9dbbf6c66b923537b4b04f1865",
