@@ -16023,6 +16023,22 @@
     "docker_tag": "gr0v1ty/nano-node:5da7d0f1165447bd83ed96d656cc7d839e502d6d"
   },
   {
+    "hash": "5db3a42a93973a294ea03350a8481b8476c0df1f",
+    "type": "pull_request",
+    "title": "Fix version strings",
+    "author": "pwojcikdev",
+    "body": null,
+    "draft": false,
+    "pull_request": 4994,
+    "label": "pwojcikdev:fix-version-strings",
+    "created_at": "2026-01-20T15:05:04Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-01-21T09:47:42Z",
+    "run_id": null
+  },
+  {
     "hash": "5db5c60e6cf831653b3e6e5ca096e0c9495569b5",
     "type": "commit",
     "created_at": "2024-01-10T11:21:44Z",
@@ -24709,6 +24725,22 @@
     "docker_tag": "gr0v1ty/nano-node:90745c54c5edd6475c90f21331e19f42e46487f2",
     "build_started_at": "2024-02-14T10:17:22Z",
     "run_id": "7899668504"
+  },
+  {
+    "hash": "908d1bc85d19cb13a531a8f37ad0d8b4c457205b",
+    "type": "pull_request",
+    "title": "Fix race condition in `wallets::ongoing_compute_reps`",
+    "author": "pwojcikdev",
+    "body": "The issue occurs because multiple wallets instances may share the same underlying wallet store. Ideally, wallets should be instantiable without requiring a full node instance.\r\n\r\n```\r\n[ RUN      ] wallets.remove\r\nAssertion `success (open_status)` failed: status: 22 (Invalid argument)\r\nD:\\a\\nano-node\\nano-node\\nano\\store\\lmdb\\iterator.cpp:40 [__cdecl nano::store::lmdb::iterator::iterator(struct MDB_txn *,unsigned int) noexcept]'\r\n 0# boost::stacktrace::basic_stacktrace<std::allocator<boost::stacktrace::frame> >::init at D:\\a\\nano-node\\nano-node\\submodules\\boost\\libs\\stacktrace\\include\\boost\\stacktrace\\stacktrace.hpp:110\r\n 1# boost::stacktrace::basic_stacktrace<std::allocator<boost::stacktrace::frame> >::basic_stacktrace<std::allocator<boost::stacktrace::frame> > at D:\\a\\nano-node\\nano-node\\submodules\\boost\\libs\\stacktrace\\include\\boost\\stacktrace\\stacktrace.hpp:162\r\n 2# nano::generate_stacktrace at D:\\a\\nano-node\\nano-node\\nano\\lib\\stacktrace.cpp:13\r\n 3# assert_internal at D:\\a\\nano-node\\nano-node\\nano\\lib\\assert.cpp:27\r\n 4# nano::store::lmdb::iterator::iterator at D:\\a\\nano-node\\nano-node\\nano\\store\\lmdb\\iterator.cpp:40\r\n 5# nano::store::lmdb::iterator::lower_bound at D:\\a\\nano-node\\nano-node\\nano\\store\\lmdb\\iterator.cpp:59\r\n 6# nano::wallet_store::begin at D:\\a\\nano-node\\nano-node\\nano\\node\\wallet.cpp:1912\r\n 7# nano::wallets::compute_reps at D:\\a\\nano-node\\nano-node\\nano\\node\\wallet.cpp:1811\r\n 8# nano::wallets::ongoing_compute_reps at D:\\a\\nano-node\\nano-node\\nano\\node\\wallet.cpp:1827\r\n 9# `nano::wallets::ongoing_compute_reps'::`2'::<lambda_1>::operator() at D:\\a\\nano-node\\nano-node\\nano\\node\\wallet.cpp:1831\r\n10# `nano::thread_pool::post<`nano::wallets::ongoing_compute_reps'::`2'::<lambda_1> >'::`5'::<lambda_1>::operator() at D:\\a\\nano-node\\nano-node\\nano\\lib\\thread_pool.hpp:81\r\n11# boost::asio::detail::binder0<`nano::thread_pool::post<`nano::wallets::ongoing_compute_reps'::`2'::<lambda_1> >'::`5'::<lambda_1> >::operator() at D:\\a\\nano-node\\nano-node\\submodules\\boost\\libs\\asio\\include\\boost\\asio\\detail\\bind_handler.hpp:56\r\n12# boost::asio::detail::executor_op<boost::asio::detail::binder0<`nano::thread_pool::post<`nano::wallets::ongoing_compute_reps'::`2'::<lambda_1> >'::`5'::<lambda_1> >,std::allocator<void>,boost::asio::detail::scheduler_operation>::do_complete at D:\\a\\nano-node\\nano-node\\submodules\\boost\\libs\\asio\\include\\boost\\asio\\detail\\executor_op.hpp:70\r\n13# boost::asio::detail::scheduler_operation::complete at D:\\a\\nano-node\\nano-node\\submodules\\boost\\libs\\asio\\include\\boost\\asio\\detail\\scheduler_operation.hpp:40\r\n14# boost::asio::detail::scheduler::do_run_one at D:\\a\\nano-node\\nano-node\\submodules\\boost\\libs\\asio\\include\\boost\\asio\\detail\\impl\\scheduler.ipp:494\r\n15# boost::asio::detail::scheduler::run at D:\\a\\nano-node\\nano-node\\submodules\\boost\\libs\\asio\\include\\boost\\asio\\detail\\impl\\scheduler.ipp:210\r\n16# boost::asio::thread_pool::thread_function::operator() at D:\\a\\nano-node\\nano-node\\submodules\\boost\\libs\\asio\\include\\boost\\asio\\impl\\thread_pool.ipp:39\r\n17# boost::asio::detail::win_thread::func<boost::asio::thread_pool::thread_function>::run at D:\\a\\nano-node\\nano-node\\submodules\\boost\\libs\\asio\\include\\boost\\asio\\detail\\win_thread.hpp:122\r\n18# boost::asio::detail::win_thread_function at D:\\a\\nano-node\\nano-node\\submodules\\boost\\libs\\asio\\include\\boost\\asio\\detail\\impl\\win_thread.ipp:127\r\n19# register_onexit_function in ucrtbased\r\n20# BaseThreadInitThunk in KERNEL32\r\n21# RtlUserThreadStart in ntdll\r\n```",
+    "draft": false,
+    "pull_request": 4996,
+    "label": "pwojcikdev:fix-wallets-ongoing-compute-reps-race",
+    "created_at": "2026-01-21T09:16:12Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-01-21T09:47:42Z",
+    "run_id": null
   },
   {
     "hash": "909cdfcf3e98df51e8526d8d93164d95fd8b391b",
