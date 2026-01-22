@@ -24190,6 +24190,22 @@
     "docker_tag": "gr0v1ty/nano-node:8c62ca4abe7ea27dc6c0c33ac787d198535f23e7"
   },
   {
+    "hash": "8c647bec3995a07f17cf7aafc154eddb96e6183c",
+    "type": "pull_request",
+    "title": "Cancel deadline timer in socket_base destructor",
+    "author": "pwojcikdev",
+    "body": "This is an attempt to fix an issue with deadline timer we're having when running rpc tests:\r\n```\r\n/Users/runner/work/nano-node/nano-node/submodules/boost/libs/asio/include/boost/asio/basic_deadline_timer.hpp:548:41: runtime error: member call on address 0x600003c68c40 which does not point to an object of type 'boost::asio::detail::deadline_timer_service<boost::asio::time_traits<boost::posix_time::ptime>>'\r\n  0x600003c68c40: note: object has invalid vptr\r\n   00 00 00 00  40 8c c6 c0 c2 bf 00 00  11 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00\r\n                ^~~~~~~~~~~~~~~~~~~~~~~\r\n                invalid vptr\r\n```",
+    "draft": false,
+    "pull_request": 5002,
+    "label": "pwojcikdev:fix-rpc-timer-issue",
+    "created_at": "2026-01-22T21:59:04Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-01-22T22:13:29Z",
+    "run_id": null
+  },
+  {
     "hash": "8c7cb21b9102107b2a4f79d108950cded40129dd",
     "type": "commit",
     "author": "pwojcikdev",
@@ -35716,6 +35732,22 @@
     "built_at": "2023-05-17T18:15:46Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:d24699313b681c281393abe1260a1eb98920a8e1"
+  },
+  {
+    "hash": "d248bad32316e42dbd1854f540a54a854295f7b1",
+    "type": "pull_request",
+    "title": "Fix `stale_election_multiple` test",
+    "author": "pwojcikdev",
+    "body": null,
+    "draft": false,
+    "pull_request": 5003,
+    "label": "pwojcikdev:fix-stale_election_multiple",
+    "created_at": "2026-01-22T22:04:14Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-01-22T22:13:29Z",
+    "run_id": null
   },
   {
     "hash": "d2811db85bacfd6b7a3f29a0ee0fb83df0aa21ae",
