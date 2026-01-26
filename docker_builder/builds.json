@@ -16772,6 +16772,22 @@
     "run_id": "8590508881"
   },
   {
+    "hash": "5faac91db5f92f64efff65c57f60c35825aee08c",
+    "type": "pull_request",
+    "title": "Keep io_context alive in socket_base via shared_ptr to prevent premature destruction",
+    "author": "pwojcikdev",
+    "body": "Should fix sanitizer error in rpc_test where deadline_timer accesses destroyed io_context:\r\n```\r\nReport: sanitizer_report.rpc_test.71093\r\n  /Users/runner/work/nano-node/nano-node/submodules/boost/libs/asio/include/boost/asio/basic_deadline_timer.hpp:548:41: runtime error: member call on address 0x6000004715e0 which does not point to an object of type 'boost::asio::detail::deadline_timer_service<boost::asio::time_traits<boost::posix_time::ptime>>'\r\n  0x6000004715e0: note: object has invalid vptr\r\n   00 00 00 00  e0 15 bb 31 5f 00 00 00  45 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00\r\n                ^~~~~~~~~~~~~~~~~~~~~~~\r\n                invalid vptr\r\n```",
+    "draft": false,
+    "pull_request": 5014,
+    "label": "pwojcikdev:ipc-ctx-lifetimes",
+    "created_at": "2026-01-26T20:27:00Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-01-26T21:55:04Z",
+    "run_id": null
+  },
+  {
     "hash": "5ff3237fc140ab618261d68a2e24f8da360fb9a5",
     "type": "commit",
     "author": "pwojcikdev",
