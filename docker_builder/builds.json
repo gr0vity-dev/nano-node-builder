@@ -5870,6 +5870,22 @@
     "run_id": "9678234642"
   },
   {
+    "hash": "20af3a2811b37f50b2587fb65270c0f8227d7104",
+    "type": "pull_request",
+    "title": "Fix `rpc.block_count_pruning` test flakiness",
+    "author": "pwojcikdev",
+    "body": "The test was failing because node0 would auto-receive the send block, creating a fork with the receive1 block that node1 processes locally. With two competing receive blocks, elections couldn't reach consensus.",
+    "draft": false,
+    "pull_request": 5012,
+    "label": "pwojcikdev:fix-rpc.block_count_pruning",
+    "created_at": "2026-01-26T13:09:49Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-01-26T13:32:11Z",
+    "run_id": null
+  },
+  {
     "hash": "20c562efbbb2bd4e6d0c393e92670e40a8507d31",
     "type": "commit",
     "author": "pwojcikdev",
