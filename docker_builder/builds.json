@@ -2396,6 +2396,22 @@
     "run_id": "7747563438"
   },
   {
+    "hash": "0dd1d802804811af39e6900a3479a5c608248147",
+    "type": "pull_request",
+    "title": "Add Docker-based CI testing",
+    "author": "pwojcikdev",
+    "body": "Code may compile on bare metal but fail in Docker due to environment differences (Ubuntu 22.04 in Docker vs Ubuntu 24.04 in CI). Currently no CI job validates that the codebase builds and tests pass inside Docker containers.",
+    "draft": false,
+    "pull_request": 5016,
+    "label": "pwojcikdev:docker-tests",
+    "created_at": "2026-01-27T13:15:28Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-01-27T19:50:31Z",
+    "run_id": null
+  },
+  {
     "hash": "0dfe3415bdc8d536f3f6276e1f2100c85db395a8",
     "type": "commit",
     "author": "pwojcikdev",
