@@ -13020,6 +13020,22 @@
     "docker_tag": "gr0v1ty/nano-node:49b8ccea28682a4412b2533a1b29f27eb145c93e"
   },
   {
+    "hash": "49bd174ec625771d4ac51eb5da5bf3c980c23e99",
+    "type": "pull_request",
+    "title": "Add Docker-based CI testing",
+    "author": "pwojcikdev",
+    "body": "Code may compile on bare metal but fail in Docker due to environment differences (Ubuntu 22.04 in Docker vs Ubuntu 24.04 in CI). Currently no CI job validates that the codebase builds and tests pass inside Docker containers.",
+    "draft": false,
+    "pull_request": 5016,
+    "label": "pwojcikdev:docker-tests",
+    "created_at": "2026-01-27T13:15:28Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-01-27T13:57:01Z",
+    "run_id": null
+  },
+  {
     "hash": "49cf520bfdd82486ad05e57586c920bf1133aba3",
     "type": "commit",
     "author": "pwojcikdev",
