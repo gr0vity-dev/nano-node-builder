@@ -4170,6 +4170,22 @@
     "run_id": "12046044927"
   },
   {
+    "hash": "179f39f15f57128c84b85f1224aaad8032ba7f79",
+    "type": "pull_request",
+    "title": "Add Docker-based CI testing",
+    "author": "pwojcikdev",
+    "body": "Code may compile on bare metal but fail in Docker due to environment differences (Ubuntu 22.04 in Docker vs Ubuntu 24.04 in CI). Currently no CI job validates that the codebase builds and tests pass inside Docker containers.",
+    "draft": false,
+    "pull_request": 5016,
+    "label": "pwojcikdev:docker-tests",
+    "created_at": "2026-01-27T13:15:28Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-01-27T15:49:50Z",
+    "run_id": null
+  },
+  {
     "hash": "17d5341dfa1783318e1dc0e5714f668d7b89004c",
     "type": "commit",
     "author": "pwojcikdev",
@@ -42147,6 +42163,22 @@
     "built_at": "2023-09-21T07:26:43Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:f28e7c460d345dad37993571b070ae5ef2507e37"
+  },
+  {
+    "hash": "f2bd7e37e7182c84ded382998fb9109a20fe5cc6",
+    "type": "pull_request",
+    "title": "Keep io_context alive in socket_base via shared_ptr to prevent premature destruction",
+    "author": "pwojcikdev",
+    "body": "Should fix sanitizer error in rpc_test where deadline_timer accesses destroyed io_context:\r\n```\r\nReport: sanitizer_report.rpc_test.71093\r\n  /Users/runner/work/nano-node/nano-node/submodules/boost/libs/asio/include/boost/asio/basic_deadline_timer.hpp:548:41: runtime error: member call on address 0x6000004715e0 which does not point to an object of type 'boost::asio::detail::deadline_timer_service<boost::asio::time_traits<boost::posix_time::ptime>>'\r\n  0x6000004715e0: note: object has invalid vptr\r\n   00 00 00 00  e0 15 bb 31 5f 00 00 00  45 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00\r\n                ^~~~~~~~~~~~~~~~~~~~~~~\r\n                invalid vptr\r\n```",
+    "draft": false,
+    "pull_request": 5014,
+    "label": "pwojcikdev:ipc-ctx-lifetimes",
+    "created_at": "2026-01-26T20:27:00Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-01-27T15:49:50Z",
+    "run_id": null
   },
   {
     "hash": "f2cf82bccd36938e758ab974779e5ec11c7965a8",
