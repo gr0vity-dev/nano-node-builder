@@ -26059,6 +26059,22 @@
     "run_id": "7885590504"
   },
   {
+    "hash": "939d568e375836732e4a0359004dbba0c9cf2e1e",
+    "type": "pull_request",
+    "title": "Add work_server_use_peers field to config",
+    "author": "h45hc47",
+    "body": "Currently, if local work generation disabled and used external work server, there is a need to add `\"use_peers\": true` to all requests, which is not very convenient. \r\nSo i add field `work_server_use_peers: <bool>` to node config to specify it and redefine it in request if needed.",
+    "draft": false,
+    "pull_request": 5017,
+    "label": "h45hc47:work_server_use_peers_config_field",
+    "created_at": "2026-01-28T10:57:23Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-01-28T11:30:22Z",
+    "run_id": null
+  },
+  {
     "hash": "93b74b76fd606250625bfe5372cf2d2a58ffe456",
     "type": "pull_request",
     "title": "Cementing fixes",
