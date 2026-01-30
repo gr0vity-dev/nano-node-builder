@@ -40520,6 +40520,22 @@
     "run_id": "11984260775"
   },
   {
+    "hash": "e96a053e51c867326162c686d416b7a9eb789f29",
+    "type": "pull_request",
+    "title": "Remove racy debug_assert in request_aggregator::request",
+    "author": "pwojcikdev",
+    "body": "Should fix:\r\n```\r\n[ RUN      ] node.bidirectional_tcp\r\nAssertion `wallets.reps ().voting > 0` failed\r\n/workspace/nano/node/request_aggregator.cpp:90 [bool nano::request_aggregator::request(const request_type&, const std::shared_ptr<nano::transport::channel>&)]'\r\n 0# nano::generate_stacktrace[abi:cxx11]() at /workspace/nano/lib/stacktrace.cpp:13\r\n 1# assert_internal(char const*, char const*, char const*, unsigned int, bool, std::basic_string_view<char, std::char_traits<char> >) at /workspace/nano/lib/assert.cpp:28\r\n 2# nano::request_aggregator::request(std::vector<std::pair<nano::block_hash, nano::root>, std::allocator<std::pair<nano::block_hash, nano::root> > > const&, std::shared_ptr<nano::transport::channel> const&) at /workspace/nano/node/request_aggregator.cpp:90\r\n 3# (anonymous namespace)::process_visitor::confirm_req(nano::messages::confirm_req const&) at /workspace/nano/node/message_processor.cpp:215\r\n 4# nano::messages::confirm_req::visit(nano::messages::message_visitor&) const at /workspace/nano/messages/confirm.cpp:56\r\n 5# nano::message_processor::process(nano::messages::message const&, std::shared_ptr<nano::transport::channel> const&) at /workspace/nano/node/message_processor.cpp:298\r\n 6# nano::message_processor::run_batch(std::unique_lock<nano::mutex>&) at /workspace/nano/node/message_processor.cpp:151\r\n 7# nano::message_processor::run() at /workspace/nano/node/message_processor.cpp:125\r\n 8# nano::message_processor::start()::{lambda()#1}::operator()() const at /workspace/nano/node/message_processor.cpp:60\r\n 9# void std::__invoke_impl<void, nano::message_processor::start()::{lambda()#1}>(std::__invoke_other, nano::message_processor::start()::{lambda()#1}&&) at /usr/include/c++/11/bits/invoke.h:61\r\n10# std::__invoke_result<nano::message_processor::start()::{lambda()#1}>::type std::__invoke<nano::message_processor::start()::{lambda()#1}>(nano::message_processor::start()::{lambda()#1}&&) at /usr/include/c++/11/bits/invoke.h:97\r\n11# void std::thread::_Invoker<std::tuple<nano::message_processor::start()::{lambda()#1}> >::_M_invoke<0ul>(std::_Index_tuple<0ul>) at /usr/include/c++/11/bits/std_thread.h:259\r\n12# std::thread::_Invoker<std::tuple<nano::message_processor::start()::{lambda()#1}> >::operator()() at /usr/include/c++/11/bits/std_thread.h:266\r\n13# std::thread::_State_impl<std::thread::_Invoker<std::tuple<nano::message_processor::start()::{lambda()#1}> > >::_M_run() at /usr/include/c++/11/bits/std_thread.h:211\r\n14# execute_native_thread_routine in ./core_test\r\n15# start_thread at ./nptl/pthread_create.c:442\r\n16# 0x00007F25621238C0 at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:83\r\n\r\n../ci/tests/run-tests.sh: line 52:    20 Aborted                 (core dumped) \"${executable}\" \"$@\"\r\n```",
+    "draft": false,
+    "pull_request": 5019,
+    "label": "pwojcikdev:request-aggregator-disable-when-no-reps",
+    "created_at": "2026-01-29T23:53:44Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-01-30T11:54:27Z",
+    "run_id": null
+  },
+  {
     "hash": "e97067ffdab8b1ae6a090b87d378b172be533af2",
     "type": "pull_request",
     "pull_request": 4520,
