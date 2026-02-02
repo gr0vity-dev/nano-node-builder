@@ -349,6 +349,19 @@
     "run_id": "11981850146"
   },
   {
+    "hash": "0274cf73f56989c294b2c2fa83a67a000530b508",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Use atomic enabled flag in request_aggregator::request (#5022)",
+    "pull_request": "5022",
+    "created_at": "2026-02-02T19:19:39Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-02-02T23:01:47Z",
+    "run_id": null
+  },
+  {
     "hash": "0278131977f5ce11621067e62d4ed547f3fbcd9b",
     "type": "pull_request",
     "pull_request": 4442,
@@ -13292,6 +13305,22 @@
     "docker_tag": "gr0v1ty/nano-node:4ad900ec31abf5245a50da65f30038742479fb27",
     "build_started_at": "2024-03-07T11:59:51Z",
     "run_id": "8187715569"
+  },
+  {
+    "hash": "4af4ff59f30b93cbc0c113226a5044e9c4f82ed5",
+    "type": "pull_request",
+    "title": "Add work_server_use_peers field to config",
+    "author": "h45hc47",
+    "body": "Currently, if local work generation disabled and used external work server, there is a need to add `\"use_peers\": true` to all requests, which is not very convenient. \r\nSo i add field `work_server_use_peers: <bool>` to node config to specify it and redefine it in request if needed.",
+    "draft": false,
+    "pull_request": 5017,
+    "label": "h45hc47:work_server_use_peers_config_field",
+    "created_at": "2026-01-28T10:57:23Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-02-02T23:01:47Z",
+    "run_id": null
   },
   {
     "hash": "4b0434d7e88412ffd357322982807a2e1130cafc",
