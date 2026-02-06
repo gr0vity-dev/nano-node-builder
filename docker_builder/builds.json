@@ -4770,6 +4770,22 @@
     "run_id": "8786888959"
   },
   {
+    "hash": "1af9edeee7cd60c0bfa8e4df34ce5acb6cc5cbae",
+    "type": "pull_request",
+    "title": "Refactor wallet API to use nano::result (boost outcome) and direct return values",
+    "author": "pwojcikdev",
+    "body": "Refactors key wallet functions to improve error handling and API ergonomics:                                                                         \r\n                                                                                                                                                       \r\n  - Refactors `wallet::insert_adhoc` and `wallet::deterministic_insert` to return `nano::result` instead of out-parameters                             \r\n  - Refactors `wallet::get_seed` and `wallet_store::seed` to return values directly                                                                    \r\n  - Adds stricter runtime assertions for wallet operations                                                                                                                                                                       \r\n  - Adds tests for wallet representative detection and locked wallet scenarios",
+    "draft": false,
+    "pull_request": 5023,
+    "label": "pwojcikdev:wallet-use-result",
+    "created_at": "2026-02-05T13:58:22Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-02-06T14:24:07Z",
+    "run_id": null
+  },
+  {
     "hash": "1b1bac07ab06241aa164ae12b54da4e5dfe4784d",
     "type": "commit",
     "created_at": "2024-02-26T10:52:19Z",
@@ -23407,6 +23423,22 @@
     "docker_tag": "gr0v1ty/nano-node:8375c6f050e5719f2c26675680123d6ff71dc946",
     "build_started_at": "2024-01-26T01:10:13Z",
     "run_id": "7662595228"
+  },
+  {
+    "hash": "837bd72f9ea37e8c29b4b11258f21b3cc2a53619",
+    "type": "pull_request",
+    "title": "Enable core dump collection and analysis for system tests",
+    "author": "pwojcikdev",
+    "body": null,
+    "draft": false,
+    "pull_request": 5025,
+    "label": "pwojcikdev:system-tests-core-dumps",
+    "created_at": "2026-02-06T13:42:41Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-02-06T14:24:07Z",
+    "run_id": null
   },
   {
     "hash": "83853d832bd777e6e118778f4bd8bebdff0e3bc0",
@@ -42700,6 +42732,22 @@
     "docker_tag": "gr0v1ty/nano-node:f3299114a47d5a593600be53729cd534074c9a70",
     "build_started_at": "2024-04-22T14:57:01Z",
     "run_id": "8786244291"
+  },
+  {
+    "hash": "f3341a887dd99cded8910f1fd6c622dafd659cf7",
+    "type": "pull_request",
+    "title": "Fix rpc.send_epoch_2 generating work for wrong hash",
+    "author": "pwojcikdev",
+    "body": null,
+    "draft": false,
+    "pull_request": 5026,
+    "label": "pwojcikdev:fix-rpc-send-epoch-2",
+    "created_at": "2026-02-06T13:50:51Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-02-06T14:24:07Z",
+    "run_id": null
   },
   {
     "hash": "f3792b512d942cfc77b79f62676c4e7d5843f699",
