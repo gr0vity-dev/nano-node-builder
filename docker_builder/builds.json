@@ -1365,6 +1365,22 @@
     "run_id": "7729023844"
   },
   {
+    "hash": "08af53165584937c8b0e2c0fb8219e4de872fee1",
+    "type": "pull_request",
+    "title": "Migrate successor field from sideband to dedicated table",
+    "author": "RickiNano",
+    "body": "This PR moves the successor field from the sideband data and into a new database table named successors. It is a rewrite of #4967 \r\n\r\nIt extracts the successor field from block_sideband into a new successor database table (block_hash -> successor_hash)\r\nBlock records are now immutable once written, eliminating predecessor read-modify-write cycles on every block insertion\r\n\r\nThis is phase 1 of the block table restructuring described in #4053 . It is a prerequisite for the full block table split which enables MDB_APPEND insertion giving 50% disk space savings\r\n\r\nMigration (upgrade_v24_to_v25)\r\n\r\nRewrites every block entry in the database in a single pass:\r\n\r\n  1. For each block, locates the 32-byte successor hash (always the first field in the old sideband serialization, immediately after the block data).\r\n  2. If the successor is non-zero, inserts it into the new successor table.\r\n  3. Reconstructs the block record without the 32 successor bytes and writes it back.\r\n  4. Uses batch processing with transaction.refresh() (batch size: 2 for dev, 250K for production).\r\n  5. Idempotent on crash recovery\r\n\r\nI have tested with both LMDB and RocksDB\r\nClaude code has been assisting in writing the code",
+    "draft": false,
+    "pull_request": 5024,
+    "label": "RickiNano:remove-successor-from-sideband",
+    "created_at": "2026-02-06T07:01:27Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-02-08T11:10:46Z",
+    "run_id": null
+  },
+  {
     "hash": "08c30022bb7a1976a5ca0ee99ba28d7df7d4ef9a",
     "type": "pull_request",
     "pull_request": 4181,
