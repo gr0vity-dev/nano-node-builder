@@ -32123,6 +32123,22 @@
     "run_id": "14606101278"
   },
   {
+    "hash": "b53b72dcc48c325e50305249d3e64e63dacb5aef",
+    "type": "pull_request",
+    "title": "Optimize `ledger::confirm (...)` database operations",
+    "author": "pwojcikdev",
+    "body": "Previously, `ledger::confirm` performed redundant `block_get` calls — each block was fetched from the store twice (once to compute dependencies, once to confirm). Additionally, checking whether a dependency was already confirmed required 3 DB lookups (pruned check, block fetch, confirmation height check).\r\n\r\nBy changing the DFS to operate on block instances rather than hashes:\r\n  - Blocks are fetched once when discovered as dependencies and reused when resolved — saves 2 `store.block.get()` calls per confirmed block\r\n  - A new `confirmed.block_exists(block)` overload skips the store fetch and only checks confirmation height — saves 2 DB lookups per already-confirmed dependency\r\n\r\nThe `bounded_dfs` helper is extracted as a generic, tested algorithm that handles stack bounding, overflow detection, and partial progress for the caller's outer loop.",
+    "draft": false,
+    "pull_request": 5030,
+    "label": "pwojcikdev:bounded-dfs-helper",
+    "created_at": "2026-02-12T22:15:12Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-02-12T22:39:32Z",
+    "run_id": null
+  },
+  {
     "hash": "b54aef1bf1b539aa259d487945fc7e4aa4ae56d8",
     "type": "pull_request",
     "pull_request": 4335,
@@ -36294,6 +36310,22 @@
     "docker_tag": "gr0v1ty/nano-node:cdaea9ab9be42ad0bdb2a2b7ea4edb84fdd02061",
     "build_started_at": "2024-05-04T09:36:39Z",
     "run_id": "8950208322"
+  },
+  {
+    "hash": "cdbab0f84cbb3f2fa3ddc3a7e9dfe522915f8323",
+    "type": "pull_request",
+    "title": "Introduce free-disk-space action to prevent CI build failures",
+    "author": "pwojcikdev",
+    "body": null,
+    "draft": false,
+    "pull_request": 5029,
+    "label": "pwojcikdev:github-ci-free-disk-space",
+    "created_at": "2026-02-12T22:02:19Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-02-12T22:39:32Z",
+    "run_id": null
   },
   {
     "hash": "cdbed5eaccc5b63207710ac915bb2d551097e7c1",
