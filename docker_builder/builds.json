@@ -23413,6 +23413,22 @@
     "docker_tag": "gr0v1ty/nano-node:81f15551b78ffa67b9e39325fb82375467ae8a6c"
   },
   {
+    "hash": "821506cadf53e2d79b2dc6406e8b6a6166279eb2",
+    "type": "pull_request",
+    "title": "Standardizing terminology to distinguish between confirmed vs cemented",
+    "author": "pwojcikdev",
+    "body": "Terminology standardization to distinguish between:\r\n     \r\n - Election confirmation: consensus achieved through voting\r\n - Ledger cementing: blocks permanently written to disk\r\n\r\nChanges:\r\n- Rename ledger members: confirmed_impl/confirmed → cemented_impl/cemented\r\n- Rename method: dependencies_confirmed() → dependencies_cemented()\r\n- Rename scheduler tag: tag_unconfirmed_height → tag_uncemented_height\r\n- Update all usage sites: ledger.confirmed.* → ledger.cemented.*\r\n- Remove unused: process_cemented_interval, process_cemented stat type",
+    "draft": false,
+    "pull_request": 5032,
+    "label": "pwojcikdev:rename-confirm-to-cement",
+    "created_at": "2026-02-13T20:23:58Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-02-13T21:36:57Z",
+    "run_id": null
+  },
+  {
     "hash": "8221c05b09887d759c1657541f4575771fb08fab",
     "type": "pull_request",
     "title": "Remove `node::process_confirmed (...)`",
