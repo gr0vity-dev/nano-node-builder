@@ -22791,6 +22791,22 @@
     "run_id": "9181481736"
   },
   {
+    "hash": "7e31e4ac08d2338956e493268a93a4f4077f1a6f",
+    "type": "pull_request",
+    "title": "Standardizing terminology to distinguish between confirmed vs cemented",
+    "author": "pwojcikdev",
+    "body": "Terminology standardization to distinguish between:\r\n     \r\n - Election confirmation: consensus achieved through voting\r\n - Ledger cementing: blocks permanently written to disk\r\n\r\nChanges:\r\n- Rename ledger members: confirmed_impl/confirmed → cemented_impl/cemented\r\n- Rename method: dependencies_confirmed() → dependencies_cemented()\r\n- Rename scheduler tag: tag_unconfirmed_height → tag_uncemented_height\r\n- Update all usage sites: ledger.confirmed.* → ledger.cemented.*\r\n- Remove unused: process_cemented_interval, process_cemented stat type",
+    "draft": false,
+    "pull_request": 5032,
+    "label": "pwojcikdev:rename-confirm-to-cement",
+    "created_at": "2026-02-13T20:23:58Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-02-14T11:59:16Z",
+    "run_id": null
+  },
+  {
     "hash": "7e32c33ad11c1723333b59301a789e4dd607489a",
     "type": "pull_request",
     "pull_request": 4407,
