@@ -33123,6 +33123,22 @@
     "run_id": "6656600272"
   },
   {
+    "hash": "baa061112ab052380a444288206f3f0c61953077",
+    "type": "pull_request",
+    "title": "Clean up wallet_store initialization and error handling ",
+    "author": "pwojcikdev",
+    "body": "Replace wallet_store initialization error output parameters with exceptions for cleaner error propagation. Initialize new wallets directly with a KDF-derived default password (empty string) instead of bootstrapping with a raw zero key and immediately rekeying in a separate transaction.",
+    "draft": false,
+    "pull_request": 5033,
+    "label": "pwojcikdev:wallet-cleanup",
+    "created_at": "2026-02-16T21:11:46Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-02-16T21:21:50Z",
+    "run_id": null
+  },
+  {
     "hash": "baabcca4260566d02815106f4d625f4771cca3df",
     "type": "commit",
     "created_at": "2023-02-02T15:14:26Z",
