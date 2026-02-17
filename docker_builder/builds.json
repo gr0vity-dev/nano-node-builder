@@ -154,6 +154,19 @@
     "docker_tag": "gr0v1ty/nano-node:00cf95f2044128f142ea2e5d5221b81f8df3f6ec"
   },
   {
+    "hash": "00ffc269db985a3771d83d7a3637c463d51724c7",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Reorganize wallet source file layout",
+    "pull_request": "5033",
+    "created_at": "2026-02-16T16:57:48Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-02-17T13:44:53Z",
+    "run_id": null
+  },
+  {
     "hash": "012c053d7c097b2650c63f07ea40503d00eef266",
     "type": "commit",
     "author": "RickiNano",
@@ -958,6 +971,19 @@
     "docker_tag": "gr0v1ty/nano-node:06f28d22ca3c9939235d39c63648896b15aa0f0c",
     "build_started_at": "2024-02-11T12:55:16Z",
     "run_id": "7862123794"
+  },
+  {
+    "hash": "06f6254bd895583927d5a869d20ebdac4a1a3291",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Merge pull request #5033 from pwojcikdev/wallet-cleanup\n\nClean up wallet_store initialization and error handling",
+    "pull_request": "5033",
+    "created_at": "2026-02-17T13:39:35Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-02-17T13:44:53Z",
+    "run_id": null
   },
   {
     "hash": "06f9a7a148b578619d5e1d7a24fa9402e46be2c1",
@@ -29808,6 +29834,19 @@
     "run_id": "11616234668"
   },
   {
+    "hash": "a6902602460ccc5bdd3018318ebcaf906cd6fb45",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Remove unused representative parameter from JSON wallet_store constructor\n\nThe JSON-based wallet_store constructor imports all entries (including the\nrepresentative) from the provided JSON, so the representative parameter\nwas unused.",
+    "pull_request": "5033",
+    "created_at": "2026-02-17T09:59:55Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-02-17T13:44:53Z",
+    "run_id": null
+  },
+  {
     "hash": "a6aa9a792490928aa95d5e4cfa31781ebe2e522a",
     "type": "commit",
     "author": "pwojcikdev",
@@ -33824,6 +33863,19 @@
     "built_at": "2023-03-08T04:12:02Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:bdf6bcc243e0a73b9de0234aa4e879d59bfbeae0"
+  },
+  {
+    "hash": "be06699e5320cda4884f5312ac2cd6b81d2afa25",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Replace wallet_store init error output param with exceptions",
+    "pull_request": "5033",
+    "created_at": "2026-02-16T17:53:26Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-02-17T13:44:53Z",
+    "run_id": null
   },
   {
     "hash": "be07d4d0d20489f380a82a14b422a9f3ebd4db6e",
@@ -38708,6 +38760,19 @@
     "docker_tag": "gr0v1ty/nano-node:d9c8c38f626a1fe652d23a2774f9be031d42e51d",
     "build_started_at": "2026-01-06T08:31:39Z",
     "run_id": "20742668665"
+  },
+  {
+    "hash": "da1739e1b35b6296c127a163a73f8f48d765ddbd",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Include LMDB error details in wallet_store::initialize() exception\n\nInclude the database name and mdb_strerror output in the exception\nmessage to aid operational debugging when initialization fails.",
+    "pull_request": "5033",
+    "created_at": "2026-02-17T10:00:36Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-02-17T13:44:53Z",
+    "run_id": null
   },
   {
     "hash": "da4e9eb66a0fd723c06d1690e17aba2601755988",
@@ -44207,6 +44272,19 @@
     "docker_tag": "gr0v1ty/nano-node:f83d9be5d2cca8b2482a4cf944b54fee6c443627",
     "build_started_at": "2025-09-07T11:54:55Z",
     "run_id": "17528154325"
+  },
+  {
+    "hash": "f8554037309f6d631e7b3bcd2baeda57aa6f7897",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Initialize wallet_store with default password",
+    "pull_request": "5033",
+    "created_at": "2026-02-16T20:55:55Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-02-17T13:44:53Z",
+    "run_id": null
   },
   {
     "hash": "f8587f630ac8abaf4438d7a80a50c93d8d58f245",
