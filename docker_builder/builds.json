@@ -726,6 +726,22 @@
     "docker_tag": "gr0v1ty/nano-node:0526a8b62bbf3b7eeaba7ce853f9c52666b5ad1a"
   },
   {
+    "hash": "052c437b7afe3350508aacb298ba383d087ad02a",
+    "type": "pull_request",
+    "title": "Add work_server_use_peers field to config",
+    "author": "h45hc47",
+    "body": "Currently, if local work generation disabled and used external work server, there is a need to add `\"use_peers\": true` to all requests, which is not very convenient. \r\nSo i add field `work_server_use_peers: <bool>` to node config to specify it and redefine it in request if needed.",
+    "draft": false,
+    "pull_request": 5017,
+    "label": "h45hc47:work_server_use_peers_config_field",
+    "created_at": "2026-01-28T10:57:23Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-02-19T08:06:06Z",
+    "run_id": null
+  },
+  {
     "hash": "05420a0c1ed25c492b334d9c53086e11baa651e0",
     "type": "pull_request",
     "pull_request": 4318,
