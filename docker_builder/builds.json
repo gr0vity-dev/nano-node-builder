@@ -39168,6 +39168,22 @@
     "run_id": "9725884570"
   },
   {
+    "hash": "dbb1fcf911490d757e28d5f173ff0e108d11a5b5",
+    "type": "pull_request",
+    "title": "Fix LMDB sandbox EPERM on macOS",
+    "author": "pwojcikdev",
+    "body": "macOS Seatbelt sandbox blocks SysV semaphores used by LMDB, causing mdb_env_open() to fail with EPERM. Use POSIX semaphores (MDB_USE_POSIX_SEM=1) instead. Only for Apple debug builds.",
+    "draft": false,
+    "pull_request": 5036,
+    "label": "pwojcikdev:macos-sandbox",
+    "created_at": "2026-02-24T16:45:30Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-02-24T17:37:23Z",
+    "run_id": null
+  },
+  {
     "hash": "dbcb512d30d4c00c4f0df2495a57bf807c9d7f6d",
     "type": "commit",
     "author": "pwojcikdev",
