@@ -22344,6 +22344,22 @@
     "run_id": "8766662487"
   },
   {
+    "hash": "7a1d5170f0206884f4a40a2dc0290e5178a38485",
+    "type": "pull_request",
+    "title": "Remove succssor field from block sideband",
+    "author": "RickiNano",
+    "body": "This V26 database migration rewrites all blocks to remove the 32-byte successor field from block. The successor data has already been copied to the successor table in migration V24\r\nSerialize_v25, deserialize_v25 and size_v25 methods has been added to block_sideband to preserve the ability to read the legacy format during migrations\r\nThe migration uses cursor-based iteration with short-lived read transactions to prevent LMDB database bloat during migration.\r\nFrom my testing, ledger db size increased by only one gb during migration",
+    "draft": false,
+    "pull_request": 5038,
+    "label": "RickiNano:remove-succssor-from-sideband",
+    "created_at": "2026-02-28T20:47:55Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-02-28T20:54:47Z",
+    "run_id": null
+  },
+  {
     "hash": "7a2ae18d9f507982f8f392ff15d7155ca0d093ec",
     "type": "commit",
     "author": "pwojcikdev",
