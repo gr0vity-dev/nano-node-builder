@@ -30473,6 +30473,22 @@
     "run_id": "8247240799"
   },
   {
+    "hash": "a8b251bf5492b362806f49373e9ad1a3c4dd0d25",
+    "type": "pull_request",
+    "title": "Refactor bootstrap into context + strategy pattern",
+    "author": "pwojcikdev",
+    "body": "- Extract bootstrap_context from bootstrap_service to own all shared state and internal logic, making bootstrap_service a thin facade                      \r\n- Extract 4 bootstrap strategies (priority, database, dependency, frontier) into separate classes                               \r\n- Move sync_dependencies into a dedicated thread in dependency_strategy                                                                                    \r\n- Rename cleanup_and_sync → cleanup, run_timeouts → run_cleanup for consistency",
+    "draft": false,
+    "pull_request": 5040,
+    "label": "pwojcikdev:bootstrap-strategies-3",
+    "created_at": "2026-03-10T14:58:06Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-10T15:36:11Z",
+    "run_id": null
+  },
+  {
     "hash": "a8c05bad55b3d7caa1cf3143096396f1197bba33",
     "type": "commit",
     "author": "RickiNano",
