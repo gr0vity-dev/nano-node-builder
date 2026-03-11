@@ -2042,6 +2042,19 @@
     "run_id": "8191831724"
   },
   {
+    "hash": "0c5e0b1f71d14644bfa893700602791526c8a908",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Hold bootstrap mutex across response processing\n\nMove the lock.unlock() call after processing the response payload\nto ensure atomic tag erasure and state updates. This eliminates\nredundant inner lock acquisitions in process() overloads.",
+    "pull_request": "5040",
+    "created_at": "2026-03-03T21:35:08Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-11T14:35:34Z",
+    "run_id": null
+  },
+  {
     "hash": "0c6645a1d1810373b087414ff326b1f06cbcfa0d",
     "type": "pull_request",
     "title": "Fix websocket confirmation options handling",
@@ -3086,6 +3099,19 @@
     "docker_tag": "gr0v1ty/nano-node:11675c2e0e0cf910e4ca9b4135fb904d0205c1c1",
     "build_started_at": "2024-12-30T17:42:01Z",
     "run_id": "12550028998"
+  },
+  {
+    "hash": "1167cde04e5b7a29d7b0a3e7b8d03208bf32f658",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Extract bootstrap strategies into separate classes",
+    "pull_request": "5040",
+    "created_at": "2026-03-05T20:12:00Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-03-11T14:35:34Z",
+    "run_id": null
   },
   {
     "hash": "1170407c8dfd0e0076c455eac3b7eba582915211",
@@ -9649,6 +9675,19 @@
     "docker_tag": "gr0v1ty/nano-node:3595953b4d8b01e1e904e819e7f44c6c45f319de",
     "build_started_at": "2024-09-25T09:19:52Z",
     "run_id": "11030582966"
+  },
+  {
+    "hash": "35a0b6f88c3efb2541c4fe2a654d8819a6519ec0",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Merge pull request #5040 from pwojcikdev/bootstrap-strategies-3",
+    "pull_request": "5040",
+    "created_at": "2026-03-11T14:17:47Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-03-11T14:35:34Z",
+    "run_id": null
   },
   {
     "hash": "35ab9d408f0ba881c55c6766d1fb230f04b36090",
@@ -17371,6 +17410,19 @@
     "run_id": "8894009580"
   },
   {
+    "hash": "5f9b1c895eb3d10193eb67ae4565ddbfc03289eb",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rename bootstrap index classes with `_index` suffix",
+    "pull_request": "5040",
+    "created_at": "2026-03-04T14:22:45Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-03-11T14:35:34Z",
+    "run_id": null
+  },
+  {
     "hash": "5fa9e491eec2c0b094424382220404b3e70bbad8",
     "type": "pull_request",
     "title": "Fair queuing for vote processor",
@@ -22634,6 +22686,19 @@
     "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2025-01-15T15:43:41Z",
+    "run_id": null
+  },
+  {
+    "hash": "7bb169305152556fd1f1db6b718916c2512fba65",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rename `max_queue` to `channel_limit` in bootstrap server config",
+    "pull_request": "5040",
+    "created_at": "2026-03-10T14:46:31Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-03-11T14:35:34Z",
     "run_id": null
   },
   {
@@ -37624,6 +37689,19 @@
     "built_at": "2023-09-05T15:35:49Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:d29032a839601ae1143891800447046304c4975b"
+  },
+  {
+    "hash": "d2a0b21e4a283df1da0d71f8145d066e3e41a7f4",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Extract account_sets tests to dedicated bootstrap_account_sets.cpp",
+    "pull_request": "5040",
+    "created_at": "2026-03-04T15:00:57Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-03-11T14:35:34Z",
+    "run_id": null
   },
   {
     "hash": "d2b1ecc5ed2e28913f956696c961cbca95e388b1",
