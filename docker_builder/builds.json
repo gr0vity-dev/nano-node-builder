@@ -38883,6 +38883,22 @@
     "docker_tag": "gr0v1ty/nano-node:d8a2f4e9cefe9cc4cafb0486e2767c72220bb8db"
   },
   {
+    "hash": "d8c51fb3cfde8b9bcedc99355d881dc9bf2e4942",
+    "type": "pull_request",
+    "title": "Extend telemetry data",
+    "author": "RickiNano",
+    "body": "Extends the telemetry message with three new fields: database_backend (uint8), confirmation_latency_ms (uint32), and bootstrap_status (uint8), adding 6 bytes to the payload (150 → 156 bytes)\r\nIntroduces versioned size constants (size_v1 = 150, size = 156)\r\n\r\n**Forward compatibility**: An old node receives a 156-byte payload but only knows about 150 bytes of structured fields. The extra 6 bytes are read into unknown_data. Signature validation succeeds because serialize_without_signature appends unknown_data to the verification bytes, matching what the new node signed. No code changes are needed on old nodes\r\n\r\n**Backward compatibility**: A new node receives a 150-byte payload. The deserialize check payload_length_a >= size (156) is false, so the three new fields remain at their zero-initialized defaults. data_size_ is set to 150 (the payload length), so serialize_without_signature skips the new fields, producing the same bytes the old node signed. Signature validation succeeds.\r\n\r\n**Partial payload protection**: If a payload length falls between 151–155 bytes (more than v1 but less than the full v2 size), the new fields are not read",
+    "draft": false,
+    "pull_request": 5035,
+    "label": "RickiNano:extend-telemetry",
+    "created_at": "2026-02-22T21:34:55Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-13T02:00:39Z",
+    "run_id": null
+  },
+  {
     "hash": "d8c6a79129b4d70fd8373798c0e8a1f0ada8728f",
     "type": "commit",
     "author": "pwojcikdev",
