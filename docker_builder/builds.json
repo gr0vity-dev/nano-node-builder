@@ -24905,6 +24905,22 @@
     "docker_tag": "gr0v1ty/nano-node:889c4cd1975404fc3ceb724aa312985ba409249d"
   },
   {
+    "hash": "88aafa62584005910f5909afef8dd9a872de9238",
+    "type": "pull_request",
+    "title": "Add disable_reachout flag and move preconfigured peer reachout to network layer",
+    "author": "pwojcikdev",
+    "body": "Move preconfigured peer reachout into its own network thread with warmup/normal intervals, add `trigger_reachout()` for rep_crawler, and a `disable_reachout` node flag to gate all reachout threads. `disable_reachout` is useful for test setups with two isolated nodes that shouldn't connect to the wider network.",
+    "draft": false,
+    "pull_request": 5041,
+    "label": "pwojcikdev:reachout-network-layer",
+    "created_at": "2026-03-17T15:34:25Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-17T16:13:43Z",
+    "run_id": null
+  },
+  {
     "hash": "88b28480541736938d62f33a34b619d3150cfd07",
     "type": "pull_request",
     "pull_request": 4145,
@@ -37186,6 +37202,22 @@
     "docker_tag": "gr0v1ty/nano-node:cecbc313686bafc33517cc83811c9536863ad45c",
     "build_started_at": "2025-04-17T17:12:24Z",
     "run_id": "14521082685"
+  },
+  {
+    "hash": "cef16550b4172a9b08f8f6e14ca44d337137c23a",
+    "type": "pull_request",
+    "title": "Add transaction refresh support to store crawlers",
+    "author": "pwojcikdev",
+    "body": "Crawlers can now refresh their underlying transaction and re-establish iterator position, enabling long-running crawls without holding transactions open indefinitely. Also adds block_view::crawl() and reset() to iterators/crawlers.",
+    "draft": false,
+    "pull_request": 5042,
+    "label": "pwojcikdev:crawler-refresh",
+    "created_at": "2026-03-17T15:41:54Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-03-17T16:13:43Z",
+    "run_id": null
   },
   {
     "hash": "cef74b94603e62bc4aa9c5de48e895bb81c59fae",
