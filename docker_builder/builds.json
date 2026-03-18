@@ -8330,6 +8330,22 @@
     "run_id": "8224504096"
   },
   {
+    "hash": "2decca4221835db2f0081bf99200f6003cd5b05f",
+    "type": "pull_request",
+    "title": "Exchange node capabilities when performing network handshake",
+    "author": "pwojcikdev",
+    "body": "This introduces a V3 node ID handshake that allows nodes to advertise optional capabilities to their peers.\r\n                                                                                                                                                                                  \r\n### Motivation                                                                                                                                                                   \r\n                                                                                                                                                                                  \r\nThis is building toward a network of specialized nodes: nodes that opt into providing additional services beyond standard consensus participation. For example, a node with `topo_index` capability can serve topologically ordered block data, enabling dramatically faster bootstrapping for peers. A node with `vote_storage` can relay historical vote data, helping peers that fall behind to catch up quickly without re-requesting votes from representatives.                                                                      \r\n                                                                                                                                                                                  \r\nBy advertising these capabilities during the handshake, peers can discover which nodes offer which services and route requests accordingly.",
+    "draft": false,
+    "pull_request": 5043,
+    "label": "pwojcikdev:handshake-node-capabilities-2",
+    "created_at": "2026-03-17T17:53:46Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-18T23:44:03Z",
+    "run_id": null
+  },
+  {
     "hash": "2e025fed7e43fccc80b513032187b00fc44a328e",
     "type": "pull_request",
     "title": "Avoid creating temporary inproc channels",
