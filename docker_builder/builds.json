@@ -17265,6 +17265,22 @@
     "run_id": "7454294270"
   },
   {
+    "hash": "5e69c721e0d5b47e092d9f529a81fbe7b1f172a9",
+    "type": "pull_request",
+    "title": "Extract `ledger::block_find` for block lookup given hash and root",
+    "author": "pwojcikdev",
+    "body": "Removes the duplicated block lookup lambda in request_aggregator::aggregate and replaces it with a call to the newly extracted ledger::block_find, which implements the same three-step search strategy (hash, successor of root, open block of root-as-account).",
+    "draft": false,
+    "pull_request": 5045,
+    "label": "pwojcikdev:extract-block-find",
+    "created_at": "2026-03-19T23:41:00Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-19T23:49:36Z",
+    "run_id": null
+  },
+  {
     "hash": "5e6c6aa39550fed6b8630fca3d8e6c17cdd5d022",
     "type": "pull_request",
     "title": "Optimize thread pool",
