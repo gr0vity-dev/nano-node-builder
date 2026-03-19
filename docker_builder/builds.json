@@ -37112,6 +37112,22 @@
     "docker_tag": "gr0v1ty/nano-node:cdbed5eaccc5b63207710ac915bb2d551097e7c1"
   },
   {
+    "hash": "cdc93d1f29e51db91a85a9e0db43c42ee6fb03f9",
+    "type": "pull_request",
+    "title": "Extract vote eligibility logic into voting_policy",
+    "author": "pwojcikdev",
+    "body": "Vote eligibility checks were previously scattered across `vote_generator` and `request_aggregator`, with each component independently deciding whether a block should receive a normal or final vote. This made it difficult to reason about vote safety as a whole, and easy to introduce inconsistencies when modifying one path but not the other.\r\n\r\nThis PR introduces a `voting_policy` class that serves as the single source of truth for all vote eligibility decisions and vote construction. The class exposes three eligibility methods (`vote_normal`, `vote_final`, `reply_final`) and a `sign` method that constructs and signs votes. A `vote_permit` type with a private constructor ensures that callers cannot bypass the policy.\r\n\r\nThe key safety invariants enforced by the policy are: normal votes require all block dependencies to be cemented and refuse to vote if a conflicting final vote record exists for the same root, final votes additionally claim a persistent slot via `final_vote.put` to prevent double-voting on forks, and the reply path (`reply_final`) is read-only and returns the recorded hash rather than the queried block's hash to avoid accidentally endorsing a fork during vote replies.\r\n\r\n`vote_generator` and `request_aggregator` are updated to delegate all eligibility and signing decisions to `voting_policy`, removing their duplicated logic. The vote construction code that previously lived inside `vote_generator::broadcast` and `vote_generator::reply` is now handled by `voting_policy::sign`.",
+    "draft": false,
+    "pull_request": 5044,
+    "label": "pwojcikdev:vote-policy-4",
+    "created_at": "2026-03-19T20:34:02Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-19T22:28:56Z",
+    "run_id": null
+  },
+  {
     "hash": "cddc0c357ff53819f102dc7691f25a822034820c",
     "type": "pull_request",
     "pull_request": 4286,
