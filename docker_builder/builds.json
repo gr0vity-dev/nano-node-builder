@@ -20416,11 +20416,11 @@
     "title": "Exchange node capabilities when performing network handshake (#5043)\n\n* Add enum_flags bitfield wrapper\n\nIntroduce `enum_flags<E>` template providing a std::bitset-like\nAPI for power-of-2 flag enums with set/reset/test operations,\nbitwise operators, and magic_enum-based string conversion.\n\n* Add V3 handshake with node capabilities field\n\nExtend the handshake protocol to advertise node capabilities as a bitfield in the response payload.\nReplace the v2 optional with a variant over v1/v2/v3 payloads and propagate capabilities to the channel on connection.",
     "pull_request": "5043",
     "created_at": "2026-03-19T20:05:01Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-03-19T20:57:27Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:6f405e005fc79c4d25af031c2b2854e25d95d060",
     "build_started_at": "2026-03-19T20:21:49Z",
-    "run_id": null
+    "run_id": "23315186957"
   },
   {
     "hash": "6f53c505b35c243ebf6c841deb1dac344b66a8d3",
