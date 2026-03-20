@@ -25405,6 +25405,22 @@
     "run_id": "11535877220"
   },
   {
+    "hash": "8b1f209ef8295b9afd58475c4dfa84880adfbdb4",
+    "type": "pull_request",
+    "title": "Rocksdb logging configuration",
+    "author": "RickiNano",
+    "body": "A node operator has reported several gigabytes of RocksDb log files. \r\nThe default number of archived logfiles is 1000. This means that log files are deleted after 1000 days (one log file per day)\r\nThe current default log level for RocksDb is \"info\" which is quite verbose.\r\nThis PR lets the node operator set the log level and the maximum number of archived logs. \r\nNew default values are:\r\nmax_log_files 100\r\nlog_level \"warn\"",
+    "draft": false,
+    "pull_request": 5047,
+    "label": "RickiNano:rocksdb-logging",
+    "created_at": "2026-03-20T21:35:45Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-20T21:39:41Z",
+    "run_id": null
+  },
+  {
     "hash": "8b5fefde32582d0f30fe3f7db46603f69f4eaa80",
     "type": "commit",
     "author": "pwojcikdev",
