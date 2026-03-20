@@ -4741,6 +4741,22 @@
     "run_id": "13434322448"
   },
   {
+    "hash": "19aff1d9500ba922e90429f66d6ce58e1ac87d56",
+    "type": "pull_request",
+    "title": "Lazy formatting for logger calls",
+    "author": "pwojcikdev",
+    "body": "Replace eager string conversions in logger call sites with lazy formatting using `fmt::formatter` specializations. This avoids unnecessary string allocations when the log level is disabled. Add lazy wrappers (`nano::log::as_account`, `as_node_id`, `as_nano`, `as_raw_nano`), and channel formatting support. Make `nano::account` a distinct type from `public_key` so it automatically formats in account notation (`nano_...`).",
+    "draft": false,
+    "pull_request": 5046,
+    "label": "pwojcikdev:formatting-improvements-2",
+    "created_at": "2026-03-20T13:52:55Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-20T15:42:03Z",
+    "run_id": null
+  },
+  {
     "hash": "19b1e58d687e3022e570b3844cde990bb702fbe9",
     "type": "commit",
     "author": "pwojcikdev",
