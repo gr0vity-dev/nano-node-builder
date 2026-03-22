@@ -1641,6 +1641,19 @@
     "run_id": "7941627814"
   },
   {
+    "hash": "09a22d45b0cc76bfb65e4c7f947c027b74b2c18f",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Merge pull request #5048 from pwojcikdev/docker-ubuntu-24\n\nBump docker Ubuntu base images to 24.04",
+    "pull_request": "5048",
+    "created_at": "2026-03-22T16:57:46Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-22T17:12:29Z",
+    "run_id": null
+  },
+  {
     "hash": "09a94096b6af658e4fe08b230ff5b3e3f6e4905a",
     "type": "commit",
     "created_at": "2024-03-13T18:31:02Z",
@@ -15001,6 +15014,19 @@
     "docker_tag": "gr0v1ty/nano-node:522f05cdf13fae567bdb0286dcd135581b85123f",
     "build_started_at": "2024-02-28T12:54:23Z",
     "run_id": "8080704863"
+  },
+  {
+    "hash": "525e84115770874c7012488ede9a642d695caccf",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Bump docker images to Ubuntu 24.04\n\nUpdate the CI, node, and test Dockerfiles from Ubuntu 22.04\nto Ubuntu 24.04.",
+    "pull_request": "5048",
+    "created_at": "2026-03-22T14:06:10Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-03-22T17:12:29Z",
+    "run_id": null
   },
   {
     "hash": "5279d2bce47b6cc2ace208592adb52dbdf2b8056",
@@ -42041,6 +42067,22 @@
     "built_at": "2023-06-07T11:14:14Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:e868aa95da3b501955940d89b6d3edfa9a0439ba"
+  },
+  {
+    "hash": "e87272a68ee9f7773592484dcfe38c44f2f0afe6",
+    "type": "pull_request",
+    "title": "Lazy formatting for logger calls",
+    "author": "pwojcikdev",
+    "body": "Replace eager string conversions in logger call sites with lazy formatting using `fmt::formatter` specializations. This avoids unnecessary string allocations when the log level is disabled. Add lazy wrappers (`nano::log::as_account`, `as_node_id`, `as_nano`, `as_raw_nano`), and channel formatting support. Make `nano::account` a distinct type from `public_key` so it automatically formats in account notation (`nano_...`).",
+    "draft": false,
+    "pull_request": 5046,
+    "label": "pwojcikdev:formatting-improvements-2",
+    "created_at": "2026-03-20T13:52:55Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-03-22T17:12:29Z",
+    "run_id": null
   },
   {
     "hash": "e877de187bc37449fd43ff17a30ce336276768c9",
