@@ -36865,6 +36865,22 @@
     "docker_tag": "gr0v1ty/nano-node:cc7b18b488751e26a0bc04564f98b0e9faf6d7c9"
   },
   {
+    "hash": "cc7c276a0da2d35da10912595c3452a71dbb9c37",
+    "type": "pull_request",
+    "title": "Lazy formatting for logger calls",
+    "author": "pwojcikdev",
+    "body": "Replace eager string conversions in logger call sites with lazy formatting using `fmt::formatter` specializations. This avoids unnecessary string allocations when the log level is disabled. Add lazy wrappers (`nano::log::as_account`, `as_node_id`, `as_nano`, `as_raw_nano`), and channel formatting support. Make `nano::account` a distinct type from `public_key` so it automatically formats in account notation (`nano_...`).",
+    "draft": false,
+    "pull_request": 5046,
+    "label": "pwojcikdev:formatting-improvements-2",
+    "created_at": "2026-03-20T13:52:55Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-22T23:36:41Z",
+    "run_id": null
+  },
+  {
     "hash": "cc7e6a892765e6acc5c340d2ee29447fdc843c0b",
     "type": "pull_request",
     "title": "Upgrade to C++23",
