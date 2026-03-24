@@ -6986,6 +6986,22 @@
     "run_id": "11613142356"
   },
   {
+    "hash": "2623ba3dc1f64f5a45d4868b281fa0f0193a55a0",
+    "type": "pull_request",
+    "title": "Lazy formatting for logger calls",
+    "author": "pwojcikdev",
+    "body": "Replace eager string conversions in logger call sites with lazy formatting using `fmt::formatter` specializations. This avoids unnecessary string allocations when the log level is disabled. Add lazy wrappers (`nano::log::as_account`, `as_node_id`, `as_nano`, `as_raw_nano`), and channel formatting support. Make `nano::account` a distinct type from `public_key` so it automatically formats in account notation (`nano_...`).",
+    "draft": false,
+    "pull_request": 5046,
+    "label": "pwojcikdev:formatting-improvements-2",
+    "created_at": "2026-03-20T13:52:55Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-24T12:42:51Z",
+    "run_id": null
+  },
+  {
     "hash": "262dd95e22ff65402f608556985bd18a1306f557",
     "type": "pull_request",
     "title": "Unlimited backlog when bootstrapping",
@@ -15030,6 +15046,22 @@
     "docker_tag": "gr0v1ty/nano-node:522f05cdf13fae567bdb0286dcd135581b85123f",
     "build_started_at": "2024-02-28T12:54:23Z",
     "run_id": "8080704863"
+  },
+  {
+    "hash": "52346f476d698362b049f28a7e80d77a792740e8",
+    "type": "pull_request",
+    "title": "Extract vote eligibility logic into voting_policy",
+    "author": "pwojcikdev",
+    "body": "Vote eligibility checks were previously scattered across `vote_generator` and `request_aggregator`, with each component independently deciding whether a block should receive a normal or final vote. This made it difficult to reason about vote safety as a whole, and easy to introduce inconsistencies when modifying one path but not the other.\r\n\r\nThis PR introduces a `voting_policy` class that serves as the single source of truth for all vote eligibility decisions and vote construction. The class exposes three eligibility methods (`vote_normal`, `vote_final`, `reply_final`) and a `sign` method that constructs and signs votes. A `vote_permit` type with a private constructor ensures that callers cannot bypass the policy.\r\n\r\nThe key safety invariants enforced by the policy are: normal votes require all block dependencies to be cemented and refuse to vote if a conflicting final vote record exists for the same root, final votes additionally claim a persistent slot via `final_vote.put` to prevent double-voting on forks, and the reply path (`reply_final`) is read-only and returns the recorded hash rather than the queried block's hash to avoid accidentally endorsing a fork during vote replies.\r\n\r\n`vote_generator` and `request_aggregator` are updated to delegate all eligibility and signing decisions to `voting_policy`, removing their duplicated logic. The vote construction code that previously lived inside `vote_generator::broadcast` and `vote_generator::reply` is now handled by `voting_policy::sign`.",
+    "draft": false,
+    "pull_request": 5044,
+    "label": "pwojcikdev:vote-policy-4",
+    "created_at": "2026-03-19T20:34:02Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-03-24T12:42:51Z",
+    "run_id": null
   },
   {
     "hash": "525e84115770874c7012488ede9a642d695caccf",
