@@ -12648,6 +12648,22 @@
     "run_id": "8722462027"
   },
   {
+    "hash": "446aaec62b63cc67c51139d3e9d654f073b598ec",
+    "type": "pull_request",
+    "title": "Defer bootstrap channel full check",
+    "author": "pwojcikdev",
+    "body": "Queue bootstrap requests even when the bootstrap channel is currently full.\r\nThe worker already checks channel capacity before sending responses, so rejecting requests earlier was premature.",
+    "draft": false,
+    "pull_request": 5049,
+    "label": "pwojcikdev:defer-bootstrap-channel-check",
+    "created_at": "2026-03-24T17:04:45Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-24T17:15:16Z",
+    "run_id": null
+  },
+  {
     "hash": "449c87399dd1d26adb66bda38c263876419ee8b4",
     "type": "commit",
     "created_at": "2024-01-30T15:59:36Z",
@@ -36978,6 +36994,19 @@
     "docker_tag": "gr0v1ty/nano-node:cc4008185c99fccf59e007c0a79ec799be18751d",
     "build_started_at": "2026-01-22T15:47:25Z",
     "run_id": "21255368618"
+  },
+  {
+    "hash": "cc768f39965084d99e043f9c779a44e0ec440b15",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Extract vote eligibility logic into voting_policy (#5044)\n\nConsolidate vote eligibility checks previously scattered\nacross vote_generator and request_aggregator into a\ndedicated voting_policy class. The vote_permit type ensures\ncallers cannot bypass the policy check.",
+    "pull_request": "5044",
+    "created_at": "2026-03-24T16:49:27Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-03-24T17:15:16Z",
+    "run_id": null
   },
   {
     "hash": "cc7b18b488751e26a0bc04564f98b0e9faf6d7c9",
