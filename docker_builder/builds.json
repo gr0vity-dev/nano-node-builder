@@ -20524,11 +20524,11 @@
     "title": "Lazy formatting for logger calls (#5046)\n\n* Formatting improvements\n\n* Use lazy account/node ID formatting in logs\n\nAdd `nano::log::as_account` and `nano::log::as_node_id`\nwrappers so log formatting can stream public keys without\ncreating temporary strings.\n\nImplement ostream-based node ID encoding and update log\ncall sites to use the new wrappers.\n\n* Introduce distinct account type\n\nReplace the `account` alias with a dedicated class derived from\n`public_key` and add the formatter, hash, forward declarations, and\n`db_val` conversion needed to use it across the codebase.\n\nAdjust wallet, Qt, RPC test, and vote cache interfaces to match the\nnew type semantics and avoid storing mutable account references.\n\n* Remove redundant account log wrappers\n\n* Use as_nano for balance logging\n\n* Use fmt for IP address log formatting\n\n* Move stat enum to_string into stat namespace\n\n* Use fmt::print in benchmark logging\n\nReplace benchmark log statements that streamed `fmt::format(...)`\ninto `std::cout` with direct `fmt::print(...)` calls.\n\n* Fix compilation\n\n* Refactor balance formatting into stream encoder\n\nExtract shared balance formatting helpers into\n`balance_formatting.hpp` and add `uint128_union::encode_balance()`\nso callers can write formatted balances directly to streams.\n\n* Default as_nano formatting to 1 decimal place\n\n* Remove generic fmt formatter for streamed types\n\n* Refine log formatting helpers\n\n* Fix source account in wallet send warning\n\n* Boost error_code fmt formatter\n\n* Refactor uint128 balance formatting\n\nExpose a free encode_balance overload for uint128_t values\nand update as_nano/as_raw_nano to format by reference\nwithout constructing temporary uint128_union instances.\n\n* Remove unused explicit locale format_balance overload",
     "pull_request": "5046",
     "created_at": "2026-03-24T14:07:50Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-03-24T15:17:37Z",
+    "build_status": "fail",
+    "docker_tag": "",
     "build_started_at": "2026-03-24T15:12:42Z",
-    "run_id": null
+    "run_id": "23496921175"
   },
   {
     "hash": "6f0fa88f92c11db1275f305860ca64cdab52a320",
