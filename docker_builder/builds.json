@@ -6440,6 +6440,22 @@
     "docker_tag": "gr0v1ty/nano-node:217619921b08993493a6e97d9fd8180b426c89a3"
   },
   {
+    "hash": "217c95935e71ba9c2a3a758a9b26baee92b13e81",
+    "type": "pull_request",
+    "title": "Replace request aggregator with vote replier",
+    "author": "pwojcikdev",
+    "body": "Replaces the `request_aggregator` component with a simpler `vote_replier` that handles confirmation request replies. The old aggregator routed them through the vote generator's reply path, which added unnecessary complexity. The new vote replier directly looks up blocks, checks vote eligibility via `voting_policy`, signs final votes, and sends them back to the requesting channel on its own processing threads. This also removes the reply-related code (`generate()`, `reply()`) from `vote_generator`, letting it focus solely on vote broadcasting. The vote replier always responds with final votes, simplifying the reply path by removing the normal/final distinction for replies.",
+    "draft": false,
+    "pull_request": 5050,
+    "label": "pwojcikdev:vote-replier-3",
+    "created_at": "2026-03-26T15:03:53Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-26T16:01:05Z",
+    "run_id": null
+  },
+  {
     "hash": "21a8fb1c64006486b772107f5a565a45c35c1e5e",
     "type": "commit",
     "created_at": "2023-05-15T11:59:14Z",
