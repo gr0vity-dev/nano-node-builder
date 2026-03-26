@@ -6594,6 +6594,19 @@
     "docker_tag": "gr0v1ty/nano-node:227fc4d8017a923ab43812bbe216a440cb7c66a3"
   },
   {
+    "hash": "22803fd375874b93626b7b049e4b0e9d7a0e0570",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Replace request aggregator with vote replier\n\nMove confirm_req reply handling into a dedicated vote_replier\ncomponent and remove the old request_aggregator path.\n\nDrop reply generation from vote_generator, rename the related node,\nconfig, stats, logging, mutex, and thread role hooks, and update the\nstaged tests to use the new component.",
+    "pull_request": "5050",
+    "created_at": "2026-03-19T22:05:37Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-26T23:25:37Z",
+    "run_id": null
+  },
+  {
     "hash": "22abd717a4b8671c0924d5471b012a6efdf6452c",
     "type": "commit",
     "author": "pwojcikdev",
@@ -8085,6 +8098,19 @@
     "docker_tag": "gr0v1ty/nano-node:2bf65e7de87438ce00c2c16e7925dfcf5060c330",
     "build_started_at": "2024-11-22T23:40:48Z",
     "run_id": "11982520283"
+  },
+  {
+    "hash": "2c4f9c3ef825d9a2e23a6695e7f1b40829424747",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Extend test_channel observation helpers\n\nAdd callback registration and typed future-based message\nobservation for tests.\n\nInline the trivial constructor and send implementation in the\nheader to keep the helper self-contained.",
+    "pull_request": "5050",
+    "created_at": "2026-03-25T22:45:14Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-03-26T23:25:37Z",
+    "run_id": null
   },
   {
     "hash": "2c5815cfbc1132d4fcd353e26b3768ea9565d8f0",
@@ -46577,6 +46603,19 @@
     "built_at": null,
     "build_status": "fail",
     "docker_tag": null
+  },
+  {
+    "hash": "ff4f744ce6ebe3b3e47a2cee13b272051fb32623",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Merge pull request #5050 from pwojcikdev/vote-replier-3\n\nReplace request aggregator with vote replier",
+    "pull_request": "5050",
+    "created_at": "2026-03-26T23:03:12Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-03-26T23:25:37Z",
+    "run_id": null
   },
   {
     "hash": "ff555eab7c7de6b34f3d83a688fe8fd429f139a5",
