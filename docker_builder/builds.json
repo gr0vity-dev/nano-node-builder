@@ -19750,6 +19750,22 @@
     "run_id": "8394068316"
   },
   {
+    "hash": "69fbfc89afa73afa33a37ca9c2fed7896603f76c",
+    "type": "pull_request",
+    "title": "Vote generator rework",
+    "author": "pwojcikdev",
+    "body": "The previous design ran two independent vote generator instances (normal and final) with separate queues, threads, and deduplication logic. This led to duplicated code, no coordination between normal and final vote paths, and no awareness of network backpressure.\r\n\r\nThis rework consolidates both into a single `vote_generator` with separated verifier and broadcaster stages. Incoming vote requests are fair-queued by balance bucket with root-based deduplication, then verified and forwarded to broadcaster threads that gate output against network capacity. When a final vote has already been recorded for a given root, normal vote requests are automatically upgraded to final.",
+    "draft": false,
+    "pull_request": 5054,
+    "label": "pwojcikdev:vote-generator-rework-3",
+    "created_at": "2026-03-29T21:55:45Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-29T21:58:20Z",
+    "run_id": null
+  },
+  {
     "hash": "6a01a97f651018dfb9d4f5ef0cec92885cd8c2d5",
     "type": "commit",
     "author": "pwojcikdev",
