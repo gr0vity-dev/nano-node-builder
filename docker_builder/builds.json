@@ -13642,6 +13642,22 @@
     "run_id": "9878246007"
   },
   {
+    "hash": "496faf83c8729357187bb554a8cf63795683240a",
+    "type": "pull_request",
+    "title": "Update Boost from V1.86.0 to 1.87.0",
+    "author": "RickiNano",
+    "body": "This PR updates Boost from v1.86.0 to v1.87.0\r\nIt migrates deprecated Boost.Asio APIs to their new replacements:\r\n- deadline_timer → steady_timer with expires_after() / std::chrono\r\n- resolver::query + iterator → async_resolve(host, service)\r\n- address::from_string() → make_address and make_address_v4()\r\n- address_v6::v4_mapped() → make_address_v6()\r\n- io_context::post() → boost::asio::post()\r\n\r\nAlso remove pre-Boost 1.70 compatibility checks\r\nVersion 1.87.0 release documentation can be found here: https://www.boost.org/releases/1.87.0/",
+    "draft": false,
+    "pull_request": 5052,
+    "label": "RickiNano:Boost187",
+    "created_at": "2026-03-29T17:08:14Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-29T17:19:28Z",
+    "run_id": null
+  },
+  {
     "hash": "4986ae3914de57aec4b366f9890d6108615b3c8e",
     "type": "commit",
     "created_at": "2023-04-06T21:37:06Z",
