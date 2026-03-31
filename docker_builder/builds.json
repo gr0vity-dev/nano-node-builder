@@ -16416,6 +16416,22 @@
     "run_id": "9082950315"
   },
   {
+    "hash": "58f16076a82514d555b61d01411daf743f69891a",
+    "type": "pull_request",
+    "title": "Vote generator rework",
+    "author": "pwojcikdev",
+    "body": "The previous design ran two independent vote generator instances (normal and final) with separate queues, threads, and deduplication logic. This led to duplicated code, no coordination between normal and final vote paths, and no awareness of network backpressure.\r\n\r\nThis rework consolidates both into a single `vote_generator` with separated verifier and broadcaster stages. Incoming vote requests are fair-queued by balance bucket with root-based deduplication, then verified and forwarded to broadcaster threads that gate output against network capacity. When a final vote has already been recorded for a given root, normal vote requests are automatically upgraded to final.",
+    "draft": false,
+    "pull_request": 5054,
+    "label": "pwojcikdev:vote-generator-rework-3",
+    "created_at": "2026-03-29T21:55:45Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-03-31T19:34:53Z",
+    "run_id": null
+  },
+  {
     "hash": "58f7169cff239239d1863953ec93c9b628a94f99",
     "type": "pull_request",
     "title": "Remove `node::process_confirmed (...)`",
