@@ -10467,6 +10467,19 @@
     "run_id": "14533700644"
   },
   {
+    "hash": "389ca41e54673b47a02ea9445376ed8219d91de5",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Generalize fair_queue channel handling\n\nIntroduce a configurable channel type and traits-based alive check for\nfair_queue.\n\nAdd null_channel as the default, move transport-specific logic into\nfair_queue_traits, and update queue users and tests to pass transport\nchannels explicitly.",
+    "pull_request": "5054",
+    "created_at": "2026-03-27T16:26:26Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-04-01T15:39:53Z",
+    "run_id": null
+  },
+  {
     "hash": "38a0dd6d97201139280dc583ae28ee3073374f36",
     "type": "commit",
     "author": "pwojcikdev",
@@ -35322,6 +35335,19 @@
     "run_id": "8410057339"
   },
   {
+    "hash": "c0f28e21be8b0389efa23e3b324528d312359af3",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Upgrade normal votes to recorded finals\n\nWhen a final vote already exists for a qualified root, return a final vote permit for the recorded hash instead of rejecting the vote.\n\nThis keeps normal vote eligibility aligned with the ledger's existing final vote state.",
+    "pull_request": "5054",
+    "created_at": "2026-03-26T21:07:02Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-01T15:39:53Z",
+    "run_id": null
+  },
+  {
     "hash": "c0f4d26afa74bba3bec60038be96316381795a51",
     "type": "pull_request",
     "title": "Rework active election container",
@@ -37357,6 +37383,19 @@
     "docker_tag": "",
     "build_started_at": "2024-03-12T13:53:15Z",
     "run_id": "8250016028"
+  },
+  {
+    "hash": "ccad7d2d72ea30024f1bbc6003fc25ebb53d9263",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Merge pull request #5054 from pwojcikdev/vote-generator-rework-3\n\nVote generator rework",
+    "pull_request": "5054",
+    "created_at": "2026-04-01T15:04:05Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-01T15:39:53Z",
+    "run_id": null
   },
   {
     "hash": "ccb14afe3b5022716db0ce868af235b8fccd90d0",
@@ -43565,6 +43604,19 @@
     "docker_tag": "gr0v1ty/nano-node:ed66b2c8ca24a7869157e42994bea0aefae112c6"
   },
   {
+    "hash": "ed85068ee4ce72dea3e4c6e01dbd6862813e2f48",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Store bucket index in election",
+    "pull_request": "5054",
+    "created_at": "2026-03-17T18:36:47Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-01T15:39:53Z",
+    "run_id": null
+  },
+  {
     "hash": "ed85b37dd07b365b6e0196ecec29c167494d9057",
     "type": "commit",
     "created_at": "2023-02-16T15:18:05Z",
@@ -44925,6 +44977,19 @@
     "docker_tag": "gr0v1ty/nano-node:f4a04ea06d4440218f41ac4f1521f6cf42564d44",
     "build_started_at": "2024-04-04T14:39:51Z",
     "run_id": "8556564147"
+  },
+  {
+    "hash": "f4ab147aa11bad4395e586989615baf370756358",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Unify vote generator pipeline\n\nReplace the separate normal and final generators with a single\nvote_generator that drives dedicated verifier and broadcaster workers.\n\nAdd fair per-bucket deduplication, split normal/final traffic and\nthread roles, and cover the new queue behavior with core tests.",
+    "pull_request": "5054",
+    "created_at": "2026-03-26T22:44:59Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-01T15:39:53Z",
+    "run_id": null
   },
   {
     "hash": "f4ce5b968325bbbb670f0d883eb40d0048474177",
@@ -46296,6 +46361,19 @@
     "docker_tag": "gr0v1ty/nano-node:fc3c4e34eca98b72af2a0a132deca6d34d3525d9",
     "build_started_at": "2024-03-18T18:19:31Z",
     "run_id": "8331690328"
+  },
+  {
+    "hash": "fc68d93dba84dc0ec49ddca275d0d32c893847a6",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add vote broadcast capacity checks\n\nUse network fanout capacity checks for normal and final\nvote broadcasts, recording cooldown stats and rate-limited\nwarnings when the network is saturated.\n\nTreat an empty network as available capacity so vote\ngeneration is not blocked before any peers are connected.",
+    "pull_request": "5054",
+    "created_at": "2026-03-29T16:50:24Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-01T15:39:53Z",
+    "run_id": null
   },
   {
     "hash": "fc83736477487970b4759d70326f3f5f356acc7d",
