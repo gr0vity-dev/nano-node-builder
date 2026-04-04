@@ -23254,11 +23254,11 @@
     "title": "Remove succssor field from block sideband (#5038)\n\n* Removed successor from block sideband\n\n* Unit tests for V26 migration\n\n* Extract block_sideband_v25 as standalone type\n\nMove v25 sideband format (with successor field) from\nmethods on block_sideband into a dedicated frozen type.\nRename block_w_sideband_legacy to block_w_sideband_v25\nand update migration code to use the new types.\n\n* Test interrupted V25 to V26 upgrade with mixed formats\n\n* Make v25-to-v26 upgrade resumable\n\n* Use crawler for V25-to-V26 upgrade\n\n* Remove obsolete sideband successor field\n\n---------\n\nCo-authored-by: Piotr Wójcik <3044353+pwojcikdev@users.noreply.github.com>",
     "pull_request": "5038",
     "created_at": "2026-04-04T18:22:31Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-04-04T19:34:36Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:7bbc460f3609eaca251131c2ec695b0d22d45de2",
     "build_started_at": "2026-04-04T19:03:15Z",
-    "run_id": null
+    "run_id": "23985531124"
   },
   {
     "hash": "7bcf171c942329f6a2ef96907e90b38bdd09f893",
