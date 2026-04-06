@@ -6777,6 +6777,22 @@
     "run_id": "12545563647"
   },
   {
+    "hash": "240af13b70e04dc9e0c4777a6f90d3ef5df88def",
+    "type": "pull_request",
+    "title": "Add batch add_many method to block processor",
+    "author": "pwojcikdev",
+    "body": "Add `block_processor::add_many()` that accepts a batch of blocks and inserts them with a single mutex acquisition and one condition variable notification, instead of N lock/unlock cycles.",
+    "draft": false,
+    "pull_request": 5058,
+    "label": "pwojcikdev:block-processor-add-many",
+    "created_at": "2026-04-06T21:44:08Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-04-06T22:01:56Z",
+    "run_id": null
+  },
+  {
     "hash": "2426f2c531e6a88d0473919bf6e0c07de40f2b3f",
     "type": "pull_request",
     "title": "Cleaner daemon stopping",
