@@ -13556,6 +13556,22 @@
     "run_id": "7552222720"
   },
   {
+    "hash": "4897291f0f6d42cbb635c0e04f9e19542937cdcd",
+    "type": "pull_request",
+    "title": "Add batch add_many method to block processor",
+    "author": "pwojcikdev",
+    "body": "Add `block_processor::add_many()` that accepts a batch of blocks and inserts them with a single mutex acquisition and one condition variable notification, instead of N lock/unlock cycles.",
+    "draft": false,
+    "pull_request": 5058,
+    "label": "pwojcikdev:block-processor-add-many",
+    "created_at": "2026-04-06T21:44:08Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-04-07T15:06:04Z",
+    "run_id": null
+  },
+  {
     "hash": "48a0cbb7638a39ee3d9fca588aa26d6bace07c87",
     "type": "pull_request",
     "pull_request": 4419,
@@ -31983,6 +31999,22 @@
     "docker_tag": "gr0v1ty/nano-node:abe7466d95b2863acb603fcdc64b71dad66460d2",
     "build_started_at": "2024-02-05T21:08:46Z",
     "run_id": "7790861885"
+  },
+  {
+    "hash": "abee720246d0341dce8ddd0743ea642386c12c7c",
+    "type": "pull_request",
+    "title": "Cache representative keys to optimize `wallets::foreach_representative (...)` hot path",
+    "author": "pwojcikdev",
+    "body": "`foreach_representative` is called on every vote signing. Previously, each call performed redundant DB lookups, lock acquisitions, and key decryption for every representative. This caches decrypted key pairs using `fan` objects (XOR-spread across heap allocations) so the hot path becomes a simple cache read.",
+    "draft": false,
+    "pull_request": 5060,
+    "label": "pwojcikdev:optimize-wallet-foreach-rep",
+    "created_at": "2026-04-07T01:32:57Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-07T15:06:04Z",
+    "run_id": null
   },
   {
     "hash": "ac04d88fc5a7e4ba2fb5dd0746158896c290b6b4",
