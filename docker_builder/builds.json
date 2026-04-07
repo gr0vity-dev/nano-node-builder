@@ -7726,6 +7726,19 @@
     "run_id": "8681296123"
   },
   {
+    "hash": "2a011b4859fcee1b46aeb7175915f6b163ed2fff",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Cache representative keys to optimize `wallets::foreach_representative (...)` hot path (#5060)\n\n* Cache representative keys for voting\n\nStore unlocked representative keys in a cache so\n`foreach_representative` can iterate preloaded keys instead of\nwalking wallet state and fetching them on every call.\n\nRefresh the cache when representative membership or wallet lock\nstate changes, use `wallet::lock()` in the RPC handler, and remove\nthe recursive representative iteration test since recursion is no\nlonger supported.\n\n* Rename compute_reps to refresh_reps\n\n* Wallet rep key cache tests\n\n* Refresh rep cache after wallet write txns\n\nMove representative cache rebuilds out of active write transaction\nscopes for unlock, rekey, seed, and deterministic wallet updates.",
+    "pull_request": "5060",
+    "created_at": "2026-04-07T18:55:45Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-04-07T19:19:49Z",
+    "run_id": null
+  },
+  {
     "hash": "2a0325021c502f29b633fd694700cbb028b49fb9",
     "type": "pull_request",
     "title": "Bounded backlog",
@@ -45412,6 +45425,19 @@
     "docker_tag": "gr0v1ty/nano-node:f4ff734e086e56db43cc0350633e5b8b2118328d",
     "build_started_at": "2024-05-07T15:20:15Z",
     "run_id": "8988511315"
+  },
+  {
+    "hash": "f511bf94458e7b76164192004fb8b1c48e498c12",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add batch add_many method to block processor (#5058)\n\n* Batch enqueue blocks in block processor\n\nAdd `block_processor::add_many()` to validate work, queue blocks under\none lock, and emit a single wakeup plus aggregated stats.\n\nUse the batch API in bootstrap processing, block-processing benchmarks,\nand node entry paths that previously enqueued blocks one by one.\n\n* Require explicit source for block_processor::add\n\nRemove the default `live` source from `block_processor::add`\nand update live and test call sites to pass the intended\nsource explicitly.\n\n* Add block processor tests\n\nCover add, add_blocking, and add_many behavior.\n\n* Count block processor stats on success\n\nMove `block_processor` stats increments after `add_impl()` so\n`process` and `process_blocking` are only counted when the block\nis actually added for processing.",
+    "pull_request": "5058",
+    "created_at": "2026-04-07T18:34:26Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-07T19:19:49Z",
+    "run_id": null
   },
   {
     "hash": "f5172c78ada6140bd95b9e0f9f655546f9e72ee6",
