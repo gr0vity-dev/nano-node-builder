@@ -7732,11 +7732,11 @@
     "title": "Cache representative keys to optimize `wallets::foreach_representative (...)` hot path (#5060)\n\n* Cache representative keys for voting\n\nStore unlocked representative keys in a cache so\n`foreach_representative` can iterate preloaded keys instead of\nwalking wallet state and fetching them on every call.\n\nRefresh the cache when representative membership or wallet lock\nstate changes, use `wallet::lock()` in the RPC handler, and remove\nthe recursive representative iteration test since recursion is no\nlonger supported.\n\n* Rename compute_reps to refresh_reps\n\n* Wallet rep key cache tests\n\n* Refresh rep cache after wallet write txns\n\nMove representative cache rebuilds out of active write transaction\nscopes for unlock, rekey, seed, and deterministic wallet updates.",
     "pull_request": "5060",
     "created_at": "2026-04-07T18:55:45Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-04-07T19:51:08Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:2a011b4859fcee1b46aeb7175915f6b163ed2fff",
     "build_started_at": "2026-04-07T19:19:49Z",
-    "run_id": null
+    "run_id": "24099950867"
   },
   {
     "hash": "2a0325021c502f29b633fd694700cbb028b49fb9",
