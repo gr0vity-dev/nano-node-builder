@@ -10269,6 +10269,22 @@
     "run_id": "8814128227"
   },
   {
+    "hash": "36a39c01d6e663d24e10df4276064e7c9eb8e51b",
+    "type": "pull_request",
+    "title": "Reduce transitive include fanout",
+    "author": "pwojcikdev",
+    "body": "Break up the most heavily included headers (`node.hpp`, `common.hpp`, `nodeconfig.hpp`, `numbers.hpp`, `blocks.hpp`, etc.) to reduce transitive include fanout. The goal is to shrink the dependency graph so that touching a single header doesn't force hundreds of translation units to recompile, which directly improves incremental build times.",
+    "draft": false,
+    "pull_request": 5062,
+    "label": "pwojcikdev:compilation-times-2",
+    "created_at": "2026-04-10T01:37:23Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-04-10T11:58:52Z",
+    "run_id": null
+  },
+  {
     "hash": "36d628e6d590c4808370063638e206150b9e581e",
     "type": "commit",
     "author": "pwojcikdev",
