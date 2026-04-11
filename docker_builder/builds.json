@@ -9194,11 +9194,11 @@
     "title": "Reduce `nodeconfig.hpp` includes with `nano::indirect<T>` wrapper\n\nReplace 30+ heavy subsystem config includes with forward declarations.\nConfig members stored as `nano::indirect<T>` - a value-semantic heap wrapper\nthat provides deep copy, move, implicit conversion to T&, and -> access.\n\n- Introduce `nano::indirect<T>` (nano/lib/indirect.hpp), similar to proposed\n  std::indirect (P3019)\n- Store all subsystem configs as `indirect<T>` in node_config, removing\n  direct includes of active_elections.hpp, network.hpp, vote_cache.hpp, etc.\n- Copy/move/dtor of node_config are all `= default` in the .cpp\n- Simplify to single constructor taking network_params\n- Access pattern: config.active_elections->size (via operator->)\n  and implicit conversion where T const& is expected",
     "pull_request": "5062",
     "created_at": "2026-04-09T19:31:29Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-04-11T01:20:47Z",
+    "build_status": "fail",
+    "docker_tag": "",
     "build_started_at": "2026-04-11T01:01:00Z",
-    "run_id": null
+    "run_id": "24270971699"
   },
   {
     "hash": "30f2de0439746e213876a57294b6256abfb9d674",
