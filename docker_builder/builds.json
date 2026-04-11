@@ -9188,6 +9188,19 @@
     "docker_tag": "gr0v1ty/nano-node:30d6b4ddc339bfc3b04e35442c3b30b466ccb6ab"
   },
   {
+    "hash": "30ee7305cde3e728f6f58e46f381487889368194",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Reduce `nodeconfig.hpp` includes with `nano::indirect<T>` wrapper\n\nReplace 30+ heavy subsystem config includes with forward declarations.\nConfig members stored as `nano::indirect<T>` - a value-semantic heap wrapper\nthat provides deep copy, move, implicit conversion to T&, and -> access.\n\n- Introduce `nano::indirect<T>` (nano/lib/indirect.hpp), similar to proposed\n  std::indirect (P3019)\n- Store all subsystem configs as `indirect<T>` in node_config, removing\n  direct includes of active_elections.hpp, network.hpp, vote_cache.hpp, etc.\n- Copy/move/dtor of node_config are all `= default` in the .cpp\n- Simplify to single constructor taking network_params\n- Access pattern: config.active_elections->size (via operator->)\n  and implicit conversion where T const& is expected",
+    "pull_request": "5062",
+    "created_at": "2026-04-09T19:31:29Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-04-11T01:01:00Z",
+    "run_id": null
+  },
+  {
     "hash": "30f2de0439746e213876a57294b6256abfb9d674",
     "type": "commit",
     "author": "pwojcikdev",
@@ -10832,6 +10845,19 @@
     "run_id": "16165612757"
   },
   {
+    "hash": "399da100cebbac06ee11ffd8fba8736a15148e7e",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Reduce `utility.hpp` includes with explicit dependencies\n\nMove `container_info.hpp` and `locks.hpp` out of `utility.hpp`\nand add explicit includes where needed. Move `link` constructor\nand `thread_pool::container_info` out of headers into .cpp files\nto reduce transitive includes from `numbers.hpp` and\n`thread_pool.hpp`. Replace `utility.hpp` with narrower includes\nin `enum_util.hpp` and `errors.hpp`.",
+    "pull_request": "5062",
+    "created_at": "2026-04-09T17:45:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-11T01:01:00Z",
+    "run_id": null
+  },
+  {
     "hash": "39a3c1a82b4e77a1883194ca95bbae60a1be9e73",
     "type": "commit",
     "author": "pwojcikdev",
@@ -12149,6 +12175,19 @@
     "docker_tag": "gr0v1ty/nano-node:410a66ba7644f4cef5808cec8461765b4b2abb20",
     "build_started_at": "2025-04-18T16:40:02Z",
     "run_id": "14538444055"
+  },
+  {
+    "hash": "41124d822f9b17da836a4c652658dc90320e4230",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Reduce `messages.hpp` includes with explicit dependencies",
+    "pull_request": "5062",
+    "created_at": "2026-04-10T00:40:28Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-11T01:01:00Z",
+    "run_id": null
   },
   {
     "hash": "4114177e3772a623bde6340bb510e37354c591d6",
@@ -17718,6 +17757,19 @@
     "docker_tag": "gr0v1ty/nano-node:5e0ee324da950e1b8186773efe1d35218b232292"
   },
   {
+    "hash": "5e1cf580a07f5f2860c9ae2a27b12bd7532a15cd",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Reduce `iterator.hpp` includes with pimpl for backend iterators",
+    "pull_request": "5062",
+    "created_at": "2026-04-09T23:58:46Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-11T01:01:00Z",
+    "run_id": null
+  },
+  {
     "hash": "5e206ec9c2f32d9d13ffa557c0780bd802dafcbb",
     "type": "pull_request",
     "title": "Offload block processor notifications",
@@ -18179,6 +18231,19 @@
     "docker_tag": "gr0v1ty/nano-node:6015e21fa0fefd6851313ad238d75690270d12cc",
     "build_started_at": "2024-09-17T09:35:37Z",
     "run_id": "10901305483"
+  },
+  {
+    "hash": "6021bc9b4bde6408c80cb723507b5161123ac0a8",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Reduce `node.hpp` includes with forward declarations\n\nReplace heavy includes in `node.hpp` with `fwd.hpp` headers,\nmoving the actual includes into `node.cpp`. Store `config`\nand `flags` as `unique_ptr` to enable forward declaration of\ntheir types. Add missing entries to `fwd.hpp` files and\nintroduce `nano/boost/asio/fwd.hpp` for `io_context`.",
+    "pull_request": "N/A",
+    "created_at": "2026-04-08T00:42:57Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-11T01:01:00Z",
+    "run_id": null
   },
   {
     "hash": "602ecd43f023bac8e1c68853afe36fa728a50d34",
@@ -26161,6 +26226,19 @@
     "run_id": "11535877220"
   },
   {
+    "hash": "8b13ff95762fe2f27b0ab6fc2d808536b60bbe26",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Extract network types into dedicated headers\n\nMove `ip_address`, `endpoint`, `tcp_endpoint` type aliases\nfrom `common.hpp` to `network_types.hpp` and their fmt\nformatters from `formatting.hpp` to `network_formatting.hpp`.\nThis removes the Boost.Asio TCP include from `common.hpp`,\nreducing transitive include overhead for its consumers.",
+    "pull_request": "N/A",
+    "created_at": "2026-04-08T13:08:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-11T01:01:00Z",
+    "run_id": null
+  },
+  {
     "hash": "8b1f209ef8295b9afd58475c4dfa84880adfbdb4",
     "type": "pull_request",
     "title": "Rocksdb logging configuration",
@@ -28970,6 +29048,19 @@
     "run_id": "8938371626"
   },
   {
+    "hash": "98a4f02f0fb3a73d4f86cf04202866b66a30ed03",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Extract network_params and constants classes from `common.hpp`\n\nMove ledger_constants, hardened_constants, node_constants,\nvoting_constants, portmapping_constants, bootstrap_constants,\nnetwork_params, and dev namespace into nano/secure/network_params.hpp/.cpp.\n\ncommon.hpp no longer includes constants.hpp, epochs.hpp, or keypair.hpp,\nmaking it significantly lighter. Files that need network_params or dev\nconstants now include network_params.hpp directly.\n\nAdd explicit chrono_literals and constants.hpp includes to headers that\nrelied on transitive includes through common.hpp.",
+    "pull_request": "5062",
+    "created_at": "2026-04-09T21:29:55Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-11T01:01:00Z",
+    "run_id": null
+  },
+  {
     "hash": "98aaa57d9a47035fff52539970279358d4ecd0da",
     "type": "commit",
     "author": "pwojcikdev",
@@ -31010,6 +31101,19 @@
     "docker_tag": "gr0v1ty/nano-node:a48adc29ecf72d2f22aad046f51ff2efcadc0839",
     "build_started_at": "2024-04-30T13:34:48Z",
     "run_id": "8898472968"
+  },
+  {
+    "hash": "a4a8e2eee1ac3b85cfb59fc5bdb415b16e2dc162",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Reduce `common.hpp` includes and extract `endpoint_key`\n\nRemove 7 unnecessary transitive includes from common.hpp:\n- blake2.h, blockbuilders.hpp, config.hpp, object_stream.hpp,\n  timer.hpp, utility.hpp, block_w_sideband.hpp\n\nExtract endpoint_key into nano/secure/endpoint_key.hpp to remove\nnetwork_types.hpp (and its boost/asio/ip/tcp.hpp) from common.hpp.\n\nAdd explicit includes to .cpp files that relied on transitive\ndependencies through common.hpp (blockbuilders.hpp, blake2.h,\nnetwork_types.hpp, etc.).",
+    "pull_request": "5062",
+    "created_at": "2026-04-09T20:15:30Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-11T01:01:00Z",
+    "run_id": null
   },
   {
     "hash": "a4f2164cef9adf89b1d5aecdca0a527ac8c29b92",
@@ -41024,6 +41128,19 @@
     "run_id": "6770505053"
   },
   {
+    "hash": "dc5dcb93d9aa3e38ce3b9e266bbab68da9e7d52c",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Reduce `make_store.hpp` includes with forward declarations\n\nReplace `nodeconfig.hpp` include with forward declarations in\n`make_store.hpp` and `telemetry.hpp`. Move `telemetry_config`\nconstructor to `.cpp` to break the header dependency. Remove\ndefault parameters from `make_store()` to avoid requiring\n`nodeconfig.hpp` at every call site. Add `test::make_store()`\noverload accepting logger/stats to simplify test code.",
+    "pull_request": "N/A",
+    "created_at": "2026-04-08T14:43:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-11T01:01:00Z",
+    "run_id": null
+  },
+  {
     "hash": "dc69e54751214f3af45d5bce903bb6a33036a2ac",
     "type": "commit",
     "author": "clemahieu",
@@ -44277,6 +44394,19 @@
     "docker_tag": "gr0v1ty/nano-node:ed66b2c8ca24a7869157e42994bea0aefae112c6"
   },
   {
+    "hash": "ed67dd99bec01a58db105a156228cc1bc04fedc6",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Reduce `logging.hpp` includes with explicit dependencies",
+    "pull_request": "5062",
+    "created_at": "2026-04-10T00:21:41Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-11T01:01:00Z",
+    "run_id": null
+  },
+  {
     "hash": "ed85068ee4ce72dea3e4c6e01dbd6862813e2f48",
     "type": "commit",
     "author": "pwojcikdev",
@@ -44296,6 +44426,19 @@
     "built_at": "2023-02-16T16:07:47Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:ed85b37dd07b365b6e0196ecec29c167494d9057"
+  },
+  {
+    "hash": "ed9e7fb8cfc802b7691dfe101e6479ee2d2bdff9",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Reduce `blocks.hpp` includes with forward declarations\n\nMove `std::hash<nano::epoch>` to `epoch_templ.hpp` to break\nthe `<functional>` dependency in `epoch.hpp`. Add `seconds_t`\nand `millis_t` type aliases to `fwd.hpp`. Replace transitive\n`blocks.hpp` includes in headers with narrower includes and\nadd explicit includes in the corresponding .cpp files.",
+    "pull_request": "5062",
+    "created_at": "2026-04-08T18:52:01Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-11T01:01:00Z",
+    "run_id": null
   },
   {
     "hash": "edc4b59d4385b7826649f9528ccf21658c633a99",
@@ -46019,6 +46162,19 @@
     "docker_tag": "gr0v1ty/nano-node:f6b676ea5eb49f87ee536a83b01026102fc0c5a0"
   },
   {
+    "hash": "f6cb9db5951b9e88baf422a4223c9ee2db8a8255",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Merge pull request #5062 \"Reduce transitive include fanout\"\n\nReduce transitive include fanout",
+    "pull_request": "5062",
+    "created_at": "2026-04-11T00:24:00Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-11T01:01:00Z",
+    "run_id": null
+  },
+  {
     "hash": "f6e47aa4e2da811787dcfbdc150358547853b1bd",
     "type": "commit",
     "author": "pwojcikdev",
@@ -46906,6 +47062,19 @@
     "docker_tag": "gr0v1ty/nano-node:fb077a022c6def2aeb26801bf0414e0f8ef46897",
     "build_started_at": "2024-08-21T21:22:17Z",
     "run_id": "10497685725"
+  },
+  {
+    "hash": "fb191b4ec1ca3bc4a1db22160249130cc6c34059",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Reduce `system.hpp` includes\n\nReplace default argument values in test system/network\nhelpers with explicit overloads, allowing the headers\nto use forward declarations instead of full includes.\nAdd missing explicit includes to test files that relied\non transitive inclusion through `system.hpp`.",
+    "pull_request": "N/A",
+    "created_at": "2026-04-08T15:42:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-11T01:01:00Z",
+    "run_id": null
   },
   {
     "hash": "fb3007fa89adaedebf2d42c132b61d736bef7e3b",
