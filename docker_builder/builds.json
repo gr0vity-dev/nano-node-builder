@@ -31109,11 +31109,11 @@
     "title": "Reduce `common.hpp` includes and extract `endpoint_key`\n\nRemove 7 unnecessary transitive includes from common.hpp:\n- blake2.h, blockbuilders.hpp, config.hpp, object_stream.hpp,\n  timer.hpp, utility.hpp, block_w_sideband.hpp\n\nExtract endpoint_key into nano/secure/endpoint_key.hpp to remove\nnetwork_types.hpp (and its boost/asio/ip/tcp.hpp) from common.hpp.\n\nAdd explicit includes to .cpp files that relied on transitive\ndependencies through common.hpp (blockbuilders.hpp, blake2.h,\nnetwork_types.hpp, etc.).",
     "pull_request": "5062",
     "created_at": "2026-04-09T20:15:30Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-04-11T09:41:42Z",
+    "build_status": "fail",
+    "docker_tag": "",
     "build_started_at": "2026-04-11T01:01:00Z",
-    "run_id": null
+    "run_id": "24279566624"
   },
   {
     "hash": "a4f2164cef9adf89b1d5aecdca0a527ac8c29b92",
