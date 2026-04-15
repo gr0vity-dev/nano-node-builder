@@ -35900,6 +35900,22 @@
     "run_id": "12435293706"
   },
   {
+    "hash": "c065c7c5816dbed1ae86f6b65fd1e5626c208fb4",
+    "type": "pull_request",
+    "title": "Enable sccache for Linux and Macos CI builds",
+    "author": "RickiNano",
+    "body": "Github offers 10 GB cache storage and we are currently not using it.\r\nThis PR introduces compile caching of CI runs on unit tests and code sanitizer running Linux and MacOs. Most of the submodules in this project changes rarely (like Boost, Rocksdb, spdlog etc).\r\nMSVC caching needs some additional changes, so caching on Windows builds are skipped in this PR. I can look into that later.\r\nThe first run will populate the cache and give zero cache hits. Subsequent pushes will use cached versions for any unchanged code. \r\nEach CI job will print cache hit rates to the logs.\r\nFrom my testing, this reduces build times from 20-30 minutes to 3-10 minutes\r\nhttps://github.com/mozilla/sccache",
+    "draft": false,
+    "pull_request": 5063,
+    "label": "RickiNano:Implement-sccache",
+    "created_at": "2026-04-13T16:31:39Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-04-15T15:37:31Z",
+    "run_id": null
+  },
+  {
     "hash": "c07d84af6609acf6f0460859db8b28d59c8d1a0f",
     "type": "pull_request",
     "title": "Throttle block processing when backlog is above threshold",
