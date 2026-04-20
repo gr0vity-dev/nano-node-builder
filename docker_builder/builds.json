@@ -43338,6 +43338,22 @@
     "run_id": "8361426619"
   },
   {
+    "hash": "e8163b644122566b1d3cfc7949ab0b5db3d67f6d",
+    "type": "pull_request",
+    "title": "Extract wallet storage backend",
+    "author": "pwojcikdev",
+    "body": "The wallet code had LMDB baked into it directly: wallet tables, send-action IDs, and persistence details were all handled in `wallet.cpp`. This branch carves out a `wallets_backend` interface and moves the LMDB-specific bits into `nano/wallet/lmdb/wallets_backend_lmdb.{hpp,cpp}`, leaving the higher-level wallet logic backend-agnostic. The goal is a cleaner boundary between wallet semantics and storage, while improving test coverage.",
+    "draft": false,
+    "pull_request": 5064,
+    "label": "pwojcikdev:wallet-backend-4",
+    "created_at": "2026-04-20T14:01:04Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-04-20T17:43:00Z",
+    "run_id": null
+  },
+  {
     "hash": "e821dd4e94b4e646f046986286742d309fc86f21",
     "type": "commit",
     "author": "pwojcikdev",
