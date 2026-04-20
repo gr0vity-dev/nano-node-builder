@@ -39904,6 +39904,22 @@
     "docker_tag": ""
   },
   {
+    "hash": "d669962c29c23a731121967ab899db4815252f17",
+    "type": "pull_request",
+    "title": "Extract wallet storage backend",
+    "author": "pwojcikdev",
+    "body": "The wallet code had LMDB baked into it directly: wallet tables, send-action IDs, and persistence details were all handled in `wallet.cpp`. This branch carves out a `wallets_backend` interface and moves the LMDB-specific bits into `nano/wallet/lmdb/wallets_backend_lmdb.{hpp,cpp}`, leaving the higher-level wallet logic backend-agnostic. The goal is a cleaner boundary between wallet semantics and storage, while improving test coverage.",
+    "draft": false,
+    "pull_request": 5064,
+    "label": "pwojcikdev:wallet-backend-4",
+    "created_at": "2026-04-20T14:01:04Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-04-20T14:23:57Z",
+    "run_id": null
+  },
+  {
     "hash": "d675df77fe47bb94f6ed6cff13a4592060aab5c3",
     "type": "commit",
     "author": "pwojcikdev",
@@ -44558,6 +44574,22 @@
     "built_at": "2023-06-01T20:21:15Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:ee5dc3177ada10ad0e11984bb3b735abcf639c52"
+  },
+  {
+    "hash": "ee66bbafad31b4604235d6592647051b3450e3f3",
+    "type": "pull_request",
+    "title": "Add `--enable_rpc` flag",
+    "author": "pwojcikdev",
+    "body": "Honor `--enable_rpc` in node and wallet startup so RPC can be enabled without a config override. Add CLI coverage, extra RPC startup logging, and switch system tests to the new flag.",
+    "draft": false,
+    "pull_request": 5065,
+    "label": "pwojcikdev:enable-rpc-flag",
+    "created_at": "2026-04-20T14:13:30Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-20T14:23:57Z",
+    "run_id": null
   },
   {
     "hash": "ee6ca162bac88c007341438a224818209cc11abd",
