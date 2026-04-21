@@ -3650,6 +3650,19 @@
     "run_id": "9235141607"
   },
   {
+    "hash": "13cdfc833ead4e57272411153f8d00f66584437b",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Move wallet types into `nano::wallet` namespace\n\nExtract `fan` and `kdf` classes to separate files in\nnano/lib/, add nano/node/wallet/fwd.hpp for forward\ndeclarations, and move all wallet-related types\n(`wallet_store`, `wallet`, `wallets`, `wallets_store`,\n`mdb_wallets_store`, `wallet_representatives`, `key_type`)\nfrom `nano::` into the `nano::wallet::` namespace.",
+    "pull_request": "5064",
+    "created_at": "2026-04-11T14:16:25Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-04-21T12:43:26Z",
+    "run_id": null
+  },
+  {
     "hash": "13d5fa34972589c81584f182b729af3381685aa2",
     "type": "pull_request",
     "title": "Migrate successor field from sideband to dedicated table",
@@ -5002,6 +5015,19 @@
     "docker_tag": "gr0v1ty/nano-node:1a3aa359a03377f9757f40023a97ac65b42d44ab",
     "build_started_at": "2024-03-19T16:06:21Z",
     "run_id": "8346341131"
+  },
+  {
+    "hash": "1a4fb5cb43cbf4b69ff206cbdcb19c8415cd4341",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Organize wallet tests by component (fan, wallet_store, wallet)",
+    "pull_request": "5064",
+    "created_at": "2026-04-11T19:54:19Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-21T12:43:26Z",
+    "run_id": null
   },
   {
     "hash": "1a5577283395ca894d0971a1a5a4759b3b34eddc",
@@ -17278,6 +17304,19 @@
     "docker_tag": "gr0v1ty/nano-node:5b6b9a1e1ce30f5ca8bd63f401f4d6a4c46e5745",
     "build_started_at": "2024-03-24T09:37:59Z",
     "run_id": "8408386483"
+  },
+  {
+    "hash": "5b6c408c95534636b8841eef597428955739139b",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Merge pull request #5064 from pwojcikdev/wallet-backend-4\n\nExtract wallet storage backend",
+    "pull_request": "5064",
+    "created_at": "2026-04-21T12:07:23Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-21T12:43:26Z",
+    "run_id": null
   },
   {
     "hash": "5b80a26491cc0d47e7960f0b295f5a82580f7093",
@@ -31697,6 +31736,22 @@
     "run_id": "16224199750"
   },
   {
+    "hash": "a7f4467f98edce268689314b59ce362c36b7067c",
+    "type": "pull_request",
+    "title": "Trim `node.hpp` header dependencies",
+    "author": "pwojcikdev",
+    "body": null,
+    "draft": false,
+    "pull_request": 5066,
+    "label": "pwojcikdev:lean-nano-node-hpp",
+    "created_at": "2026-04-21T12:33:53Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-21T12:43:26Z",
+    "run_id": null
+  },
+  {
     "hash": "a8025906348005384f44deece9adcb289e60f2cc",
     "type": "commit",
     "created_at": "2023-04-27T19:29:04Z",
@@ -31905,6 +31960,19 @@
     "built_at": "2023-04-24T20:44:51Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:a8d8d2899e298024ed30fc0126a793ce267dbc2c"
+  },
+  {
+    "hash": "a8f253a3c1ce28513a34bc14436d1e94292da839",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Document wallet store handle synchronization",
+    "pull_request": "5064",
+    "created_at": "2026-04-20T22:21:22Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-21T12:43:26Z",
+    "run_id": null
   },
   {
     "hash": "a952ae220da94b11946e78137475d2bfa2fef222",
@@ -39357,6 +39425,19 @@
     "docker_tag": "gr0v1ty/nano-node:d3511498eb52ef419555ab6420099db27b3d307c",
     "build_started_at": "2025-02-20T17:28:36Z",
     "run_id": "13441131219"
+  },
+  {
+    "hash": "d3558d429ffa2f682a87ef32f6e0a48c2bd665d1",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Move wallet_value into wallet library\n\n^ Conflicts:\n^\tnano/node/wallet.hpp",
+    "pull_request": "5064",
+    "created_at": "2026-04-17T19:55:16Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-04-21T12:43:26Z",
+    "run_id": null
   },
   {
     "hash": "d36a98ddb0fb6da51e6f5cde4c9e2a662204efca",
