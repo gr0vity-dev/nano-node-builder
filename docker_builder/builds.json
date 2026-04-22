@@ -15869,11 +15869,11 @@
     "title": "Trim `node.hpp` header dependencies (#5066)\n\n* Trim `node.hpp` header dependencies\n\n* Remove io_context from node constructors\n\nDrop the explicit `boost::asio::io_context` parameter from\n`nano::node` constructors and update all call sites.\n\nThis also removes the unused `io_context` member from\n`node_wrapper`.\n\n* Use node accessors for id and data path\n\nReplace direct reads of `node_id.pub` and `application_path`\nwith `get_node_id()` and `get_data_path()` across node code\nand tests.\n\n* Remove redundant thread runners\n\nNode startup already manages the required IO threads.\n\nDrop unused `io_context` instances and `thread_runner` setup from\nbenchmarks and the block processing entry path.",
     "pull_request": "5066",
     "created_at": "2026-04-22T13:47:11Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-04-22T14:54:23Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:5400aaee797b872cfb4dc93f6cfe6f033c0f843d",
     "build_started_at": "2026-04-22T14:24:03Z",
-    "run_id": null
+    "run_id": "24783777613"
   },
   {
     "hash": "5408a04cffa2be6f180e8288cf6736b59a5458ba",
