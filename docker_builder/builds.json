@@ -8879,6 +8879,22 @@
     "run_id": "8340495054"
   },
   {
+    "hash": "2f8345c45c416b73858d9fbebe2d71a737984545",
+    "type": "pull_request",
+    "title": "Encapsulate wallet key usage behind wallet_cipher",
+    "author": "pwojcikdev",
+    "body": "This changes wallet-store crypto operations to go through a `wallet_cipher` returned by `wallet_store::unlock()` instead of exposing the decrypted wallet key directly.\r\n\r\nThe wallet cipher is only constructed after the current password has been validated against the wallet check value, and it exposes only the encryption operations needed by wallet code.\r\n\r\n#### Why\r\n\r\nPreviously, wallet code could ask `wallet_store` for the decrypted wallet key directly and then use that key for encryption or decryption. Even when existing callers checked the password first, the API made it possible for future code to accidentally use a decrypted key without tying that use to password validation.\r\n\r\nThis PR makes the validation boundary explicit: code that wants to encrypt or decrypt wallet entries must first obtain a `wallet_cipher`, and obtaining that cipher requires a successful unlock. That keeps the raw wallet key out of the public wallet-store interface and makes misuse harder by construction.\r\n\r\nThis is specifically a wallet crypto interface hardening change. It does not change the wallet storage format.\r\n",
+    "draft": false,
+    "pull_request": 5067,
+    "label": "pwojcikdev:wallet-cipher",
+    "created_at": "2026-04-27T21:08:44Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-04-28T14:40:16Z",
+    "run_id": null
+  },
+  {
     "hash": "2f907c3069e2cfd6ac95c1c82e5b319d9442df29",
     "type": "pull_request",
     "title": "Vote generator rework",
