@@ -4,6 +4,20 @@ on:
   schedule:
     - cron: "0/10 * * * *" # "every 5 minutes"
   workflow_dispatch:
+    inputs:
+      build_hash:
+        description: "Optional nano-node build hash to test"
+        required: false
+        type: string
+      report_branch:
+        description: "Branch to write continuous test reports to"
+        required: false
+        default: "main"
+        type: string
+
+concurrency:
+  group: continuous-testing-${{ github.event.inputs.report_branch || 'main' }}
+  cancel-in-progress: false
 
 jobs:
   prepare_testing:
@@ -11,6 +25,7 @@ jobs:
     outputs:
       COMMIT_HASH: ${{ steps.filter.outputs.COMMIT_HASH }}
       DOCKER_TAG: ${{ steps.filter.outputs.DOCKER_TAG }}
+      REPORT_BRANCH: ${{ steps.filter.outputs.REPORT_BRANCH }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -23,31 +38,45 @@ jobs:
         run: |
           # Filter entries with built_at > START_DATE, build_status = "pass", and no existing test file
           #!/bin/bash
+          REQUESTED_HASH="${{ github.event.inputs.build_hash }}"
+          REPORT_BRANCH="${{ github.event.inputs.report_branch }}"
+          if [[ -z "$REPORT_BRANCH" ]]; then
+              REPORT_BRANCH="main"
+          fi
+          echo "REPORT_BRANCH=$REPORT_BRANCH" >> $GITHUB_OUTPUT
+
           START_DATE=$(date -d '2023-05-15' +%s)
           # Generate a list of all hashes in the continuous_testing directory and save it to a temporary file
           find continuous_testing -type f -name '*.json' | sed 's|continuous_testing/||; s|.json||' > temp_hashes.txt
 
           # Filter the JSON file using jq
-          TEST_BUILD=$(jq -r --slurpfile hash_list <(jq -R . < temp_hashes.txt | jq -s .) \
-            --argjson START_DATE "$START_DATE" '
-            .[] |
-            select(
-              .built_at? != null and
-              (.built_at | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime) > $START_DATE and
-              .build_status == "pass" and
-              (.hash as $h | $hash_list[0] | index($h) == null)
-            )
-          ' docker_builder/builds.json | jq --slurp 'sort_by(.built_at) | .[0]')
+          if [[ -n "$REQUESTED_HASH" ]]; then
+            TEST_BUILD=$(jq -r \
+              --arg requested_hash "$REQUESTED_HASH" \
+              '.[] | select(.hash == $requested_hash and .build_status == "pass")' \
+              docker_builder/builds.json | jq --slurp '.[0]')
+          else
+            TEST_BUILD=$(jq -r --slurpfile hash_list <(jq -R . < temp_hashes.txt | jq -s .) \
+              --argjson START_DATE "$START_DATE" '
+              .[] |
+              select(
+                .built_at? != null and
+                (.built_at | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime) > $START_DATE and
+                .build_status == "pass" and
+                (.hash as $h | $hash_list[0] | index($h) == null)
+              )
+            ' docker_builder/builds.json | jq --slurp 'sort_by(.built_at) | .[0]')
+          fi
 
           # Clean up temporary file
           rm temp_hashes.txt
 
-          if [[ -z "$TEST_BUILD" ]]; then
+          if [[ -z "$TEST_BUILD" ]] || [[ "$TEST_BUILD" == "null" ]]; then
               echo "No build found to test"
               echo "COMMIT_HASH='null'" >> $GITHUB_OUTPUT
               exit 0
           else
-              git pull origin main
+              git pull origin "$REPORT_BRANCH"
               # Extract hash and check if it's null or empty
               HASH=$(echo "$TEST_BUILD" | jq -r '.hash')
               if [[ -z "$HASH" ]] || [[ "$HASH" == "null" ]]; then
@@ -84,8 +113,23 @@ jobs:
             git config user.email "<>"
             git add continuous_testing/$HASH.json
             git commit -m "Start testing for build $HASH"
-            git pull
-            git push origin main
+
+            MAX_RETRIES=10
+            for ((i=1; i<=MAX_RETRIES; i++)); do
+              git pull --rebase origin "$REPORT_BRANCH"
+
+              if git push origin HEAD:"$REPORT_BRANCH"; then
+                echo "Push successful!"
+                break
+              else
+                echo "Push failed, retrying..."
+                if [ $i -eq $MAX_RETRIES ]; then
+                  echo "Failed to push after $MAX_RETRIES attempts, exiting."
+                  exit 1
+                fi
+                sleep 5
+              fi
+            done
 
             echo "COMMIT_HASH=$HASH" >> $GITHUB_OUTPUT
             echo "DOCKER_TAG=$(echo "$TEST_BUILD" | jq -r '.docker_tag')" >> $GITHUB_OUTPUT
@@ -145,103 +189,47 @@ jobs:
       - name: Run test case
         run: |
           DOCKER_TAG=${{ needs.prepare_testing.outputs.DOCKER_TAG }}
+          HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
+          TESTCASE=${{ matrix.testcase }}
           STARTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
+          set +e
           nanolab run -t ${{ matrix.testcase }} --gh-path quick_testing -i $DOCKER_TAG > $HOME/status.log 2>&1
+          NANOLAB_EXIT=$?
+          set -e
+
           STATUS=$(grep -E -q "FAIL|unconfirmed blocks|Traceback \(most recent call last\)|Encountered errors while bringing up the project" $HOME/status.log && echo "FAIL" || echo "PASS")
+          if [[ $NANOLAB_EXIT -ne 0 ]]; then
+            STATUS="FAIL"
+          fi
           COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          mkdir -p "$RUNNER_TEMP/test-result"
+          jq -n \
+            --arg testcase "$TESTCASE" \
+            --arg status "$STATUS" \
+            --arg started_at "$STARTED_AT" \
+            --arg completed_at "$COMPLETED_AT" \
+            '{testcase: $testcase, status: $status, started_at: $started_at, completed_at: $completed_at}' \
+            > "$RUNNER_TEMP/test-result/result.json"
+
+          cp "$HOME/status.log" "$RUNNER_TEMP/test-result/${HASH}_${TESTCASE}.txt"
 
           echo "STATUS=$STATUS" >> $GITHUB_ENV
           echo "STARTED_AT=$STARTED_AT" >> $GITHUB_ENV
           echo "COMPLETED_AT=$COMPLETED_AT" >> $GITHUB_ENV
         id: testcase
 
-      - name: Create and push log file on failure
-        if: ${{ env.STATUS == 'FAIL' }}
-        run: |
-          HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
-          TESTCASE=${{ matrix.testcase }}
-
-          MAX_RETRIES=10
-          for ((i=1; i<=MAX_RETRIES; i++)); do
-            git fetch --all
-            git reset --hard origin/main
-
-            # Rename and move the log file
-            mv $HOME/status.log "continuous_testing/${HASH}_${TESTCASE}.txt"
-
-            # Commit and push the changes
-            git config user.name "GitHub Actions Bot"
-            git config user.email "<>"
-            git add "continuous_testing/${HASH}_${TESTCASE}.txt"
-            git commit -m "Add log file for failed test ${TESTCASE} in build ${HASH}"
-            git pull
-
-            if git push origin main; then
-              echo "Push successful!"
-              break
-            else
-              echo "Push failed, retrying..."
-              if [ $i -eq $MAX_RETRIES ]; then
-                echo "Failed to push after $MAX_RETRIES attempts, exiting."
-                exit 1
-              fi
-              sleep 5
-            fi
-          done
-
-      - name: Update test file
-        run: |
-          HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
-
-          # Check if HASH is null or empty
-          if [[ -z "$HASH" ]] || [[ "$HASH" == "null" ]]; then
-              echo "HASH is null or empty. Exiting."
-              exit 0
-          fi
-
-          sleep 5
-          TEST_FILE=continuous_testing/$HASH.json
-          MAX_RETRIES=10
-
-          for ((i=1; i<=MAX_RETRIES; i++)); do
-            # Pull the latest changes from the repository
-            git fetch --all
-            git reset --hard origin/main
-
-            # Create a new entry for this test case
-            NEW_ENTRY=$(jq -n \
-              --arg testcase "${{ matrix.testcase }}" \
-              --arg status "${{ env.STATUS }}" \
-              --arg started_at "${{ env.STARTED_AT }}" \
-              --arg completed_at "${{ env.COMPLETED_AT }}" \
-              '{testcase: $testcase, status: $status, started_at: $started_at, completed_at: $completed_at}')
-
-
-            # Update the test file with the new entry
-            jq --argjson new_entry "$NEW_ENTRY" '.testcases += [$new_entry]' $TEST_FILE > tmp.json && mv tmp.json $TEST_FILE
-
-            # Commit and push the changes
-            git config user.name "GitHub Actions Bot"
-            git config user.email "<>"
-            git add $TEST_FILE
-            git commit -m "Update test result for ${{ matrix.testcase }} in build $HASH"
-
-            if git push origin main; then
-              echo "Push successful!"
-              break
-            else
-              echo "Push failed, retrying..."
-              if [ $i -eq $MAX_RETRIES ]; then
-                echo "Failed to push after $MAX_RETRIES attempts, exiting."
-                exit 1
-              fi
-              sleep 5
-            fi
-          done
+      - name: Upload test result
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-result-${{ matrix.testcase }}
+          path: ${{ runner.temp }}/test-result
+          if-no-files-found: error
 
   post_process:
-    needs: [prepare_testing, testcases]
+    needs: [prepare_testing, get_testcases, testcases]
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
@@ -257,13 +245,24 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           LATEST_SHA=$(gh api repos/nanocurrency/nano-node/commits/develop --jq '.sha')
-          echo "::set-output name=latest_sha::$LATEST_SHA"
+          echo "latest_sha=$LATEST_SHA" >> $GITHUB_OUTPUT
+
+      - name: Download test results
+        if: ${{ needs.prepare_testing.outputs.COMMIT_HASH != 'null' }}
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          pattern: test-result-*
+          path: test-results
+          merge-multiple: false
 
       - name: Post-processing
         id: post_processing
         run: |
           HASH=${{ needs.prepare_testing.outputs.COMMIT_HASH }}
           TEST_FILE=continuous_testing/$HASH.json
+          REPORT_BRANCH="${{ needs.prepare_testing.outputs.REPORT_BRANCH }}"
+          EXPECTED_COUNT=$(echo '${{ needs.get_testcases.outputs.MATRIX }}' | jq '.testcase | length')
 
           # Check if HASH is null or empty
           if [[ -z "$HASH" ]] || [[ "$HASH" == "null" ]]; then
@@ -274,8 +273,46 @@ jobs:
           # Fetch the latest SHA
           LATEST_SHA=${{ steps.fetch_latest_sha.outputs.latest_sha }}
 
+          git pull origin "$REPORT_BRANCH"
+          mkdir -p test-results
 
-          git pull origin main
+          RESULT_FILES=()
+          while IFS= read -r RESULT_FILE; do
+            RESULT_FILES+=("$RESULT_FILE")
+          done < <(find test-results -type f -name result.json | sort)
+          RESULT_COUNT=${#RESULT_FILES[@]}
+
+          if [[ "$RESULT_COUNT" -ne "$EXPECTED_COUNT" ]]; then
+            echo "Expected $EXPECTED_COUNT test result artifacts, found $RESULT_COUNT. Missing results will be marked as FAIL."
+          fi
+
+          if [[ "$RESULT_COUNT" -gt 0 ]]; then
+            jq -s '. as $testcases | $testcases' "${RESULT_FILES[@]}" > testcases.json
+          else
+            echo "[]" > testcases.json
+          fi
+
+          echo '${{ needs.get_testcases.outputs.MATRIX }}' | jq '.testcase' > expected_testcases.json
+          jq -n \
+            --slurpfile expected expected_testcases.json \
+            --slurpfile testcases testcases.json \
+            '$expected[0] - ($testcases[0] | map(.testcase)) |
+             map({testcase: ., status: "FAIL", started_at: null, completed_at: null})' \
+            > missing_testcases.json
+
+          jq -s '.[0] + .[1]' testcases.json missing_testcases.json > merged_testcases.json
+
+          mkdir -p continuous_testing
+          find test-results -type f -name "${HASH}_*.txt" -print0 | while IFS= read -r -d '' LOG_FILE; do
+            TESTCASE_STATUS=$(jq -r '.status' "$(dirname "$LOG_FILE")/result.json")
+            if [[ "$TESTCASE_STATUS" == "FAIL" ]]; then
+              cp "$LOG_FILE" "continuous_testing/$(basename "$LOG_FILE")"
+            fi
+          done
+
+          jq --slurpfile testcases merged_testcases.json \
+            '.testcases = $testcases[0]' \
+            $TEST_FILE > tmp.json && mv tmp.json $TEST_FILE
 
           # Count passed and failed tests
           PASSED_COUNT=$(jq '[.testcases[] | select(.status == "PASS")] | length' $TEST_FILE)
@@ -319,5 +356,20 @@ jobs:
 
           git add $TEST_FILE
           git commit -m "Set overall status to $OVERALL_STATUS for build $HASH"
-          git pull
-          git push origin main
+
+          MAX_RETRIES=10
+          for ((i=1; i<=MAX_RETRIES; i++)); do
+            git pull --rebase origin "$REPORT_BRANCH"
+
+            if git push origin HEAD:"$REPORT_BRANCH"; then
+              echo "Push successful!"
+              break
+            else
+              echo "Push failed, retrying..."
+              if [ $i -eq $MAX_RETRIES ]; then
+                echo "Failed to push after $MAX_RETRIES attempts, exiting."
+                exit 1
+              fi
+              sleep 5
+            fi
+          done
