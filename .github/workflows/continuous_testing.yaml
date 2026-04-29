@@ -355,6 +355,7 @@ jobs:
           fi
 
           git add $TEST_FILE
+          find continuous_testing -maxdepth 1 -type f -name "${HASH}_*.txt" -exec git add {} +
           git commit -m "Set overall status to $OVERALL_STATUS for build $HASH"
 
           MAX_RETRIES=10
