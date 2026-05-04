@@ -7332,6 +7332,22 @@
     "run_id": "8284576723"
   },
   {
+    "hash": "271510a122949157b3342dc51fa7e7d505cae99e",
+    "type": "pull_request",
+    "title": "Ledger topology index for topological bootstrap",
+    "author": "pwojcikdev",
+    "body": "Adds a per-block `topo_height` (a topological order over the ledger graph) and a new topology table that indexes blocks by this height. The index is opt-in for existing ledgers, gated by a new `topo_index_enabled` ledger flag, and can be backfilled via a new CLI command.\r\n\r\n#### Why\r\n\r\nThis is preparatory work for **topological bootstrap**. In a topological bootstrap the serving peer streams blocks to a bootstrapping node in dependency-respecting order, so the receiver can apply each block immediately on arrival without buffering, retrying, or chasing missing dependencies. The serving peer needs to walk its own ledger in topological order, and the topology index gives it that walk in O(1) per block.\r\n\r\n`topo_height` is defined as `1 + max(topo_height of dependencies)`, with a floor of `1` for genesis and rootless blocks (e.g. an `epoch_open` on an unopened account). Because a block's height is strictly greater than any of its dependencies, iterating the topology table in ascending order yields blocks in a valid dependency order.\r\n\r\n#### What's in this PR\r\n\r\n- New `topology` table indexed by `(topo_height, hash)` with big-endian key encoding so byte-order iteration matches numeric order.\r\n- New `topo_height` field on `block_sideband`. Computed during ledger processing and maintained on rollback.\r\n- Forced v25→v26 ledger upgrade on first launch: re-serializes existing sidebands with `topo_height = 0`. No values are computed yet — that's the migration step below.\r\n- `topo_index_enabled` flag stored in the meta table. Fresh ledgers come up with the flag set; ledgers upgraded from v25 come up with it cleared.\r\n- New `ledger::populate_topo_index()` migration: walks every block via bounded DFS, computes `topo_height` into the sideband (phase 1), then sequentially populates the topology table (phase 2). Two phases are kept separate because random index inserts interleaved with the DFS pass would be very slow. The flag is flipped only after both phases commit, so a partial migration never appears enabled.\r\n- The migration release-asserts on missing dependencies — **pruned ledgers are not supported** by the backfill.\r\n- Drive-by: ledger version storage moved from a standalone view into the meta view. No change to on-disk layout (same key, same value).\r\n\r\n#### CLI changes\r\n\r\nNew flag on `nano_node`:\r\n\r\n| Flag | Description |\r\n|---|---|\r\n| `--populate_topo_index` | One-off operation. Walks the ledger, computes and persists `topo_height` for every block, populates the topology table, and enables the `topo_index_enabled` flag. Reports \"Topology index is already populated\" if the flag is already set. May take a long time on large ledgers. |\r\n\r\n#### JSON response changes\r\n\r\n`topo_height` is added to block details in three RPC handlers, alongside the existing `height` field. Always emitted, formatted as a decimal string.\r\n\r\n| RPC | Where it appears |\r\n|---|---|\r\n| `block_info` / `block` | Top-level field |\r\n| `blocks_info` | Per-block entry under `blocks` |\r\n| `account_history` | Per-entry field under `history` |\r\n\r\nValue semantics:\r\n- `0` for blocks on a ledger that was upgraded from v25 and where `--populate_topo_index` has not been run.\r\n- Non-zero for all blocks once the topology index is enabled.",
+    "draft": false,
+    "pull_request": 5069,
+    "label": "pwojcikdev:topo-index-3",
+    "created_at": "2026-05-04T21:30:39Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-05-04T22:12:56Z",
+    "run_id": null
+  },
+  {
     "hash": "271e953986dcf7f7823b533980c6618ca9991894",
     "type": "pull_request",
     "title": "Add `NANO_TRACING` argument to Dockerfile",
