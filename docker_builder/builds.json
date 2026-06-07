@@ -15132,6 +15132,19 @@
     "run_id": "8340981023"
   },
   {
+    "hash": "4e1414db2a7956fdca5ff6ddeba883d77505aeab",
+    "type": "commit",
+    "author": "RickiNano",
+    "title": "Message deserializer fix (#5078)\n\n* Fix null-pointer dereference in publish message deserialization\n\n* Unit tests for empty block publish",
+    "pull_request": "5078",
+    "created_at": "2026-06-07T22:48:52Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-06-07T23:31:16Z",
+    "run_id": null
+  },
+  {
     "hash": "4e3c5e9bce21bdd33754936d8072f768d29155ed",
     "type": "commit",
     "author": "pwojcikdev",
@@ -20183,6 +20196,22 @@
     "docker_tag": "gr0v1ty/nano-node:68502a1b4844ce05ac1442565ef181043d3f87b4",
     "build_started_at": "2024-01-24T13:51:00Z",
     "run_id": "7641154714"
+  },
+  {
+    "hash": "6851437c57dfd43c94403f87982b4e48946a49ef",
+    "type": "pull_request",
+    "title": "Avoid tcp channel close deadlock",
+    "author": "pwojcikdev",
+    "body": "Connection close() blocks on an io_context join and can deadlock if held under the mutex.",
+    "draft": false,
+    "pull_request": 5079,
+    "label": "pwojcikdev:tcp-mutexes",
+    "created_at": "2026-06-07T23:25:02Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-06-07T23:31:16Z",
+    "run_id": null
   },
   {
     "hash": "685ce4626c544baa88495b8e011a5c66a9deb112",
