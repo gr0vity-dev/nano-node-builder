@@ -22614,6 +22614,22 @@
     "run_id": "19799307824"
   },
   {
+    "hash": "749849ded6096cb94b1177bad2eae1119e2469df",
+    "type": "pull_request",
+    "title": "Batch bootstrap pull queries to keep ledger reads off the request path",
+    "author": "pwojcikdev",
+    "body": "Bootstrap built every block-pull request individually, opening a fresh ledger read transaction per request just to pick the pull's starting point. On the priority path this ran on the hot loop; the database scan was also problematic — it re-read each account it had just scanned.\r\n\r\nThis moves query construction out of the per-request path:\r\n\r\n- Priority strategy now selects a batch of priority accounts (next_priority_batch), builds all of their pull queries under a single read transaction, buffers them, and drains one per request. The per-account optimistic/safe starting-point choice is unchanged.\r\n- Database scan builds its pull queries inline during the scan, reusing the scan's own transaction — so the request path does no extra lookup. These are always safe requests: start from the confirmed frontier, or the account root when there is no confirmation height.\r\n- Removes the now-unused bootstrap_context::request(). Pull-construction stats are split per strategy (bootstrap_priority / bootstrap_database) and labelled by start point (from_frontier / from_confirmed / from_open).\r\n- \r\nBehavior is otherwise unchanged, and the database scan remains off by default. Adds bootstrap.database_scan_safe_queries to cover the confirmed-frontier vs account-root selection (verified on LMDB and RocksDB).",
+    "draft": false,
+    "pull_request": 5080,
+    "label": "pwojcikdev:bootstrap-batch-queries",
+    "created_at": "2026-06-08T21:59:59Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-06-08T22:55:44Z",
+    "run_id": null
+  },
+  {
     "hash": "74a9fba6f7d4c21241c111003a6e4ecfcc993413",
     "type": "commit",
     "created_at": "2023-06-16T12:35:03Z",
