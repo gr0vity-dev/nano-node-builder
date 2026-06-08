@@ -29190,11 +29190,11 @@
     "title": "Avoid tcp channel close deadlock (#5079)\n\n* Avoid tcp channel close deadlock\n\nSwap the channel set out from under tcp_channels::mutex before closing entries. This avoids holding the mutex while close paths block on io_context shutdown.\n\n* Avoid mutex nesting in bootstrap maintenance\n\nRename the cleanup loop and thread to maintenance since it now handles broader periodic work. Snapshot bootstrap channels without holding the bootstrap mutex before syncing peer scoring, avoiding network mutex nesting under the bootstrap lock.",
     "pull_request": "5079",
     "created_at": "2026-06-08T20:59:51Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-06-08T21:56:53Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:96aa784aecc0242157985579a937bc7075fa2b59",
     "build_started_at": "2026-06-08T21:28:10Z",
-    "run_id": null
+    "run_id": "27168063344"
   },
   {
     "hash": "96aa93882704bf0f61523c8b3c36e721328d8b2d",
