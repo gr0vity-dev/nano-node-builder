@@ -7657,6 +7657,19 @@
     "run_id": "10675723578"
   },
   {
+    "hash": "28640d1880357009564c53f9da119e7ad797cb8a",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Batch bootstrap pull queries to keep ledger reads off the request path (#5080)\n\n* Centralize bootstrap pull query handling\n\nReplace per-strategy ASC pull request assembly with query descriptors that build messages and derive async tag metadata in bootstrap_context. Keep block, dependency, and frontier response processing tied to the original query data instead of duplicating tag payload setup.\n\n^ Conflicts:\n^\tnano/node/bootstrap/bootstrap_context.hpp\n\n* Batch bootstrap pull queries\n\nMove bootstrap pull query construction into the priority and database strategies so they can choose the correct starting point before sending. Database scans now always request from the confirmed frontier when present, or from the account root when no confirmation height exists.\n\nBatch priority account selection and buffer prepared requests to reuse a single ledger read transaction, while keeping request stats split between optimistic, safe, and base pulls. Add coverage for database scan requests that avoid unconfirmed account heads.",
+    "pull_request": "5080",
+    "created_at": "2026-06-09T13:38:39Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-06-09T16:17:45Z",
+    "run_id": null
+  },
+  {
     "hash": "287c500c498823d5e7f4356bc62a1fb313410752",
     "type": "pull_request",
     "title": "RPC endpoint for election statistics",
