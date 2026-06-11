@@ -7487,6 +7487,19 @@
     "run_id": "8965350860"
   },
   {
+    "hash": "2722324dea5c6c454c4181b04058a9f6bba0f059",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add flag to disable elections (#5081)\n\n* Add flag to disable elections\n\nAdd --disable_elections as a node flag that disables election schedulers while still allowing block processing and pulling.\n\n* Use disable_elections flag in tests\n\nReplace per-scheduler config toggles with node_flags.disable_elections in bootstrap, node, and Qt tests. Pass the flags into created nodes so tests consistently suppress election schedulers while keeping scenario config focused.",
+    "pull_request": "5081",
+    "created_at": "2026-06-11T22:12:37Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-06-11T22:14:04Z",
+    "run_id": null
+  },
+  {
     "hash": "274c6714cacc567087a01f954826f498ff560463",
     "type": "commit",
     "author": "dsiganos",
