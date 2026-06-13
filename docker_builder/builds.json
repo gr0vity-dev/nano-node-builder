@@ -43998,6 +43998,22 @@
     "run_id": "8338402619"
   },
   {
+    "hash": "e65968e5e81bfd5ffaf6bbc806c3be75d5ccbe7e",
+    "type": "pull_request",
+    "title": "Fix broken update_config CLI command",
+    "author": "RickiNano",
+    "body": "`update_config` CLI command can create corrupted output if a user's config and the default config doesn't have the same line by line structure. \r\nThis PR rewrites the merge logic in tomlconfig::merge_defaults so that it compares values by their fully-qualified TOML key instead of line by line",
+    "draft": false,
+    "pull_request": 5087,
+    "label": "RickiNano:Fix_update_config",
+    "created_at": "2026-06-13T20:59:26Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-06-13T21:49:27Z",
+    "run_id": null
+  },
+  {
     "hash": "e65e07aa243aa98df34e4a59f37683656ac64044",
     "type": "commit",
     "author": "pwojcikdev",
