@@ -26572,6 +26572,22 @@
     "run_id": null
   },
   {
+    "hash": "887c314afe02c2dfc39035fadef6346f720c1eeb",
+    "type": "pull_request",
+    "title": "Fixed race condition in fork_publish test",
+    "author": "RickiNano",
+    "body": "Removes race in fork_publish unit test.\r\nPreviously the genesis key was inserted into the wallet before the forks were processed, so the genesis rep could start voting and confirm the election on send1 alone before send2 had a chance to join the same election.\r\nThe fix reorders the setup so voting weight is only granted after both forks are confirmed active in the election",
+    "draft": false,
+    "pull_request": 5086,
+    "label": "RickiNano:fork_publish",
+    "created_at": "2026-06-13T10:54:30Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-06-13T11:28:08Z",
+    "run_id": null
+  },
+  {
     "hash": "889c4cd1975404fc3ceb724aa312985ba409249d",
     "type": "pull_request",
     "pull_request": 4110,
