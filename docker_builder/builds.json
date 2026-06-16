@@ -30154,6 +30154,19 @@
     "run_id": "8360363439"
   },
   {
+    "hash": "9a392a5b1bbca6423db66a1892c7f493a94c2432",
+    "type": "commit",
+    "author": "RickiNano",
+    "title": "Fixed race condition in fork_publish test (#5086)\n\n* Fixed race condition in fork_publish test\n\n* Assert both forks inserted in fork_publish test",
+    "pull_request": "5086",
+    "created_at": "2026-06-16T13:41:14Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-06-16T17:29:13Z",
+    "run_id": null
+  },
+  {
     "hash": "9a4eaa5c281778a2b16838259d0d37866f1ce4c5",
     "type": "pull_request",
     "pull_request": 4133,
@@ -46757,6 +46770,22 @@
     "docker_tag": "gr0v1ty/nano-node:f30ec1162212f6ec84cad8a6f6e0fb8a8d2ebc82",
     "build_started_at": "2023-10-19T14:48:35Z",
     "run_id": "6576356933"
+  },
+  {
+    "hash": "f30ffa3eba61099a6d8f66d247ec937cd60a358a",
+    "type": "pull_request",
+    "title": "Fix broken update_config CLI command",
+    "author": "RickiNano",
+    "body": "`update_config` CLI command can create corrupted output if a user's config and the default config doesn't have the same line by line structure. \r\nThis PR rewrites the merge logic in tomlconfig::merge_defaults so that it compares values by their fully-qualified TOML key instead of line by line",
+    "draft": false,
+    "pull_request": 5087,
+    "label": "RickiNano:Fix_update_config",
+    "created_at": "2026-06-13T20:59:26Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-06-16T17:29:13Z",
+    "run_id": null
   },
   {
     "hash": "f32261d317149ff65d0dec097c0c3997b66fc601",
