@@ -32059,7 +32059,7 @@
     "label": "clemahieu:stabilize-fork-replacement-tally",
     "created_at": "2026-06-29T15:54:47Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-06-29T17:30:38Z",
     "run_id": null
@@ -39099,6 +39099,22 @@
     "docker_tag": "gr0v1ty/nano-node:cc4008185c99fccf59e007c0a79ec799be18751d",
     "build_started_at": "2026-01-22T15:47:25Z",
     "run_id": "21255368618"
+  },
+  {
+    "hash": "cc50969f9fe62b91791ee1efa0726cfccb84c270",
+    "type": "pull_request",
+    "title": "Report preconfigured peer connect failures",
+    "author": "pwojcikdev",
+    "body": "This makes successful preconfigured peer connections visible, so operators can confirm configured peers are reachable. It also avoids flooding logs from repeated successes or expected failures when some configured peers are offline, while still surfacing persistent connectivity or configuration issues at a useful cadence.",
+    "draft": false,
+    "pull_request": 5092,
+    "label": "pwojcikdev:preconfigured-peer-connect-failures",
+    "created_at": "2026-06-29T16:03:42Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-06-29T19:21:19Z",
+    "run_id": null
   },
   {
     "hash": "cc768f39965084d99e043f9c779a44e0ec440b15",
@@ -47196,6 +47212,22 @@
     "docker_tag": "gr0v1ty/nano-node:f469c60eee717e6f7ec5f3796910a6e42625d538",
     "build_started_at": "2025-03-23T14:39:12Z",
     "run_id": "14020034896"
+  },
+  {
+    "hash": "f4896a2eaca8a93c53e6f2dcf344dd1ee6bd9cfb",
+    "type": "pull_request",
+    "title": "Add loopback-only peer mode to prevent live network connections in tests",
+    "author": "pwojcikdev",
+    "body": "Prevents test nodes configured for loopback-only peering from attempting outbound connections to real network peers.\r\nThis adds coverage for the intended isolation behavior: public peer endpoints should be rejected before reachout, while loopback peers remain valid.",
+    "draft": false,
+    "pull_request": 5093,
+    "label": "pwojcikdev:loopback-only-mode-flag",
+    "created_at": "2026-06-29T19:15:11Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-06-29T19:21:19Z",
+    "run_id": null
   },
   {
     "hash": "f49ef4e8dd9ed9fee81a3356c1b2e4c374f04633",
