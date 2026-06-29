@@ -7728,6 +7728,22 @@
     "run_id": "27219950302"
   },
   {
+    "hash": "2867b9b12af3b3d7a54a91a5083a232ca104cc43",
+    "type": "pull_request",
+    "title": "Stabilise flaky active_elections.fork_replacement_tally",
+    "author": "clemahieu",
+    "body": "The election convergence assertion timed out only on the slower macOS CI runners, reporting an opaque -1 sentinel. The settled state is deterministic (max_blocks votes: the start-winner placeholder plus the highest-weight representative forks); reaching it just needs the async block processing and cached-vote replay to drain, which 10s did not always allow under contention.\r\n\r\nReturn (votes, rep_count) so a timeout is self-describing instead of -1, and widen the deadlines to give the convergence real headroom.",
+    "draft": false,
+    "pull_request": 5091,
+    "label": "clemahieu:stabilize-fork-replacement-tally",
+    "created_at": "2026-06-29T15:54:47Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-06-29T22:09:29Z",
+    "run_id": null
+  },
+  {
     "hash": "287c500c498823d5e7f4356bc62a1fb313410752",
     "type": "pull_request",
     "title": "RPC endpoint for election statistics",
