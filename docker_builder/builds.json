@@ -17094,6 +17094,22 @@
     "run_id": "11526769613"
   },
   {
+    "hash": "57e8347821069f3d8b14ffcdf8436a4d37d1ea96",
+    "type": "pull_request",
+    "title": "Stabilise flaky vote_generator.multiple_representatives test",
+    "author": "clemahieu",
+    "body": "The test added a global node.observers.vote handler and asserted the total observed vote count equalled 4 (one per wallet representative). Once the four representatives begin voting, the node also emits final votes for the rest of the setup chain, all of which reach the same global observer. On a fast runner the assertion catches the brief instant the count is 4 before those background votes land; under load they interleave and the count never settles at 4 (observed 40/44/60 in CI and locally under contention).\r\n\r\nAssert instead on the distinct representatives observed voting for the test block. That set is bounded by the four wallet representatives and is immune to the unrelated background votes, so it is a stable quantity. The membership checks are likewise restricted to votes for the block, where previously they would have tripped on any background vote for another hash.",
+    "draft": false,
+    "pull_request": 5097,
+    "label": "clemahieu:stabilize-vote-generator-multiple-reps",
+    "created_at": "2026-06-29T22:31:07Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-06-29T23:14:04Z",
+    "run_id": null
+  },
+  {
     "hash": "581bf7098a9b7f75efb63b544b42cd99e6d7c34d",
     "type": "pull_request",
     "pull_request": 4286,
