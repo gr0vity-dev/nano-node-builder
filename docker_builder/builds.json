@@ -32121,6 +32121,22 @@
     "run_id": "7848028481"
   },
   {
+    "hash": "a54a4a52d2b6c91732b20d5a0eae2d31b211ecad",
+    "type": "pull_request",
+    "title": "Extract bootstrap verify policy",
+    "author": "pwojcikdev",
+    "body": "verify: frontiers and blocks response validation extracted from bootstrap_context and frontier_strategy into bootstrap/verify.{hpp,cpp} as free functions over (payload, typed query). The blocks chain-continuity check and frontiers ordering/range checks now have direct unit coverage.\r\n\r\nverify_result moves to bootstrap/common.hpp.",
+    "draft": false,
+    "pull_request": 5095,
+    "label": "pwojcikdev:bootstrap-verify-extract",
+    "created_at": "2026-06-29T19:52:28Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-06-29T20:59:21Z",
+    "run_id": null
+  },
+  {
     "hash": "a5503c55bfd94608796541c71a620d4dd026b9db",
     "type": "pull_request",
     "pull_request": 4353,
@@ -43759,6 +43775,22 @@
     "run_id": "20315490503"
   },
   {
+    "hash": "e371484f3a305321e9f02eb18a9f05968d5fdf01",
+    "type": "pull_request",
+    "title": "Fix race condition in confirm_quorum test",
+    "author": "clemahieu",
+    "body": "node.confirm_quorum intermittently failed on slow/contended CI runners at ASSERT_EQ (1, election->votes ().size ()) with a value of 2. Between processing send1 and the send_action that drained genesis below quorum, the backlog scheduler could activate send1's election while genesis was still a heavy principal representative, letting genesis cast a sub-quorum vote that was cached permanently. The election's confirmation outcome was never at risk; only the vote-count assertion was racy.\r\n\r\nDrain genesis to zero weight through the ledger directly and insert the voting key only once that is done, so genesis can never vote on the election while it still holds weight, regardless of scheduler timing.",
+    "draft": false,
+    "pull_request": 5096,
+    "label": "clemahieu:stabilize-confirm-quorum",
+    "created_at": "2026-06-29T20:27:09Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-06-29T20:59:21Z",
+    "run_id": null
+  },
+  {
     "hash": "e38d9bf96d269e10ecd341686e077e4eb329ca27",
     "type": "commit",
     "author": "pwojcikdev",
@@ -48798,6 +48830,22 @@
     "docker_tag": "gr0v1ty/nano-node:fcd998f804f0309600636a32ffc164a2e9ccdcbe",
     "build_started_at": "2024-01-27T09:32:05Z",
     "run_id": "7677763732"
+  },
+  {
+    "hash": "fcdd2a8b5bbba96927ee4b317f070955a515b5b0",
+    "type": "pull_request",
+    "title": "Remove pending check for epoch open blocks",
+    "author": "pwojcikdev",
+    "body": "We need to remove the pending check because it creates an implicit dependency that the topology index cannot represent.\r\n\r\nFor an epoch open:\r\n\r\n- `previous == 0`\r\n- `link` is the epoch link, not a source block hash\r\n- sideband marks it as an epoch block, not a receive\r\n- `block.dependencies()` therefore returns no dependency edges\r\n- `topo_height` is assigned `1`, same as genesis\r\n\r\nThat is correct from the visible block graph. The block is a root-like account opener. Any later receive from that account has explicit dependencies: `previous = epoch_open` and `link = send_hash`, so that later receive gets ordered after both the epoch open and the send.\r\n\r\nThe old pending check broke this model. It said: “do not process this epoch open unless there is already some receivable for this account.” But that receivable comes from a send block, and that send block is not referenced anywhere in the epoch open payload. In topo order, that send will usually have `topo_height >= 2`, while the epoch open is at `topo_height = 1`. So topo bootstrap would deliver/process the epoch open before the pending entry exists, and the ledger would reject it with `gap_epoch_open_pending`.\r\n\r\nThat means the old rule made epoch opens depend on a later topo block. Worse, the dependency is not discoverable from the epoch-open block itself, so bootstrap cannot request or order the missing source deterministically. It turns a supposed one-pass topological stream into “process this root block only after some unknown future send creates pending.”\r\n\r\nRemoving the pending check makes the rules consistent:\r\n\r\n- epoch opens are accepted as rootless topo-height-1 blocks;\r\n- they do not create funds or consume pending;\r\n- actual receives still require the explicit pending source and are ordered after both dependencies;\r\n- topo bootstrap can process blocks in topo order without hidden edges.",
+    "draft": false,
+    "pull_request": 5094,
+    "label": "pwojcikdev:epoch-open-remove-pending-check",
+    "created_at": "2026-06-29T19:25:26Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-06-29T20:59:21Z",
+    "run_id": null
   },
   {
     "hash": "fcf9af2960670d0f6abea01fcf4740f762beb3f1",
