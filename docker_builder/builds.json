@@ -21079,11 +21079,11 @@
     "title": "Stabilise flaky active_elections.fork_replacement_tally (#5091)\n\nThe test gated on election->votes ().size () == max_blocks before counting\nrepresentative votes, and timed out (seen on macOS/Windows) once that size\nexceeded max_blocks. votes () returns last_votes, keyed by account, not by\nretained block: replace_by_weight evicts a fork via remove_block and erases\nthe votes present at that moment, but a fork's cached vote can be applied\nafter the fork has already been evicted, leaving an orphan vote that is never\ncleaned. On slow runners these orphans accumulate, so votes ().size () settles\nabove max_blocks permanently and the equality never holds.\n\nCount only representatives whose vote still points at a block retained in the\nelection, which is the stable quantity the test means to assert (the highest\n-weight forks that survived replacement), and drop the votes ().size () gate;\nelection->blocks ().size () == max_blocks is already asserted separately.\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
     "pull_request": "5091",
     "created_at": "2026-06-30T08:57:58Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-06-30T11:49:55Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:6acad638498d3f152ef6164f72bee7182aa32e35",
     "build_started_at": "2026-06-30T11:21:56Z",
-    "run_id": null
+    "run_id": "28440543047"
   },
   {
     "hash": "6acfdee8e3bb62370b069c071e7bb3747d79d389",
