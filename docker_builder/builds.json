@@ -41905,11 +41905,11 @@
     "title": "Fix race condition in confirm_quorum test (#5096)\n\nnode.confirm_quorum intermittently failed on slow/contended CI runners at\nASSERT_EQ (1, election->votes ().size ()) with a value of 2. Between\nprocessing send1 and the send_action that drained genesis below quorum, the\nbacklog scheduler could activate send1's election while genesis was still a\nheavy principal representative, letting genesis cast a sub-quorum vote that\nwas cached permanently. The election's confirmation outcome was never at\nrisk; only the vote-count assertion was racy.\n\nDrain genesis to zero weight through the ledger directly and insert the\nvoting key only once that is done, so genesis can never vote on the election\nwhile it still holds weight, regardless of scheduler timing.\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
     "pull_request": "5096",
     "created_at": "2026-06-30T08:57:39Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-06-30T19:49:30Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:d91fa07c42e47264f5b0fcc815db837858df0bb5",
     "build_started_at": "2026-06-30T11:21:56Z",
-    "run_id": null
+    "run_id": "28469845589"
   },
   {
     "hash": "d923412827e2969870fb4e0e36e5507d1fe4c6a7",
