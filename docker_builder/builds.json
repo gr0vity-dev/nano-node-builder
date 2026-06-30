@@ -41906,7 +41906,7 @@
     "pull_request": "5096",
     "created_at": "2026-06-30T08:57:39Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-06-30T11:21:56Z",
     "run_id": null
@@ -42674,6 +42674,22 @@
     "docker_tag": "gr0v1ty/nano-node:dcbb9858535f609116133ec940284cb1d4050a38",
     "build_started_at": "2024-05-24T13:56:05Z",
     "run_id": "9225114660"
+  },
+  {
+    "hash": "dce8c2bf4cecaf6801ea5b6f0d8ba996004f5224",
+    "type": "pull_request",
+    "title": "Add loopback-only peer mode to prevent live network connections in tests",
+    "author": "pwojcikdev",
+    "body": "Prevents test nodes configured for loopback-only peering from attempting outbound connections to real network peers.\r\nThis adds coverage for the intended isolation behavior: public peer endpoints should be rejected before reachout, while loopback peers remain valid.",
+    "draft": false,
+    "pull_request": 5093,
+    "label": "pwojcikdev:loopback-only-mode-flag",
+    "created_at": "2026-06-29T19:15:11Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-06-30T19:17:58Z",
+    "run_id": null
   },
   {
     "hash": "dcf214c9580ee9212f6dd72678056c24b08f4298",
@@ -43722,6 +43738,22 @@
     "docker_tag": "gr0v1ty/nano-node:e1d1517ab841ec23358218ec0f277836ff481f7a",
     "build_started_at": "2024-03-15T15:29:42Z",
     "run_id": "8298619683"
+  },
+  {
+    "hash": "e1f917651991aefe666c8a0f907f14662d2d5205",
+    "type": "pull_request",
+    "title": "Extract bootstrap verify policy",
+    "author": "pwojcikdev",
+    "body": "verify: frontiers and blocks response validation extracted from bootstrap_context and frontier_strategy into bootstrap/verify.{hpp,cpp} as free functions over (payload, typed query). The blocks chain-continuity check and frontiers ordering/range checks now have direct unit coverage.\r\n\r\nverify_result moves to bootstrap/common.hpp.",
+    "draft": false,
+    "pull_request": 5095,
+    "label": "pwojcikdev:bootstrap-verify-extract",
+    "created_at": "2026-06-29T19:52:28Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-06-30T19:17:58Z",
+    "run_id": null
   },
   {
     "hash": "e2073c86389da820ef44a2c0870d345cabf8a489",
