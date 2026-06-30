@@ -21073,6 +21073,19 @@
     "run_id": "14542043319"
   },
   {
+    "hash": "6acad638498d3f152ef6164f72bee7182aa32e35",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Stabilise flaky active_elections.fork_replacement_tally (#5091)\n\nThe test gated on election->votes ().size () == max_blocks before counting\nrepresentative votes, and timed out (seen on macOS/Windows) once that size\nexceeded max_blocks. votes () returns last_votes, keyed by account, not by\nretained block: replace_by_weight evicts a fork via remove_block and erases\nthe votes present at that moment, but a fork's cached vote can be applied\nafter the fork has already been evicted, leaving an orphan vote that is never\ncleaned. On slow runners these orphans accumulate, so votes ().size () settles\nabove max_blocks permanently and the equality never holds.\n\nCount only representatives whose vote still points at a block retained in the\nelection, which is the stable quantity the test means to assert (the highest\n-weight forks that survived replacement), and drop the votes ().size () gate;\nelection->blocks ().size () == max_blocks is already asserted separately.\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+    "pull_request": "5091",
+    "created_at": "2026-06-30T08:57:58Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-06-30T11:21:56Z",
+    "run_id": null
+  },
+  {
     "hash": "6acfdee8e3bb62370b069c071e7bb3747d79d389",
     "type": "commit",
     "author": "pwojcikdev",
@@ -29415,6 +29428,19 @@
     "docker_tag": "gr0v1ty/nano-node:963570e8e19da751ffe17860540864878f1c0b12",
     "build_started_at": "2026-01-02T13:55:41Z",
     "run_id": "20659325386"
+  },
+  {
+    "hash": "96360d13208a888cf30305d4e3a1385cf4ac3ad5",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Merge pull request #5098 from clemahieu/fix-watch-only-representative-abort\n\nDon't abort the reps scan on a watch-only representative",
+    "pull_request": "5098",
+    "created_at": "2026-06-30T08:56:49Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-06-30T11:21:56Z",
+    "run_id": null
   },
   {
     "hash": "96374dc64212ce8966118ad8b67bfccaa1028709",
@@ -39885,6 +39911,19 @@
     "run_id": "6763344753"
   },
   {
+    "hash": "cf0611e0af4ba4b56707955aa4f6e7fd78aa4042",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Merge pull request #5097 from clemahieu/stabilize-vote-generator-multiple-reps\n\nStabilise flaky vote_generator.multiple_representatives test",
+    "pull_request": "5097",
+    "created_at": "2026-06-30T08:57:05Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-06-30T11:21:56Z",
+    "run_id": null
+  },
+  {
     "hash": "cf109c900a0a4c056ec691ae665aa8669f7ed35b",
     "type": "pull_request",
     "pull_request": 4158,
@@ -41845,6 +41884,19 @@
     "docker_tag": "gr0v1ty/nano-node:d91f5992101398f1db451d237a95fc59e3fa846b",
     "build_started_at": "2024-04-26T22:30:20Z",
     "run_id": "8855146462"
+  },
+  {
+    "hash": "d91fa07c42e47264f5b0fcc815db837858df0bb5",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Fix race condition in confirm_quorum test (#5096)\n\nnode.confirm_quorum intermittently failed on slow/contended CI runners at\nASSERT_EQ (1, election->votes ().size ()) with a value of 2. Between\nprocessing send1 and the send_action that drained genesis below quorum, the\nbacklog scheduler could activate send1's election while genesis was still a\nheavy principal representative, letting genesis cast a sub-quorum vote that\nwas cached permanently. The election's confirmation outcome was never at\nrisk; only the vote-count assertion was racy.\n\nDrain genesis to zero weight through the ledger directly and insert the\nvoting key only once that is done, so genesis can never vote on the election\nwhile it still holds weight, regardless of scheduler timing.\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+    "pull_request": "5096",
+    "created_at": "2026-06-30T08:57:39Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-06-30T11:21:56Z",
+    "run_id": null
   },
   {
     "hash": "d923412827e2969870fb4e0e36e5507d1fe4c6a7",
