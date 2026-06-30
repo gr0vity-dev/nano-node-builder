@@ -28003,11 +28003,11 @@
     "title": "Report preconfigured peer connect failures (#5092)\n\n* Report preconfigured peer connect failures\n\nPropagate outbound TCP connection outcomes through reachout callbacks, including local rejection errors.\n\nLog failed attempts to explicitly configured peers and cover callback success and failure paths in tcp listener tests.\n\n* Replace the nullable `connect_callback` default (`{}`) with no-op lambda default\n\nAllowing call sites to invoke the callback\nunconditionally and removing all `if (callback)` guards.\n\n* Add `nano::noop<F>()` helper; replace inline no-op lambdas\n\nReplace repeated inline no-op lambda defaults with a reusable\n`nano::noop<F>()` utility that constructs a type-erased no-op\ncallable for any `std::function<void(Args...)>` specialization.",
     "pull_request": "5092",
     "created_at": "2026-06-30T17:25:07Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-06-30T17:56:34Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:8f73988fa8d5554bcfa8a91581cb3be04c2091fb",
     "build_started_at": "2026-06-30T17:28:28Z",
-    "run_id": null
+    "run_id": "28463451886"
   },
   {
     "hash": "8f9536b915f781740347c7cf5afcda18be2698d9",
