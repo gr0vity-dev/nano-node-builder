@@ -24407,11 +24407,11 @@
     "title": "Add loopback-only peer mode to prevent live network connections in tests (#5093)\n\n* Add loopback-only peer mode to prevent live network connections in tests\n\n* Fix loopback check to include IPv4-mapped addresses\n\nThe `disable_non_loopback_peers` flag was rejecting IPv4 loopback\naddresses (e.g. 127.0.0.1 mapped as ::ffff:127.0.0.1) because the\ncheck only tested the raw v6 `is_loopback()` bit, which is false for\nv4-mapped addresses. Unwrap the v4-mapped address before testing so\nboth ::1 and ::ffff:127.0.0.1 are correctly treated as loopback.",
     "pull_request": "5093",
     "created_at": "2026-06-30T20:36:15Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-06-30T23:02:26Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:7ba55f4387f3eb483c8a63859bbb613fe2cc112e",
     "build_started_at": "2026-06-30T21:07:30Z",
-    "run_id": null
+    "run_id": "28480281725"
   },
   {
     "hash": "7bb169305152556fd1f1db6b718916c2512fba65",
