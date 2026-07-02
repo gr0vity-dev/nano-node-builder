@@ -35783,6 +35783,22 @@
     "docker_tag": "gr0v1ty/nano-node:b90618ca13b026103d71ab662b6152baa9c36973"
   },
   {
+    "hash": "b91683449cc0cddffd918f1d1a020ca4a38a5d07",
+    "type": "pull_request",
+    "title": "Fix crash in --validate_blocks for open state blocks",
+    "author": "clemahieu",
+    "body": "## Summary\n\n`nano_node --validate_blocks` crashes with `terminate called after throwing an instance of 'std::bad_optional_access'` (SIGABRT) the first time it encounters a state-type open block, on any ledger, whenever pruning is disabled (the common case — pruning is opt-in).\n\n## Root cause\n\nIn `check_account()`'s \"Validate block details set in the sideband\" branch:\n\n```cpp\nauto prev_balance = node->ledger.any.block_balance (transaction, block->previous ());\nif (!node->ledger.pruning || prev_balance)\n{\n\tif (block->balance () < prev_balance.value ())\n\t...\n```\n\n`prev_balance` is a `std::optional<nano::amount>`. The guard `!node->ledger.pruning || prev_balance` is only a real check when pruning is *enabled* — when it's disabled, `!node->ledger.pruning` is `true`, so the guard passes regardless of whether `prev_balance` actually has a value, and the `.value()` calls below run unconditionally.\n\nFor any account's *open* block, `previous` is the zero hash by definition. `block_balance(transaction, zero_hash)` correctly returns an empty optional — there is no block at hash zero to look up. So this crashes deterministically on the first state-type open block processed, on essentially every real-world ledger (pruning is opt-in and uncommon).\n\nConfirmed via `gdb` + a `RelWithDebInfo` build with a temporary diagnostic print at the crash site, against a real synced ledger:\n\n```\naccount=nano_1111111111111111111111111111111111111111111111111117353trpda\nprevious=0000000000000000000000000000000000000000000000000000000000000000\nheight=0\ntype=6 (state)\n```\n\n(Not a special/reserved account — its public key is just numerically close to zero, hence the address encodes as mostly `1`s.)\n\n## Fix\n\nDefault `prev_balance` to zero when `block->previous()` is the zero hash (an open block), mirroring the pattern already used a few lines above for the epoch-link signature check in the same function, which already handles this correctly via `nano::amount prev_balance (0)` + `value_or (0)`. Only fall back to the pruned-block-exists check when pruning is actually enabled; report a clear error via the existing `print_error_message` mechanism instead of crashing for the (otherwise unreachable, and likely indicative of a real problem) case of a missing previous balance with pruning disabled.\n\n## Testing\n\n- Reproduced the crash reliably against a real, live-synced ledger (not synthetic data).\n- Confirmed deterministic, not a threading race (`--threads=1` reproduces identically).\n- Confirmed unchanged/still-present on `V27.0`, `V28.2` (current stable), and `develop` prior to this fix.\n- Applied the fix, rebuilt, and re-ran `--validate_blocks` against the exact same ledger data that previously crashed: completes successfully now (45,684 accounts / 74,818 pending blocks validated, exits cleanly instead of SIGABRT).\n\n## Note\n\nThat test run reported some unrelated pre-existing validation findings (`Incorrect source epoch for block ...`) on this still-syncing ledger. Those are a separate concern, unaffected by and unrelated to this fix — this PR is scoped only to eliminating the crash so `--validate_blocks` can actually run to completion and report whatever it finds, rather than aborting immediately.",
+    "draft": false,
+    "pull_request": 5099,
+    "label": "clemahieu:fix/validate-blocks-open-block-prev-balance",
+    "created_at": "2026-07-02T07:06:04Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-02T08:33:19Z",
+    "run_id": null
+  },
+  {
     "hash": "b91ff4bb4fb2c1bc7b5daa12436970c7f72354a2",
     "type": "commit",
     "created_at": "2023-05-15T12:54:01Z",
