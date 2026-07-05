@@ -11132,6 +11132,22 @@
     "run_id": "21334762010"
   },
   {
+    "hash": "393aea2253f81d4ca4f2531037487d1016e01379",
+    "type": "pull_request",
+    "title": "Extended ledger",
+    "author": "Exxenoz",
+    "body": "## Summary\r\n\r\nThis branch adds optional extended ledger indices to speed up RPC paths that previously required expensive ledger scans. The indices are persisted in the store, maintained by ledger runtime hooks, and can be populated or dropped through dedicated CLI commands.\r\n\r\nThe extended ledger indices added are:\r\n\r\n- `receive_block_by_send_block`\r\n  - Maps a send/source block hash to the receive/open block that consumed it.\r\n  - Speeds up `blocks_info` when `receive_hash=true`.\r\n\r\n- `account_receivables_by_amount`\r\n  - Indexes receivables by `{ account, amount, send_block_hash }`.\r\n  - Speeds up `receivable` and `accounts_receivable` when sorted results are requested.\r\n\r\n- `account_delegators_by_weight`\r\n  - Indexes delegators by `{ representative, weight, delegator }`.\r\n  - Speeds up `delegators` and `delegators_count`.\r\n\r\n- `block_hash_by_account_height`\r\n  - Indexes `{ account, height } -> block_hash`.\r\n  - Speeds up `account_history`, especially offset-based lookups.\r\n\r\nThe branch also adds shared extended ledger lifecycle handling, including persisted initialized flags, startup population, drop behavior, runtime add/remove/update hooks, and logging for index population and maintenance.\r\n\r\n**Note:** when the extended `account_delegators_by_weight` index is enabled, the `delegators` RPC now returns delegators in descending weight order instead of delegator account order.\r\n**Note:** when the extended `account_receivables_by_amount` index is enabled, the `accounts_receivable` and `receivable` RPCs use that index only for sorted requests (`sorting: true`).\r\n\r\n## CLI\r\n\r\nNew maintenance commands:\r\n\r\n- `--populate_extended_ledger_indices`\r\n  - Builds missing extended ledger indices for an existing ledger.\r\n\r\n- `--drop_extended_ledger_indices`\r\n  - Drops all extended ledger index data and marks the indices disabled.\r\n\r\nThe extended ledger index feature is controlled through the node configuration option `extended_ledger_index`.\r\n\r\n## Tests\r\n\r\nAdds focused core tests for extended ledger index population, runtime maintenance, rollback/delete behavior, drop behavior, disabled reopen behavior, and direct index-table verification.\r\n\r\nThe extended ledger index test cases were created with GPT-5.5 assistance (using Codex), and all changes were manually reviewed by me.",
+    "draft": false,
+    "pull_request": 4981,
+    "label": "Exxenoz:extended_ledger",
+    "created_at": "2026-01-05T14:39:48Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-05T20:01:38Z",
+    "run_id": null
+  },
+  {
     "hash": "394c9df5d7bd4f2430be052135f545d061cf4a4c",
     "type": "commit",
     "author": "pwojcikdev",
