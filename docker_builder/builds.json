@@ -23425,6 +23425,22 @@
     "run_id": "9124703498"
   },
   {
+    "hash": "768073ab0207e10442fb3d73876bf74c8a96d6dd",
+    "type": "pull_request",
+    "title": "Add per-block tags to block_processor",
+    "author": "pwojcikdev",
+    "body": "Adds an opaque std::any tag field to nano::block_context and threads it through the block_processor submission APIs (add, add_many, add_blocking), allowing submitters to attach arbitrary per-block metadata that is carried alongside the block through processing and available in result notifications. bootstrap_context::inspect is updated to take the full block_context instead of unpacked block/source arguments, giving it access to the context (including the tag) in one place. Also adds test coverage for tag propagation and documentation comments to the block_processor header.",
+    "draft": false,
+    "pull_request": 5102,
+    "label": "pwojcikdev:block-context-tag",
+    "created_at": "2026-07-08T11:39:15Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-08T12:53:44Z",
+    "run_id": null
+  },
+  {
     "hash": "7684a30045116f767828a3a0d6c6e240ad488b4f",
     "type": "pull_request",
     "title": "Fix `epoch_conflict_confirm` test",
@@ -30729,6 +30745,22 @@
     "docker_tag": "gr0v1ty/nano-node:9bffe3b6f059e3b90290ec7033ce35b1f66470c4",
     "build_started_at": "2024-09-30T13:43:50Z",
     "run_id": "11107419177"
+  },
+  {
+    "hash": "9c01754befd29fd4fef6aa7eda1245420020de75",
+    "type": "pull_request",
+    "title": "Remove pending check for epoch open blocks",
+    "author": "pwojcikdev",
+    "body": "We need to remove the pending check because it creates an implicit dependency that the topology index cannot represent.\r\n\r\nFor an epoch open:\r\n\r\n- `previous == 0`\r\n- `link` is the epoch link, not a source block hash\r\n- sideband marks it as an epoch block, not a receive\r\n- `block.dependencies()` therefore returns no dependency edges\r\n- `topo_height` is assigned `1`, same as genesis\r\n\r\nThat is correct from the visible block graph. The block is a root-like account opener. Any later receive from that account has explicit dependencies: `previous = epoch_open` and `link = send_hash`, so that later receive gets ordered after both the epoch open and the send.\r\n\r\nThe old pending check broke this model. It said: “do not process this epoch open unless there is already some receivable for this account.” But that receivable comes from a send block, and that send block is not referenced anywhere in the epoch open payload. In topo order, that send will usually have `topo_height >= 2`, while the epoch open is at `topo_height = 1`. So topo bootstrap would deliver/process the epoch open before the pending entry exists, and the ledger would reject it with `gap_epoch_open_pending`.\r\n\r\nThat means the old rule made epoch opens depend on a later topo block. Worse, the dependency is not discoverable from the epoch-open block itself, so bootstrap cannot request or order the missing source deterministically. It turns a supposed one-pass topological stream into “process this root block only after some unknown future send creates pending.”\r\n\r\nRemoving the pending check makes the rules consistent:\r\n\r\n- epoch opens are accepted as rootless topo-height-1 blocks;\r\n- they do not create funds or consume pending;\r\n- actual receives still require the explicit pending source and are ordered after both dependencies;\r\n- topo bootstrap can process blocks in topo order without hidden edges.",
+    "draft": false,
+    "pull_request": 5094,
+    "label": "pwojcikdev:epoch-open-remove-pending-check",
+    "created_at": "2026-06-29T19:25:26Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-08T12:53:44Z",
+    "run_id": null
   },
   {
     "hash": "9c101081700269df97f12862bda5ee58b220cd49",
