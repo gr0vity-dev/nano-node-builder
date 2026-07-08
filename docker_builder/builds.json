@@ -15208,11 +15208,11 @@
     "title": "ci: retire the public test network from the release pipeline (#5104)\n\nThe Nano Foundation public test network is being decommissioned. Stop\nbuilding and publishing test-network artifacts from the release CI:\n\n- build_deploy.yml: drop \"TEST\" from the macOS/Linux/Docker/Windows\n  network matrices, so no test builds are produced or published.\n- deploy.sh / deploy.ps1: remove the now-dead NETWORK=TEST branch that\n  uploaded to s3://repo.nano.org/test/binaries/.\n- build-deploy.sh / build.ps1: remove the dead NETWORK=TEST branch that\n  configured -DACTIVE_NETWORK=nano_test_network.\n- docker-common.sh: remove the NETWORK=TEST branch that built and pushed\n  the nanocurrency/nano-test image (-test tag suffix).\n\nThe nano_test_network build type remains available for local builds\n(-DACTIVE_NETWORK=nano_test_network); only the CI-published public\ntest-net artifacts are being retired. Legacy .gitlab-ci.yml is untouched\n(it never sets NETWORK, so its TEST case was already unreachable).\n\n\nClaude-Session: https://claude.ai/code/session_018ZPbdc2YzF1nMhXk8RC1m9\n\nCo-authored-by: Claude Opus 4.8 <noreply@anthropic.com>",
     "pull_request": "5104",
     "created_at": "2026-07-08T21:11:52Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-07-08T22:21:02Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:4d5f20acd6bd5277e38db579b1dcd7e90f5d9a05",
     "build_started_at": "2026-07-08T21:52:03Z",
-    "run_id": null
+    "run_id": "28978296337"
   },
   {
     "hash": "4d66da7d4a66e6523c3c9ebc0e2c25b71c30fca7",
