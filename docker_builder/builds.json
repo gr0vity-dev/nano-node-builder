@@ -28161,6 +28161,22 @@
     "docker_tag": "gr0v1ty/nano-node:8f0c1023fc9b88a5ca629966803147f70b6da2bf"
   },
   {
+    "hash": "8f2c2b4530085bae99971dc084aaf0f9a3b858b2",
+    "type": "pull_request",
+    "title": "Move signature verification out of the write transaction and parallelize it",
+    "author": "RickiNano",
+    "body": "Block signature verification currently runs serially inside the ledger write transaction: the block processor opens a write tx per batch and each ledger.process() call does its ed25519 checks while holding it. This PR moves that CPU work out of the transaction and onto a small worker pool, so batches are pre-validated in parallel before the write tx is opened.\r\n\r\nBenefits\r\n\r\n- Higher block throughput. Serial signature work now spread across up to 4 threads\r\n- Shorter write transaction hold times. The write tx now spends its time on actual store reads/writes instead of signature validation\r\n- Zero behavioral change. Results are bit-identical to today: same checks, same order of ledger application, same result codes, same notification order. A duplicate block with a bad signature still returns old, forks and rollbacks are untouched.\r\n\r\nHow it works\r\n\r\n- block_context gains a nano::signature_verification result (unknown / valid / valid_epoch / invalid), defaulting to unknown.\r\n- process_batch() fans the batch out across a dedicated nano::thread_pool between next_batch() and tx_begin_write(). Workers verify state blocks (against the account owner first, then the epoch signer for epoch links — the same order the ledger processor uses) and open blocks. Legacy send/receive/change blocks need a frontier lookup to determine the signer, so they stay unknown and are verified inline as today; they are effectively extinct on the live network.\r\n- ledger.process() accepts the verification result (defaulting to unknown, so all existing callers keep today's behavior). Inside ledger_processor, a new validate_signature() helper consumes the pre-computed result where it is conclusive and falls back to validate_message() where it isn't. Debug builds re-verify every skipped check via debug_assert.\r\n- Pre-verified invalid blocks are still rejected at the existing check site inside the transaction (not short-circuited earlier), preserving today's result-code precedence.\r\n\r\nCo-authored with Claude Fable",
+    "draft": false,
+    "pull_request": 5103,
+    "label": "RickiNano:mt-block-processor",
+    "created_at": "2026-07-08T14:57:41Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-09T21:42:36Z",
+    "run_id": null
+  },
+  {
     "hash": "8f2c98c9b232ebcfd3d7f5901c47e5593fbd3fa4",
     "type": "pull_request",
     "title": "Traffic shaping",
