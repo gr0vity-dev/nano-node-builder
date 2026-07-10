@@ -7313,6 +7313,22 @@
     "run_id": "8190876650"
   },
   {
+    "hash": "254cb27dd94dcf67900bc9e5f346352ee5dcc762",
+    "type": "pull_request",
+    "title": "Rework token bucket rate limiting",
+    "author": "pwojcikdev",
+    "body": "Replaces the old rate limiter with a redesigned, layered implementation in `nano/lib/rate_limiting.{hpp,cpp}`:\r\n\r\n- **`nano::rate::token_bucket`** — the pure algorithm: lazily refilled from a steady clock, fractional balance for accuracy at low rates. All time-dependent methods take a defaulted `now` parameter so tests can inject timestamps and assert exact values instead of sleeping.\r\n- **`nano::rate_limiter_impl<Mutex>`** — a thin locking wrapper with two aliases: `nano::rate_limiter` (thread-safe, default) and `nano::rate_limiter_st` (single-threaded, backed by the new `nano::null_mutex`).\r\n- **Vocabulary types** at `nano::` scope: `rate_limit` (rate + burst ratio, with `rate_limit::unlimited ()`) and `limiter_result` (granted + `retry_after`).\r\n\r\nKey semantics:\r\n\r\n- A rate of 0 disables limiting entirely.\r\n- Requests larger than the bucket capacity are granted when the bucket is full and overdraw the balance, preserving the average rate without deadlocking callers (resolves the old bootstrap_server TODO about batch size vs. capacity).\r\n- On rejection, `consume` returns an exact `retry_after` hint, so wait loops sleep precisely as long as needed instead of polling on fixed 100ms intervals or hand-computed heuristics. All call sites (tcp_channel, local_block_broadcaster, backlog_scan, bounded_backlog, bootstrap_server) are ported to it.\r\n- Comparisons use an epsilon tolerance so the retry hint is guaranteed sufficient at floating-point boundaries, and `last_refill` never moves backwards when concurrent callers pass slightly out-of-order timestamps.\r\n\r\n`bandwidth_limiter` keeps its traffic-type routing role but its config collapses to two `rate_limit` members.\r\n\r\nIncludes a deterministic test suite (42 cases, both limiter variants): refill math, burst capacity, overdraw, retry-hint sufficiency, reset transitions, a busy-spin regression hammering the bucket with rejected microsecond-spaced requests, and multi-threaded consistency checks.",
+    "draft": false,
+    "pull_request": 5105,
+    "label": "pwojcikdev:rate-limiter-rework",
+    "created_at": "2026-07-09T12:29:15Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-10T17:10:35Z",
+    "run_id": null
+  },
+  {
     "hash": "2586877120267acc5a07aca1ce4c73a5c40d034f",
     "type": "commit",
     "author": "pwojcikdev",
