@@ -12958,6 +12958,22 @@
     "run_id": "9230613808"
   },
   {
+    "hash": "424c9d1757156b84a5af9a4f8a99f34ac08fafa9",
+    "type": "pull_request",
+    "title": "Partition bootstrap block submission queues",
+    "author": "pwojcikdev",
+    "body": "Bootstrap strategies previously shared a single block processor queue, so a fast source could starve other strategies. This PR partitions submissions per source and avoids wasting queue slots on blocks we already have.\r\n\r\n### Changes\r\n\r\n- Tag block processor submissions with a per-source placeholder channel (`null_channel`), giving the priority and database strategies separate fair-queue buckets. The processor round-robins ingest across sources, and `wait_block_processor (source)` gates each strategy on its own bucket instead of the shared aggregate.\r\n- Move block submission off the message-processing thread onto the bootstrap worker: PoW validation, ledger reads and block processor calls no longer run under the bootstrap mutex.\r\n- Filter out the leading run of blocks already present in the ledger before submission (the response is a contiguous chain, so known blocks form a prefix). Fully-known responses release the account cooldown directly and count database pulls as unproductive so the throttle backs off.\r\n- Give the frontier strategy a dedicated worker pool so frontier processing no longer competes with block submission.\r\n- Add `node::create_loopback_channel` / `create_null_channel` factories; `vote_generator` and `rep_crawler` now receive their loopback channel via constructor injection.\r\n- New stats: `filtered_blocks`, `submission_complete`, `bootstrap_wait_block_processor` per source; `timestamp_set/reset` stats moved into `account_sets` where the state changes happen.\r\n- Tests: `bootstrap.priority_filters_known_blocks` (early filter path) and `block_processor.size_per_channel` (per-channel bucket isolation).\r\n\r\n### Notes\r\n\r\n- `old` results from bootstrap drop sharply during sync; `filtered_blocks` picks up that volume.\r\n- `bootstrap.block_processor_threshold` now applies per source, and each bucket carries the full bootstrap fair-queue weight, so aggregate bootstrap capacity/share vs live traffic increases.",
+    "draft": false,
+    "pull_request": 5106,
+    "label": "pwojcikdev:partition-bootstrap-block-queues",
+    "created_at": "2026-07-13T14:18:48Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-13T15:49:26Z",
+    "run_id": null
+  },
+  {
     "hash": "4251ff1b6a131768e3ab1172ef3816f88c8de44d",
     "type": "pull_request",
     "title": "Stats overhaul",
