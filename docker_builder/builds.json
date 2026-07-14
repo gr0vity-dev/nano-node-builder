@@ -47812,6 +47812,22 @@
     "run_id": "23344624241"
   },
   {
+    "hash": "f44f2745e4a057c81e5ece0312a4f4ec0d50d459",
+    "type": "pull_request",
+    "title": "Add peering (networking-only) node mode",
+    "author": "clemahieu",
+    "body": "Introduce a --peering mode for nodes that only participate in the peer-to-peer network and do not maintain a ledger. These are intended for the DNS bootstrap entries, where a node must be reachable and gossip peers but has no need to spend IO/CPU keeping the ledger current.\r\n\r\nA peering node keeps a genesis-only store and disables the ledger-consuming subsystems (schedulers, active elections, bootstrap sync and server, vote/cementing/backlog processing, rebroadcasters, voting), and drops incoming publish/confirm_ack at the message boundary so no blocks or votes are processed.\r\n\r\nTo keep peering nodes from degrading peers that do serve a ledger, a node advertises a no_ledger capability in the v3 handshake (and the nano_node_peering telemetry maker). Peers that understand the capability exclude peering nodes from bootstrap candidate selection and rep-crawler targets, while still gossiping them normally so they remain useful for peer discovery.\r\n\r\nThe capability describes the property (no ledger); the mode name describes the role (peering). \"light\" was avoided as it collides with both pruned nodes and light wallets.",
+    "draft": false,
+    "pull_request": 5107,
+    "label": "clemahieu:peering-node",
+    "created_at": "2026-07-14T17:05:03Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-14T20:19:11Z",
+    "run_id": null
+  },
+  {
     "hash": "f45210c813eceb4c5596ee0c8c11ee85b85b29b0",
     "type": "pull_request",
     "title": "Improve handling of rep weights snapshots",
