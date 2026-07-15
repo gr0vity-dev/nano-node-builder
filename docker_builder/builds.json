@@ -4889,6 +4889,22 @@
     "run_id": "17685376739"
   },
   {
+    "hash": "190630ebcf6af2add86eff9b5dc76f8c0e7fb051",
+    "type": "pull_request",
+    "title": "Replace bootstrap peer scoring with peer pool",
+    "author": "pwojcikdev",
+    "body": "## Summary\r\n\r\n- Rename bootstrap request traffic from `bootstrap_requests` to `bootstrap`.\r\n- Replace bootstrap peer scoring with a peer pool that tracks peer identity, capabilities, and outstanding request load.\r\n- Select the least-loaded capable peer and enforce per-channel request capacity.\r\n- Support peer exclusions for fanout requests.\r\n- Add non-reserving peer probing and recovery through release and periodic decay.\r\n- Use Boost.MultiIndex for efficient lookup by channel and outstanding load.\r\n- Add a dedicated `bootstrap_peer_pool` test suite.",
+    "draft": false,
+    "pull_request": 5108,
+    "label": "pwojcikdev:bootstrap-peer-pool",
+    "created_at": "2026-07-15T19:41:03Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-15T20:39:38Z",
+    "run_id": null
+  },
+  {
     "hash": "19198626b8e05e9a7ba1d92bea537385485a60e7",
     "type": "commit",
     "author": "RickiNano",
