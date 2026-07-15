@@ -25050,11 +25050,11 @@
     "title": "Partition bootstrap block submission queues (#5106)\n\n* Filter known bootstrap blocks before processing\n\nMove verified bootstrap block submission onto worker threads so ledger reads\nand block processor calls do not run under the bootstrap context mutex.\n\nDrop already-present block prefixes before queueing remaining blocks, track\nfiltered stats, and reset account cooldowns when responses are fully known.\nAdd coverage for priority pulls that should avoid `old` processor results.\n\n* Partition bootstrap block submission queues\n\n* Inject channel dependencies through node factories\n\nCreate dedicated loopback and null channels for components.\n\n* Track dropped block counts from bootstrap block submission\n\nExpose queued and dropped totals to callers, update tests and\nbenchmarks, and assert when bootstrap submissions are dropped.",
     "pull_request": "5106",
     "created_at": "2026-07-15T16:17:39Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-07-15T20:06:23Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:7e2a6362a039286393495527b7fee0b2b79c54be",
     "build_started_at": "2026-07-15T18:18:59Z",
-    "run_id": null
+    "run_id": "29445323044"
   },
   {
     "hash": "7e31e4ac08d2338956e493268a93a4f4077f1a6f",
