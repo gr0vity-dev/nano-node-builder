@@ -33895,6 +33895,19 @@
     "docker_tag": "gr0v1ty/nano-node:ac56df90d2d8e9614825dc567b054d145e6ce6f2"
   },
   {
+    "hash": "ac611e3b3ec97131a79d3a17be6160b7c91a1983",
+    "type": "commit",
+    "author": "clemahieu",
+    "title": "Add peering-only (networking-only) node mode (#5107)\n\nIntroduce a --peering_only mode for nodes that only participate in the\npeer-to-peer network and do not maintain a ledger. These are intended for\nthe DNS bootstrap entries, where a node must be reachable and gossip peers\nbut has no need to spend IO/CPU keeping the ledger current.\n\nA peering-only node keeps a genesis-only store and disables the\nledger-consuming subsystems (schedulers, active elections, bootstrap sync\nand server, vote/cementing/backlog processing, rebroadcasters, voting), and\ndrops incoming publish/confirm_ack at the message boundary so no blocks or\nvotes are processed.\n\nTo keep peering-only nodes from degrading peers that do serve a ledger, a\nnode advertises a no_ledger capability in the v3 handshake (and the\nnf_peering_node telemetry maker). Peers that understand the capability\nexclude peering-only nodes from bootstrap candidate selection and\nrep-crawler targets, while still gossiping them normally so they remain\nuseful for peer discovery.\n\nThe capability describes the property (no ledger); the mode name describes\nthe role (peering only). \"light\" was avoided as it collides with both\npruned nodes and light wallets.\n\nCovered by network.peer_discovery_via_peering_only_node, which asserts that\ntwo nodes knowing only a peering-only node discover each other through it.\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+    "pull_request": "5107",
+    "created_at": "2026-07-15T08:57:09Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-15T09:30:24Z",
+    "run_id": null
+  },
+  {
     "hash": "ac7483d32973678e11f72d65768bc7a8321cb0bd",
     "type": "pull_request",
     "title": "Bound the growth of `election_winner_details` set",
