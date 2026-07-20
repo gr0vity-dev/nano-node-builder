@@ -17263,6 +17263,22 @@
     "run_id": "10269618173"
   },
   {
+    "hash": "57996ccf99ffeb730bd20deaf87f56896cc630b0",
+    "type": "pull_request",
+    "title": "Fix tracking of TCP peer protocol versions",
+    "author": "pwojcikdev",
+    "body": "Peer protocol versions were incorrectly initialized using the local node’s protocol version. This caused peers to appear as if they supported the latest protocol even when their handshake advertised an older version.\r\n\r\nThis change:\r\n\r\n- captures the remote protocol version from the verified node ID handshake\r\n- groups the remote node ID, protocol version, and capabilities in `peer_info`\r\n- passes `peer_info` into the TCP channel constructor\r\n- initializes channel metadata atomically during construction\r\n- adds regression coverage using peers with different protocol versions",
+    "draft": false,
+    "pull_request": 5111,
+    "label": "pwojcikdev:fix-channel-protocol-version",
+    "created_at": "2026-07-18T18:12:51Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-20T14:27:01Z",
+    "run_id": null
+  },
+  {
     "hash": "579b78e0ff9fb28abf72786940f1353fa62b64fd",
     "type": "commit",
     "author": "pwojcikdev",
