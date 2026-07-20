@@ -1,0 +1,271 @@
+9d66dda40222aa90f0b9a46eb9280acab004109d: Pulling from gr0v1ty/nano-node
+ca2678b20700: Pulling fs layer
+f1ff79956aa5: Pulling fs layer
+5aa89d6bb7c1: Pulling fs layer
+f6d4cbe43850: Pulling fs layer
+6110dd44e429: Pulling fs layer
+c6608fb54c54: Pulling fs layer
+e69333727b1f: Pulling fs layer
+f7002eaa2bc7: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+e76612911e1a: Pulling fs layer
+f6d4cbe43850: Waiting
+07d3c13eb1d4: Pulling fs layer
+6110dd44e429: Waiting
+c6608fb54c54: Waiting
+e69333727b1f: Waiting
+4f4fb700ef54: Waiting
+f7002eaa2bc7: Waiting
+e76612911e1a: Waiting
+07d3c13eb1d4: Waiting
+f1ff79956aa5: Verifying Checksum
+f1ff79956aa5: Download complete
+ca2678b20700: Verifying Checksum
+ca2678b20700: Download complete
+6110dd44e429: Verifying Checksum
+6110dd44e429: Download complete
+c6608fb54c54: Verifying Checksum
+c6608fb54c54: Download complete
+e69333727b1f: Verifying Checksum
+e69333727b1f: Download complete
+f7002eaa2bc7: Verifying Checksum
+f7002eaa2bc7: Download complete
+f6d4cbe43850: Verifying Checksum
+f6d4cbe43850: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+e76612911e1a: Verifying Checksum
+e76612911e1a: Download complete
+07d3c13eb1d4: Verifying Checksum
+07d3c13eb1d4: Download complete
+ca2678b20700: Pull complete
+f1ff79956aa5: Pull complete
+5aa89d6bb7c1: Download complete
+5aa89d6bb7c1: Pull complete
+f6d4cbe43850: Pull complete
+6110dd44e429: Pull complete
+c6608fb54c54: Pull complete
+e69333727b1f: Pull complete
+f7002eaa2bc7: Pull complete
+4f4fb700ef54: Pull complete
+e76612911e1a: Pull complete
+07d3c13eb1d4: Pull complete
+Digest: sha256:5d1b45f316ba71f2ef0acd11942093f26b630f52a79ae8fd81af48afb6708355
+Status: Downloaded newer image for gr0v1ty/nano-node:9d66dda40222aa90f0b9a46eb9280acab004109d
+docker.io/gr0v1ty/nano-node:9d66dda40222aa90f0b9a46eb9280acab004109d
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_rocks_10k_bintree.json
+Start Fetching '5n4pr_rocks_10k_bintree_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_rocks_10k_bintree_config.json'
+Done  Fetching '5n4pr_rocks_10k_bintree_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_rocks_10k_bintree_config.json'
+Start Fetching '5n4pr_100k_bintree_short.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_100k_bintree_short.json'
+Done  Fetching '5n4pr_100k_bintree_short.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_100k_bintree_short.json'
+Start Fetching '5n4pr_init_rocksdb.tar.gz' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_init_rocksdb.tar.gz'
+Done  Fetching '5n4pr_init_rocksdb.tar.gz' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_init_rocksdb.tar.gz'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Start Fetching 'config-node_5n4pr_spam_buffer_rocks.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/config-node_5n4pr_spam_buffer_rocks.toml'
+Done  Fetching 'config-node_5n4pr_spam_buffer_rocks.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/config-node_5n4pr_spam_buffer_rocks.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+SUCCESS: stop_containers completed with None result.
+SUCCESS: reset_nodes_data completed with None result.
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+Error executing command: nanomock start && nanomock init_wallets
+Error: ERROR: Command failed: docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d
+ERROR: Error output: Creating volume "nanomock_nl_default_volume" with default driver
+Creating nl_pr4 ... 
+Creating nl_genesis ... 
+Creating nl_pr2     ... 
+Creating nl_pr3     ... 
+Creating nl_pr1     ... 
+Creating nl_pr3     ... done
+Creating nl_pr3_exporter ... 
+Creating nl_pr4          ... done
+Creating nl_pr4_exporter ... 
+Creating nl_pr2          ... done
+Creating nl_pr2_exporter ... 
+Creating nl_pr1          ... done
+Creating nl_pr1_exporter ... 
+Creating nl_pr3_exporter ... done
+Creating nl_pr4_exporter ... done
+Creating nl_pr2_exporter ... done
+Creating nl_pr1_exporter ... done
+Host is already in use by another container
+Creating nl_genesis      ... error
+
+ERROR: for nl_genesis  Cannot start service nl_genesis: failed to set up container networking: driver failed programming external connectivity on endpoint nl_genesis (bb52d14e514d6dad801bf9aef78d78160e3a2d504be7ce10cb54197fced1b71c): failed to bind host port 0.0.0.0:47100/tcp: address already in use
+
+ERROR: for nl_genesis  Cannot start service nl_genesis: failed to set up container networking: driver failed programming external connectivity on endpoint nl_genesis (bb52d14e514d6dad801bf9aef78d78160e3a2d504be7ce10cb54197fced1b71c): failed to bind host port 0.0.0.0:47100/tcp: address already in use
+Encountered errors while bringing up the project.
+
+ERROR: Return code: 1
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 198, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock up -d' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanomock", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 58, in main
+    asyncio.run(main_async(args))
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/main.py", line 54, in main_async
+    await manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 544, in execute_command
+    await command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/nanomock_manager.py", line 473, in start_containers
+    self.docker_interface.compose_start(nodes)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 56, in compose_start
+    return self._run_command(cmd)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/docker/mixin.py", line 33, in _run_command
+    subprocess_run_capture_output(base_command)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanomock/internal/utils.py", line 209, in subprocess_run_capture_output
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: <exception str() failed>
+Connecting to [::ffff:172.17.0.1]:44100
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44101
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44102
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44103
+[Errno 111] Connection refused
+Connecting to [::ffff:172.17.0.1]:44104
+[Errno 111] Connection refused
+2026-07-20 21:21:04     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:05     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:06     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:07     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:09     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:10     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:11     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:12     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:13     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:14     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:15     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:16     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:17     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:18     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:20     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:21     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:22     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:23     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:24     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:25     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:26     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:27     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:28     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:29     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:31     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:32     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:33     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:34     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:35     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:36     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:37     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:38     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:39     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:40     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:42     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:43     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:44     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:45     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:46     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:47     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:48     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:49     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:50     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:52     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:53     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:54     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:55     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:56     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:57     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:58     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:21:59     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:00     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:01     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:03     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:04     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:05     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:06     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:07     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:08     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:09     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:10     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:11     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:12     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:14     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:15     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:16     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:17     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:18     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:19     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:20     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:21     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:22     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:24     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:25     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:26     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:27     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:28     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:29     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:30     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:31     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:32     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:33     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:35     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:36     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:37     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:38     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:39     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:40     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:41     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:42     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:43     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:44     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:46     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:47     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:48     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:49     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:50     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:51     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:52     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:53     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:54     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:56     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:57     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:58     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:22:59     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:23:00     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:23:01     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:23:02     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.2026-07-20 21:23:03     0 sec | nl_pr1           | Nano DEV_BUILD 9d66dda |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.FAIL
