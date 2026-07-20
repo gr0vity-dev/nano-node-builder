@@ -11544,6 +11544,22 @@
     "run_id": "27242073169"
   },
   {
+    "hash": "3a2fb8a78d174dc2f89c29f7c12847fee4cd60ac",
+    "type": "pull_request",
+    "title": "Introduce topology bootstrap for faster ledger catch-up",
+    "author": "pwojcikdev",
+    "body": "This PR adds the new topology-index bootstrap path.\r\n\r\nThe main idea is to bootstrap from the ledger’s dependency order instead of mostly discovering blocks through account/frontier walking and then chasing missing dependencies afterwards. A bootstrapping node can now ask peers for topology-index ranges, filter out blocks it already has, fetch the missing blocks by hash, and submit them to the block processor in topological order.\r\n\r\nThat makes bootstrap behave more like a steady catch-up stream: discover ordered ledger ranges, fetch what is missing, submit in dependency-friendly order, and let repair scans fill gaps behind the main progress.\r\n\r\n## How it works\r\n\r\nThe topology bootstrap strategy has three main stages:\r\n\r\n- scan peers' topology indexes and collect candidate block hashes\r\n- pre-check those candidates against the local ledger\r\n- fetch missing blocks and submit them to the block processor in topology order\r\n\r\nThe scan has a forward-moving spearhead for new progress, plus repair heads which re-scan already discovered ranges for missed blocks. Requests can sample multiple peers before advancing, so progress does not depend too heavily on a single peer’s view of the ledger.\r\n\r\nThe implementation also adds back-pressure around the fetch buffer, gap tracking, pre-check workers, and block processor, so bootstrap does not run too far ahead of the part of the node that actually persists blocks.\r\n\r\n## Test bootstrap result\r\n\r\n<img width=\"2176\" height=\"613\" alt=\"Screenshot 2026-06-26 at 18 14 42\" src=\"https://github.com/user-attachments/assets/397c405d-3969-4dcb-89d8-462fc421426a\" />\r\n\r\nIn the test run shown above, bootstrap completed with steady throughput of roughly 8-9k blocks per second. Full live network bootstrap completed in just under 7 hours.\r\n\r\nImportant context: this run had elections and backlog disabled, so there was no cementing work happening in parallel. A normal node with elections/backlog enabled will have more competing work, and cementing will usually reduce the headline bootstrap rate.\r\n\r\n## Network support\r\n\r\nTopology bootstrap needs connected peers which have the topology index enabled and advertise the `topo_index` capability.\r\n\r\nThis is where the wider network matters. The more topo-index-capable peers are available, the more useful this bootstrap path becomes for new or recovering nodes. The best candidates for hosting the index are non-representative nodes with enough disk and I/O capacity, rather than voting representative infrastructure.\r\n\r\nFreshly bootstrapped nodes have the topology index enabled by default. For operators who want to help serve the index, the preferred route is to start a fresh non-PR node from an empty data path and let it sync normally. This builds the index as the ledger is downloaded, which is faster and simpler than generating the index afterwards for an existing full ledger.\r\n\r\nExisting ledgers can also be indexed offline. See the setup notes below.\r\n\r\nTo check whether a local database has the index enabled:\r\n\r\n```sh\r\nnano_node --database_info\r\n```\r\n\r\nLook for:\r\n\r\n```text\r\nFlags:\r\n  topo_index:     enabled\r\n```\r\n\r\nThe `peers` RPC with `peer_details: true` now also reports advertised peer capabilities. Peers serving this feature should include `topo_index` in their `capabilities` list.\r\n\r\n## Current bottlenecks\r\n\r\nAt this point the topology pipeline can keep the node well supplied with blocks. For most nodes, the limiting factor is likely to be local ledger processing rather than peer discovery or block fetching.\r\n\r\nThere is still room for future tuning around scan parallelism, fetch sizing, buffering, and repair behavior, but larger gains will likely depend on reducing bottlenecks in ledger/block processing and in how bootstrap competes with cementing work.\r\n\r\n## Setting up the topology index\r\n\r\nAll steps below are offline operations. Stop the node first, because these commands open the ledger directly and the daemon cannot have the database open at the same time.\r\n\r\nAll commands accept `--data_path <path>` and `--network <live|test|beta|dev>`. Use the same options consistently for every step.\r\n\r\n1. Inspect current state:\r\n\r\n```sh\r\nnano_node --database_info\r\n```\r\n\r\n2. Upgrade the ledger schema:\r\n\r\n```sh\r\nnano_node --database_upgrade\r\n```\r\n\r\n3. Populate the topology index:\r\n\r\n```sh\r\nnano_node --populate_topo_index\r\n```\r\n\r\n4. Verify:\r\n\r\n```sh\r\nnano_node --database_info\r\n```\r\n\r\nConfirm `topo_index: enabled`.\r\n\r\n5. Start the node normally.\r\n\r\nNo config change is needed once the flag is stored in the database.\r\n\r\nNotes:\r\n\r\n- `--populate_topo_index` is a one-off operation and may take a long time on a full ledger.\r\n- It is idempotent; if the index already exists, it exits without rebuilding it.\r\n- `--database_upgrade` is listed separately so operators can confirm the schema upgrade before starting the longer index build.\r\n- To reverse this later, run `nano_node --drop_topo_index`.\r\n- The topology index is incompatible with pruning, so it should be dropped before enabling pruning.",
+    "draft": false,
+    "pull_request": 5088,
+    "label": "pwojcikdev:topo-bootstrap-pr",
+    "created_at": "2026-06-26T16:20:06Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-20T16:07:16Z",
+    "run_id": null
+  },
+  {
     "hash": "3a458d86d1e0db53d6d882b6a424e58a13073e29",
     "type": "commit",
     "author": "pwojcikdev",
@@ -28694,6 +28710,19 @@
     "docker_tag": "gr0v1ty/nano-node:908d1bc85d19cb13a531a8f37ad0d8b4c457205b",
     "build_started_at": "2026-01-21T09:47:42Z",
     "run_id": "21205197166"
+  },
+  {
+    "hash": "9094152373d0ea63ad25dfb4398c2ccea3297c7d",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Fix tracking of TCP peer protocol versions (#5111)\n\n* Fix tracking of peer protocol versions\n\n* Initialize TCP channels with peer information\n\n* Store peer information directly in channels",
+    "pull_request": "5111",
+    "created_at": "2026-07-20T14:33:32Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-20T16:07:16Z",
+    "run_id": null
   },
   {
     "hash": "909cdfcf3e98df51e8526d8d93164d95fd8b391b",
