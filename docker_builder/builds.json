@@ -19347,6 +19347,22 @@
     "run_id": "16501614042"
   },
   {
+    "hash": "610a9c66d4bc66a08644da34783e01918ba4cd02",
+    "type": "pull_request",
+    "title": "Add precompiled headers for RocksDB and kernel libraries (~33% faster build)",
+    "author": "Omotola",
+    "body": "## Summary\nAdds an opt-in `-DNANO_PCH` switch that introduces precompiled headers for the bundled **RocksDB** static library and for nano's first-party kernel libraries, cutting a full clean `nano_node` rebuild by **33%**.\n\n## Motivation\nProfiling a clean `nano_node` build with **vcperf** (`/jsonAnalysis`) showed the frontend parse cost is dominated by the bundled RocksDB library:\n\n- **9 of the 15 hottest included headers are RocksDB internals** — `rocksdb/options.h` (parsed in **247** TUs), `rocksdb/listener.h` (**251**), `port/win/port_win.h` (**261**), `db_impl.h`, `column_family.h`, `memtable.h`, ...\n- The RocksDB static library (~**700** translation units) ships with **no** precompiled header.\n- `<chrono>` (272 TUs) and nano's spdlog/fmt-based logging headers were the next hottest.\n\n## Change\nNew `-DNANO_PCH=ON` option (default OFF) that precompiles:\n\n- **`nano/rocksdb_pch.hpp`** on the `rocksdb` target — its stable backbone headers (`rocksdb/options.h`, `rocksdb/listener.h`, `port/port.h`) + heavy STL. This is the single largest lever.\n- **`nano/nano_pch.hpp`** on nano's first-party libs (`nano_lib`, `secure`, `node`, `nano_store`, `nano_messages`, `rpc`, `nano_node`) — stable STL plus `boost.asio`, `boost.multiprecision`, `fmt`, `spdlog`.\n\nBoth headers contain only skill Tier-1 (STL) and Tier-2 (third-party) headers — no volatile project headers — so they rarely invalidate.\n\n## Measured impact\nFull clean rebuild, MSVC (VS 2022, 14.44), Release, `/m:16`, 5 runs each:\n\n| Variant | Mean (s) | StdDev (s) |\n|---|---|---|\n| baseline (no PCH) | 595.62 | 10.05 |\n| `NANO_PCH=ON` | 397.10 | 1.40 |\n\n**~198 s faster (33.33%)**, statistically significant (post < baseline − stddev).\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>\r\n",
+    "draft": false,
+    "pull_request": 5114,
+    "label": "Omotola:perf/rocksdb-and-kernel-pch",
+    "created_at": "2026-07-22T22:30:05Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T22:43:37Z",
+    "run_id": null
+  },
+  {
     "hash": "6160f54aa8a7be3549ce00533cb7536c4d361524",
     "type": "pull_request",
     "title": "Exchange node capabilities when performing network handshake",
@@ -47892,6 +47908,19 @@
     "docker_tag": "gr0v1ty/nano-node:f1dd4f7080e74693e3b865a676d95dbcd5bf421e",
     "build_started_at": "2025-01-21T20:28:59Z",
     "run_id": "12895293214"
+  },
+  {
+    "hash": "f1dd5b93816e93152694b2e6df1b40f9fb1461bb",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Refine crawler navigation API (#5112)\n\n* Refine crawler navigation API\n\nSeparate entry and group traversal, add forward-only lookup helpers, and update scanner consumers and tests.\n\n* Consolidate multiprecision integer includes\n\nExpose cpp_int through numbers.hpp and remove redundant direct includes throughout the node.",
+    "pull_request": "5112",
+    "created_at": "2026-07-22T22:13:20Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T22:43:37Z",
+    "run_id": null
   },
   {
     "hash": "f1e0685affe219be8a7222705b35f4eba3fe8ad0",
