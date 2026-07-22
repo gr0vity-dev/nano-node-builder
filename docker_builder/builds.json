@@ -12489,7 +12489,7 @@
     "pull_request": "5088",
     "created_at": "2026-06-15T15:00:51Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-07-22T14:25:16Z",
     "run_id": null
@@ -47652,6 +47652,22 @@
     "docker_tag": "gr0v1ty/nano-node:f0fcfecccd26f9be2c2d9f4b211d91f0d83156b0",
     "build_started_at": "2024-03-15T15:29:42Z",
     "run_id": "8298619683"
+  },
+  {
+    "hash": "f108746b79cbcbe72db0c0a649860ad68918306a",
+    "type": "pull_request",
+    "title": "Refine crawler navigation API",
+    "author": "pwojcikdev",
+    "body": "### Problems with the previous API\r\n\r\nThe crawler accumulated three call-site dialects (`++crawler`, `.next ()`, `.next_entry ()`, `skip_to` + equality check) because the interface conflated two cursors in one class:\r\n\r\n- **`operator++` changed meaning per table.** It advanced one entry on simple-key tables but silently skipped to the next *account group* on pending, selected by an invisible traits specialization. Iterating pending with `++` looked like entry iteration and lost data — which is why `next_entry ()` existed as an escape hatch, and why no two call sites looked alike.\r\n- **`skip_to` did half a job.** It returned \"still valid\", not \"found\", so every merge-join caller re-implemented the same `if (crawler && crawler->first == account)` dance — including picking the correct key form (`->first` vs `->first.account`) by hand, with nothing enforcing it.\r\n- **Misleading accessors and dead surface.** `key ()` returned the *group* key (for pending: the account, not the entry key). `rewind`, public `seek`, `full_key` and `refresh_if_needed` had no production callers.\r\n- **Boundary handling by convention.** `next_group_key` used a saturating increment, and callers had to detect saturation by comparing the result against the input — a contract smeared across two files. The traits' `comparable` projection predated `operator<=>` on the key types and duplicated what native comparisons already guarantee (memcmp order == database byte order).\r\n\r\n### Changes\r\n\r\n- `operator++` / `next_entry ()` always advance one raw entry; `next_group ()` / `group_key ()` / `find_group ()` are the explicit group-level operations; `key ()` now returns the full entry key.\r\n- New probes `find (key)` and `find_group (group)` return the matching entry or `nullptr`, replacing `skip_to` + manual equality. Probes are forward-only; the fallback seek is guarded by a debug assert that the cursor is still before the target, and an exhausted window returns early instead of seeking.\r\n- Traits slimmed to `lower_bound_key` / `group_key` / `next_group_key`; `next_group_key` returns `std::optional`, making \"no next group\" a type-level fact. `comparable` removed in favor of native key comparisons.\r\n- `pending_key` gets a defaulted `operator<=>` (account, then hash — matching database order), replacing hand-written `<` / `==`; `pending_info.hpp` reorganized, ostream operators moved out of line, includes trimmed.\r\n- Call sites updated (`backlog_scan`, `frontier_strategy`, `database_scan_index`); migration loops (extended index, topo index, v26 upgrade) unchanged. Crawler test suite rewritten: 38 cases, one concern each, both backends.\r\n\r\nNo functional changes, with one minor exception: frontier processing now probes the pending table lazily (only for accounts missing from the ledger), which skips pointless probes in the common case.",
+    "draft": false,
+    "pull_request": 5112,
+    "label": "pwojcikdev:crawler-refine",
+    "created_at": "2026-07-22T16:16:46Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T18:19:37Z",
+    "run_id": null
   },
   {
     "hash": "f109cb1ee910eaf631cb643df87fda4d2829e7c0",
