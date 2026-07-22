@@ -5449,6 +5449,19 @@
     "run_id": "21753913608"
   },
   {
+    "hash": "1afc15f16ea9436615a64eada04c0b707bd8717a",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Track node_id in async_tag",
+    "pull_request": "5088",
+    "created_at": "2026-06-23T11:15:10Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T14:25:16Z",
+    "run_id": null
+  },
+  {
     "hash": "1b1bac07ab06241aa164ae12b54da4e5dfe4784d",
     "type": "commit",
     "created_at": "2024-02-26T10:52:19Z",
@@ -8238,6 +8251,19 @@
     "docker_tag": "gr0v1ty/nano-node:29cd166fe5e29eba6537fd7a2c41041afa1de1af"
   },
   {
+    "hash": "29e31ee79e1ce0780ac9ad8281d7d0586dedbe51",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Introduce topology bootstrap for faster ledger catch-up (#5088)",
+    "pull_request": "5088",
+    "created_at": "2026-07-22T13:06:30Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T14:25:16Z",
+    "run_id": null
+  },
+  {
     "hash": "29e7218959b8ea8166a44b305ae30597b6c3426b",
     "type": "pull_request",
     "title": "Cleaner daemon stopping",
@@ -8649,6 +8675,19 @@
     "docker_tag": "",
     "build_started_at": "2024-03-12T10:25:45Z",
     "run_id": "8247240799"
+  },
+  {
+    "hash": "2bcab8b7ce93bd52b348b6b4aca973a4bc00a39f",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Bump max block processor system queue size",
+    "pull_request": "5088",
+    "created_at": "2026-06-23T08:55:36Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T14:25:16Z",
+    "run_id": null
   },
   {
     "hash": "2bcabac74fc6855c9a09e79eae2c7e12fe70808c",
@@ -12441,6 +12480,19 @@
     "built_at": "2023-07-01T15:50:58Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:3f48972f6661a7f35903bbf63fd9226102408386"
+  },
+  {
+    "hash": "3f4a1a08228320c259e6633711832aa060151cf8",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Getter for topology index latest",
+    "pull_request": "5088",
+    "created_at": "2026-06-15T15:00:51Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T14:25:16Z",
+    "run_id": null
   },
   {
     "hash": "3f52f75c73fd0e3a4b294dbcfb6b0b0f8b9f8f1b",
@@ -25201,6 +25253,19 @@
     "run_id": "14580929317"
   },
   {
+    "hash": "7e0bbe6add0468a21876b91f61c678d7e29a029b",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add per-strategy bootstrap rate limits\n\nSplit ascending bootstrap throttling into priority, database, dependency, and frontier limiters. Keep the legacy rate_limit key for config compatibility while documenting that per-strategy limits now control request flow.\n\n^ Conflicts:\n^\tnano/node/bootstrap/common.hpp\n\n^ Conflicts:\n^\tnano/lib/stats_enums.hpp\n^\tnano/node/bootstrap/bootstrap_context.cpp\n^\tnano/node/bootstrap/bootstrap_context.hpp\n^\tnano/node/bootstrap/database_strategy.cpp\n^\tnano/node/bootstrap/frontier_strategy.cpp\n\n^ Conflicts:\n^\tnano/node/bootstrap/bootstrap_context.cpp\n\n^ Conflicts:\n^\tnano/lib/stats_enums.hpp",
+    "pull_request": "N/A",
+    "created_at": "2026-05-20T18:41:30Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T14:25:16Z",
+    "run_id": null
+  },
+  {
     "hash": "7e23de0ae23b8be163bcb62cef9e79f57f0a8234",
     "type": "commit",
     "author": "clemahieu",
@@ -25657,6 +25722,19 @@
     "docker_tag": "gr0v1ty/nano-node:80212f460e638090fa9de9a9f0c2ace9165f4c3e",
     "build_started_at": "2024-12-07T20:47:33Z",
     "run_id": "12215834362"
+  },
+  {
+    "hash": "8041dc73ccdf6e9bebd3ca7e6c67306b91ea17e5",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Document topo index progress overcount\n\nClarify that the resolved counter tracks resolve calls rather than unique blocks, so diamond dependencies can resolve the same block instance more than once and push progress above total_blocks.",
+    "pull_request": "N/A",
+    "created_at": "2026-05-11T21:33:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T14:25:16Z",
+    "run_id": null
   },
   {
     "hash": "8041e77f7cef6c26ad57d6b41bdfc8e908a3e1fe",
@@ -26507,6 +26585,19 @@
     "docker_tag": "gr0v1ty/nano-node:84e4555dfc93d0a9112ec3091e888e697e140886",
     "build_started_at": "2024-11-11T20:52:12Z",
     "run_id": "11785997399"
+  },
+  {
+    "hash": "84fd2a3f690a2dfdcc77c8e3a299b4b166393a5d",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Track bootstrap inspect results by strategy\n\n^ Conflicts:\n^\tnano/core_test/bootstrap.cpp\n^\tnano/node/bootstrap/bootstrap_context.cpp\n^\tnano/node/bootstrap/bootstrap_context.hpp\n^\tnano/node/bootstrap/common.cpp\n^\tnano/node/bootstrap/common.hpp\n^\tnano/node/bootstrap/frontier_strategy.cpp\n^\tnano/node/bootstrap/topo_strategy.cpp",
+    "pull_request": "5088",
+    "created_at": "2026-06-13T11:32:36Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T14:25:16Z",
+    "run_id": null
   },
   {
     "hash": "8513ba89bc9cc031f3ac602e4aaa2cb58ee7550e",
@@ -28238,6 +28329,19 @@
     "run_id": "7733397762"
   },
   {
+    "hash": "8e0724a6ec9d8b0938d18b8adff5291d934bed31",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Introduce topo bootstrap\n\n^ Conflicts:\n^\tnano/core_test/bootstrap_peer_pool.cpp\n^\tnano/node/bootstrap/peer_pool.cpp\n^\tnano/node/bootstrap/peer_pool.hpp",
+    "pull_request": "5088",
+    "created_at": "2026-06-17T17:18:03Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T14:25:16Z",
+    "run_id": null
+  },
+  {
     "hash": "8e0ea455adf6c172f821881ea4e99ad9761ce84a",
     "type": "pull_request",
     "pull_request": 4437,
@@ -29164,6 +29268,19 @@
     "built_at": "2023-05-10T21:55:10Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:929ff5248470f98cdfcea207444dc1bdcdcca3e4"
+  },
+  {
+    "hash": "92a3f5c43652889b59aad9f4ca283583fdb2a3e6",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add bootstrap wait_result helper",
+    "pull_request": "5088",
+    "created_at": "2026-06-15T15:16:14Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T14:25:16Z",
+    "run_id": null
   },
   {
     "hash": "92a84c24a8f04e957e48ce94189ed1ce5de8c086",
@@ -32896,6 +33013,19 @@
     "docker_tag": "gr0v1ty/nano-node:a5bf4d76f6ef877a335a5f1359e2590efd64a67f",
     "build_started_at": "2024-12-04T10:33:56Z",
     "run_id": "12158183444"
+  },
+  {
+    "hash": "a5f04eeb89555a0e0e93e39dcaeb20015b809003",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Refine bootstrap request conclusion plumbing",
+    "pull_request": "5088",
+    "created_at": "2026-06-12T18:52:10Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T14:25:16Z",
+    "run_id": null
   },
   {
     "hash": "a605681525cc11ff058de5c9150bdd9f227847dd",
@@ -44463,6 +44593,19 @@
     "run_id": "21140700954"
   },
   {
+    "hash": "e1bb1837eae1d3c35e66d75abbc3d0cf8772b0e9",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Log bootstrap requests from context\n\n^ Conflicts:\n^\tnano/node/bootstrap/dependency_strategy.cpp\n^\tnano/node/bootstrap/frontier_strategy.cpp\n^\tnano/node/bootstrap/topo_strategy.cpp",
+    "pull_request": "5088",
+    "created_at": "2026-06-15T16:21:25Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T14:25:16Z",
+    "run_id": null
+  },
+  {
     "hash": "e1beda4d95f143e5f519862497c631e6cd5e54aa",
     "type": "pull_request",
     "pull_request": 4306,
@@ -44669,6 +44812,19 @@
     "docker_tag": "gr0v1ty/nano-node:e35a52ca61d5f7048d98366131b3eb8a14bde019",
     "build_started_at": "2025-10-12T20:55:21Z",
     "run_id": "18450535987"
+  },
+  {
+    "hash": "e35af2b19f0b2d561f5b26c1781378f673e77324",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Move bootstrap id generation out of header",
+    "pull_request": "N/A",
+    "created_at": "2026-06-13T16:14:28Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T14:25:16Z",
+    "run_id": null
   },
   {
     "hash": "e362de41963ea790291f88ef6eba5a5f2aa91df4",
@@ -46341,6 +46497,19 @@
     "docker_tag": "gr0v1ty/nano-node:eb842716a6899f1281b10c81436dddc8a2bbd7ec",
     "build_started_at": "2024-01-23T07:34:51Z",
     "run_id": "7622453331"
+  },
+  {
+    "hash": "eb943ed22fe94a985744bec0a833d7cf7aa25897",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Extract frontier scan policy helpers",
+    "pull_request": "5088",
+    "created_at": "2026-06-12T18:54:49Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T14:25:16Z",
+    "run_id": null
   },
   {
     "hash": "ebbc881ebbd9a1599afee35aeaf8893486c32563",
