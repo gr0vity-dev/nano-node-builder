@@ -8684,7 +8684,7 @@
     "pull_request": "5088",
     "created_at": "2026-06-23T08:55:36Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-07-22T14:25:16Z",
     "run_id": null
@@ -28070,6 +28070,19 @@
     "built_at": "2023-02-05T03:57:16Z",
     "build_status": "fail",
     "docker_tag": ""
+  },
+  {
+    "hash": "8cc5b0e12492dd5413af694734af33582a92d2ce",
+    "type": "commit",
+    "author": "RickiNano",
+    "title": "Fix coverage flow (#5113)",
+    "pull_request": "5113",
+    "created_at": "2026-07-22T16:54:17Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T17:10:04Z",
+    "run_id": null
   },
   {
     "hash": "8cc79bf5e4160d2fc15036c7a83209f7ec4a3f90",
@@ -49019,6 +49032,22 @@
     "docker_tag": "gr0v1ty/nano-node:f7b83addffb357c4503555368a060a5539f40050",
     "build_started_at": "2024-04-17T01:37:37Z",
     "run_id": "8714971493"
+  },
+  {
+    "hash": "f7e024302f49a20eedc7a4feda28cc87f97d951a",
+    "type": "pull_request",
+    "title": "Refine crawler navigation API",
+    "author": "pwojcikdev",
+    "body": "### Problems with the previous API\r\n\r\nThe crawler accumulated three call-site dialects (`++crawler`, `.next ()`, `.next_entry ()`, `skip_to` + equality check) because the interface conflated two cursors in one class:\r\n\r\n- **`operator++` changed meaning per table.** It advanced one entry on simple-key tables but silently skipped to the next *account group* on pending, selected by an invisible traits specialization. Iterating pending with `++` looked like entry iteration and lost data — which is why `next_entry ()` existed as an escape hatch, and why no two call sites looked alike.\r\n- **`skip_to` did half a job.** It returned \"still valid\", not \"found\", so every merge-join caller re-implemented the same `if (crawler && crawler->first == account)` dance — including picking the correct key form (`->first` vs `->first.account`) by hand, with nothing enforcing it.\r\n- **Misleading accessors and dead surface.** `key ()` returned the *group* key (for pending: the account, not the entry key). `rewind`, public `seek`, `full_key` and `refresh_if_needed` had no production callers.\r\n- **Boundary handling by convention.** `next_group_key` used a saturating increment, and callers had to detect saturation by comparing the result against the input — a contract smeared across two files. The traits' `comparable` projection predated `operator<=>` on the key types and duplicated what native comparisons already guarantee (memcmp order == database byte order).\r\n\r\n### Changes\r\n\r\n- `operator++` / `next_entry ()` always advance one raw entry; `next_group ()` / `group_key ()` / `find_group ()` are the explicit group-level operations; `key ()` now returns the full entry key.\r\n- New probes `find (key)` and `find_group (group)` return the matching entry or `nullptr`, replacing `skip_to` + manual equality. Probes are forward-only; the fallback seek is guarded by a debug assert that the cursor is still before the target, and an exhausted window returns early instead of seeking.\r\n- Traits slimmed to `lower_bound_key` / `group_key` / `next_group_key`; `next_group_key` returns `std::optional`, making \"no next group\" a type-level fact. `comparable` removed in favor of native key comparisons.\r\n- `pending_key` gets a defaulted `operator<=>` (account, then hash — matching database order), replacing hand-written `<` / `==`; `pending_info.hpp` reorganized, ostream operators moved out of line, includes trimmed.\r\n- Call sites updated (`backlog_scan`, `frontier_strategy`, `database_scan_index`); migration loops (extended index, topo index, v26 upgrade) unchanged. Crawler test suite rewritten: 38 cases, one concern each, both backends.\r\n\r\nNo functional changes, with one minor exception: frontier processing now probes the pending table lazily (only for accounts missing from the ledger), which skips pointless probes in the common case.",
+    "draft": false,
+    "pull_request": 5112,
+    "label": "pwojcikdev:crawler-refine",
+    "created_at": "2026-07-22T16:16:46Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-22T17:10:04Z",
+    "run_id": null
   },
   {
     "hash": "f7ee9e521f46800c14fa9e13fa0d9ee48772b337",
