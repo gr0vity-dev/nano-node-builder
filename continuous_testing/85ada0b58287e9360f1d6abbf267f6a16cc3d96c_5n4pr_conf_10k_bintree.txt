@@ -1,0 +1,26 @@
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_10k_bintree.json
+Start Fetching '5n4pr_conf_10k_bintree_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_10k_bintree_config.json'
+Done  Fetching '5n4pr_conf_10k_bintree_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_10k_bintree_config.json'
+Start Fetching '5n4pr_100k_bintree_short.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_100k_bintree_short.json'
+Done  Fetching '5n4pr_100k_bintree_short.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_100k_bintree_short.json'
+Start Fetching '5n4pr_init.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_init.ldb'
+Done  Fetching '5n4pr_init.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_init.ldb'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Start Fetching 'config-node_5n4pr_spam_buffer.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/config-node_5n4pr_spam_buffer.toml'
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanolab", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/main.py", line 13, in main
+    arg_parse.run()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/src/argparse_commands.py", line 75, in run
+    resolved_config = resource_handler.download_and_replace_resources(
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/src/config_handler.py", line 89, in download_and_replace_resources
+    downloaded_path = self._download_url(value, destination_path)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/src/config_handler.py", line 122, in _download_url
+    return download_data(url.strip(), Path(url).name, resource_path)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/src/utils.py", line 65, in download_data
+    _download_remote_data(data, destination)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/src/utils.py", line 82, in _download_remote_data
+    raise requests.HTTPError(
+requests.exceptions.HTTPError: Failed to fetch 'config-node_5n4pr_spam_buffer.toml' from 'https://raw.githubusercontent.com/gr0vity-dev/nanolab-configs/main/node-configs/config-node_5n4pr_spam_buffer.toml', status code: 503
