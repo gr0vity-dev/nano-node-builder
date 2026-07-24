@@ -35123,6 +35123,22 @@
     "run_id": "11082972055"
   },
   {
+    "hash": "b0780f99d122013b8691723beeb48a2554e4f54c",
+    "type": "pull_request",
+    "title": "Support optional tables",
+    "author": "pwojcikdev",
+    "body": "## Summary\r\n\r\nAdds support for schema tables that may be absent from a database. A `column_definition` can be marked `optional` — such tables are not created at open and are created on demand instead. This lets features maintain opt-in tables (e.g. secondary indices) without imposing them on every database or requiring migrations to drop/rebuild them.\r\n\r\n## Changes\r\n\r\n- `column_definition { table, name, optional }` replaces `std::pair<table, std::string>`; `open` debug_asserts schema table names are unique.\r\n- `table_open ()` probes presence; `create_table ()` creates a missing optional table on demand (read-write only). The typed `drop_table ()` drops by schema definition and is now used by upgrades; `drop_table_by_name ()` remains for legacy tables outside the schema.\r\n- Any access to an absent table release_asserts, with the table name in the message — `table_open ()` is the only probe, and hot paths keep a single handle-map lookup per operation. Schema-iterating code gates explicitly: the whole-database `empty ()` and `ledger_store::empty` skip absent optional tables; `copy_to` skips them on the source and creates present ones on the destination.\r\n- Table lifecycle calls must not run concurrently with other backend access.\r\n- LMDB: `create_table_impl` commits before publishing the handle, since a new DBI is private to its transaction until commit. RocksDB: absent optional column families are excluded from the open descriptors so `create_missing_column_families` does not create them; `drop_table_by_name` now also erases the stale `name_to_table` entry.\r\n- Assert plumbing: the three-arg `release_assert`/`debug_assert` pass the extra message as a separate `std::string_view` to `assert_internal`; formatting happens in the cold path and message arguments are only evaluated when the check fails. New `nano::store::to_string (table)` returns the table enum name.\r\n\r\n## Tests\r\n\r\nBackend tests cover absence probing, create-on-demand with persistence across reopen (including read-only), drop/recreate, read-only open failing on a missing required table, and `copy_to` with the optional table absent/present on the source. A death test pins the crash on `get`/`exists`/`count` of an absent table including the table name in the output; an assert test guards lazy evaluation of message arguments.",
+    "draft": false,
+    "pull_request": 5115,
+    "label": "pwojcikdev:optional-backend-tables",
+    "created_at": "2026-07-24T16:25:32Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-24T17:14:34Z",
+    "run_id": null
+  },
+  {
     "hash": "b0786c28d5e9365f8fb0a44f5ff7d045306c3e2b",
     "type": "pull_request",
     "title": "Exchange node capabilities when performing network handshake",
