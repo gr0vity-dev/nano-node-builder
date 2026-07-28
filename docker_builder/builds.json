@@ -3295,6 +3295,19 @@
     "run_id": "22019139531"
   },
   {
+    "hash": "10eb80a5e8f5725ca36558d136dfec934ad6c177",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Unify receivable RPC result collection\n\nShare filtering, sorting, and pagination logic between receivable endpoints, with expanded coverage for offsets, empty accounts, and delegator cursors.",
+    "pull_request": "4981",
+    "created_at": "2026-07-23T22:07:24Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
+  },
+  {
     "hash": "11256f117df5d3100647411b131222a6b35708a4",
     "type": "pull_request",
     "title": "Activate largest-gap optimistic elections first",
@@ -4871,6 +4884,19 @@
     "run_id": "7828015254"
   },
   {
+    "hash": "1885dd17dab6b471a6f553721d06017e686a9c22",
+    "type": "commit",
+    "author": "Exxenoz",
+    "title": "Add receivable amount index",
+    "pull_request": "N/A",
+    "created_at": "2026-07-05T04:04:31Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
+  },
+  {
     "hash": "18b635c158124dcf668888ba56323d0ada1dd57a",
     "type": "commit",
     "author": "pwojcikdev",
@@ -5470,6 +5496,19 @@
     "docker_tag": "gr0v1ty/nano-node:1b1bac07ab06241aa164ae12b54da4e5dfe4784d",
     "build_started_at": "2024-03-04T12:43:27Z",
     "run_id": "8140364972"
+  },
+  {
+    "hash": "1b66c9cabdc9146788a2490200388ea511688919",
+    "type": "commit",
+    "author": "Exxenoz",
+    "title": "Speed up account-height index population\n\nPopulate the account-height block lookup index by scanning the block table directly instead of walking each account chain through successor lookups. This uses the sideband height already available from the block iterator and avoids extra random block/successor reads during ledger upgrade.",
+    "pull_request": "N/A",
+    "created_at": "2026-07-05T21:30:33Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
   },
   {
     "hash": "1b744d9f2c94843cf55a84042fffadf387f4a39d",
@@ -6742,6 +6781,19 @@
     "run_id": "17465557875"
   },
   {
+    "hash": "20c9a659b93e6127a128df4faa0a1e6a9807b717",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add extended ledger index systests\n\nCover CLI lifecycle, daemon startup, RPC behavior, and persisted index flags. Add shared helpers and make RUNALL report all failures.",
+    "pull_request": "4981",
+    "created_at": "2026-07-24T13:28:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
+  },
+  {
     "hash": "20dd6e4a33d40d2d299f45a0677f89efb33c0e55",
     "type": "pull_request",
     "title": "Update boost to 1.86",
@@ -7805,6 +7857,19 @@
     "docker_tag": "gr0v1ty/nano-node:278d6decfc374a62faee2d74b6bb798a7ed06521",
     "build_started_at": "2024-03-22T17:27:13Z",
     "run_id": "8394157619"
+  },
+  {
+    "hash": "2790f50fa48b872aa3d40a19833bea12786fb80c",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Group extended ledger tables in store\n\nExpose optional ledger indices through a dedicated extended namespace and update all consumers.",
+    "pull_request": "N/A",
+    "created_at": "2026-07-21T16:22:09Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
   },
   {
     "hash": "27a4c83259d6ca896b5dad840208743f677fd4f6",
@@ -10753,6 +10818,19 @@
     "run_id": "8394068316"
   },
   {
+    "hash": "35dbc96bf57d50a9aabf643b830dc563a3b13ae4",
+    "type": "commit",
+    "author": "Exxenoz",
+    "title": "Use weight-ordered delegators RPC results with extended ledger index\n\nWhen the extended `account_delegator_by_weight` index is enabled, the `delegators` RPC now returns delegators in descending weight order instead of delegator account order.\n\nThis differs from the fallback path because the fallback scans the account table, which is ordered by account, while the extended index is keyed by representative, weight, and delegator. Re-sorting the indexed results by delegator account would defeat part of the purpose of using the weight index, and `count` cannot exactly match both the account-table ordering and the weight-index ordering at the same time (without scanning/sorting ALL delegator entries). For the indexed path, the RPC therefore follows the natural index semantics and returns the highest-weight delegators first.",
+    "pull_request": "N/A",
+    "created_at": "2026-07-05T04:00:27Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
+  },
+  {
     "hash": "35dbc97c690412ad619ed13e9fe06c9771b3db21",
     "type": "commit",
     "author": "pwojcikdev",
@@ -11225,6 +11303,19 @@
     "docker_tag": "gr0v1ty/nano-node:3828c0b0e5af9b1212507720d9f201cf641a37f5",
     "build_started_at": "2025-04-27T10:20:48Z",
     "run_id": "14691231467"
+  },
+  {
+    "hash": "387f06840150a23a7de49129f071000782bdf601",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rework extended index RPC ordering\n\nAlign receivable sorting across indexed and fallback paths. Add weight-aware delegator pagination with reverse lower-bound lookup and tests.",
+    "pull_request": "4981",
+    "created_at": "2026-07-23T21:27:22Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
   },
   {
     "hash": "3894dbc28956ef30dd036eb44227690a761f32df",
@@ -17502,6 +17593,19 @@
     "run_id": "28408884046"
   },
   {
+    "hash": "57fd68624b357af160e0970a0a2d6ce41c106824",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Assert pending entries are never overwritten\n\nEnforce the one-send-one-pending-entry invariant and simplify receivable index updates.",
+    "pull_request": "4981",
+    "created_at": "2026-07-21T16:40:27Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
+  },
+  {
     "hash": "581bf7098a9b7f75efb63b544b42cd99e6d7c34d",
     "type": "pull_request",
     "pull_request": 4286,
@@ -17794,6 +17898,19 @@
     "docker_tag": "gr0v1ty/nano-node:5949c35b608553c0bd6a742770958bff5809b5b6",
     "build_started_at": "2025-02-19T19:57:52Z",
     "run_id": "13421240472"
+  },
+  {
+    "hash": "5951c329951b0a5307aa75d56bb60c907559d3c5",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Extended ledger (#4981)",
+    "pull_request": "4981",
+    "created_at": "2026-07-28T10:32:05Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
   },
   {
     "hash": "595857f00ea52c253154372736b148529eb01aac",
@@ -19326,6 +19443,19 @@
     "run_id": "21110873677"
   },
   {
+    "hash": "60a3836367745d9ee3efee2313ba1e9d63d23502",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Keep extended ledger indices persistent\n\nPreserve populated extended ledger indices across restarts unless explicitly dropped, and update CLI behavior, configuration guidance, and tests.",
+    "pull_request": "N/A",
+    "created_at": "2026-07-21T15:47:34Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
+  },
+  {
     "hash": "60a44d6c08f1a3766c00b395684db9e479508210",
     "type": "commit",
     "author": "pwojcikdev",
@@ -19337,6 +19467,19 @@
     "docker_tag": "gr0v1ty/nano-node:60a44d6c08f1a3766c00b395684db9e479508210",
     "build_started_at": "2024-12-23T19:06:03Z",
     "run_id": "12471922386"
+  },
+  {
+    "hash": "60b978a9bd30890476c1b0b3394fe1ae463b0496",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Tests for extended ledger index\n\nCover storage, lifecycle, block processing, rollbacks, and lookup parity.",
+    "pull_request": "4981",
+    "created_at": "2026-07-22T14:06:11Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
   },
   {
     "hash": "60e12866ffaba60cedd20d0d578b4b7d0c6bdae2",
@@ -22725,6 +22868,19 @@
     "run_id": "11606252888"
   },
   {
+    "hash": "70ef4dabd5d6d0f9bd437be2f9a2f440bb8f862e",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Fix offset overflow in account_history RPC",
+    "pull_request": "4981",
+    "created_at": "2026-07-25T15:18:26Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
+  },
+  {
     "hash": "7115a27d5df4df05fe44289c15dcd8d68dd5fb44",
     "type": "commit",
     "author": "pwojcikdev",
@@ -23345,6 +23501,19 @@
     "docker_tag": "gr0v1ty/nano-node:74628b47d772f83585e863bf7d9a7add61b1d6ad",
     "build_started_at": "2023-10-25T15:53:51Z",
     "run_id": "6642948037"
+  },
+  {
+    "hash": "746374e67edcf24f40879921e024740020c7bb28",
+    "type": "commit",
+    "author": "Exxenoz",
+    "title": "Add delegator weight index",
+    "pull_request": "N/A",
+    "created_at": "2026-05-30T19:36:32Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
   },
   {
     "hash": "74645f92909bd708765e7c89fe7ca34224a12cc2",
@@ -25750,6 +25919,19 @@
     "run_id": "6817173542"
   },
   {
+    "hash": "7fb59f28dd557e434dcce35a29bc3df8481c8bb5",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Make ledger upgrade batch size configurable\n\nCentralize batch sizing for ledger upgrades and index population, with an environment variable override.",
+    "pull_request": "4981",
+    "created_at": "2026-07-24T12:55:36Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
+  },
+  {
     "hash": "7fd6580d5e5db320bdca0be97e97f73a4a198a3e",
     "type": "pull_request",
     "title": "Fix inactive votes cache election start",
@@ -27511,6 +27693,19 @@
     "docker_tag": "gr0v1ty/nano-node:897d85e21bd28b79d1c7beb982c6fcf44856eefb",
     "build_started_at": "2025-07-12T11:28:56Z",
     "run_id": "16237546247"
+  },
+  {
+    "hash": "899b45f2552123467246bcc9d84712c1b1175793",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add cursor pagination to delegators RPC\n\nReturn stable weight-and-account cursors for indexed delegator pages while preserving legacy behavior. Cover ordering, tie groups, validation, and balance changes.",
+    "pull_request": "4981",
+    "created_at": "2026-07-23T23:09:10Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
   },
   {
     "hash": "899fb12e743663aec46d2fd2ee7251797891313b",
@@ -29768,6 +29963,19 @@
     "run_id": "10737329285"
   },
   {
+    "hash": "93c704e9d938951b311d82cff0447f4dd0432ad2",
+    "type": "commit",
+    "author": "Exxenoz",
+    "title": "Add extended ledger index logging",
+    "pull_request": "N/A",
+    "created_at": "2026-06-04T22:30:36Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
+  },
+  {
     "hash": "94150730b54962b9adc2ac5c0907ba34da9c52ef",
     "type": "pull_request",
     "title": "Fix Test `request_aggregator.one_update`",
@@ -30287,6 +30495,19 @@
     "docker_tag": "gr0v1ty/nano-node:964ed6e759fabfb5edb872aeea7896f06c5e5542",
     "build_started_at": "2025-11-07T11:44:40Z",
     "run_id": "19170133063"
+  },
+  {
+    "hash": "966a778293c9968712e9da7b4b68347d260d4c2b",
+    "type": "commit",
+    "author": "Exxenoz",
+    "title": "Show extended ledger index flags in --database_info CLI",
+    "pull_request": "N/A",
+    "created_at": "2026-07-05T19:40:07Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
   },
   {
     "hash": "968092351d95ea25550cd84fa484db2026176604",
@@ -32025,6 +32246,19 @@
     "run_id": "8159768660"
   },
   {
+    "hash": "9f2f19a87135f057bc6f288d3615c2be369f957a",
+    "type": "commit",
+    "author": "Exxenoz",
+    "title": "Implement extended ledger index core tests",
+    "pull_request": "N/A",
+    "created_at": "2026-07-05T02:33:57Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
+  },
+  {
     "hash": "9f3293e295113c9272c930c444fdad1e77ae9cee",
     "type": "pull_request",
     "pull_request": 4455,
@@ -32216,6 +32450,19 @@
     "docker_tag": "gr0v1ty/nano-node:9ff68c1cfa0b6a14e39125577c92a34c7ee03a21",
     "build_started_at": "2024-10-16T10:07:53Z",
     "run_id": "11363478276"
+  },
+  {
+    "hash": "a00b5dac30cd6d48b2c4c10509e50247eb2f36e2",
+    "type": "commit",
+    "author": "Exxenoz",
+    "title": "Add account block height index",
+    "pull_request": "N/A",
+    "created_at": "2026-07-06T21:55:19Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
   },
   {
     "hash": "a018cbe59341766e3b10ffaad3d009dd6bc62d38",
@@ -41380,6 +41627,19 @@
     "docker_tag": "gr0v1ty/nano-node:d18f135a40c53e8ccdc1d8f9f283cee4b4841430"
   },
   {
+    "hash": "d203d0d59f91833931ce9f7a720057465519fb2f",
+    "type": "commit",
+    "author": "Exxenoz",
+    "title": "Refresh extended index population transactions\n\nUse crawlers when populating extended ledger indices so long-running write transactions can be refreshed in batches, matching the topology index population flow. Progress logging is now time-based while refreshes remain tied to the population batch size.",
+    "pull_request": "N/A",
+    "created_at": "2026-07-07T23:52:21Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
+  },
+  {
     "hash": "d2052cec80d76540776e2f519d25bfe0e0b79c52",
     "type": "commit",
     "created_at": "2024-02-27T11:37:04Z",
@@ -42722,6 +42982,19 @@
     "docker_tag": "gr0v1ty/nano-node:d80504bac700ee90300bd7029058344cac05534f",
     "build_started_at": "2024-03-21T13:29:50Z",
     "run_id": "8375799780"
+  },
+  {
+    "hash": "d82d4bc97e0a6d6b50dac4d95854822b09e3c07d",
+    "type": "commit",
+    "author": "Exxenoz",
+    "title": "Add receive block lookup index",
+    "pull_request": "N/A",
+    "created_at": "2026-06-02T16:55:31Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
   },
   {
     "hash": "d831937f12fd59f98cdab2401ec15237b19d6a92",
@@ -49892,6 +50165,19 @@
     "run_id": "9777672391"
   },
   {
+    "hash": "fa92f521e5f604a271367c39cbc00beee26236f8",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Make extended ledger tables optional\n\nCreate index tables on demand and remove them when indices are dropped. Validate flag/table consistency while preserving recovery from corrupted stores.",
+    "pull_request": "4981",
+    "created_at": "2026-07-25T14:37:22Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
+  },
+  {
     "hash": "fabc86243a8659b80dbd3a6f84cf6ab60d899b54",
     "type": "pull_request",
     "pull_request": 4404,
@@ -50613,6 +50899,19 @@
     "docker_tag": "gr0v1ty/nano-node:fe4d47d08ddfc406666cf6cf6ead9aa256f642ca",
     "build_started_at": "2024-04-04T13:18:20Z",
     "run_id": "8555375006"
+  },
+  {
+    "hash": "fe5531ff168285d420fe9e506422c0679ce9d85e",
+    "type": "commit",
+    "author": "Exxenoz",
+    "title": "Add extended ledger index maintenance CLI",
+    "pull_request": "N/A",
+    "created_at": "2026-06-04T22:25:33Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T11:32:52Z",
+    "run_id": null
   },
   {
     "hash": "fe73f6275e5aa666fb652b08d0125ae554402e02",
