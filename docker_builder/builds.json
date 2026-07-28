@@ -873,6 +873,22 @@
     "run_id": "7463983901"
   },
   {
+    "hash": "05d0c261239909e0639c5e3f22f02c08dc1ab93c",
+    "type": "pull_request",
+    "title": "Include active blocks by default in unconfirmed receivable queries",
+    "author": "pwojcikdev",
+    "body": "Stacked on #5117, which should merge first — the first commit here is that PR's change.\n\nQuerying receivable RPCs with `include_only_confirmed=false` still excluded any unconfirmed block that happened to be in an active election, because `include_active` defaulted to `false` unconditionally. Callers asking for unconfirmed entries therefore received responses that depended on election scheduling timing, and several tests had to disable the backlog scan just to keep unconfirmed responses deterministic.\n\n`include_active` now defaults to the complement of `include_only_confirmed` in `receivable`, `accounts_receivable`, `receivable_exists` and `wallet_receivable` (plus their deprecated `pending` aliases): confirmed-only queries are unaffected (`include_active` has no effect there), while unconfirmed queries include blocks in active elections unless the caller passes `include_active=false` explicitly. The old filtering remains reachable through that explicit flag.\n\nTest changes:\n- `receivable_unconfirmed` and `accounts_receivable_confirmed` gain an election phase: an entry with an active election is returned by default, disappears with explicit `include_active=false`, and returns with explicit `include_active=true`.\n- New `receivable_exists_include_active` and `wallet_receivable_include_active` cover the same matrix for the remaining two handlers. Neither flag combination was previously tested anywhere — no test passed `include_active` at all.\n- The backlog-scan disabling is removed from `receivable_sorting_tie_parity`, `accounts_receivable_sorting_top_parity` and `receivable_unsorted_offset_after_threshold`, since unconfirmed responses no longer depend on election state with default flags.\n\nThe `include_active` default documented on docs.nano.org (\"false by default\") needs a corresponding update once this merges.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5118,
+    "label": "pwojcikdev:receivable-include-active",
+    "created_at": "2026-07-28T18:02:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T18:20:13Z",
+    "run_id": null
+  },
+  {
     "hash": "05de81c0331a81b2fdf79541c331ce2fda15aa11",
     "type": "commit",
     "author": "Exxenoz",
@@ -33094,6 +33110,22 @@
     "docker_tag": "gr0v1ty/nano-node:a3a2a5f1a2f9baa1d1c9cbc3d0d0306fb04dcbfc"
   },
   {
+    "hash": "a3d8d7e6a9facf577faf013b8e7a27e39ef3f13d",
+    "type": "pull_request",
+    "title": "Persist ledger pruning state as ledger flag",
+    "author": "pwojcikdev",
+    "body": "Previously the pruning state of a ledger was inferred at every startup from the `--enable_pruning` launch flag combined with a scan of the `pruned` table, and the incompatibility checks against the topo and extended ledger indices were scattered across the node constructor, CLI parsing and ledger internals. This had several concrete problems:\r\n\r\n- `--enable_pruning` had to be passed on every launch; forgetting it either refused to start or silently reverted a not-yet-pruned node to non-pruning mode\r\n- Extended index auto-population could run on a pruned ledger before the node detected the pruning state, since the pruned-table scan happens after ledger construction\r\n- CLI utilities opening a pruned ledger without the flag miscounted blocks in `--validate_blocks`\r\n- Every startup paid an O(n) `pruned.count()` scan just to answer a yes/no question\r\n\r\n## Changes\r\n\r\n- New persisted `pruning_enabled` meta flag, loaded into `ledger_flags.pruning` alongside the index flags; the persisted flag is authoritative\r\n- Ledger upgrade v26 → v27 derives the flag from the presence of pruned entries; no data rewrite\r\n- `ledger_options.enable_pruning` expresses the request: fresh ledgers are seeded as pruned, existing ledgers go through the one-way `ledger::enable_pruning ()` transition during initialization, right after flags are loaded — from that point on every downstream check reads a single source of truth\r\n- Validation happens at the layer that has the inputs:\r\n  - `seed_genesis` asserts option coherence (pruning × topo index)\r\n  - after flag load, persisted-state invariants are asserted (pruning × indices, index flag × backing table, pruned entries × pruning flag), gated on the consistency check so `--drop_*` recovery commands can still open a broken store\r\n  - transition and populate operations assert their preconditions with the CLI remedy in the message\r\n- The node constructor passes raw intent and keeps only the operational check (`enable_voting` × pruned ledger); the startup pruned-table scan, the flag-derivation logic and the scattered conflict exits are removed\r\n- The pruning worker starts based on the ledger flag instead of the launch flag\r\n- `--database_info` reports the pruning flag\r\n\r\n## Behavior changes\r\n\r\n- `--enable_pruning` is now one-way: the first use permanently marks the ledger as pruned and later launches keep pruning without the flag; the \"To start node with existing pruned blocks use launch flag --enable_pruning\" error is gone\r\n- Initializing a fresh pruned ledger requires `--disable_topo_index`, as the topo index is enabled by default and the contradictory request is rejected instead of silently resolved\r\n- Enabling pruning on a ledger with topo or extended indices fails with instructions to run the corresponding `--drop_*` command first\r\n\r\n## Tests\r\n\r\n- v26 → v27 upgrade cases for pruned and unpruned ledgers\r\n- Pruning persists across restarts without the launch flag; transition works on an existing compatible ledger\r\n- Direct-ledger pruning tests migrated from the removed `ledger.pruning` member to `ledger_options{ .enable_pruning = true, .enable_topo_index = false }`",
+    "draft": false,
+    "pull_request": 5116,
+    "label": "pwojcikdev:ledger-pruning-flag",
+    "created_at": "2026-07-28T17:29:13Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T18:20:13Z",
+    "run_id": null
+  },
+  {
     "hash": "a3ea5fae31b7cec441aa6f7bf5ababe8b2d4b95f",
     "type": "pull_request",
     "title": "Redesign the priority scheduler to maintain a 1-to-1 link with running elections",
@@ -50309,6 +50341,22 @@
     "docker_tag": "gr0v1ty/nano-node:fb191b4ec1ca3bc4a1db22160249130cc6c34059",
     "build_started_at": "2026-04-11T01:01:00Z",
     "run_id": "24282054113"
+  },
+  {
+    "hash": "fb1f2dc0cf886211c4f786387a84dea7a5c75086",
+    "type": "pull_request",
+    "title": "Apply receivable RPC offset after threshold filtering",
+    "author": "pwojcikdev",
+    "body": "The unsorted path of the `receivable` RPC consumed the `offset` on every confirmed entry before checking the `threshold`, so entries below the threshold silently consumed the offset. Both sorted paths (extended-index and fallback) already applied the offset only to entries passing the filters, making the three paths inconsistent with each other.\n\n`collect_receivables` now applies the confirmation and threshold filters before the offset in the unsorted path as well, so offset and count uniformly apply, in that order, to the filtered entries in all modes.\n\nThis is an observable behavior change for `receivable` (and the deprecated `pending` alias) when `offset` and `threshold` are combined without `sorting`: the offset now skips qualifying entries instead of arbitrary confirmed ones. `accounts_receivable` shares the helper but does not accept an offset parameter, so its responses are unchanged.\n\nThe characterization test `receivable_unsorted_offset_before_threshold`, which locked in the old behavior, is replaced by `receivable_unsorted_offset_after_threshold`: it arranges a below-threshold receivable that sorts first in hash order — the exact case the old code mishandled — and asserts it neither appears in the response nor consumes the offset.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5117,
+    "label": "pwojcikdev:receivable-offset-threshold",
+    "created_at": "2026-07-28T17:48:27Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-28T18:20:13Z",
+    "run_id": null
   },
   {
     "hash": "fb202c720ac71f1bfe8ef02a0ff6947199d3bd52",
