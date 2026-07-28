@@ -10840,11 +10840,11 @@
     "title": "Use weight-ordered delegators RPC results with extended ledger index\n\nWhen the extended `account_delegator_by_weight` index is enabled, the `delegators` RPC now returns delegators in descending weight order instead of delegator account order.\n\nThis differs from the fallback path because the fallback scans the account table, which is ordered by account, while the extended index is keyed by representative, weight, and delegator. Re-sorting the indexed results by delegator account would defeat part of the purpose of using the weight index, and `count` cannot exactly match both the account-table ordering and the weight-index ordering at the same time (without scanning/sorting ALL delegator entries). For the indexed path, the RPC therefore follows the natural index semantics and returns the highest-weight delegators first.",
     "pull_request": "N/A",
     "created_at": "2026-07-05T04:00:27Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-07-28T21:31:03Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:35dbc96bf57d50a9aabf643b830dc563a3b13ae4",
     "build_started_at": "2026-07-28T11:32:52Z",
-    "run_id": null
+    "run_id": "30398833721"
   },
   {
     "hash": "35dbc97c690412ad619ed13e9fe06c9771b3db21",
