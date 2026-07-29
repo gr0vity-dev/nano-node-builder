@@ -4408,6 +4408,22 @@
     "run_id": "8294115431"
   },
   {
+    "hash": "1611e800d18d57db3f5dc2befdf337e259bff926",
+    "type": "pull_request",
+    "title": "Validate wallet_change_seed count before replacing the seed",
+    "author": "pwojcikdev",
+    "body": "`wallet_change_seed` accepts a `count` parameter that it mishandles in two ways.\n\n**The count is truncated rather than range checked.** `count_optional_impl` returns a `uint64_t` which was cast straight to `uint32_t`, so `count=4294967296` became `0` — and `0` selects auto-detect, a different operation than the caller requested. Any multiple of 2^32 behaved the same way. The count is now rejected with `invalid_count` when it does not fit a 32 bit index, matching the range check `account_create` already applies to its `index` parameter.\n\n**A count that fails to parse still changed the seed.** `count_optional_impl` sets `ec` on a malformed count, but the handler ignored it and replaced the seed anyway, surfacing the error only afterwards. Worse, `decode_unsigned` assigns to its out-parameter before failing on trailing garbage, so `count=12abc` replaced the seed *and* created 12 accounts while returning \"Invalid count\" to the caller — who has no reason to suspect their seed is gone. The count is now validated before the wallet is touched.\n\n`wallet_change_seed` is the only handler affected; `accounts_create` already guarded on `ec` after parsing its count.\n\n`wallet_change_seed_count_rejected` drives both values and asserts the existing seed survives. Verified against `develop`: `4294967296` is accepted outright,\n\n```\nnano/rpc_test/rpc.cpp:2734: Failure\nValue of: error\n  Actual: false\nExpected: true\ncount 4294967296 was accepted\n```\n\nand `12abc` replaces the seed despite the error response,\n\n```\nnano/rpc_test/rpc.cpp:2740: Failure\nExpected equality of these values:\n  seed_before.value ()  Which is: 1F74D818C152BDF10C9B2BD8D49118D1D1BCE3A7FA92B167FF02D6EC8169BEEC\n  seed_after.value ()   Which is: 6BAC47D0F3EAFF87C52FDEBE20B062C775B22AF653292522F56E05A671A9F482\n```\n\nThis is the correctness half of #5121, split out so it can land independently of the resource limit that PR proposes. #5121 will need a rebase once this merges.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5122,
+    "label": "pwojcikdev:rpc-count-validation",
+    "created_at": "2026-07-29T17:09:22Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-29T17:52:32Z",
+    "run_id": null
+  },
+  {
     "hash": "161f4180a87cd35745d0bd27747b0e4ae3f0e61e",
     "type": "commit",
     "author": "dsiganos",
@@ -15347,6 +15363,22 @@
     "built_at": "2023-10-17T18:09:53Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:4b7f91f191a347d386e6d42348c461171104ed6f"
+  },
+  {
+    "hash": "4b97a2dd9614bf449e64dfb97b548db364a867c5",
+    "type": "pull_request",
+    "title": "Bound the account count accepted by wallet RPC commands",
+    "author": "pwojcikdev",
+    "body": "`accounts_create` and `wallet_change_seed` both loop over a caller-supplied count creating accounts, with no upper bound. A large count leaves the wallet unusable for the duration of the request, and the parameter accepts anything that parses into 64 bits.\n\n`wallet_change_seed` had a second problem: it truncated its `uint64` count into a `uint32`, so `count=4294967296` became `0` — which selects auto-detect, a different operation than the caller asked for. Any multiple of 2^32 behaved the same way.\n\nBoth handlers now reject counts above `max_accounts_per_request` (100000) with `invalid_count`, following the range check `account_create` already applies to its `index` parameter.\n\n`wallet_change_seed` additionally validates before touching the wallet. `count_optional_impl` sets `ec` on a malformed count, but the handler ignored it and replaced the seed anyway, surfacing the error only after the change had been made. A rejected request now leaves the existing seed in place.\n\nTests:\n- `accounts_create_count_limit` asserts the request is rejected and no account is created.\n- `wallet_change_seed_count_rejected` drives `100001`, `4294967295`, `4294967296` and `12abc`, asserting each is rejected and that the existing seed survives. The last two are the interesting ones: `4294967296` previously truncated into a ledger scan, and `12abc` parses as `12` before failing on the trailing garbage, so it previously replaced the seed and created 12 accounts while returning \"Invalid count\" to the caller.\n\nVerified against `develop` with the malformed count in isolation — the seed is replaced despite the error response:\n\n```\nnano/rpc_test/rpc.cpp:2738: Failure\nExpected equality of these values:\n  seed_before.value ()\n    Which is: B85BEB2CD72CA115AAE131720BC2B0CB4C67F2CE2FCA835A2FE5432C2F8D6D90\n  seed_after.value ()\n    Which is: 62020C2CAE2B571F95199A8396D9E4B045F9E901A3C6A4870459BF297C8E642F\n```\n\nRelated to #5119, which guards the same overflow one layer down in `wallet::change_seed`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5121,
+    "label": "pwojcikdev:rpc-account-count-limit",
+    "created_at": "2026-07-29T13:40:11Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-29T17:52:32Z",
+    "run_id": null
   },
   {
     "hash": "4b9a64211f48d6c44637490c341de240cdde9a68",
