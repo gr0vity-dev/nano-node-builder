@@ -362,6 +362,19 @@
     "run_id": "10342026497"
   },
   {
+    "hash": "0252968b21f41358da5d22552272f48f133493ee",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Persist ledger pruning state as ledger flag (#5116)",
+    "pull_request": "5116",
+    "created_at": "2026-07-29T07:09:43Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-29T09:09:33Z",
+    "run_id": null
+  },
+  {
     "hash": "02531aa0787c1af90c2a958844abea0cd8d687a1",
     "type": "pull_request",
     "title": "Remove telemetry data aggregation",
@@ -15681,6 +15694,19 @@
     "built_at": "2023-03-16T16:17:09Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:4d93c0fec76c9e60373502e9f1ff3995617dcdf7"
+  },
+  {
+    "hash": "4d96d00481e50fc3bbc2600f93b26939377ffb48",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rename ledger version view to meta\n\nExpose database versions and feature flags through the renamed meta store view, updating ledger code, upgrades, CLI, and tests.",
+    "pull_request": "5116",
+    "created_at": "2026-07-28T15:37:28Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-29T09:09:33Z",
+    "run_id": null
   },
   {
     "hash": "4d985d8e6661c4ca832c982c769338dd73394347",
@@ -41315,6 +41341,19 @@
     "run_id": "10810737303"
   },
   {
+    "hash": "cf76cd77cd362d8eb831be71e8d96bf94b47f2a4",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Persist ledger pruning state\n\nStore pruning as a permanent ledger flag, migrate existing pruned databases to schema v27, and use the persisted state across restarts. Enforce incompatibility with topology and extended ledger indexes.",
+    "pull_request": "5116",
+    "created_at": "2026-07-28T01:24:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-29T09:09:33Z",
+    "run_id": null
+  },
+  {
     "hash": "cf7e1bcda4d9f013bf8f64970ef259fd87fe12a4",
     "type": "pull_request",
     "pull_request": 4225,
@@ -50328,6 +50367,22 @@
     "docker_tag": "gr0v1ty/nano-node:fb077a022c6def2aeb26801bf0414e0f8ef46897",
     "build_started_at": "2024-08-21T21:22:17Z",
     "run_id": "10497685725"
+  },
+  {
+    "hash": "fb170d0538addffc59d620d743f06417e7b008f2",
+    "type": "pull_request",
+    "title": "Fix deterministic wallet restore skipping the next account",
+    "author": "pwojcikdev",
+    "body": "`deterministic_restore` never inspected the account at the wallet's stored deterministic index — the very next account to be handed out. The scan started at `index + 1`, so a wallet whose next account had received funds restored nothing and left those funds invisible.\n\nThe ambiguous return convention was what made this hard to see. `deterministic_check` returned the highest used index, signalling \"nothing found\" by echoing its argument back, so `check(N) == N` meant either \"account N is used\" or \"nothing found\". The restore loop tried to disambiguate with `i <= new_index && index != new_index` and guessed wrong in exactly the \"found at N\" case.\n\n`deterministic_check` now returns `std::optional<uint32_t>`: the highest index with ledger activity, or `nullopt` when the scan finds nothing. Both callers become a guard plus an inclusive loop:\n\n```cpp\nif (auto last = deterministic_check_impl (transaction_a, store.deterministic_index_get (transaction_a)))\n{\n    while (store.deterministic_index_get (transaction_a) <= *last) { ... }\n}\n```\n\n`change_seed` keeps its documented behavior: an explicit `count` still requests accounts `0..count` inclusive, and the auto-detect path now scans from the stored index rather than from 0. Its log line reports the highest detected index instead of a count of additional accounts.\n\nTwo incidental fixes in the scan itself: both gap windows were checking 63 candidates while their comments claimed 64, and the bare `64` literals are now a named `deterministic_check_gap` constant. The 64 is a gap limit in the HD-wallet sense — how many consecutive unused accounts to scan past the last used one before giving up — and predates the RaiBlocks rename with no recorded rationale.\n\nVerification: `wallet.deterministic_restore_next` covers a payment to the account at the wallet's stored index. Against the current `develop` implementation it fails on both LMDB and RocksDB:\n\n```\nnano/core_test/wallet.cpp:1080: Failure\nExpected equality of these values:\n  2\n  wallet->get_deterministic_index ()\n    Which is: 1\n```\n\nWith the fix it passes, as do all 49 `wallet.*`/`wallets.*` core tests and the seed-related RPC tests on both backends.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5119,
+    "label": "pwojcikdev:wallet-deterministic-check",
+    "created_at": "2026-07-29T08:16:05Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-29T09:09:33Z",
+    "run_id": null
   },
   {
     "hash": "fb191b4ec1ca3bc4a1db22160249130cc6c34059",
