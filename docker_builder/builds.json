@@ -18559,6 +18559,22 @@
     "run_id": "11401193566"
   },
   {
+    "hash": "5c3c33d0937f93da517ab61ba2b49fe43813dbb6",
+    "type": "pull_request",
+    "title": "Fix deterministic wallet restore skipping the next account",
+    "author": "pwojcikdev",
+    "body": "`deterministic_restore` never inspected the account at the wallet's stored deterministic index — the very next account to be handed out. The scan started at `index + 1`, so a wallet whose next account had received funds restored nothing and left those funds invisible.\n\nThe ambiguous return convention was what made this hard to see. `deterministic_check` returned the highest used index, signalling \"nothing found\" by echoing its argument back, so `check(N) == N` meant either \"account N is used\" or \"nothing found\". The restore loop tried to disambiguate with `i <= new_index && index != new_index` and guessed wrong in exactly the \"found at N\" case.\n\n`deterministic_check` now returns `std::optional<uint32_t>`: the highest index with ledger activity, or `nullopt` when the scan finds nothing. Both callers become a guard plus an inclusive loop:\n\n```cpp\nif (auto last = deterministic_check_impl (transaction_a, store.deterministic_index_get (transaction_a)))\n{\n    while (store.deterministic_index_get (transaction_a) <= *last) { ... }\n}\n```\n\n`change_seed` keeps its documented behavior: an explicit `count` still requests accounts `0..count` inclusive, and the auto-detect path now scans from the stored index rather than from 0. Its log line reports the highest detected index instead of a count of additional accounts.\n\nTwo incidental fixes in the scan itself: both gap windows were checking 63 candidates while their comments claimed 64, and the bare `64` literals are now a named `deterministic_check_gap` constant. The 64 is a gap limit in the HD-wallet sense — how many consecutive unused accounts to scan past the last used one before giving up — and predates the RaiBlocks rename with no recorded rationale.\n\nVerification: `wallet.deterministic_restore_next` covers a payment to the account at the wallet's stored index. Against the current `develop` implementation it fails on both LMDB and RocksDB:\n\n```\nnano/core_test/wallet.cpp:1080: Failure\nExpected equality of these values:\n  2\n  wallet->get_deterministic_index ()\n    Which is: 1\n```\n\nWith the fix it passes, as do all 49 `wallet.*`/`wallets.*` core tests and the seed-related RPC tests on both backends.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5119,
+    "label": "pwojcikdev:wallet-deterministic-check",
+    "created_at": "2026-07-29T08:16:05Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-07-29T15:19:33Z",
+    "run_id": null
+  },
+  {
     "hash": "5c400d49c987c834a02f4841878962c9a2994fae",
     "type": "commit",
     "author": "pwojcikdev",
@@ -26848,6 +26864,22 @@
     "docker_tag": "gr0v1ty/nano-node:843dd3a91c7a33fc64440147fc4887b959d8b43c",
     "build_started_at": "2026-06-10T13:48:49Z",
     "run_id": "27280941653"
+  },
+  {
+    "hash": "845f37b710a139d350c66a8bfb94f8cb33e2aa0a",
+    "type": "pull_request",
+    "title": "Bound the account count accepted by wallet RPC commands",
+    "author": "pwojcikdev",
+    "body": "`accounts_create` and `wallet_change_seed` both loop over a caller-supplied count creating accounts, with no upper bound. A large count leaves the wallet unusable for the duration of the request, and the parameter accepts anything that parses into 64 bits.\n\n`wallet_change_seed` had a second problem: it truncated its `uint64` count into a `uint32`, so `count=4294967296` became `0` — which selects auto-detect, a different operation than the caller asked for. Any multiple of 2^32 behaved the same way.\n\nBoth handlers now reject counts above `max_accounts_per_request` (100000) with `invalid_count`, following the range check `account_create` already applies to its `index` parameter.\n\n`wallet_change_seed` additionally validates before touching the wallet. `count_optional_impl` sets `ec` on a malformed count, but the handler ignored it and replaced the seed anyway, surfacing the error only after the change had been made. A rejected request now leaves the existing seed in place.\n\nTests:\n- `accounts_create_count_limit` asserts the request is rejected and no account is created.\n- `wallet_change_seed_count_limit` drives `100001`, `4294967295` and `4294967296` — the last being the value that previously truncated into a ledger scan — and asserts the existing seed survives all three.\n\nRelated to #5119, which guards the same overflow one layer down in `wallet::change_seed`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5121,
+    "label": "pwojcikdev:rpc-account-count-limit",
+    "created_at": "2026-07-29T13:40:11Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-29T15:19:33Z",
+    "run_id": null
   },
   {
     "hash": "8478d12c3f13c568bb00aae58e22e477b4363ab8",
