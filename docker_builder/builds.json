@@ -15703,7 +15703,7 @@
     "pull_request": "5116",
     "created_at": "2026-07-28T15:37:28Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-07-29T09:09:33Z",
     "run_id": null
@@ -32481,6 +32481,22 @@
     "run_id": "14043478477"
   },
   {
+    "hash": "9fd7635806b1327ec3c3ae9447438f9e320b4df0",
+    "type": "pull_request",
+    "title": "Test enable_control enforcement and gate wallet export, unlock and stats clear",
+    "author": "pwojcikdev",
+    "body": "The set of RPC actions requiring `enable_control` lives in `create_rpc_control_impls()` in the RPC process, while the actions themselves are registered in `json_handler` in the node. Nothing links the two, and neither side had test coverage: `add_rpc` hardcoded `enable_control = true`, so every existing RPC test ran with the gate open.\n\n**Tests**\n\nNew `nano/rpc_test/enable_control.cpp` covers all 44 gated actions:\n\n- every gated action is rejected without `enable_control`, and admitted with it — the rejection happens before the node sees the request, so it does not depend on each action's own parameter validation\n- read-only actions remain available without `enable_control`\n- the two actions gated on a parameter rather than a name: `stats` is control-only for `type=objects`, `process` is control-only for `force=true`. Both are checked in the gated and ungated variants\n- every gated name resolves to an action the node actually handles\n\nThe tests were checked against two mutations rather than only observed to pass: removing `keepalive` from the control set fails the enforcement test naming `keepalive`, and injecting a name with no handler fails the known-actions test naming it.\n\n`add_rpc` now takes an `rpc_options` struct (defaulted, so existing callers are unchanged) instead of gaining a boolean parameter.\n\nThe gated-action list in the test is maintained by hand against `create_rpc_control_impls()`. Reading the production set directly would require giving it external linkage, which is left alone here.\n\n**Stale control entry**\n\nThe second commit removes `backoff_info` from the control set. It has never gated anything on `develop`: commit 1d1d152696 (2023-03-12) registered the handler as `debug_bootstrap_priority_info` but added the control entry under the earlier prototype name `backoff_info`, so the two never matched. Commit 0cce7967f1 (2025-01-07) renamed the handler to `bootstrap_priorities` and gated it correctly under that name, leaving the old string behind.\n\n`backoff_info` has no other reference anywhere in the tree and no handler answers to it, so requests for it already return \"Unknown command\". Removing it changes no observable behavior.\n\n**Newly gated actions**\n\nDiffing the two lists also surfaced registered actions that were not gated at all. The third commit gates four of them, on the principle that an action requires control if it exposes wallet secrets, authenticates, or mutates node state:\n\n- `wallet_export` serializes every wallet store entry — the encrypted seed, the encrypted private keys, the salt and the check. That is the same content `write_backup` writes to disk with 0600 permissions, and handing it to an unauthenticated caller allows the wallet password to be attacked offline. The default wallet password is empty.\n- `password_enter` and its `wallet_unlock` alias share one handler that reports whether a supplied password is correct, which makes an ungated endpoint a password oracle, and unlocks the wallet on success. `wallet_lock` and `password_change` were already gated, so the omission was asymmetric.\n- `stats_clear` mutates node state.\n\nThis changes behavior for callers that currently use those four actions against an RPC endpoint with control disabled. Read-only wallet queries (`wallet_info`, `wallet_balances`, `wallet_ledger`, `wallet_frontiers`, `wallet_history`, `wallet_contains`, `wallet_representative`, `wallet_receivable`, `wallet_key_valid`) are deliberately left ungated, since gating them would break read-only monitoring without protecting key material. The stateless key helpers (`key_create`, `key_expand`, `deterministic_key`, `account_key`) expose no node state and are also left alone.\n\nTwo related findings that needed no change: `node_id_delete` is already a deprecated no-op stub, so gating it would accomplish nothing, and `wallet_seed` is protected by a separate unsafe/dev-only gate in addition to the control set.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5120,
+    "label": "pwojcikdev:rpc-enable-control-tests",
+    "created_at": "2026-07-29T10:41:47Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-29T11:31:39Z",
+    "run_id": null
+  },
+  {
     "hash": "9ff68c1cfa0b6a14e39125577c92a34c7ee03a21",
     "type": "commit",
     "author": "pwojcikdev",
@@ -38661,6 +38677,19 @@
     "built_at": "2023-10-09T19:41:36Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:c17cf7a89735dd9beb50443e4e6556d8a0e68245"
+  },
+  {
+    "hash": "c18b9f31cbf1fa9eb5466e97e1023ee72645c0ef",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Include active blocks by default in unconfirmed receivable queries (#5118)\n\n* Apply receivable RPC offset after threshold filtering\n\n* Include active blocks by default in unconfirmed receivable queries",
+    "pull_request": "5118",
+    "created_at": "2026-07-29T10:20:56Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-29T11:31:39Z",
+    "run_id": null
   },
   {
     "hash": "c1928439472c5f95fed3c8d3bec27744a57537c5",
@@ -48760,6 +48789,19 @@
     "docker_tag": "gr0v1ty/nano-node:f3341a887dd99cded8910f1fd6c622dafd659cf7",
     "build_started_at": "2026-02-06T14:24:07Z",
     "run_id": "21756733955"
+  },
+  {
+    "hash": "f340f6dcf09523719808155ec3472a574193e384",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Apply receivable RPC offset after threshold filtering (#5117)",
+    "pull_request": "5117",
+    "created_at": "2026-07-29T10:16:45Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-07-29T11:31:39Z",
+    "run_id": null
   },
   {
     "hash": "f3792b512d942cfc77b79f62676c4e7d5843f699",
