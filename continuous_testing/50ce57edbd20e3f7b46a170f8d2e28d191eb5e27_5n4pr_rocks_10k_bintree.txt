@@ -1,0 +1,17 @@
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_rocks_10k_bintree.json
+Error retrieving the file. Please check the provided URL and file name.
+Start Fetching '5n4pr_rocks_10k_bintree_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_rocks_10k_bintree_config.json'
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/bin/nanolab", line 8, in <module>
+    sys.exit(main())
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/main.py", line 13, in main
+    arg_parse.run()
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/src/argparse_commands.py", line 71, in run
+    config_path = resource_handler.copy_config_file(
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/src/config_handler.py", line 108, in copy_config_file
+    return self._download_config_file(destination)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/src/config_handler.py", line 127, in _download_config_file
+    return download_data(config_data, destination.name, destination.parent)
+  File "/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/nanolab/src/utils.py", line 64, in download_data
+    if data.startswith("http://") or data.startswith("https://"):
+AttributeError: 'NoneType' object has no attribute 'startswith'
