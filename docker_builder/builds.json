@@ -4291,6 +4291,22 @@
     "docker_tag": "gr0v1ty/nano-node:155f5e774da1cb4f1821d388bbac188c7e8f2d1c"
   },
   {
+    "hash": "1568ab032e2e45b68fed3eda0382d128758069b0",
+    "type": "pull_request",
+    "title": "Fixed inverted debug assert",
+    "author": "RickiNano",
+    "body": "The debug_assert is currently inverted. The code populates deleted_items and then asserts that the items are not there.\r\nThis fails when run in debug build, but release mode is unaffected\r\nIt's probably a very rare edge case, but a bug nonetheless",
+    "draft": false,
+    "pull_request": 5125,
+    "label": "RickiNano:Wallet-debug-assert",
+    "created_at": "2026-08-06T08:20:41Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-06T09:18:44Z",
+    "run_id": null
+  },
+  {
     "hash": "157b6324ad1430854e3dee015345b4c474a5ace6",
     "type": "commit",
     "author": "pwojcikdev",
@@ -30569,6 +30585,22 @@
     "docker_tag": "gr0v1ty/nano-node:95df470f318a4bdc1b1cfe66e3f8f644a0084a22",
     "build_started_at": "2024-03-10T20:14:43Z",
     "run_id": "8224504096"
+  },
+  {
+    "hash": "95e6f1a5bbe502cbc6cf24f05e0a0c7a526446d9",
+    "type": "pull_request",
+    "title": "Add threshold option to representatives RPC and representative_count command",
+    "author": "Helemen7",
+    "body": "Fixes #3943 .\r\n\r\nAdds an optional `threshold` parameter to the `representatives` RPC,\r\nfiltering out representatives with voting weight below the given amount\r\n(raw units, decimal string). Also adds a new `representative_count` RPC\r\nreturning the number of representatives with voting weight at or above representative_vote_weight_minimum (default 10 XNO) as a string.\r\n\r\n- `nano/node/json_handler.cpp`: threshold filter applied in both the\r\n  simple and sorting branches; new `representative_count` handler;\r\n  removed unused `ordered` map (dead code)\r\n- `nano/node/json_handler.hpp`: declaration for `representative_count`\r\n- `nano/rpc_test/rpc.cpp`: tests for threshold filtering, invalid\r\n  threshold (`nano::error_common::bad_threshold`) and representative_count\r\n\r\nVerified locally: build OK, 4 rpc tests pass, clang-format/cmake-format checks pass.",
+    "draft": false,
+    "pull_request": 5124,
+    "label": "Helemen7:add-representatives-threshold",
+    "created_at": "2026-08-01T13:12:14Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-06T09:18:44Z",
+    "run_id": null
   },
   {
     "hash": "9604018ee813a53b6ff5471da1366c2d06d38a5c",
