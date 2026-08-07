@@ -8445,6 +8445,22 @@
     "docker_tag": "gr0v1ty/nano-node:29cd166fe5e29eba6537fd7a2c41041afa1de1af"
   },
   {
+    "hash": "29d9e226f0c2edfd2f9162fe909ab3c24e73a3a2",
+    "type": "pull_request",
+    "title": "Add threshold option to representatives RPC and representative_count command",
+    "author": "Helemen7",
+    "body": "Fixes #3943 .\r\n\r\nAdds an optional `threshold` parameter to the `representatives` RPC,\r\nfiltering out representatives with voting weight below the given amount\r\n(raw units, decimal string). Also adds a new `representative_count` RPC\r\nreturning the number of representatives with voting weight at or above representative_vote_weight_minimum (default 10 XNO) as a string.\r\n\r\n- `nano/node/json_handler.cpp`: threshold filter applied in both the\r\n  simple and sorting branches; new `representative_count` handler;\r\n  removed unused `ordered` map (dead code)\r\n- `nano/node/json_handler.hpp`: declaration for `representative_count`\r\n- `nano/rpc_test/rpc.cpp`: tests for threshold filtering, invalid\r\n  threshold (`nano::error_common::bad_threshold`) and representative_count\r\n\r\nVerified locally: build OK, 4 rpc tests pass, clang-format/cmake-format checks pass.",
+    "draft": false,
+    "pull_request": 5124,
+    "label": "Helemen7:add-representatives-threshold",
+    "created_at": "2026-08-01T13:12:14Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-07T03:26:48Z",
+    "run_id": null
+  },
+  {
     "hash": "29e31ee79e1ce0780ac9ad8281d7d0586dedbe51",
     "type": "commit",
     "author": "pwojcikdev",
@@ -33281,6 +33297,22 @@
     "built_at": "2023-03-06T18:08:38Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:a323b6b631e09a551eb156ebd0f5f8c2875b7a53"
+  },
+  {
+    "hash": "a32bc3057182675bd5ce29d3601e1adfa768a776",
+    "type": "pull_request",
+    "title": "Encapsulate the open wallets map and test wallet RPC thread safety",
+    "author": "pwojcikdev",
+    "body": "## Problem\n\n`wallets::items` was a public member guarded by `wallets::mutex` only by convention. Several RPC handlers (`account_move`, `block_create`, `wallet_create`, `wallet_destroy`), the CLI and the Qt wallet launcher accessed the map without holding the mutex, racing against `reload()` on the receivable scan thread and against concurrent wallet RPCs. A concurrent rehash during an unlocked `find` is undefined behavior.\n\nAdditionally, `wallets::destroy` asserted that the wallet exists, so two concurrent `wallet_destroy` requests for the same wallet could crash the node: both passed the handler's existence pre-check before either performed the destroy.\n\n## Changes\n\n- `wallets::items` is now private; outside access goes through `open()` or the snapshot queries `all_wallets()`, `wallet_ids()` and `wallet_count()`\n- All unlocked call sites (RPC handlers, CLI, Qt wallet launcher, tests) migrated to the synchronized accessors\n- `wallets::destroy` returns whether a wallet was destroyed instead of asserting on a missing one; the `wallet_destroy` RPC and CLI now perform a single atomic destroy instead of check-then-destroy\n- New test primitive `wait_responses` sends a whole batch of RPC requests at once and collects every response, plus an `rpc_options::num_ipc_connections` override — the dev network default of 1 RPC → IPC connection processes requests one at a time, which would make concurrent tests meaningless\n- New test suite `rpc.wallet_concurrent_*` covering parallel wallet creation, destruction of distinct wallets, racing destroys of the same wallet (exactly one wins) and a mixed create/destroy/read/account_move hammer\n\n## Testing\n\n- Full wallet and RPC test suites pass with both LMDB and RocksDB backends\n- The new tests run under the existing TSAN/ASAN CI matrices, where concurrent request processing makes them effective data race detectors\n- The harness was validated against a temporarily reintroduced version of the destroy race: with the request batch processed concurrently, the old assertion is reliably triggered\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5127,
+    "label": "pwojcikdev:encapsulate-wallets-items",
+    "created_at": "2026-08-07T00:31:10Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-07T03:26:48Z",
+    "run_id": null
   },
   {
     "hash": "a34640cdc35e9427e624fe105f2ea0da39404b39",
