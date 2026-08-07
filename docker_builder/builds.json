@@ -2703,6 +2703,19 @@
     "run_id": "11030471455"
   },
   {
+    "hash": "0d7cbfc33afe90f19e9e7c476ae1c68ca635c607",
+    "type": "commit",
+    "author": "RickiNano",
+    "title": "Fixed inverted debug assert (#5125)",
+    "pull_request": "5125",
+    "created_at": "2026-08-06T20:55:02Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-07T00:27:44Z",
+    "run_id": null
+  },
+  {
     "hash": "0d81008aa5d33daf423a978d2b725996d114c3ac",
     "type": "pull_request",
     "title": "Pass transaction in to end iterator for future use.",
@@ -12826,6 +12839,22 @@
     "docker_tag": "gr0v1ty/nano-node:3fdfcf71f12d25a4014facd46a13e573daf55086",
     "build_started_at": "2026-03-23T18:07:41Z",
     "run_id": "23452705752"
+  },
+  {
+    "hash": "3fe57b8f41733afc2e7ef5e72efc68107eccd3f9",
+    "type": "pull_request",
+    "title": "Validate account_move and epoch_upgrade parameters before acting",
+    "author": "pwojcikdev",
+    "body": "Follow-up to #5122. That PR fixed `wallet_change_seed`, which parsed a parameter, ignored the error code the parser had set, and changed the wallet anyway. An audit of every call site of the parsers that can set `ec` — `count_impl`, `count_optional_impl`, `offset_optional_impl`, `threshold_optional_impl`, `work_optional_impl`, `amount_impl`, `account_impl`, `hash_impl` and the difficulty/multiplier/version helpers — found two more handlers with the same defect. Both are state changing.\n\n**`account_move`** parses each entry of `accounts` in a loop and pushes the result unconditionally, then calls `move_accounts` with no error check. A malformed entry leaves a zero account in the vector, and since `wallet_store::move` is not atomic — it moves every key it can fetch and only flags the rest — the valid keys are inserted into the destination wallet and *erased from the source* while the caller receives \"Bad account number\". Every account is now validated before any is moved.\n\n**`epoch_upgrade`** parses `count` and `threads`, either of which can set `ec`, then reaches `epoch_upgrader.start` unguarded. `count_optional_impl` defaults to `numeric_limits<uint64_t>::max()`, so a count that throws in `stoull` leaves `count_limit` at `UINT64_MAX` and a mistyped parameter starts an unlimited ledger-wide upgrade while the response says \"Invalid count\". The upgrade is now started only when the parameters are valid.\n\nBoth commands are in `rpc_control_impl_set`, so this is operator error rather than a remote attack surface.\n\nThe remaining nested parser call sites — `account_remove`, `account_representative_set`, `send`, `receive`, `wallet_add_watch` — already re-check `ec` before acting. The read-only handlers that defer their check (`delegators`, `account_history`, `ledger`, `representatives_online`, `sign`) are harmless: `response_errors` discards `response_l` whenever `ec` is set, so the caller gets a clean error and the only cost is wasted work.\n\nTests:\n- `account_move_invalid_account` sends one valid and one unparseable account and asserts the valid key stays in the source wallet. Against `develop` it fails with `source->exists (key.pub)` false — the key had already been moved.\n- `epoch_upgrade_invalid_count` sends a malformed count and asserts the ledger does not grow. The response cannot distinguish the two behaviours, since `response_errors` discards the body when `ec` is set, so the ledger is the only observable. Against `develop` it fails with the block count changing.\n\nBoth verified failing on LMDB and RocksDB before the fix.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5126,
+    "label": "pwojcikdev:rpc-validation-ordering",
+    "created_at": "2026-08-06T19:21:47Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-07T00:27:44Z",
+    "run_id": null
   },
   {
     "hash": "3fe9e34d8136292bbcbe7f5186f2206fc3316074",
