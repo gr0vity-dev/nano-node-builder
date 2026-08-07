@@ -18694,6 +18694,22 @@
     "docker_tag": "gr0v1ty/nano-node:5bfb6a13fe0da31966c196225b719e2d36535ebe"
   },
   {
+    "hash": "5c0ae969d6115205cfb9264fe4ec8d6ef6358919",
+    "type": "pull_request",
+    "title": "Encapsulate the open wallets map and test wallet RPC thread safety",
+    "author": "pwojcikdev",
+    "body": "## Problem\n\n`wallets::items` was a public member guarded by `wallets::mutex` only by convention. Several RPC handlers (`account_move`, `block_create`, `wallet_create`, `wallet_destroy`), the CLI and the Qt wallet launcher accessed the map without holding the mutex, racing against `reload()` on the receivable scan thread and against concurrent wallet RPCs. A concurrent rehash during an unlocked `find` is undefined behavior.\n\nAdditionally, `wallets::destroy` asserted that the wallet exists, so two concurrent `wallet_destroy` requests for the same wallet could crash the node: both passed the handler's existence pre-check before either performed the destroy.\n\n## Changes\n\n- `wallets::items` is now private; outside access goes through `open()` or the snapshot queries `all_wallets()`, `wallet_ids()` and `wallet_count()`\n- All unlocked call sites (RPC handlers, CLI, Qt wallet launcher, tests) migrated to the synchronized accessors\n- `wallets::destroy` returns whether a wallet was destroyed instead of asserting on a missing one; the `wallet_destroy` RPC and CLI now perform a single atomic destroy instead of check-then-destroy\n- New test primitive `wait_responses` sends a whole batch of RPC requests at once and collects every response, plus an `rpc_options::num_ipc_connections` override — the dev network default of 1 RPC → IPC connection processes requests one at a time, which would make concurrent tests meaningless\n- New test suite `rpc.wallet_concurrent_*` covering parallel wallet creation, destruction of distinct wallets, racing destroys of the same wallet (exactly one wins) and a mixed create/destroy/read/account_move hammer\n\n## Testing\n\n- Full wallet and RPC test suites pass with both LMDB and RocksDB backends\n- The new tests run under the existing TSAN/ASAN CI matrices, where concurrent request processing makes them effective data race detectors\n- The harness was validated against a temporarily reintroduced version of the destroy race: with the request batch processed concurrently, the old assertion is reliably triggered\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5127,
+    "label": "pwojcikdev:encapsulate-wallets-items",
+    "created_at": "2026-08-07T00:31:10Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-07T13:21:42Z",
+    "run_id": null
+  },
+  {
     "hash": "5c306a001507fa650fd0b978b0ab7e869d20abb5",
     "type": "commit",
     "author": "pwojcikdev",
