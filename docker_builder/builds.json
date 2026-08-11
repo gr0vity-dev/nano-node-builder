@@ -11447,6 +11447,22 @@
     "run_id": "14691231467"
   },
   {
+    "hash": "3865137000b8a9f86c1df97f10a7d0e3a07c3705",
+    "type": "pull_request",
+    "title": "Fix representatives count limit off-by-one",
+    "author": "Helemen7",
+    "body": "The non-sorting branch of the `representatives` RPC returned one entry more than the requested `count`, because the break check ran after adding the entry to the response. The sorting branch already enforces the limit exactly.\n\nThis surfaced during review of #5124 (Copilot flagged it); keeping it out of that PR per review feedback. No change to the sorting path, and the default (no `count`) behavior is unaffected.\n\nVerification: build OK locally, `rpc.representatives_count_limit` added, 7 rpc representatives/count tests pass, clang-format check passes.",
+    "draft": false,
+    "pull_request": 5132,
+    "label": "Helemen7:fix-representatives-count",
+    "created_at": "2026-08-11T16:25:26Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-11T17:34:50Z",
+    "run_id": null
+  },
+  {
     "hash": "387f06840150a23a7de49129f071000782bdf601",
     "type": "commit",
     "author": "pwojcikdev",
@@ -27104,6 +27120,22 @@
     "run_id": "30510946629"
   },
   {
+    "hash": "84627681e08b08a126d5362fea0f1ac908f15f59",
+    "type": "pull_request",
+    "title": "Test that a node reports its own representative as online",
+    "author": "pwojcikdev",
+    "body": "Adds an RPC test covering the scenario reported in #3046: a node hosting its own representative did not list that representative in its own `representatives_online` output unless it happened to be actively voting on an election.\n\nThe test starts a single node, inserts the genesis key into that node's own wallet, and asserts the representative appears in that same node's `representatives_online` response — with no block activity whatsoever. The absence of activity is the point: the original report described the representative appearing only briefly after making a transaction.\n\nFor a fully idle node the only path that can satisfy the assertion is the loopback rep crawler query in `rep_crawler::run`, answered by `vote_replier` with a final vote for a cemented block and registered through `online_reps::observe`.\n\nExisting tests cover this at the component level (`online_reps.observe_local`, `rep_crawler.rep_local`); this adds the missing end-to-end assertion that the RPC actually surfaces it.\n\nVerified to pass against both LMDB and RocksDB backends, and to fail by timeout on both when the loopback rep crawler query is removed.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5130,
+    "label": "pwojcikdev:test-representatives-online-local",
+    "created_at": "2026-08-11T15:15:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-11T17:34:50Z",
+    "run_id": null
+  },
+  {
     "hash": "8478d12c3f13c568bb00aae58e22e477b4363ab8",
     "type": "pull_request",
     "title": "Enable large votes",
@@ -31310,6 +31342,22 @@
     "docker_tag": "gr0v1ty/nano-node:9844e79f2b0055aac66bf953ec16d64cc0d6e3e1",
     "build_started_at": "2024-05-05T12:14:06Z",
     "run_id": "8958122921"
+  },
+  {
+    "hash": "984676520fbddc07732e743fd86b004ced38b4ed",
+    "type": "pull_request",
+    "title": "Use public wallet_ids accessor in account_move_invalid_account test",
+    "author": "pwojcikdev",
+    "body": "Fixes the build break introduced in #5127: the `rpc.account_move_invalid_account` test still accessed the now-private `wallets.items` map directly. Replaced with the public `wallet_ids ()` accessor, matching the pattern used by the other RPC tests.\n\nVerified the test passes with both LMDB and RocksDB backends.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5134,
+    "label": "pwojcikdev:fix/rpc-test-wallet-ids",
+    "created_at": "2026-08-11T16:39:53Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-11T17:34:50Z",
+    "run_id": null
   },
   {
     "hash": "9858c733c641f97b9905f073788b31edc98f8b70",
