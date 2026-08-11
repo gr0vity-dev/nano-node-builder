@@ -29322,6 +29322,19 @@
     "docker_tag": "gr0v1ty/nano-node:900dda838616af214be00cac37d54e16c732af27"
   },
   {
+    "hash": "901fdac25909df7d885e27d92362e52bcc57a68d",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Encapsulate the open wallets map and test wallet RPC thread safety (#5127)\n\n* Encapsulate the open wallets map behind synchronized accessors\n\nRPC handlers, the CLI and the Qt wallet accessed wallets::items without\nholding the mutex, racing with reload() on the receivable scan thread.\nThe map is now private; callers go through open() or the new snapshot\nqueries: all_wallets(), wallet_ids() and wallet_count().\n\n* Test wallet RPC thread safety with concurrent requests\n\nAdds a wait_responses test primitive that keeps a whole batch of RPC\nrequests in flight at once, together with an rpc_options override for\nthe RPC → IPC connection count, which defaults to 1 on the dev network\nand would otherwise process requests one at a time.\n\nwallets::destroy now returns whether a wallet was destroyed instead of\nasserting on a missing wallet, so concurrent wallet_destroy requests\nfor the same wallet are safe and exactly one of them wins.\n\n* Encapsulate `wallet_store::mutex` to fix lock order inversion\n\nTSAN reported a lock order inversion between wallets::mutex and\nwallet_store::mutex. wallets::create holds the former while constructing\na wallet_store that takes the latter, but node.unlock_search evaluated\nsystem::wallet, which now takes wallets::mutex, while already holding a\nstore mutex.\n\nThat guard protected nothing: nano::fan is internally synchronized, so\nthe value_set it wrapped was already safe. The test, node.send_unkeyed\nand the Qt lock button were all open-coding wallet::lock, which does the\nsame thing and also refreshes the rep keys cache; they now call it.\n\nwallet_store::mutex is private, leaving only the compound operations\ninside wallet_store that genuinely need it. refresh_rep_keys_cache drops\nits store lock as well, since fetch revalidates the password itself and\nthe lock only kept the diagnostic log line in step with the result.\n\n* Derive the locked state in `refresh_rep_keys_cache` from the fetch\n\nThe cache checked valid_password and then fetched the private key as two\nseparate operations. Holding the store mutex across the pair was the only\nthing keeping them in agreement, and it did not even cover wallet::lock,\nwhich writes the password fan without taking that mutex.\n\nfetch already reports the locked state through wallet_locked, so a single\ncall yields both the key and the reason it was unavailable, and cannot\ndisagree with itself under a concurrent rekey. Watch-only representatives\nstill fall out as bad_private_key and are left uncached without warning.",
+    "pull_request": "5127",
+    "created_at": "2026-08-11T13:43:28Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-11T13:57:10Z",
+    "run_id": null
+  },
+  {
     "hash": "902bc4b01ddcdb531cf314888a3b8f63eb605d83",
     "type": "commit",
     "author": "pwojcikdev",
