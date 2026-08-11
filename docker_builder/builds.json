@@ -11146,6 +11146,19 @@
     "docker_tag": ""
   },
   {
+    "hash": "37201babf9bc321f41daae22e36b89a76e0138b0",
+    "type": "commit",
+    "author": "Helemen7",
+    "title": "Add threshold option to representatives RPC and representative_count command (#5124)\n\n* Add threshold option to representatives RPC and representative_count command\n\n* Add threshold option to representative_count RPC\n\n* Reduce copies in representative_count RPC\n\nAvoid copying the rep weights map when the threshold is zero or omitted,\nsince the unfiltered count is just the map size.",
+    "pull_request": "5124",
+    "created_at": "2026-08-11T15:08:26Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-11T15:46:05Z",
+    "run_id": null
+  },
+  {
     "hash": "372c321a32ee291a2d636ba0b340d725b1ee574d",
     "type": "pull_request",
     "title": "Internal node io context",
@@ -14121,6 +14134,22 @@
     "docker_tag": "gr0v1ty/nano-node:44eb3248f20cf489f1126a32683fead4dbdf3326",
     "build_started_at": "2023-11-07T18:19:47Z",
     "run_id": "6788688520"
+  },
+  {
+    "hash": "44f41d611147be8c26f1216a803a959edfa5bfd7",
+    "type": "pull_request",
+    "title": "Test that a node reports its own representative as online",
+    "author": "pwojcikdev",
+    "body": "Adds an RPC test covering the scenario reported in #3046: a node hosting its own representative did not list that representative in its own `representatives_online` output unless it happened to be actively voting on an election.\n\nThe test starts a single node, inserts the genesis key into that node's own wallet, and asserts the representative appears in that same node's `representatives_online` response — with no block activity whatsoever. The absence of activity is the point: the original report described the representative appearing only briefly after making a transaction.\n\nFor a fully idle node the only path that can satisfy the assertion is the loopback rep crawler query in `rep_crawler::run`, answered by `vote_replier` with a final vote for a cemented block and registered through `online_reps::observe`.\n\nExisting tests cover this at the component level (`online_reps.observe_local`, `rep_crawler.rep_local`); this adds the missing end-to-end assertion that the RPC actually surfaces it.\n\nVerified to pass against both LMDB and RocksDB backends, and to fail by timeout on both when the loopback rep crawler query is removed.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5130,
+    "label": "pwojcikdev:test-representatives-online-local",
+    "created_at": "2026-08-11T15:15:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-11T15:46:05Z",
+    "run_id": null
   },
   {
     "hash": "44fc2b4b749e044e7d00bc018299dbd6e9b7e138",
@@ -27668,6 +27697,22 @@
     "run_id": "9775497485"
   },
   {
+    "hash": "876757850a707a963c7ea8e8ff8682f5274f84a4",
+    "type": "pull_request",
+    "title": "Fix vote generator busy-spin when a replacement hits a full bucket",
+    "author": "pwojcikdev",
+    "body": "Fixes #5129\n\n## Problem\n\n`vote_generator_index::push` updated its `dedup` map before checking whether the underlying `fair_queue` accepted the entry. When a replacement (different hash for the same root) hit a full bucket, `dedup` ended up naming a hash that was never enqueued. The still-queued old entry was later skipped as stale without erasing the map entry, orphaning it permanently.\n\nSince `size()`/`empty()` reported on `dedup` while `next_batch()` drains the queue, a single orphan made the `vote_generator_verifier` wait predicate permanently true with nothing to pop — the voting threads busy-spin at 100% CPU while hammering the shared mutex, and the affected root is silenced for vote generation (visible as a climbing `vote_generator::overfill` counter).\n\n## Fix\n\n- Update `dedup` only once the queue has accepted the replacement. On rejection the old hash remains the active mapping and its queued entry stays consumable, so a full bucket now load-sheds the winner change (the old winner keeps being voted until rebroadcast retries succeed) instead of wedging the verifier. This matches how full buckets already treat new roots.\n- `empty()` is now backed by the queue rather than `dedup`, so any future divergence degrades into a blocked thread instead of a spin.\n- `next_batch()` asserts the invariant that every `dedup` entry has a matching queue entry.\n\n## Tests\n\n- `vote_generator_index.replacement_when_bucket_full` previously pinned the broken intermediate state as characterization; it now guards the fixed behavior (old mapping stays active and extractable, no orphaned entries after draining).\n- New `vote_generator_index.replacement_retry_after_drain` covers recovery: a rejected replacement succeeds when retried after the bucket drains, with the stale entry skipped on extraction.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5131,
+    "label": "pwojcikdev:fix-vote-generator-index-orphan",
+    "created_at": "2026-08-11T15:33:25Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-11T15:46:05Z",
+    "run_id": null
+  },
+  {
     "hash": "876c91b3eadbc8bac02129ae809ceead8c4fe345",
     "type": "commit",
     "created_at": "2023-11-27T14:37:53Z",
@@ -35933,6 +35978,19 @@
     "docker_tag": "gr0v1ty/nano-node:b0f61f11f35e22fc7eb8f7f181b1724998f315ea",
     "build_started_at": "2024-05-19T18:51:54Z",
     "run_id": "9149819155"
+  },
+  {
+    "hash": "b0fb0b26c893e6cf95ed9049fbffcce10ef7ee6d",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Validate account_move and epoch_upgrade parameters before acting (#5126)\n\nBoth handlers parsed parameters that set an error code and then acted on them regardless, moving wallet keys and starting a ledger upgrade on requests reported as failed.",
+    "pull_request": "5126",
+    "created_at": "2026-08-11T15:08:08Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-11T15:46:05Z",
+    "run_id": null
   },
   {
     "hash": "b0fe9b3856c50193891cc119efba289c0d461a77",
