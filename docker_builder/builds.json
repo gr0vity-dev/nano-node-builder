@@ -40978,6 +40978,22 @@
     "run_id": "11601990701"
   },
   {
+    "hash": "cc36f59d0aab8b1fee0e89d5eb3501d1f80bad5c",
+    "type": "pull_request",
+    "title": "Fix vote generator busy-spin when a replacement hits a full bucket",
+    "author": "pwojcikdev",
+    "body": "Fixes #5129\n\n## Problem\n\n`vote_generator_index::push` updated its `dedup` map before checking whether the underlying `fair_queue` accepted the entry. When a replacement (different hash for the same root) hit a full bucket, `dedup` ended up naming a hash that was never enqueued. The still-queued old entry was later skipped as stale without erasing the map entry, orphaning it permanently.\n\nSince `size()`/`empty()` reported on `dedup` while `next_batch()` drains the queue, a single orphan made the `vote_generator_verifier` wait predicate permanently true with nothing to pop — the voting threads busy-spin at 100% CPU while hammering the shared mutex, and the affected root is silenced for vote generation (visible as a climbing `vote_generator::overfill` counter).\n\n## Fix\n\n- Update `dedup` only once the queue has accepted the replacement. On rejection the old hash remains the active mapping and its queued entry stays consumable, so a full bucket now load-sheds the winner change (the old winner keeps being voted until rebroadcast retries succeed) instead of wedging the verifier. This matches how full buckets already treat new roots.\n- `empty()` is now backed by the queue rather than `dedup`, so any future divergence degrades into a blocked thread instead of a spin.\n- `next_batch()` asserts the invariant that every `dedup` entry has a matching queue entry.\n\n## Tests\n\n- `vote_generator_index.replacement_when_bucket_full` previously pinned the broken intermediate state as characterization; it now guards the fixed behavior (old mapping stays active and extractable, no orphaned entries after draining).\n- New `vote_generator_index.replacement_retry_after_drain` covers recovery: a rejected replacement succeeds when retried after the bucket drains, with the stale entry skipped on extraction.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5131,
+    "label": "pwojcikdev:fix-vote-generator-index-orphan",
+    "created_at": "2026-08-11T15:33:25Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-12T15:35:03Z",
+    "run_id": null
+  },
+  {
     "hash": "cc4008185c99fccf59e007c0a79ec799be18751d",
     "type": "commit",
     "author": "pwojcikdev",
@@ -49699,6 +49715,22 @@
     "docker_tag": "gr0v1ty/nano-node:f5a3c5630e4b28bbe8e50cffedd33ea688d95642",
     "build_started_at": "2024-03-10T20:14:43Z",
     "run_id": "8224504096"
+  },
+  {
+    "hash": "f5dac0eb8b700e12a538545eaf21924b322d72ea",
+    "type": "pull_request",
+    "title": "Test that a node reports its own representative as online",
+    "author": "pwojcikdev",
+    "body": "Adds an RPC test covering the scenario reported in #3046: a node hosting its own representative did not list that representative in its own `representatives_online` output unless it happened to be actively voting on an election.\n\nThe test starts a single node, inserts the genesis key into that node's own wallet, and asserts the representative appears in that same node's `representatives_online` response — with no block activity whatsoever. The absence of activity is the point: the original report described the representative appearing only briefly after making a transaction.\n\nFor a fully idle node the only path that can satisfy the assertion is the loopback rep crawler query in `rep_crawler::run`, answered by `vote_replier` with a final vote for a cemented block and registered through `online_reps::observe`.\n\nExisting tests cover this at the component level (`online_reps.observe_local`, `rep_crawler.rep_local`); this adds the missing end-to-end assertion that the RPC actually surfaces it.\n\nVerified to pass against both LMDB and RocksDB backends, and to fail by timeout on both when the loopback rep crawler query is removed.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5130,
+    "label": "pwojcikdev:test-representatives-online-local",
+    "created_at": "2026-08-11T15:15:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-12T15:35:03Z",
+    "run_id": null
   },
   {
     "hash": "f5ec339a10d0d783292c12a2c1811ff5645d9f87",
