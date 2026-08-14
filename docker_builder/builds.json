@@ -11556,11 +11556,11 @@
     "title": "Update `vote_generator_index` dedup only when the queue accepts a replacement (#5131)\n\nWhen a replacement push hit a full bucket, dedup was updated even though the entry was never enqueued, orphaning the root: size()/empty() report on dedup while next_batch() drains the queue, so the verifier wait predicate stayed satisfied with nothing to pop, busy-spinning the voting threads and permanently silencing the root.\n\nHarden against any future divergence by backing empty() with the queue and asserting the dedup/queue invariant in next_batch().",
     "pull_request": "5131",
     "created_at": "2026-08-14T18:34:51Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-08-14T19:38:02Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:38c7eda56025713d983094efec5360cd1bd34b9e",
     "build_started_at": "2026-08-14T19:04:03Z",
-    "run_id": null
+    "run_id": "31831566942"
   },
   {
     "hash": "38ca13f200ec8820f34d9ad8c3318dca37dadea1",
