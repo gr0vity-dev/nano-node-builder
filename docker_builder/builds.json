@@ -19755,6 +19755,22 @@
     "run_id": null
   },
   {
+    "hash": "60814e87286bc053b365bfedee5f9afd8e6d232b",
+    "type": "pull_request",
+    "title": "Add test coverage for wallets::reload add and drop paths",
+    "author": "pwojcikdev",
+    "body": "`wallets::reload ()` had no runnable test coverage: the only existing test (`wallets.DISABLED_reload`) was permanently disabled because LMDB does not support opening multiple environments on the same file within one process. As a result, neither reload branch — picking up new wallets from disk, dropping destroyed ones — was ever executed in CI, which is how the inverted debug assert on the drop path (fixed in #5125) went unnoticed.\n\nThis replaces the disabled test with a runnable `wallets.reload` test that sidesteps the LMDB limitation by constructing a second `wallets` instance over the node's shared backend, the same approach the neighboring wallet tests already use. A wallet created through one instance must appear in the other after `reload ()`, and a wallet destroyed through one instance must disappear from the other after `reload ()`.\n\nVerified the test catches the original bug: with the pre-#5125 inverted assert reinstated locally, the test aborts on that assertion under both LMDB and RocksDB backends.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5140,
+    "label": "pwojcikdev:test-wallets-reload",
+    "created_at": "2026-08-14T02:36:57Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-14T03:14:26Z",
+    "run_id": null
+  },
+  {
     "hash": "609cd155b5ff68b89541db86c0e77d72dce2494a",
     "type": "commit",
     "author": "pwojcikdev",
