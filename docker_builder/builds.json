@@ -11550,6 +11550,19 @@
     "run_id": "7743734697"
   },
   {
+    "hash": "38c7eda56025713d983094efec5360cd1bd34b9e",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Update `vote_generator_index` dedup only when the queue accepts a replacement (#5131)\n\nWhen a replacement push hit a full bucket, dedup was updated even though the entry was never enqueued, orphaning the root: size()/empty() report on dedup while next_batch() drains the queue, so the verifier wait predicate stayed satisfied with nothing to pop, busy-spinning the voting threads and permanently silencing the root.\n\nHarden against any future divergence by backing empty() with the queue and asserting the dedup/queue invariant in next_batch().",
+    "pull_request": "5131",
+    "created_at": "2026-08-14T18:34:51Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-14T19:04:03Z",
+    "run_id": null
+  },
+  {
     "hash": "38ca13f200ec8820f34d9ad8c3318dca37dadea1",
     "type": "pull_request",
     "pull_request": 4457,
@@ -31025,6 +31038,19 @@
     "run_id": "30536165686"
   },
   {
+    "hash": "968048fb52152ae8f848f1f929fc8575afcdac8c",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add test coverage for wallets::reload add and drop paths (#5140)\n\nThe drop path carried an inverted debug assert (fixed in #5125) that no test ever executed, since the only reload test was permanently disabled due to the LMDB single-environment limitation. Replace it with a test that exercises reload through a second wallets instance sharing the node's backend, covering both the add and drop paths.",
+    "pull_request": "5140",
+    "created_at": "2026-08-14T18:19:17Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-14T19:04:03Z",
+    "run_id": null
+  },
+  {
     "hash": "968092351d95ea25550cd84fa484db2026176604",
     "type": "commit",
     "author": "pwojcikdev",
@@ -45632,6 +45658,22 @@
     "docker_tag": "gr0v1ty/nano-node:e0a4fd86b9c07af59149a6378e61fd0bdea83501",
     "build_started_at": "2024-02-22T16:46:44Z",
     "run_id": "8008016327"
+  },
+  {
+    "hash": "e0bee6991a47a6552632c3d8ea93e1f88be15fff",
+    "type": "pull_request",
+    "title": "Fix wallet lock state races",
+    "author": "pwojcikdev",
+    "body": "## Problem\n\nInvestigating a TSAN report on #5127 surfaced three related races around the wallet lock state:\n\n- `wallet::lock` cleared the password fan without holding the store mutex. A clear landing in the middle of a `rekey` was overwritten by it, leaving the wallet unlocked even though `lock()` had completed.\n- The wallet store primitives that consume the wallet key (`insert_adhoc`, `seed_set`, `seed`, `deterministic_key`, `deterministic_insert`) re-unlocked the store internally and `release_assert`ed on failure, while their callers gated on a separate `valid_password` check. A lock landing between the check and the assert aborted the node — reachable over RPC by running `wallet_lock` concurrently with `account_create` or `wallet_change_seed`.\n- A failed password attempt overwrites the live password and locks the wallet as a side effect, but `enter_password` refreshed the rep keys cache only on success, so the node kept voting with keys from a wallet that already reported itself locked.\n\nNone of these can corrupt the wallet database: entries are encrypted under the wallet key, which never changes — `rekey` only re-wraps it under the new password, and every write goes through a check-validated cipher.\n\n## Changes\n\n- Password clearing moved into `wallet_store::password_clear`, serialized under the store mutex against `rekey` and `attempt_password`: either the clear lands after the rekey and the wallet ends up locked, or before it, in which case the rekey fails cleanly\n- The store primitives now take a `wallet_cipher`, obtainable only through `unlock()`, so an unauthenticated call cannot be expressed; the `release_assert`s are gone. Entry points unlock once and thread the cipher through, `move` and `import` unlock both stores up front, and `change_seed` reports a locked wallet through its result instead of relying on the racy `is_locked` pre-checks in the RPC, CLI and Qt callers\n- `enter_password` refreshes the rep keys cache unconditionally so the cache never outlives the lock state it was built from\n- As a side effect, the Qt lock button now routes through `wallet::lock`, which also clears cached rep keys — previously locking from the GUI left the node voting with the cached key until the next periodic reps scan\n\n## Testing\n\n- `wallet.insert_lock_race` flips the lock state on one thread while hammering inserts on another; validated against a temporarily reintroduced check-then-act pattern, where it crashes on the first run\n- `wallets.rep_keys_cache_failed_password_attempt` fails without the unconditional refresh\n- `rpc.wallet_concurrent_lock_create` hammers `account_create`, `wallet_lock`, `wallet_change_seed` and `password_enter` in concurrent batches as a handler-level consistency check\n- Full wallet and RPC test suites pass with both LMDB and RocksDB backends; each commit builds and tests independently\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5136,
+    "label": "pwojcikdev:wallet-lock-race",
+    "created_at": "2026-08-12T20:57:26Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-14T19:04:03Z",
+    "run_id": null
   },
   {
     "hash": "e0c5c95b9e0520593f77276beb4b9069399dfadf",
