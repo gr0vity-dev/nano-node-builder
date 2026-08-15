@@ -2982,6 +2982,19 @@
     "docker_tag": "gr0v1ty/nano-node:0ecf3a1701f9f9337acb98d6d5ec0ac04a0182a1"
   },
   {
+    "hash": "0edd243d89ed8e9771dc4138eab06525c4aa09bd",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Serialize wallet password clearing against rekey\n\nwallet::lock cleared the password fan without holding the store mutex,\nso a clear landing in the middle of a rekey was overwritten by it and\nthe wallet remained unlocked even though lock() had completed. The\nclear now happens in wallet_store under the same mutex as rekey and\nattempt_password: either it lands after the rekey and the wallet ends\nup locked, or before it, in which case the rekey fails cleanly.",
+    "pull_request": "5136",
+    "created_at": "2026-08-12T19:21:10Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-15T13:59:08Z",
+    "run_id": null
+  },
+  {
     "hash": "0ee826aba3f2c9535dae9fbc5a2f472184ee97e4",
     "type": "pull_request",
     "title": "Fix database iterator-transaction lifetimes",
@@ -5184,6 +5197,19 @@
     "docker_tag": "gr0v1ty/nano-node:1999166f28a54d6902ece50c2fd8d02201d77240",
     "build_started_at": "2025-02-20T11:32:51Z",
     "run_id": "13434322448"
+  },
+  {
+    "hash": "19a17b2d2dc40a8c74ae120f9bde72912fee4242",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Fix wallet lock state races (#5136)",
+    "pull_request": "5136",
+    "created_at": "2026-08-15T13:54:21Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-15T13:59:08Z",
+    "run_id": null
   },
   {
     "hash": "19aff1d9500ba922e90429f66d6ce58e1ac87d56",
@@ -15310,6 +15336,19 @@
     "docker_tag": "gr0v1ty/nano-node:4a4b6e8ac27d46d5aa9c594cbad0e2a9c78756ce",
     "build_started_at": "2026-01-31T15:42:44Z",
     "run_id": "21546840794"
+  },
+  {
+    "hash": "4a5654db70e1a532863bf6f7def9a602ececb774",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Bind wallet ciphers to their issuing store\n\nA cipher proves that some wallet was unlocked, but nothing tied it to\nthe store that issued it: passing wallet B's cipher to wallet A's\nseed_set compiled and produced ciphertext A cannot decrypt. The cipher\nnow records its issuer and every consuming primitive asserts on it in\nall builds, so cross-wallet use cannot write ciphertext, including a\nswapped cipher pair inside move or import.",
+    "pull_request": "5136",
+    "created_at": "2026-08-14T16:52:23Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-15T13:59:08Z",
+    "run_id": null
   },
   {
     "hash": "4a57d9a4ce80a8dc634bf6c909e599934d9b3652",
@@ -47654,6 +47693,19 @@
     "built_at": "2023-02-08T19:21:24Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:eb170316b1b800c70f95bc39623cd9c1fb92da32"
+  },
+  {
+    "hash": "eb1c140ed41001c812f8487b69e0492d62d80cd9",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Require a validated cipher for wallet key operations\n\nThe wallet store primitives that consume the wallet key re-unlocked the\nstore internally and asserted on failure, while their callers gated on a\nseparate valid_password check. A lock landing between the check and the\nassert aborted the node; wallet_lock concurrent with account_create or\nwallet_change_seed made this reachable over RPC.\n\nThe primitives now take a wallet_cipher, obtainable only through\nunlock(), so an unauthenticated call cannot be expressed. Entry points\nunlock once and thread the cipher through, move and import unlock both\nstores up front, and change_seed reports a locked wallet through its\nresult instead of relying on the racy is_locked pre-checks in the RPC,\nCLI and Qt callers.\n\nThe insert_lock_race test flips the lock state while hammering inserts;\nagainst the old check-then-act pattern it crashes on the first run.",
+    "pull_request": "5136",
+    "created_at": "2026-08-12T19:22:20Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-15T13:59:08Z",
+    "run_id": null
   },
   {
     "hash": "eb21bb320720e1022b3b87531a731101d03ad473",
