@@ -2988,11 +2988,11 @@
     "title": "Serialize wallet password clearing against rekey\n\nwallet::lock cleared the password fan without holding the store mutex,\nso a clear landing in the middle of a rekey was overwritten by it and\nthe wallet remained unlocked even though lock() had completed. The\nclear now happens in wallet_store under the same mutex as rekey and\nattempt_password: either it lands after the rekey and the wallet ends\nup locked, or before it, in which case the rekey fails cleanly.",
     "pull_request": "5136",
     "created_at": "2026-08-12T19:21:10Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-08-15T14:29:42Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:0edd243d89ed8e9771dc4138eab06525c4aa09bd",
     "build_started_at": "2026-08-15T13:59:08Z",
-    "run_id": null
+    "run_id": "31888669913"
   },
   {
     "hash": "0ee826aba3f2c9535dae9fbc5a2f472184ee97e4",
