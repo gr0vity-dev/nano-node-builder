@@ -40532,6 +40532,22 @@
     "run_id": "8675872928"
   },
   {
+    "hash": "c8c166428379cddefa67909dbd844c312693b977",
+    "type": "pull_request",
+    "title": "Run coverage workflow on every push to develop",
+    "author": "pwojcikdev",
+    "body": "## Problem\n\nCoverage only ran on a weekly cron (`0 1 * * 0`) or by manual dispatch, so a regression in coverage was attributable to a week's worth of merges at best, and the reports were stale for most of the week.\n\n## Changes\n\n- Coverage now runs on every push to `develop`, and the weekly `schedule` trigger is dropped — per-commit runs make it redundant\n- `workflow_dispatch` is kept so coverage can still be run on demand against any branch; its `label` input now defaults to `Manual` rather than `Scheduled`\n- Step summaries label push runs with `github.ref_name` instead of falling back to `Scheduled`, so the heading reads `### Coverage [lmdb] develop`\n\nNote that the coverage job has a 220-minute timeout and no concurrency group, so consecutive merges into `develop` will run overlapping builds. Adding `concurrency` with `cancel-in-progress` would keep only the newest commit's run, at the cost of not having a report for every commit — left out here deliberately, happy to add it if the runner load turns out to be a problem.\n\n## Testing\n\nWorkflow-only change, verified by parsing the resulting YAML: the trigger set is `push` (restricted to `develop`) and `workflow_dispatch`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5141,
+    "label": "pwojcikdev:coverage-develop-push",
+    "created_at": "2026-08-15T16:12:15Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-15T16:39:39Z",
+    "run_id": null
+  },
+  {
     "hash": "c8eb45808fc5c634a921b0eda7f2636f25e4cad7",
     "type": "pull_request",
     "title": "More comprehensive logging of wallet actions",
