@@ -40062,6 +40062,22 @@
     "run_id": "7717612307"
   },
   {
+    "hash": "c5f3c9a7f8116f9df15093d79200b8abeff5b17b",
+    "type": "pull_request",
+    "title": "Fetch submodules in parallel",
+    "author": "RickiNano",
+    "body": "Submodule checkout takes a lot of time during CI runs.\r\n14 submodules plus Boost's 180 submodules are currently fetched serially by each job.\r\n\r\nThis PR sets `submodule.fetchJobs=8` in the five workflows so `actions/checkout` fetches them concurrently. The work is network-bound, so 8 parallel fetches is fine on 4-core runners.\r\n\r\nFrom my testing `actions/checkout` time is reduced by up to 61 percent\r\n\r\n| Job | Before | After | Change |\r\n| --- | ---: | ---: | ---: |\r\n| Linux [rocksdb / gcc] | 6m37s | 2m44s | -61% |\r\n| Linux [lmdb / clang] | 6m37s | 3m53s | -41% |\r\n| Linux [lmdb / gcc] | 5m08s | 3m47s | -27% |\r\n| Linux [rocksdb / clang] | 4m09s | 3m34s | -14% |\r\n| Docker [rocksdb] | 7m01s | 2m48s | -58% |\r\n| Docker [build] | 7m10s | 3m45s | -48% |\r\n| Docker [lmdb] | 5m53s | 2m42s | -54% |\r\n| Windows [lmdb] | 6m37s | 4m22s | -34% |\r\n| Windows [rocksdb] | 8m22s | 4m21s | -48% |\r\n| macOS [lmdb] | 9m36s | 5m16s | -45% |\r\n| macOS [rocksdb] | 6m27s | 6m38s | +3% |\r\n| **Mean** | 6m42s | 3m58s | -41% |",
+    "draft": false,
+    "pull_request": 5142,
+    "label": "RickiNano:parallel-boost-fetch",
+    "created_at": "2026-08-15T17:57:31Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-15T18:09:44Z",
+    "run_id": null
+  },
+  {
     "hash": "c5fdb52c3ccde3c325e64e3608aa39e20a7e2ff3",
     "type": "pull_request",
     "title": "Fix intermittent race condition in `fork_no_vote_quorum` test",
