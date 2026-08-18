@@ -2995,6 +2995,19 @@
     "run_id": "31888669913"
   },
   {
+    "hash": "0ee0b34ecc7f45807a96014fd1ee86ae99347e5b",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Decouple confirmation_solicitor from election internals\n\nThe solicitor reached into election private state (last_votes, is_quorum,\nstatus.winner) through friendship, which forced its tests to construct\nreal elections and poke their internals via friend declarations.\n\nIt now consumes an election_snapshot, a plain view built by the election\nunder its own lock, carrying the root, winner, quorum flag and the vote\nmap. The friend declarations are gone and the solicitor tests exercise\nthe rep filtering and batching with hand-built snapshots.\n\nAlso flip add and broadcast to return true on success instead of the\ninverted error convention.",
+    "pull_request": "5143",
+    "created_at": "2026-08-06T01:28:47Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-18T13:56:17Z",
+    "run_id": null
+  },
+  {
     "hash": "0ee826aba3f2c9535dae9fbc5a2f472184ee97e4",
     "type": "pull_request",
     "title": "Fix database iterator-transaction lifetimes",
@@ -3773,6 +3786,19 @@
     "docker_tag": "gr0v1ty/nano-node:12d595787cff8fde92cf4eacfff229fe95fecc3a",
     "build_started_at": "2024-03-19T01:37:16Z",
     "run_id": "8336194179"
+  },
+  {
+    "hash": "12f3e2f5dfd920e79e2166829b7392cf9fe5aca2",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Fix transition_priority log to report the previous behavior",
+    "pull_request": "5143",
+    "created_at": "2026-08-15T16:07:11Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-18T13:56:17Z",
+    "run_id": null
   },
   {
     "hash": "130666aa4be78b2fb3c1b5853616eafc69511f7d",
@@ -47519,6 +47545,19 @@
     "docker_tag": "gr0v1ty/nano-node:ea0721138a4cf9fa51a714818dc3e23dc3633342"
   },
   {
+    "hash": "ea29e6267565c7bc02ab9a61c1b6bf8c3c81225a",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Return outbound actions from election tick (#5143)",
+    "pull_request": "5143",
+    "created_at": "2026-08-18T13:54:28Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-18T13:56:17Z",
+    "run_id": null
+  },
+  {
     "hash": "ea3fb2ac2f2b4d277c6f71083c4100f7c94dd35c",
     "type": "commit",
     "author": "pwojcikdev",
@@ -47530,6 +47569,19 @@
     "docker_tag": "gr0v1ty/nano-node:ea3fb2ac2f2b4d277c6f71083c4100f7c94dd35c",
     "build_started_at": "2026-01-25T15:12:07Z",
     "run_id": "21335049873"
+  },
+  {
+    "hash": "ea446afcf80b9f45f25948852f024b9778133300",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Extract election broadcast pacing into election_pacing\n\nElection kept its outbound pacing as loose timestamp fields (last_vote,\nlast_block, last_block_hash, last_req) with the decision logic buried in\nprivate methods reading the clock directly, making it untestable in\nisolation.\n\nelection_pacing is a pure value object owned by the election: time is\ninjected, no locking or stats, and it consolidates the timing policy in\none place, including the behavior-dependent confirmation request\ninterval. Covered by unit tests that need no node or system.\n\nThis also fixes the broadcast_block_initial stat, which was checked\nafter the hash was recorded and therefore always counted as repeat, and\nmakes the first vote/request due immediately instead of depending on\ntime since the steady clock epoch.",
+    "pull_request": "5143",
+    "created_at": "2026-08-06T01:24:38Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-18T13:56:17Z",
+    "run_id": null
   },
   {
     "hash": "ea4608197d372f22f9def1c582c5f121ee82f726",
@@ -52208,6 +52260,19 @@
     "docker_tag": "",
     "build_started_at": "2024-10-25T22:56:00Z",
     "run_id": "11528135409"
+  },
+  {
+    "hash": "ffe3310045d4ce13e27bc10e3859574a2e813b26",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Return outbound actions from election tick instead of performing them\n\nElection tick took the confirmation solicitor and interleaved deciding,\nsending and recording: winner blocks were sent over channels while\nholding the per-election mutex, and vote generation was buried in\nprivate methods.\n\nTick now advances the state machine and returns election_actions: an\noptional vote broadcast decision, an optional winner broadcast snapshot,\nan optional solicit snapshot and a cleanup flag. The active elections\nloop dispatches them to vote_generator, confirmation_solicitor and\nblock_rebroadcaster after the election lock is released, and reports\nsuccessful sends back via request_sent and broadcast_sent so pacing\nstill only advances on success.\n\nElection insertion uses the same decide_vote path, with the send issued\nby active_elections, preserving the synchronous first vote that\nself-voting setups without a request loop rely on. Election no longer\nreferences the solicitor and the remaining component friendship is\nremoved.",
+    "pull_request": "5143",
+    "created_at": "2026-08-06T01:43:54Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-18T13:56:17Z",
+    "run_id": null
   },
   {
     "hash": "fff93b2e8d95ba399b7c2776d4e0a68b6995ef88",
