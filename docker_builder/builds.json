@@ -31651,6 +31651,22 @@
     "run_id": "24776608702"
   },
   {
+    "hash": "988ac4a9420419df077243b48968fb3a9a89fd75",
+    "type": "pull_request",
+    "title": "Reduce sccache bloat from sanitizer builds",
+    "author": "RickiNano",
+    "body": "Sanitizer jobs are using 72% of the 10 GB cache available.\r\n\r\nThe cause is Debug defaulting to `-g`: full DWARF on top of sanitizer instrumentation dominates object size, and it buys nothing in CI where we only read the sanitizer's own stack traces. Since sccache caches object files directly, smaller objects mean smaller cache entries.\r\n\r\n`ci/build.sh` now passes `-g1` when `SANITIZER` is set. Line tables and function names are kept, so reports stay symbolized with accurate file:line; variable and type info is dropped. Non-sanitizer builds are untouched.\r\n\r\nUsing the g1 flag could free up a few GB that could be used for Windows build caching\r\n\r\nSeparately, sccache was intermittently reporting 0% cache hits because the server timed out mid-job. Setting the idle timeout to \"0\" on the sanitizer and unit test jobs fixes this.\r\n\r\nNote: `SCCACHE_GHA_RW_MODE` is `READ_ONLY` outside develop, so this PR's sanitizer jobs will be a full cache miss. \r\nThe cache only shrinks once this lands on develop.",
+    "draft": false,
+    "pull_request": 5144,
+    "label": "RickiNano:g1-flag",
+    "created_at": "2026-08-18T20:03:38Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-18T20:06:57Z",
+    "run_id": null
+  },
+  {
     "hash": "9890be1feb50e958fe7fe64eecef50d807053f14",
     "type": "pull_request",
     "title": "Multithreaded vote processor",
