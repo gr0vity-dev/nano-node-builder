@@ -47577,11 +47577,11 @@
     "title": "Extract election broadcast pacing into election_pacing\n\nElection kept its outbound pacing as loose timestamp fields (last_vote,\nlast_block, last_block_hash, last_req) with the decision logic buried in\nprivate methods reading the clock directly, making it untestable in\nisolation.\n\nelection_pacing is a pure value object owned by the election: time is\ninjected, no locking or stats, and it consolidates the timing policy in\none place, including the behavior-dependent confirmation request\ninterval. Covered by unit tests that need no node or system.\n\nThis also fixes the broadcast_block_initial stat, which was checked\nafter the hash was recorded and therefore always counted as repeat, and\nmakes the first vote/request due immediately instead of depending on\ntime since the steady clock epoch.",
     "pull_request": "5143",
     "created_at": "2026-08-06T01:24:38Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-08-18T16:09:40Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:ea446afcf80b9f45f25948852f024b9778133300",
     "build_started_at": "2026-08-18T13:56:17Z",
-    "run_id": null
+    "run_id": "32155406071"
   },
   {
     "hash": "ea4608197d372f22f9def1c582c5f121ee82f726",
