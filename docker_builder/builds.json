@@ -34337,6 +34337,22 @@
     "run_id": "13663361258"
   },
   {
+    "hash": "a73fbc808fcb5a9f92a5171fa641f3e623288d0b",
+    "type": "pull_request",
+    "title": "Return outbound actions from election tick",
+    "author": "pwojcikdev",
+    "body": "This PR restructures how elections perform outbound network activity (vote broadcasts, winner block broadcasts, confirmation requests): decisions stay inside the election, while batched execution moves to the active elections loop.\n\n## Changes\n\n- **Extract election broadcast pacing into `election_pacing`**: pure pacing logic (vote/block/request intervals) with injected time, guarded by the owning election's mutex, covered by unit tests.\n- **Decouple `confirmation_solicitor` from election internals**: the solicitor now consumes a plain `election_snapshot` (root, winner, quorum flag, votes) instead of reaching into `nano::election` via friend access.\n- **Return outbound actions from election tick instead of performing them**: `election::tick` returns `election_actions` — a state snapshot plus `broadcast`/`request`/`cleanup` flags — executed by `active_elections::tick_elections`. The solicitor is per-round batch state (prepared rep list, global broadcast budget, per-channel request queues), so its actions can only be executed above individual elections; this also removes channel sends performed while holding the election mutex. Pacing commits (`broadcast_sent`/`request_sent`) happen only on successful solicitor handoff, so elections retry next round when caps are hit, same as before. Vote broadcasts intentionally stay inside the election: the vote generator is already an asynchronous sink, so all vote paths (tick, insert, quorum) call it directly and the tick loop remains the single executor of solicitor actions.\n- **Fix transition_priority log to report the previous behavior**\n- **Add cached `node::is_voting` check**: avoids locking the wallet representatives mutex on hot paths (message processing, vote decisions).\n\n## Behavior notes\n\n- `broadcast_block_initial`/`broadcast_block_repeat` stats now report correctly (previously \"initial\" could never trigger since the hash was checked after being assigned).\n- Winner broadcasts record the hash that was actually sent; a winner change since the snapshot triggers an immediate rebroadcast on the next tick.\n\n## Testing\n\n- New `election_pacing` unit tests\n- New election tick / vote broadcast tests\n- `confirmation_solicitor` tests simplified to construct snapshots directly instead of fake elections\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5143,
+    "label": "pwojcikdev:election-tick-actions",
+    "created_at": "2026-08-17T17:48:43Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-18T02:05:34Z",
+    "run_id": null
+  },
+  {
     "hash": "a744e254ea79053e7ff0549e542069796ad88a65",
     "type": "pull_request",
     "title": "Warn when external rpc process is enabled",
