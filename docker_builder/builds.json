@@ -3001,11 +3001,11 @@
     "title": "Decouple confirmation_solicitor from election internals\n\nThe solicitor reached into election private state (last_votes, is_quorum,\nstatus.winner) through friendship, which forced its tests to construct\nreal elections and poke their internals via friend declarations.\n\nIt now consumes an election_snapshot, a plain view built by the election\nunder its own lock, carrying the root, winner, quorum flag and the vote\nmap. The friend declarations are gone and the solicitor tests exercise\nthe rep filtering and batching with hand-built snapshots.\n\nAlso flip add and broadcast to return true on success instead of the\ninverted error convention.",
     "pull_request": "5143",
     "created_at": "2026-08-06T01:28:47Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-08-18T14:29:42Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:0ee0b34ecc7f45807a96014fd1ee86ae99347e5b",
     "build_started_at": "2026-08-18T13:56:17Z",
-    "run_id": null
+    "run_id": "32145273793"
   },
   {
     "hash": "0ee826aba3f2c9535dae9fbc5a2f472184ee97e4",
