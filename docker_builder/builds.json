@@ -38036,6 +38036,22 @@
     "run_id": "7603085098"
   },
   {
+    "hash": "ba2504813ca5f24b1fdf819c85930fa4d3200cfe",
+    "type": "pull_request",
+    "title": "Cache submodules for faster checkout",
+    "author": "RickiNano",
+    "body": "Adds a checkout-submodules action that caches submodules/ and .git/modules, keyed on the gitlink SHAs (git ls-tree HEAD submodules/) and .gitmodules. Replaces actions/checkout's submodules.\r\n\r\nOn a cache hit, only submodules that actually changed get fetched; everything else restores from cache. \r\n`git submodule sync && update --init --force --recursive` always runs afterward to repair partial/stale/missing caches.",
+    "draft": false,
+    "pull_request": 5147,
+    "label": "RickiNano:Cache-submodules",
+    "created_at": "2026-08-19T16:47:12Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-19T17:36:45Z",
+    "run_id": null
+  },
+  {
     "hash": "ba2e815cf9624f1c44bca11732392d9a7f0afb04",
     "type": "commit",
     "author": "pwojcikdev",
@@ -41892,6 +41908,22 @@
     "docker_tag": "gr0v1ty/nano-node:ce18686104aa6ab1317172520dc422596d414d50",
     "build_started_at": "2024-05-15T16:34:40Z",
     "run_id": "9099427606"
+  },
+  {
+    "hash": "ce2d58dbbbdb88badcedbe500c85ba2ac6c0738b",
+    "type": "pull_request",
+    "title": "Rework cementing_set test suite",
+    "author": "pwojcikdev",
+    "body": "Cementing is a mission critical path, but the old `cementing_set` tests were ad-hoc and are removed here in favour of a suite that drives the component directly, plus a small set of node-level tests for the wiring into active elections.\n\nThe harness pairs a bare ledger with a non-started `ledger_notifications`, so tests fire `blocks_processed` synchronously from the test thread, and batch composition is pinned by adding hashes before `start ()`. No node, elections or network are involved in the component tests, which keeps them deterministic. Where behaviour depends on notification back-pressure, a `shared_future` latch holds the notification worker in place so the intermediate state can be asserted mid-flight.\n\nThe 13 component tests cover cementing a single block and a dependency chain (bottom-up order and confirmation roots), already-cemented reporting, `batch_size` splitting, `max_blocks` intermediate notifications across transaction commit/renew, missing blocks being deferred and requeued once processed, deferred eviction by age and by `max_deferred` overflow, notification cooldown back-pressure, graceful stop mid-cementing, and pruned hashes.\n\nThree node-level `confirmation_callback` tests retain the integration coverage of the old suite: observer callbacks firing for blocks cemented without an election, callback ordering against the write queue (while the confirmation height write is blocked behind a `writer::testing` guard, no confirmation observers run and the confirmation history stays empty), and dependent election classification (`active_quorum`, `active_conf_height` and `inactive_conf_height` each asserted positively). The dependent election test also verifies that the source election passed to `add ()` is propagated into every context emitted under its confirmation root, which is the contract `active_elections::block_cemented` relies on.\n\nMeasured with clang source-based coverage, the component suite on its own exercises 69 of 70 branches (98.6%) in `nano/node/cementing_set.cpp`. The one uncovered branch is the `else if (ledger.cemented.block_exists (...))` fallback in `run_batch`, which is only reachable when a block is rolled back concurrently inside `ledger.cement`. Config serialization and `container_info` are deliberately left out of this suite.\n\nWorth noting for reviewers: `stop ()` issued while cementing is parked in the notification cooldown completes one more cementing round before the `stopped` check at the top of the loop is reached. That is bounded and harmless, and `stop_during_cementing` pins the current behaviour rather than asserting an immediate stop.\n\nThis also removes two `friend` declarations in `cementing_set.hpp` that referenced test fixtures which no longer exist.\n\nAll tests pass under both LMDB and RocksDB, and the timing-sensitive ones were stress-run repeatedly to confirm they are not flaky.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5145,
+    "label": "pwojcikdev:cementing-set-testsuite",
+    "created_at": "2026-08-19T12:39:06Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-19T17:36:45Z",
+    "run_id": null
   },
   {
     "hash": "ce4be76be1af991a7ee122792a414787ef016982",
