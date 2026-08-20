@@ -7057,6 +7057,22 @@
     "run_id": "10575527252"
   },
   {
+    "hash": "2121503e311c5ea333d61861239fe80574493c02",
+    "type": "pull_request",
+    "title": "CI: Cache Windows builds",
+    "author": "RickiNano",
+    "body": "Enables sccache for Windows CI builds, matching the caching already in place for Linux and macOS. The default MSVC generator ignores compiler launchers, so this switches Windows to Ninja and fixes what that switch broke along the way:\r\n\r\n- RocksDB's generic ASM language was claiming .asm ahead of MASM, breaking Boost.Context — pinned CMAKE_ASM_SOURCE_FILE_EXTENSIONS before RocksDB enables the language.\r\n- RocksDB hardcodes /Zi and /d2Zi+, which defeat compiler caching (shared PDB; sccache rejects /d2Zi+ outright). A new cmake/Modules/RocksDBMsvcCache.cmake, hooked in via CMAKE_PROJECT_rocksdb_INCLUDE, strips those after RocksDB sets its own flags; the rest of the project switches /Zi//ZI → /Z7 when a compiler launcher is active.\r\n- Git's link.exe was shadowing the MSVC linker once bash put /usr/bin first on PATH — removed during prepare.\r\n\r\nTested on my own fork with warmed cache:: Windows lmdb (https://github.com/RickiNano/nano-node/actions/runs/32287902103) and Windows rocksdb (https://github.com/RickiNano/nano-node/actions/runs/32287902103) both went green with a 97%+ cache hit rate, and build times dropped ~30% or approximately 20 minutes.",
+    "draft": false,
+    "pull_request": 5149,
+    "label": "RickiNano:ci-windows-cache",
+    "created_at": "2026-08-20T15:57:40Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-20T16:15:58Z",
+    "run_id": null
+  },
+  {
     "hash": "214968564730c075e8abde8e378b04e612bb0ffe",
     "type": "pull_request",
     "title": "Fair queuing for request aggregator",
