@@ -35735,6 +35735,22 @@
     "docker_tag": "gr0v1ty/nano-node:addea482b93f3c04f84bd5f86c0846d4bf40d5a0"
   },
   {
+    "hash": "adf0f3b2e700173daef635144fbc081a99139fc8",
+    "type": "pull_request",
+    "title": "Cover wallets backend backup",
+    "author": "pwojcikdev",
+    "body": "Adds unit test coverage for `wallets_backend_lmdb::backup`, which coverage analysis showed was never exercised: in production it only runs from the `wallets` constructor when an on-disk wallet has an outdated store version and `backup_before_upgrade` is enabled, a path no existing test triggers.\n\nTwo tests are added to the existing `wallets_backend` suite:\n- `backup_creates_file_alongside_database` — calling `backup()` produces exactly one `wallet_backup_<timestamp>.ldb` file next to the database.\n- `backup_is_openable_copy_of_database` — the backup opens as a valid, self-contained database containing the original wallet data.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5148,
+    "label": "pwojcikdev:wallets-backend-backup-test",
+    "created_at": "2026-08-20T13:39:43Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-20T16:52:11Z",
+    "run_id": null
+  },
+  {
     "hash": "ae2ed00ff4409542b5ed436143dd81d870f4aa41",
     "type": "pull_request",
     "title": "Creating nano::secure::transaction type",
