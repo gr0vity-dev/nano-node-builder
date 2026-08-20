@@ -1244,6 +1244,22 @@
     "run_id": "11400566405"
   },
   {
+    "hash": "0751f4e6c504176fdde5254dab2a2784b7f121b3",
+    "type": "pull_request",
+    "title": "Cover wallets backend backup",
+    "author": "pwojcikdev",
+    "body": "Adds unit test coverage for `wallets_backend_lmdb::backup`, which coverage analysis showed was never exercised: in production it only runs from the `wallets` constructor when an on-disk wallet has an outdated store version and `backup_before_upgrade` is enabled, a path no existing test triggers.\n\nTwo tests are added to the existing `wallets_backend` suite:\n- `backup_creates_file_alongside_database` — calling `backup()` produces exactly one `wallet_backup_<timestamp>.ldb` file next to the database.\n- `backup_is_openable_copy_of_database` — the backup opens as a valid, self-contained database containing the original wallet data.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5148,
+    "label": "pwojcikdev:wallets-backend-backup-test",
+    "created_at": "2026-08-20T13:39:43Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-20T14:07:13Z",
+    "run_id": null
+  },
+  {
     "hash": "07637c8953df2740430780be62b4c03b0e08567d",
     "type": "commit",
     "author": "pwojcikdev",
@@ -13733,6 +13749,19 @@
     "docker_tag": "gr0v1ty/nano-node:42f0d465c689b983d8073951f91efd86c1cd89bc",
     "build_started_at": "2024-05-14T11:08:37Z",
     "run_id": "9078880645"
+  },
+  {
+    "hash": "42f2706256276466eda90a544690eea939b688d8",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rework cementing_set test suite (#5145)\n\n* Delete old cementing_set tests\n\n* Add cementing set component tests\n\nCover cementing, batching, deferred handling, notification backpressure, shutdown, and pruned blocks.\n\nRemove obsolete test-only friend declarations.",
+    "pull_request": "5145",
+    "created_at": "2026-08-20T13:29:22Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-20T14:07:13Z",
+    "run_id": null
   },
   {
     "hash": "42f3b779a3c093db4f6c573a342c3141e8ab1d82",
