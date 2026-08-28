@@ -180,6 +180,22 @@
     "run_id": "22100857737"
   },
   {
+    "hash": "010785dee25c07e110bc8646460d1540bc30fcd1",
+    "type": "pull_request",
+    "title": "CI: Cache Windows builds",
+    "author": "RickiNano",
+    "body": "Enables sccache for Windows CI builds, matching the caching already in place for Linux and macOS. The default MSVC generator ignores compiler launchers, so this switches Windows to Ninja and fixes what that switch broke along the way:\r\n\r\n- RocksDB's generic ASM language was claiming .asm ahead of MASM, breaking Boost.Context — pinned CMAKE_ASM_SOURCE_FILE_EXTENSIONS before RocksDB enables the language.\r\n- RocksDB hardcodes /Zi and /d2Zi+, which defeat compiler caching (shared PDB; sccache rejects /d2Zi+ outright). A new cmake/Modules/RocksDBMsvcCache.cmake, hooked in via CMAKE_PROJECT_rocksdb_INCLUDE, strips those after RocksDB sets its own flags; the rest of the project switches /Zi//ZI → /Z7 when a compiler launcher is active.\r\n- Git's link.exe was shadowing the MSVC linker once bash put /usr/bin first on PATH — removed during prepare.\r\n\r\nTested on my own fork with warmed cache:: Windows lmdb (https://github.com/RickiNano/nano-node/actions/runs/32287902103) and Windows rocksdb (https://github.com/RickiNano/nano-node/actions/runs/32287902103) both went green with a 97%+ cache hit rate, and build times dropped ~30% or approximately 20 minutes.",
+    "draft": false,
+    "pull_request": 5149,
+    "label": "RickiNano:ci-windows-cache",
+    "created_at": "2026-08-20T15:57:40Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-28T20:20:56Z",
+    "run_id": null
+  },
+  {
     "hash": "012c053d7c097b2650c63f07ea40503d00eef266",
     "type": "commit",
     "author": "RickiNano",
@@ -16247,6 +16263,22 @@
     "run_id": "27108120595"
   },
   {
+    "hash": "4e3116267f923f1c30a8e5bfc3c32f94b9f70438",
+    "type": "pull_request",
+    "title": "Cache submodules for faster checkout",
+    "author": "RickiNano",
+    "body": "Adds a checkout-submodules action that caches submodules/ and .git/modules, keyed on the gitlink SHAs (git ls-tree HEAD submodules/) and .gitmodules. Replaces actions/checkout's submodules.\r\n\r\nOn a cache hit, only submodules that actually changed get fetched; everything else restores from cache. \r\n`git submodule sync && update --init --force --recursive` always runs afterward to repair partial/stale/missing caches.",
+    "draft": false,
+    "pull_request": 5147,
+    "label": "RickiNano:Cache-submodules",
+    "created_at": "2026-08-19T16:47:12Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-28T20:20:56Z",
+    "run_id": null
+  },
+  {
     "hash": "4e3c5e9bce21bdd33754936d8072f768d29155ed",
     "type": "commit",
     "author": "pwojcikdev",
@@ -21487,6 +21519,19 @@
     "docker_tag": "gr0v1ty/nano-node:67a1a4181e35f68ebc897154574f3b7bab0e10bb",
     "build_started_at": "2024-08-22T09:33:21Z",
     "run_id": "10505673691"
+  },
+  {
+    "hash": "67a5df5baf1ddffcec781481c0d3e0ed4222240c",
+    "type": "commit",
+    "author": "RickiNano",
+    "title": "Group external targets in IDE (#5154)",
+    "pull_request": "5154",
+    "created_at": "2026-08-28T17:00:18Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-28T20:20:56Z",
+    "run_id": null
   },
   {
     "hash": "67c88aac4a4e041ccdcd1bd32f1d3ab57b5019a5",
@@ -29507,6 +29552,22 @@
     "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2025-06-03T14:41:08Z",
+    "run_id": null
+  },
+  {
+    "hash": "8f01ea9d0d2d5fc2365c3641ddbda0048bd1e67b",
+    "type": "pull_request",
+    "title": "Stop the rebroadcaster before testing queue deduplication",
+    "author": "pwojcikdev",
+    "body": "The `block_rebroadcaster.duplicate_block` test is flaky under parallel test load. `push` deduplicates only against blocks currently waiting in the queue, and since the test node has no peers, `network::check_capacity` short-circuits to success — the processing thread is free to consume the first block immediately. When that consumption lands between the two pushes, the second push is legitimately accepted again and the test fails.\n\nQueue-scoped deduplication is intentional: repeated rebroadcasts are throttled separately by the cooldown index at broadcast time, and the `cooldown` test relies on a drained block being pushable again within the cooldown window. This change makes the test match that contract by stopping the processing thread first, so the first push stays queued and the duplicate check is deterministic regardless of scheduling.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5155,
+    "label": "pwojcikdev:block-rebroadcaster-duplicate-test",
+    "created_at": "2026-08-28T17:50:33Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-28T20:20:56Z",
     "run_id": null
   },
   {
