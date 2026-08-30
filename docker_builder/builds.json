@@ -14019,6 +14019,22 @@
     "run_id": "9176628253"
   },
   {
+    "hash": "4388f96eaad0b1114cd4bb9a4292d253ad408c46",
+    "type": "pull_request",
+    "title": "Remove dead ipc code",
+    "author": "RickiNano",
+    "body": "Removes IPC code that was never reachable:\r\n\r\n- `ipc_server::signals` - a `shared_ptr<signal_set>` that was never assigned, making the `signals->cancel()` branch in `stop()` permanently dead. Drops the member, the branch, and the now-unused `<boost/asio/signal_set.hpp>` include.\r\n- `ipc_server::setup_callbacks()` - declared but never defined or called.\r\n- The `ipc_server` instance in the `--debug_rpc` CLI path - constructed and never used. `json_handler` doesn't take an `ipc_server`.\r\n- The `ipc_server.hpp` include in `nano_rpc/entry.cpp`, which only needs `ipc_rpc_processor`.\r\n\r\nNo functional change.",
+    "draft": false,
+    "pull_request": 5157,
+    "label": "RickiNano:dead_ipc_code",
+    "created_at": "2026-08-30T14:06:57Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-08-30T14:59:50Z",
+    "run_id": null
+  },
+  {
     "hash": "43938618e721fc3ab4015e62c1217074a2d6d9df",
     "type": "commit",
     "author": "clemahieu",
@@ -25189,6 +25205,22 @@
     "docker_tag": "gr0v1ty/nano-node:78dabf8385fb796d29a134b74ddf387c3547a3f3",
     "build_started_at": "2024-05-07T07:57:36Z",
     "run_id": "8982177569"
+  },
+  {
+    "hash": "78dc47884fd2186bc6433961b8ca5cc9ba956055",
+    "type": "pull_request",
+    "title": "Bugfix: RocksDB block cache bypassed after first table scan",
+    "author": "RickiNano",
+    "body": "Each read transaction holds a shared RocksDB ReadOptions object. When creating an iterator, we set fill_cache = false directly on it so scans don't pollute the block cache but the change sticks for the transaction's lifetime. \r\nAfter the first iterator, all later get calls on the same transaction also skip the block cache, so data that should be cached isn't.",
+    "draft": false,
+    "pull_request": 5156,
+    "label": "RickiNano:rocksdb-cache",
+    "created_at": "2026-08-30T14:03:27Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-08-30T14:59:50Z",
+    "run_id": null
   },
   {
     "hash": "78e7a521ccd4333455abfae690bac2638ab3fe7f",
