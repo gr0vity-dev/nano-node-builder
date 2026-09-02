@@ -20042,6 +20042,22 @@
     "run_id": "9082047782"
   },
   {
+    "hash": "605c64bfa629095be3f439759beb13c12698b27d",
+    "type": "pull_request",
+    "title": "Refactor election ballot, vote routing, and confirmation reporting",
+    "author": "pwojcikdev",
+    "body": "## Summary\n\nBefore this change, `election` mixed the core consensus rules—vote ordering, fork admission and replacement, tallying, winner selection, and quorum—with node-facing orchestration such as routing, pacing, status reporting, and notifications. This made the most sensitive behavior difficult to reason about in isolation and expensive to test without a full node fixture.\n\nThis change extracts those rules into a deterministic, self-contained `election_ballot`, with representative weights, timing, cooldown, and quorum threshold supplied by the caller. The consensus behavior can therefore be exercised directly with focused, comprehensive unit tests, while `election` remains responsible for coordinating node services and side effects. The accompanying routing, lifecycle, and confirmation refactors align the surrounding code with that new ownership boundary.\n\n## Changes\n\n- Introduce `election_ballot` to own representative votes, held blocks, tallying, replay and cooldown decisions, and winner selection. Remove the synthetic null vote and deterministically order equal-weight forks by hash.\n- Distinguish the held winner from the overall vote leader. Votes for unheld forks now contribute to participation and runner-up weight, and the leader's block can be admitted when it becomes available.\n- Retain votes for evicted forks and use the stronger of retained or cached support when considering readmission.\n- Keep routes for evicted hashes only while a current vote references them. Index routes by both block hash and election so whole-election cleanup is direct and retained routes remain bounded by held blocks plus current vote targets.\n- Keep ballot replacement and route updates ordered under the election mutex, avoiding races between eviction and republishing.\n- Avoid vote-cache scans until a full ballot actually requires an admission decision, and calculate vote cooldown only for representatives with a previously recorded vote.\n- Centralize representative-tier boundaries and reuse them for vote cooldowns and representative prioritization.\n- Reject vote and block mutations after confirmation, cancellation, or expiry, while retaining the last evaluated round for stable status reporting.\n- Compose election status on demand, separate cementing `confirmation_type` from election status, and replace the multi-argument block-confirmation observer with `block_confirmation_info`.\n- Update WebSocket, IPC, RPC callback, Qt, and other confirmation consumers. This also prevents IPC from overwriting the computed confirmation type.\n- Clarify election action, block-query, vote timestamp, and parameter naming.\n\n## Test coverage\n\n- Add focused ballot tests for vote ordering, replay protection, cooldowns, deterministic ties, fork admission and eviction, retained votes, leader and winner selection, and quorum calculation.\n- Add election integration coverage for terminal-state behavior, retained vote routes, route cleanup, bounded route growth, and evicted-fork readmission.\n- Add vote-router ownership cleanup and representative-tier boundary coverage.\n- Update existing active-election, ledger, network, RPC, IPC, and WebSocket tests for the new interfaces.\n\n## Validation\n\n- Debug build with `.ai/ai_build.sh`\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5159,
+    "label": "pwojcikdev:election-ballot-4",
+    "created_at": "2026-09-02T13:56:17Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-02T17:18:18Z",
+    "run_id": null
+  },
+  {
     "hash": "607eb5c338186267b92af665bb7909223f6c49a0",
     "type": "commit",
     "author": "pwojcikdev",
@@ -42735,6 +42751,22 @@
     "docker_tag": "",
     "build_started_at": "2024-11-18T20:40:36Z",
     "run_id": "11900711985"
+  },
+  {
+    "hash": "d0e8ff0a2b045762b9173e57c7f7f17ceea18b8e",
+    "type": "pull_request",
+    "title": "Fix out-of-range channel access in peer_history_restart",
+    "author": "pwojcikdev",
+    "body": "`node.peer_history_restart` aborted on the Windows CI runner with `deque subscript out of range`, raised by `list[0]` in the restart block.\n\nThe restarted node reopens the same data directory, so it loads the same node id as the node that was just stopped. node1 still holds that node's channel until its next cleanup tick, so it rejects the reconnect as a duplicate node id and closes the socket. The restarted node has already inserted its own channel by then, which means the test was asserting against a channel that was already dead and had merely not been purged yet — the restart phase never verified a live connection at all. When the purge erased that channel between the `empty ()` check and the `list (2)` call, `list` came back empty and `list[0]` ran off the end.\n\nThe two reads are the defect: `network::list` takes the lock, copies, and releases it, so nothing holds the channel set still across the `empty ()` check and the subsequent index. This reproduces only where the two land far enough apart to straddle a cleanup tick, which is why it has surfaced on Windows and not on the other runners.\n\nThis change waits for the stale channel to be dropped before restarting, so the reconnect is accepted and the test exercises a real reconnect, and replaces the `empty ()` plus `list[0]` pair with a single `find_channel` predicate — the same idiom already used with `find_node_id` in the `network` and `tcp_server` tests. Verified with debug logging that both nodes now accept the channel on reconnect, where previously node1 logged `Rejected duplicate channel`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5160,
+    "label": "pwojcikdev:fix-peer-history-restart-flake",
+    "created_at": "2026-09-02T14:03:59Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-02T17:18:18Z",
+    "run_id": null
   },
   {
     "hash": "d0f75882ffb4118d9758ce005fbc25f80956428c",
