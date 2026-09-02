@@ -15592,6 +15592,22 @@
     "run_id": "8314481988"
   },
   {
+    "hash": "4a8be893bb53fd09ab0a8540a59d924f08358a30",
+    "type": "pull_request",
+    "title": "Refactor election ballot, vote routing, and confirmation reporting",
+    "author": "pwojcikdev",
+    "body": "## Summary\n\nBefore this change, `election` mixed the core consensus rules—vote ordering, fork admission and replacement, tallying, winner selection, and quorum—with node-facing orchestration such as routing, pacing, status reporting, and notifications. This made the most sensitive behavior difficult to reason about in isolation and expensive to test without a full node fixture.\n\nThis change extracts those rules into a deterministic, self-contained `election_ballot`, with representative weights, timing, cooldown, and quorum threshold supplied by the caller. The consensus behavior can therefore be exercised directly with focused, comprehensive unit tests, while `election` remains responsible for coordinating node services and side effects. The accompanying routing, lifecycle, and confirmation refactors align the surrounding code with that new ownership boundary.\n\n## Changes\n\n- Introduce `election_ballot` to own representative votes, held blocks, tallying, replay and cooldown decisions, and winner selection. Remove the synthetic null vote and deterministically order equal-weight forks by hash.\n- Distinguish the held winner from the overall vote leader. Votes for unheld forks now contribute to participation and runner-up weight, and the leader's block can be admitted when it becomes available.\n- Retain votes for evicted forks and use the stronger of retained or cached support when considering readmission.\n- Keep routes for evicted hashes only while a current vote references them. Index routes by both block hash and election so whole-election cleanup is direct and retained routes remain bounded by held blocks plus current vote targets.\n- Keep ballot replacement and route updates ordered under the election mutex, avoiding races between eviction and republishing.\n- Avoid vote-cache scans until a full ballot actually requires an admission decision, and calculate vote cooldown only for representatives with a previously recorded vote.\n- Centralize representative-tier boundaries and reuse them for vote cooldowns and representative prioritization.\n- Reject vote and block mutations after confirmation, cancellation, or expiry, while retaining the last evaluated round for stable status reporting.\n- Compose election status on demand, separate cementing `confirmation_type` from election status, and replace the multi-argument block-confirmation observer with `block_confirmation_info`.\n- Update WebSocket, IPC, RPC callback, Qt, and other confirmation consumers. This also prevents IPC from overwriting the computed confirmation type.\n- Clarify election action, block-query, vote timestamp, and parameter naming.\n\n## Test coverage\n\n- Add focused ballot tests for vote ordering, replay protection, cooldowns, deterministic ties, fork admission and eviction, retained votes, leader and winner selection, and quorum calculation.\n- Add election integration coverage for terminal-state behavior, retained vote routes, route cleanup, bounded route growth, and evicted-fork readmission.\n- Add vote-router ownership cleanup and representative-tier boundary coverage.\n- Update existing active-election, ledger, network, RPC, IPC, and WebSocket tests for the new interfaces.\n\n## Validation\n\n- Debug build with `.ai/ai_build.sh`\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5159,
+    "label": "pwojcikdev:election-ballot-4",
+    "created_at": "2026-09-02T13:56:17Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-02T23:59:38Z",
+    "run_id": null
+  },
+  {
     "hash": "4aa3cf42b4ab561514be85dff8b5aec71a35bdce",
     "type": "pull_request",
     "pull_request": 4334,
