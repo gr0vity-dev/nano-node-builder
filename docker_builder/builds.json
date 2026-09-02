@@ -38360,11 +38360,11 @@
     "title": "Fix out-of-range channel access in peer_history_restart (#5160)\n\nThe restarted node reopens the same data directory and therefore loads the same node id. node1 still holds the stopped node's channel until its next cleanup tick and rejects the reconnect as a duplicate, closing the socket, so the test was asserting against a channel that was already dead and had merely not been purged yet. When that purge landed between the `empty ()` check and the `list (2)` call, the returned deque was empty and `list[0]` ran off the end, aborting on the MSVC debug bounds check.\n\nWait for the stale channel to be dropped before restarting, so the reconnect is accepted and the test verifies a live connection, and replace the `empty ()` plus `list[0]` pair with a single `find_channel` predicate that cannot observe a torn state.",
     "pull_request": "5160",
     "created_at": "2026-09-02T19:07:48Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-02T20:22:07Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:ba76a02e2350be4755f4ab784608e6f078fa6ecc",
     "build_started_at": "2026-09-02T19:50:48Z",
-    "run_id": null
+    "run_id": "33675731270"
   },
   {
     "hash": "ba835584f4c39bcc6533c25329c672d7ce39c6c0",
