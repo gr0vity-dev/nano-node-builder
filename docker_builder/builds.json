@@ -38213,6 +38213,22 @@
     "run_id": "15445450916"
   },
   {
+    "hash": "b9a98118211e2ade0a560ad8d78773213e6fd308",
+    "type": "pull_request",
+    "title": "Rate-limit topo bootstrap repair heads",
+    "author": "pwojcikdev",
+    "body": "## Problem\n\nWith topo bootstrap enabled, a synced node ramps to 100% disk read time after a few minutes and stays there (observed on Windows + RocksDB).\n\nRepair heads re-scan the already-discovered topo range indefinitely, and `topo_scan::maybe_advance` zeroes a head's timestamp whenever a page makes progress, so the head re-fires as soon as the reply lands. On a synced node every repair page \"makes progress\", so the `cooldown` never engages; when a band is exhausted the head is immediately re-armed on the same band. The only limits are the shared `topo_rate_limit` (500 req/s) and the 64-page pre-check queue, so the sweep runs as fast as the pre-check can read the ledger, i.e. it pegs the disk by construction.\n\nIf the ledger has no topo index (`--populate_topo_index` never run on an existing ledger), `topo_strategy::precheck` falls back to probing every entry by hash, which turns that sweep into ~1.6k random block reads per page with `fill_cache = false`.\n\n## Changes\n\n- Add `bootstrap.topo_scan.repair_rate_limit` (default 20 req/s, `0` = unlimited) and a dedicated `nano::rate_limiter` in `topo_strategy`. It is applied through `head_gates.include_repair`, so a throttled repair head never stalls the spearhead on the shared scan thread; the spearhead keeps its current pacing.\n- Repair heads no longer run at all when `ledger.flags.topo_index` is off. The spearhead still works there (its pages are bounded), but a perpetual sweep needs the sequential topology crawler to be sane.\n\n## Testing\n\n`bootstrap.*`, `bootstrap_topo_scan.*`, `bootstrap_topo_blocks.*`, `toml.*` pass. Not reproduced locally; the fix follows from the code path above and should be verified on the affected Windows/RocksDB setup.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5161,
+    "label": "pwojcikdev:topo-repair-rate-limit",
+    "created_at": "2026-09-02T21:45:57Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-02T22:00:55Z",
+    "run_id": null
+  },
+  {
     "hash": "b9b0e44db1b88ae184fd04d477063d77a3de14ec",
     "type": "pull_request",
     "title": "Transport classes cleanup",
