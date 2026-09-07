@@ -2850,6 +2850,19 @@
     "run_id": "21411812848"
   },
   {
+    "hash": "0dd803c9215cc737589a17882cd967664fbb5a0c",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Refactor election ballot, vote routing, and confirmation reporting (#5159)",
+    "pull_request": "5159",
+    "created_at": "2026-09-07T22:53:48Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
+  },
+  {
     "hash": "0dfe3415bdc8d536f3f6276e1f2100c85db395a8",
     "type": "commit",
     "author": "pwojcikdev",
@@ -5257,6 +5270,19 @@
     "run_id": "10405184773"
   },
   {
+    "hash": "19977dd837cfac7400a3c36466fd057c5e41d069",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rename the election block query to contains_block\n\nA bare contains does not say what the election contains.",
+    "pull_request": "N/A",
+    "created_at": "2026-08-28T17:27:48Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
+  },
+  {
     "hash": "1999166f28a54d6902ece50c2fd8d02201d77240",
     "type": "commit",
     "author": "pwojcikdev",
@@ -6352,6 +6378,19 @@
     "docker_tag": "gr0v1ty/nano-node:1dc5458651b8e8f2279ae59d3c2617ae0d849339",
     "build_started_at": "2024-05-23T01:54:48Z",
     "run_id": "9201013289"
+  },
+  {
+    "hash": "1ddc0f23bff0c0bf6cf1f706feec80a6d19cbe00",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Derive vote cooldown levels from the shared rep tier boundaries\n\nThe cooldown thresholds restated the rep tier percentages independently, so\ntuning one silently diverged from the other. A calculate_rep_tier free\nfunction now holds the single definition, used by both the tier calculation\nand the vote cooldown mapping.",
+    "pull_request": "5159",
+    "created_at": "2026-08-21T16:12:52Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
   },
   {
     "hash": "1de21328589d4b265794a00856929e7cab80e7a8",
@@ -14532,6 +14571,19 @@
     "run_id": "20472869675"
   },
   {
+    "hash": "45a5fa97060b6a7cf7672c82c0d9c0e8febcba0d",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Clarify election tick actions",
+    "pull_request": "N/A",
+    "created_at": "2026-08-31T20:04:07Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
+  },
+  {
     "hash": "45c3045649b92a2bf507fd1865f4b8af37ee0bd4",
     "type": "commit",
     "author": "pwojcikdev",
@@ -15341,6 +15393,19 @@
     "docker_tag": "",
     "build_started_at": "2026-03-29T17:19:28Z",
     "run_id": "23714619539"
+  },
+  {
+    "hash": "496fc369c48375188c351aa88a7af11887cd4b5e",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Disconnect evicted blocks from vote router before releasing the election mutex\n\nA concurrent republish of an evicted block could reinsert and reconnect it\nafter the election mutex was released but before its old route was\ndisconnected. The late disconnect would then erase the fresh route even\nthough the election held the block again. Keep the election mutex held\nthrough route removal so block replacement and routing remain ordered.",
+    "pull_request": "N/A",
+    "created_at": "2026-08-21T16:08:46Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
   },
   {
     "hash": "4986ae3914de57aec4b366f9890d6108615b3c8e",
@@ -20224,6 +20289,19 @@
     "run_id": "29963834573"
   },
   {
+    "hash": "614bebfa4e3427b981cd576825ec4b8cda3b66cd",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Keep routing votes to supported evicted forks\n\nAn evicted fork still needs its route while a representative's current\nvote references it. Retain that route so later votes reach the election\nand recorded support can readmit the block. Remove it when the last such\nvote moves away, and disconnect an unvoted fork at eviction. This bounds\nthe route set by the held blocks plus current vote targets.\n\nConnect admitted forks while holding the election mutex so replacement\nand route updates stay ordered. Whole-election cleanup uses the router's\nelection index.",
+    "pull_request": "5159",
+    "created_at": "2026-08-28T17:13:38Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
+  },
+  {
     "hash": "6160f54aa8a7be3549ce00533cb7536c4d361524",
     "type": "pull_request",
     "title": "Exchange node capabilities when performing network handshake",
@@ -20340,6 +20418,19 @@
     "docker_tag": "gr0v1ty/nano-node:61cd240b911d89c42a43e352cc8cb8011c592b67",
     "build_started_at": "2025-10-13T13:49:24Z",
     "run_id": "18467957231"
+  },
+  {
+    "hash": "61d267574b972577b1ecb1ce1d9d1fe673709b68",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Split the confirmation type from the election status\n\nThe election stamped a placeholder ongoing type into every composed\nstatus, while the meaningful values were decided later by the cementing\npath and guarded by leak asserts in the observers. The type classifies\nhow a block got cemented, not the election, so carry it beside the\nstatus: block_cemented picks it, the block observers receive it as a\ndedicated confirmation_type argument, and the status struct drops the\nfield. The dead ongoing and stopped values go with it, and the IPC\nbroker stops overwriting the confirmation type it just computed.",
+    "pull_request": "5159",
+    "created_at": "2026-08-31T15:03:42Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
   },
   {
     "hash": "61e0f2128e46a69edb12ce227643386088ef8245",
@@ -22773,6 +22864,19 @@
     "run_id": "9080450627"
   },
   {
+    "hash": "6ce536a38cf71f4bcecafe150b7af2525af73d23",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Compute vote cooldown only for reps with a prior recorded vote\n\nThe ballot consults the cooldown only when throttling a rep's follow-up vote,\nso first-time votes, replays and final-vote admissions paid the online stake\nread for nothing. Gate the computation on an existing recorded vote, matching\nthe shape the code had before the ballot extraction.",
+    "pull_request": "5159",
+    "created_at": "2026-08-21T16:09:40Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
+  },
+  {
     "hash": "6ceacc14ae3cc115939028f75cf53c90d5e057a4",
     "type": "pull_request",
     "pull_request": 4334,
@@ -23581,6 +23685,19 @@
     "docker_tag": "gr0v1ty/nano-node:70afe41fd39fc173480ef8c1ec188f5e6b4f6fdb",
     "build_started_at": "2024-10-31T03:33:18Z",
     "run_id": "11606252888"
+  },
+  {
+    "hash": "70cebbd3e24cae6cd5f88258ecee24aefe7f9461",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Back a returning fork's admission with its retained votes\n\nA full ballot admitted an incoming block only on the externally observed\ncached tally, so the votes deliberately retained for an evicted fork did\nnot back its own return. Take the stronger of the two sources; they may\nboth count the same rep, so they must not add.",
+    "pull_request": "5159",
+    "created_at": "2026-08-28T16:55:02Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
   },
   {
     "hash": "70ef4dabd5d6d0f9bd437be2f9a2f440bb8f862e",
@@ -25937,6 +26054,19 @@
     "docker_tag": "gr0v1ty/nano-node:7bf9790f7ce5af071960198680ec6afbd6fbaff8",
     "build_started_at": "2023-11-05T18:38:15Z",
     "run_id": "6763097488"
+  },
+  {
+    "hash": "7c0585c299ab17b6e8b4b5f5cce8e7012b270600",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Bundle the block confirmation notification into a payload\n\nThe block observers took seven loose arguments and every subscriber\nredeclared the full row to use one or two of them. Gather the status,\nconfirmation type, votes, account, amount and subtype flags into a\nblock_confirmation_info struct, notify with it, and name the observer\nblock_confirmed after the event it reports. The websocket builder and\nbroadcast take the payload directly, dropping the block and account\narguments that duplicated fields already inside it.",
+    "pull_request": "5159",
+    "created_at": "2026-08-31T15:10:38Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
   },
   {
     "hash": "7c106bc74aeb6e82f4ac11937c46f7a977869226",
@@ -28658,6 +28788,19 @@
     "run_id": "12016626748"
   },
   {
+    "hash": "8a6383e12033f514e6aa84f73f137cb71fa26fbc",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Compute cached vote weight only when the ballot is actually full\n\nInsert only consults cached_tally on the full-ballot path, yet publish paid\nthe vote cache scan, the weight lookups and an unlock/relock for every new\nfork. Try the plain insert first and fall back to the scan and a retry only\non rejection; this also folds the separate contains_block pre-check into\ninsert's updated outcome.",
+    "pull_request": "5159",
+    "created_at": "2026-08-21T16:09:08Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
+  },
+  {
     "hash": "8a70ba77bd705a2e1582822bf441532e06bdf74c",
     "type": "pull_request",
     "title": "Bundle ledger transaction and write guard into a single object",
@@ -31228,6 +31371,19 @@
     "docker_tag": "gr0v1ty/nano-node:958c6ea08eb9bf7933dd0ac11a9a2000f0310510",
     "build_started_at": "2024-05-04T09:36:39Z",
     "run_id": "8950137763"
+  },
+  {
+    "hash": "959169ce93da280b57abc714a3b56db0d534c8b1",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Compose the election status on demand\n\nThe election kept a full election_status member, mixing the last-evaluation\nwinner mirror and tally cache with the one-shot confirmation timestamps,\nwhile status_locked overwrote half the fields on every read. Keep the last\nevaluation result and the confirmation timestamps as dedicated members and\ncompose the status purely on demand from the ballot. The status struct\nbecomes a plain aggregate and a live election always reports ongoing,\ndropping the write-only stopped assignment.",
+    "pull_request": "5159",
+    "created_at": "2026-08-26T12:39:16Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
   },
   {
     "hash": "9594e8b2dc240dfead15567062fce5f684725e2b",
@@ -34399,6 +34555,19 @@
     "docker_tag": "gr0v1ty/nano-node:a53a45dcc8340657048ea4b0b2d60a15f95aac88",
     "build_started_at": "2024-02-09T18:19:07Z",
     "run_id": "7848028481"
+  },
+  {
+    "hash": "a540b5cc667abc46ad0f0f122cd2fbc97a64fc09",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Extract election ballot bookkeeping\n\nMove vote tracking, tallies, winner selection, and fork replacement into a\nstandalone, thoroughly tested component. Remove the synthetic null vote and\nmake equal-weight tally ordering deterministic. A single private\nstatus_locked helper composes the public status copy from the ballot and the\nlog lines read the ballot counts directly, with the status accessors paired\nas get_status/get_extended_status over status_locked/extended_status_locked.\nThe status copy itself moves behind the class, tests query the winner\ninstead of reaching into it. The vote broadcast path re-evaluates\nunconditionally, so the outgoing vote references the freshly retallied\nleader.",
+    "pull_request": "N/A",
+    "created_at": "2026-08-20T17:26:52Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
   },
   {
     "hash": "a54a4a52d2b6c91732b20d5a0eae2d31b211ecad",
@@ -38393,6 +38562,19 @@
     "docker_tag": "gr0v1ty/nano-node:b9fae83a4ac1fa3c482d7b4282dea70f444fb874"
   },
   {
+    "hash": "ba0020d51d7615ae948cd948013984ea9a34aa8c",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Seal the election record in terminal states",
+    "pull_request": "5159",
+    "created_at": "2026-08-29T15:11:39Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
+  },
+  {
     "hash": "ba002c6703de4ed02eaebbd0fee193d58711bd67",
     "type": "pull_request",
     "pull_request": 4382,
@@ -39382,6 +39564,19 @@
     "built_at": "2023-05-30T21:26:04Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:bee668f8c58ac821b685d19223346e8b72e1642f"
+  },
+  {
+    "hash": "beeb81739276925ba02186f59b0625bca882d016",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Index vote routes by election\n\nStore vote routes in a multi-index keyed by block hash and election ownership. Removing an election can now erase all of its routes directly without querying the election under the router lock, while weak ownership still allows abandoned routes to expire.",
+    "pull_request": "N/A",
+    "created_at": "2026-09-02T08:22:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
   },
   {
     "hash": "bef31c19908fc1da67b44ba7236e0a9212b84aca",
@@ -42210,6 +42405,19 @@
     "docker_tag": "gr0v1ty/nano-node:cdbed5eaccc5b63207710ac915bb2d551097e7c1"
   },
   {
+    "hash": "cdc73ac367b72260001669f3948360299ba8ccfd",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Name the final vote timestamp",
+    "pull_request": "N/A",
+    "created_at": "2026-08-29T16:39:52Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
+  },
+  {
     "hash": "cdc93d1f29e51db91a85a9e0db43c42ee6fb03f9",
     "type": "pull_request",
     "title": "Extract vote eligibility logic into voting_policy",
@@ -43611,6 +43819,19 @@
     "run_id": "10717003129"
   },
   {
+    "hash": "d509038d3ef9afb5175102e9ef4bacd85aa26d58",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Gather the election status types in election_status\n\nelection.hpp carried the extended status while the plain status lived alone\nin election_status.hpp. Gather the type enum and both structs there, with\ntheir object stream support and enum helpers in a matching source file, and\nnest the composed status inside the extended report. election.hpp keeps only\nthe election machinery.",
+    "pull_request": "5159",
+    "created_at": "2026-08-26T12:44:01Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
+  },
+  {
     "hash": "d54258102cca2f8876b636b5a49c3dbf3e9565d8",
     "type": "commit",
     "author": "clemahieu",
@@ -44624,6 +44845,19 @@
     "docker_tag": "gr0v1ty/nano-node:d923412827e2969870fb4e0e36e5507d1fe4c6a7",
     "build_started_at": "2025-07-25T11:31:15Z",
     "run_id": "16520927852"
+  },
+  {
+    "hash": "d924a9ed450144ae71bc25b80a2fd35a333dfac0",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Fix vote route cleanup racing with dispatched votes and blocks\n\nThe vote router looks a route up under its lock and releases it before\ndelivering the vote, so a vote can reach an election after the route it\nwas dispatched through has been pruned: either the last supporting vote\nfor an evicted fork moved away, or a publish evicted the unsupported\nblock. The election then records a current vote for an unheld hash that\nnothing routes, and later votes for it fall back to the vote cache. An\naccepted vote for an unheld hash now routes it again, so both orderings\nconverge on the same routes.\n\nErasing a live election left it able to accept blocks and votes already\ndispatched to it and to register routes after its disconnect. The erase\nnow cancels the election before disconnecting it, and the cancel reports\nthe state it found so stats and logs describe the election as it was\nerased.",
+    "pull_request": "5159",
+    "created_at": "2026-09-02T21:35:05Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
   },
   {
     "hash": "d937fa2bf4354c55106eb3bb3d4f932d398fab5b",
@@ -48538,6 +48772,19 @@
     "docker_tag": "gr0v1ty/nano-node:ebfda269310757f64aa8830d373c71431286bf8e",
     "build_started_at": "2024-04-17T09:24:09Z",
     "run_id": "8719881726"
+  },
+  {
+    "hash": "ec1879a0790c3497af58fce821df367befd48a53",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Split the ballot leader from the held winner\n\nThe winner always references a held block and is the only block the\nelection broadcasts or votes for. Once the participation gate is met, it\nfollows the heaviest held block. After the same gate, the leader tracks\nthe heaviest voted-for hash overall and may therefore be unheld.\n\nQuorum now accounts for every current vote target: the participation gate\nsums all recorded vote weight, and the runner-up may be unheld. When the\nleader's block becomes available to a full ballot, it bypasses the weight\ncomparison and replaces the weakest non-winner.",
+    "pull_request": "5159",
+    "created_at": "2026-08-28T17:25:23Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-07T23:00:44Z",
+    "run_id": null
   },
   {
     "hash": "ec372009b39b3b837716c2b5f290a655ee7242e9",
