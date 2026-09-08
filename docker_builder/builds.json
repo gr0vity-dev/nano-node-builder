@@ -15136,7 +15136,7 @@
     "label": "pwojcikdev:test-final-tally-winner-switch",
     "created_at": "2026-09-08T11:27:14Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-09-08T14:28:09Z",
     "run_id": null
@@ -36920,6 +36920,19 @@
     "docker_tag": "gr0v1ty/nano-node:b0e925212734ebaefd5377d6c0bab5af14079b95",
     "build_started_at": "2024-11-22T16:52:08Z",
     "run_id": "11976737777"
+  },
+  {
+    "hash": "b0eb25c160e3fe8600229deaca0ba25051691cb3",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Fix cleanup after failed RocksDB opens (#5165)\n\nInitialize output pointers and check the open status before adopting databases and column-family handles. Failed TransactionDB opens can leave their output untouched, and failed initialization can already free the handles.\n\nAdd regressions that block creation of the LOCK file and verify safe exception unwinding and successful retry on the same backend. The cleanup test segfaults before the fix.",
+    "pull_request": "5165",
+    "created_at": "2026-09-08T20:53:18Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-08T20:56:34Z",
+    "run_id": null
   },
   {
     "hash": "b0f31e48f528fe9844afbb9e3a54f68bff84fbe7",
