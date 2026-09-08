@@ -11075,6 +11075,22 @@
     "run_id": "9340939894"
   },
   {
+    "hash": "357826d0ab7030465a594e8ed03878fd415a9fb4",
+    "type": "pull_request",
+    "title": "Fix vote generator CI races",
+    "author": "pwojcikdev",
+    "body": "Final votes could be observed before `process_final()` committed their ledger records. A normal vote requested immediately afterward could miss the record and remain normal, causing `vote_generator.normal_upgraded_to_final` to fail. Commit the final-vote transaction before publishing permits to the broadcaster.\n\nDisable backlog scanning in `vote_generator.basic_broadcast` so setup cannot start elections between processing and cementing the block and unexpectedly create a final-vote record.\n\nAdd `final_vote_record_visible_at_broadcast` to check a fresh ledger snapshot immediately when final votes are observed for 1,024 previously unvoted roots. Disable representative crawling in this test because replies for cemented blocks do not require stored vote records. Regression detection depends on thread scheduling.\n\nValidation:\n\n- All 74 related voting tests passed on both LMDB and RocksDB in Debug and coverage builds (`vote_generator*.*:vote_broadcast_index.*:voting_policy*.*:vote_replier.*`).\n- The new regression test passed 20 repetitions per backend with the fix. Temporarily removing the early commit caused missing-record failures in 1/5 LMDB runs and 5/5 RocksDB runs. The commit was restored before final validation.\n- Formatting and whitespace checks passed. Coverage was reviewed; existing dispatch, rejection, backpressure, configuration and defensive gaps remain. LLVM continues to report existing profile-mismatch warnings.\n\n🤖 Generated with OpenAI Codex\n",
+    "draft": false,
+    "pull_request": 5164,
+    "label": "pwojcikdev:codex/fix-vote-generator-ci-races",
+    "created_at": "2026-09-08T14:21:38Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-08T14:28:09Z",
+    "run_id": null
+  },
+  {
     "hash": "358bf03f35e4a99b05d88a6948f3d713b5bff491",
     "type": "commit",
     "created_at": "2023-11-06T19:48:42Z",
@@ -15094,6 +15110,22 @@
     "run_id": "11394057096"
   },
   {
+    "hash": "4849ce5ba167387994c9555558e733f04f7130f6",
+    "type": "pull_request",
+    "title": "Test final tally across a winner switch",
+    "author": "pwojcikdev",
+    "body": "Adds test coverage pinning how the election ballot reports final-vote weight and final quorum when the winning fork changes. Tests only, no production code changes.\r\n\r\n## What is pinned\r\n\r\n`election_ballot::evaluate ()` derives `winner_weight`, `final_winner_weight` and `final_quorum` from the recorded votes on every call, always for whichever block currently holds the winner slot, and carries nothing between rounds. A winner switch therefore re-derives all three.\r\n\r\nThe suite did not cover a switch. `election_ballot.evaluate_final_weight_follows_winner` places final votes on a losing fork, where the winner never moves, so these paths were unexercised.\r\n\r\n## Tests\r\n\r\n- `election_ballot.evaluate_final_weight_resets_on_winner_switch`: the final weight drops to zero when the winner moves to a fork with no final votes, and final votes the new winner subsequently collects are counted on their own rather than pooled with the displaced fork's.\r\n- `election_ballot.evaluate_final_quorum_follows_winner_switch`: `final_quorum` is revoked by a winner switch and restored when the original winner regains the slot with its retained final votes.\r\n- `election.final_tally_follows_winner_switch`: end to end on a node, the reported final tally follows the winner across a fork switch, and the record frozen at confirmation carries only the final weight cast for the confirmed block.\r\n\r\nEach test was checked against deliberately broken variants of `evaluate ()`, one carrying the previous winner's final weight across a switch and one pooling final weight across all forks, and fails under both.\r\n\r\n## Notes on the election test\r\n\r\nThe fork sits on a minor representative's chain rather than on genesis, so the rollback and reprocess triggered by the winner switch can never move genesis weight and the asserted tallies are deterministic. `online_weight_minimum` is set to the full genesis amount so the minor representative is below quorum and genesis alone is above it; the `ASSERT_LT`/`ASSERT_GE` pair pins that arrangement so the test fails loudly rather than vacuously if the quorum constant changes.\r\n\r\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\r\n\r\n",
+    "draft": false,
+    "pull_request": 5162,
+    "label": "pwojcikdev:test-final-tally-winner-switch",
+    "created_at": "2026-09-08T11:27:14Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-08T14:28:09Z",
+    "run_id": null
+  },
+  {
     "hash": "485a104a30e1be447063ed4fbfb64136a012a00a",
     "type": "pull_request",
     "title": "Fix unit test bootstrap_processor.lazy_pruning_missing_block",
@@ -16551,6 +16583,22 @@
     "docker_tag": "",
     "build_started_at": "2025-04-10T10:56:50Z",
     "run_id": "14378722282"
+  },
+  {
+    "hash": "4f612922b2ebde1cffbe90f18384e98c61831dfb",
+    "type": "pull_request",
+    "title": "Fix RocksDB open-failure cleanup and CI death-test core dumps",
+    "author": "pwojcikdev",
+    "body": "Failed RocksDB opens should report an error and leave the backend safe to destroy or retry. This PR fixes that error path and prevents expected death-test crashes from exhausting CI disks with core dumps, in two separate commits.\n\nIn the [macOS/RocksDB CI failure](https://github.com/nanocurrency/nano-node/actions/runs/34227154932/job/102063965502?pr=5162), death tests left 34.7 GB of core dumps and the runner reported 36 MB free before `active_elections.confirm_election_by_request` segfaulted. The crashing process's core was empty, so its exact stack is unavailable. A failed-open cleanup crash was reproduced locally.\n\n- **CI core dumps:** When dump collection is enabled, run ordinary and typed death-test suites in a separate process with core dumps disabled. Keep dump collection for other tests, run both phases even if one fails, and preserve failures from either phase.\n- **RocksDB ownership:** Initialize output pointers and check the open status before adopting database or column-family handles. A failed `TransactionDB::Open()` can leave its output untouched, and failed initialization can already have freed the returned handles.\n\nThe regressions make RocksDB's `LOCK` path a directory to force an open error without filling a disk. `backend.rocksdb_open_failure_cleanup` reproduced SIGSEGV before the fix and now verifies safe exception unwinding. `backend.rocksdb_open_failure_retry` verifies creation and reopening on the same backend once the obstruction is removed.\n\nValidation:\n\n- Backend, block-store, and the affected election test pass on both LMDB and RocksDB; all nine death tests also pass on both backends.\n- A shell harness verified core limits, ordinary/typed suite selection, and failure propagation with dump collection enabled and disabled.\n- The required coverage check exercises all eight branches of `open_db`. Broader backend gaps remain in configuration, backup/compaction, statistics, table variants, and flush/error paths.\n- C++ formatting, shell syntax, and diff whitespace checks pass.\n\n🤖 Generated with [Codex](https://openai.com/codex/)\n",
+    "draft": false,
+    "pull_request": 5163,
+    "label": "pwojcikdev:codex/ci-core-dump-rocksdb-fixes",
+    "created_at": "2026-09-08T14:00:42Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-08T14:28:09Z",
+    "run_id": null
   },
   {
     "hash": "4f6a4d7fe49ab6a8883ccd21e6780ab85a9d366f",
