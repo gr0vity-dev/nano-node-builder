@@ -20491,7 +20491,7 @@
     "pull_request": "5159",
     "created_at": "2026-08-31T15:03:42Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-09-07T23:00:44Z",
     "run_id": null
@@ -44721,6 +44721,22 @@
     "docker_tag": "gr0v1ty/nano-node:d843dbb364c2a3a266d16bacd8c24b85f927a6ac",
     "build_started_at": "2024-11-22T19:13:29Z",
     "run_id": "11978681751"
+  },
+  {
+    "hash": "d84462fe6840278d8bb758f1692990ffa4ce1570",
+    "type": "pull_request",
+    "title": "Disable core dumps for expected death tests in CI",
+    "author": "pwojcikdev",
+    "body": "Expected death-test crashes currently generate core dumps when CI enables dump collection. In the [macOS/RocksDB CI failure](https://github.com/nanocurrency/nano-node/actions/runs/34227154932/job/102063965502?pr=5162), these dumps accumulated to 34.7 GB and the runner reported only 36 MB free before the first ordinary core test crashed.\n\nRun ordinary and typed death-test suites in a separate process with core dumps disabled, then run the remaining core tests with dump collection enabled. Both phases run even if one fails, and failures from either phase are preserved. Without dump collection enabled, the runner continues to use a single invocation.\n\nValidation:\n\n- All nine death tests pass with both LMDB and RocksDB.\n- A shell harness verified core limits, ordinary/typed suite selection, and failure propagation with dump collection enabled and disabled.\n- Shell syntax and diff whitespace checks pass.\n\n🤖 Generated with [Codex](https://openai.com/codex/)\n",
+    "draft": false,
+    "pull_request": 5163,
+    "label": "pwojcikdev:codex/ci-core-dump-rocksdb-fixes",
+    "created_at": "2026-09-08T14:00:42Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-09T10:53:45Z",
+    "run_id": null
   },
   {
     "hash": "d8449caabc71c1d014278d806d781761d8e2d040",
