@@ -4778,6 +4778,22 @@
     "run_id": "11034557474"
   },
   {
+    "hash": "16fd0b5118a6f919c303fc173774f3235b0091b6",
+    "type": "pull_request",
+    "title": "Read rep weights for a tally as a single consistent snapshot",
+    "author": "pwojcikdev",
+    "body": "Makes every tally read the weights of all its representatives in one locked batch, so a tally is a consistent snapshot of the rep weight cache rather than a sequence of independent reads.\n\n## Motivation\n\n`election_ballot` read each voting rep's weight with a separate `rep_weights::get`, each taking its own shared lock, so a tally over N reps cost N lock acquisitions and could interleave with ledger updates that touch several reps at once. `online_reps::calculate_online` summed per-rep reads the same way. Reading the whole set under one lock is cheaper and gives every tally a single point-in-time view of the cache.\n\n## Changes\n\n- `nano::rep_weight_map` alias in `rep_weights.hpp` for the recurring rep-to-weight map, used consistently across `rep_weights`, `ledger` and `election_ballot`.\n- `rep_weights::get (std::span<nano::account const>)` reads all requested reps under a single lock, with an entry for every requested rep. `get_rep_amounts` is renamed to `get_all`, and all three getters are documented.\n- `ledger::weights` mirrors `ledger::weight` for a batch, resolving the bootstrap-versus-cache choice once. The ledger weight getters are grouped below `tx_begin_read` with aligned docs.\n- `election_ballot::weight_fn` takes a span of reps and returns a `rep_weight_map`; `compute_weights` and `votes_with_weight` build the rep list once and issue exactly one query. A rep missing from the result counts as zero.\n- `election` wires the ballot to `ledger::weights`; `online_reps::calculate_online` sums one batched snapshot.\n\n## Tests\n\n- `election_ballot.weight_query_single_call_per_tally`: vote and insert-with-room never query; evaluate, tally, votes_with_weight and a full-ballot insert each query exactly once, naming every voting rep.\n- `election_ballot.weight_query_snapshot`: a query that moves all weight between two reps after every call. Each tally sees the whole weight exactly once and the winner alternates with the move.\n- `election_ballot.weight_query_missing_rep_is_zero`.\n- `ledger.rep_weights_batch`: unknown rep, zero account, below-minimum rep, duplicates, empty input, agreement with the single read.\n- `ledger.rep_weights_batch_snapshot`: a writer thread moves weight between two reps while a reader batch-reads both and checks the sum stays constant.\n- `ledger.weights`: weight delegated to two reps through real blocks; the batch agrees with `weight` and `weight_exact` for every rep, bootstrap weights replace the cache below the bootstrap height, and the batch switches back to the cache once the height is reached.\n- `ledger.weights_min_rep_weight`: a rep below the cache minimum reads zero from the batch and the single read while `weight_exact` keeps its value.\n- `ledger.weights_snapshot`: the genesis account flips its representative between two reps through real change blocks on a writer thread while a reader batch-reads both; the two weights always sum to the genesis balance.\n- `online_reps.weight_snapshot`: same shape at the node level, re-observing both reps while their weight moves; the online total stays constant.\n\n## Not changed\n\n`rep_crawler` and `rep_tiers` still sum per-rep reads; those totals are informational.\n",
+    "draft": false,
+    "pull_request": 5167,
+    "label": "pwojcikdev:rep-weights-batch-query",
+    "created_at": "2026-09-09T18:06:59Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-09T22:47:11Z",
+    "run_id": null
+  },
+  {
     "hash": "1702eef8982b7b9f452ed4fd10fc6bb24e4db6ba",
     "type": "pull_request",
     "title": "Link boost stacktrace appropriately for line information.",
