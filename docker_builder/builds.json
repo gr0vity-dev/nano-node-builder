@@ -22961,7 +22961,7 @@
     "pull_request": "5159",
     "created_at": "2026-08-21T16:09:40Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-09-07T23:00:44Z",
     "run_id": null
@@ -23003,6 +23003,22 @@
     "built_at": "2023-02-27T22:14:07Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:6cfadd15b9b1d41ccc2e1734d01150e560d393b5"
+  },
+  {
+    "hash": "6d114145f6f6198385923d3d791f5eae2aa06197",
+    "type": "pull_request",
+    "title": "Read rep weights for a tally as a single consistent snapshot",
+    "author": "pwojcikdev",
+    "body": "Makes every tally read the weights of all its representatives in one locked batch, so a tally is a consistent snapshot of the rep weight cache rather than a sequence of independent reads.\n\n## Motivation\n\n`election_ballot` read each voting rep's weight with a separate `rep_weights::get`, each taking its own shared lock, so a tally over N reps cost N lock acquisitions and could interleave with ledger updates that touch several reps at once. `online_reps::calculate_online` summed per-rep reads the same way. Reading the whole set under one lock is cheaper and gives every tally a single point-in-time view of the cache.\n\n## Changes\n\n- `nano::rep_weight_map` alias in `rep_weights.hpp` for the recurring rep-to-weight map, used consistently across `rep_weights`, `ledger` and `election_ballot`.\n- `rep_weights::get (std::span<nano::account const>)` reads all requested reps under a single lock, with an entry for every requested rep. `get_rep_amounts` is renamed to `get_all`, and all three getters are documented.\n- `ledger::weights` mirrors `ledger::weight` for a batch, resolving the bootstrap-versus-cache choice once. The ledger weight getters are grouped below `tx_begin_read` with aligned docs.\n- `election_ballot::weight_fn` takes a span of reps and returns a `rep_weight_map`; `compute_weights` and `votes_with_weight` build the rep list once and issue exactly one query. A rep missing from the result counts as zero.\n- `election` wires the ballot to `ledger::weights`; `online_reps::calculate_online` sums one batched snapshot.\n\n## Tests\n\n- `election_ballot.weight_query_single_call_per_tally`: vote and insert-with-room never query; evaluate, tally, votes_with_weight and a full-ballot insert each query exactly once, naming every voting rep.\n- `election_ballot.weight_query_snapshot`: a query that moves all weight between two reps after every call. Each tally sees the whole weight exactly once and the winner alternates with the move.\n- `election_ballot.weight_query_missing_rep_is_zero`.\n- `ledger.rep_weights_batch`: unknown rep, zero account, below-minimum rep, duplicates, empty input, agreement with the single read.\n- `ledger.rep_weights_batch_snapshot`: a writer thread moves weight between two reps while a reader batch-reads both and checks the sum stays constant.\n- `ledger.weights`: weight delegated to two reps through real blocks; the batch agrees with `weight` and `weight_exact` for every rep, bootstrap weights replace the cache below the bootstrap height, and the batch switches back to the cache once the height is reached.\n- `ledger.weights_min_rep_weight`: a rep below the cache minimum reads zero from the batch and the single read while `weight_exact` keeps its value.\n- `ledger.weights_snapshot`: the genesis account flips its representative between two reps through real change blocks on a writer thread while a reader batch-reads both; the two weights always sum to the genesis balance.\n- `online_reps.weight_snapshot`: same shape at the node level, re-observing both reps while their weight moves; the online total stays constant.\n\n## Not changed\n\n`rep_crawler` and `rep_tiers` still sum per-rep reads; those totals are informational.\n",
+    "draft": false,
+    "pull_request": 5167,
+    "label": "pwojcikdev:rep-weights-batch-query",
+    "created_at": "2026-09-09T18:06:59Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-09T20:51:23Z",
+    "run_id": null
   },
   {
     "hash": "6d28a3ea291cd6efdde50a2741f7e74473fa1374",
@@ -32380,6 +32396,22 @@
     "docker_tag": "gr0v1ty/nano-node:98e0da36b7bd35cb9b2049e8d18ffa61e416f9e6",
     "build_started_at": "2024-03-18T16:18:40Z",
     "run_id": "8330000170"
+  },
+  {
+    "hash": "98e1dc220b7d2b40df7f9fc546d2d95dc36490d0",
+    "type": "pull_request",
+    "title": "Fix use-after-free in rpc test response helper",
+    "author": "pwojcikdev",
+    "body": "## Problem\n\n`test_response` chains `async_connect` → `async_write` → `async_read` with handlers capturing a raw `this`, while callers hold it by value or `unique_ptr`. Nothing ties the object's lifetime to the operations it has started, so dropping the caller's handle mid-flight leaves queued handlers pointing at freed memory.\n\nA failing `ASSERT_TIMELY` inside `wait_response_impl` is exactly that path — it expands to a bare `return`, so the stack allocated `test_response` is destroyed with its request still in flight.\n\nThis is what the macOS TSAN job hit on [run 34330170091](https://github.com/nanocurrency/nano-node/actions/runs/34330170091/job/102396641368): `rpc.receivable_offset_and_sorting` exceeded the 5s `wait_response` deadline, and the pending write completion then started a read on the destroyed socket while `~system()` drained the io_context:\n\n```\nrpc_context.cpp:25: Failure\nValue of: system.poll ()   Actual: Deadline expired\n...\n#15 nano::test::test_response::run(unsigned short)::$_0 ... ::'lambda'\n#14 boost::beast::http::async_read (...)\n#6  boost::beast::detail::make_work_guard\nSUMMARY: ThreadSanitizer: SEGV on unknown address 0xffff880208a6edd0\n```\n\nThe bug is latent on every green run; it only bites when a request times out.\n\n## Fix\n\n`test_response` is now `enable_shared_from_this`, with each handler carrying a lifetime guard in the idiom already used in `nano/node/transport/tcp_socket.cpp`:\n\n```cpp\nboost::beast::http::async_write (sock, req, [this, /* lifetime guard */ this_s = shared_from_this ()] (...) {\n```\n\n- Construction goes through `test_response::prepare (request, io_ctx)` and `test_response::send (request, port, io_ctx)`. The constructor takes a private tag, so stack allocating a `test_response` — the shape that caused this bug — is now a compile error.\n- `request` was a `ptree const &` into the caller's frame. Now that the object can legitimately outlive its caller, that was a second dangling hazard; it becomes a value copy.\n\nAfter a timeout the pending handler holds the last reference and runs safely during teardown; if the request never completes, `~io_context` destroys the handlers, dropping the last reference.\n\n## Verification\n\nA temporary repro that drops the handle with a request in flight and then pumps the io_context:\n\n| | result |\n|---|---|\n| before, ASAN | `ERROR: AddressSanitizer: stack-use-after-scope`, abort (exit 134) — connect handler writing `status` into the destroyed object, reached from `system::poll` |\n| after, ASAN | passes, no sanitizer reports |\n| full `rpc_test`, ASAN | 231/231 passed, no sanitizer reports |\n\nNote that a plain debug build does not surface this — the freed stack memory stays intact — so ASAN (or TSAN, as in CI) is needed to reproduce.\n\n## Not included\n\nThe other half of that CI failure is the 5s `wait_response` deadline being too tight for macOS TSAN, where `DEADLINE_SCALE_FACTOR` is `1` for lmdb and `2` only for rocksdb (`code_sanitizers.yml:38`). With this change such a timeout produces a clean `Deadline expired` failure instead of a SEGV plus a red sanitizer report, but the test can still flake. Happy to follow up separately.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5166,
+    "label": "pwojcikdev:rpc-test-response-lifetime",
+    "created_at": "2026-09-09T13:15:41Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-09T20:51:23Z",
+    "run_id": null
   },
   {
     "hash": "98f231f159d7f2b898d677bc787bbc7c20963762",
