@@ -14715,11 +14715,11 @@
     "title": "Fix vote generator CI races (#5164)\n\n* Stabilize vote_generator.basic_broadcast setup\n\nDisable backlog scanning in the test node so setup cannot start an election and record a final vote before the explicit normal vote request.\n\nValidation: 10 repetitions on each of the LMDB and RocksDB backends using .ai/ai_test.sh; formatting check passed.\n\n* Commit final vote records before publishing permits\n\nCommit the final-vote transaction before passing permits to the broadcaster. Otherwise a final vote can be observed before its record is visible to the normal verifier, causing a subsequent normal vote request to remain non-final.\n\nValidation: 73 voting tests passed on each of the LMDB and RocksDB backends, including the existing upgrade regression. The same suite passed with coverage instrumentation; remaining uncovered paths concern queue rejection, capacity checks, configuration, and defensive branches. Formatting check passed.",
     "pull_request": "5164",
     "created_at": "2026-09-09T13:00:06Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-09T18:33:41Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:46926fe6df58a47a4719ac824e2a4324a15f12bf",
     "build_started_at": "2026-09-09T14:51:24Z",
-    "run_id": null
+    "run_id": "34386514178"
   },
   {
     "hash": "46a4e9a633c61cf6c9963165cc1e899cf788f179",
