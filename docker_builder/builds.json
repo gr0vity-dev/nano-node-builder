@@ -7033,6 +7033,19 @@
     "run_id": "9678234642"
   },
   {
+    "hash": "20ac59ea138286fc52f1db083ff7624b2be9c4f2",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Test final tally across a winner switch (#5162)\n\n* Test final tally across a winner switch\n\nThe election ballot derives the winner weight, the final winner weight and\nfinal quorum from the recorded votes on every evaluation, always for\nwhichever block currently holds the winner slot. Nothing is carried over\nbetween rounds, so a winner switch re-derives all three.\n\nThe ballot suite does not exercise a switch: the existing final weight test\nplaces final votes on a losing fork, where the winner never moves. Add\nballot tests that move the winner between forks and check that the final\nweight drops to the new winner's own final votes, that it is not pooled\nwith the displaced fork's, and that final quorum is revoked by a switch and\nrestored when the old winner regains the slot with its retained final\nvotes.\n\nAdd an election test on a live node that forks a chain, casts a final vote\nfor the initial winner from a minor representative and then moves the\nwinner with a normal genesis vote, checking that the reported final tally\nfollows the winner and that the confirming record carries only the final\nweight cast for the confirmed block.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01Su28rKn3wBFwps6yGbMXkX\n\n* Clarify comment on final quorum check\n\nCo-authored-by: Copilot Autofix powered by AI <175728472+Copilot@users.noreply.github.com>\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>\nCo-authored-by: Copilot Autofix powered by AI <175728472+Copilot@users.noreply.github.com>",
+    "pull_request": "5162",
+    "created_at": "2026-09-09T13:06:01Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-09T14:51:24Z",
+    "run_id": null
+  },
+  {
     "hash": "20af3a2811b37f50b2587fb65270c0f8227d7104",
     "type": "pull_request",
     "title": "Fix `rpc.block_count_pruning` test flakiness",
@@ -14694,6 +14707,19 @@
     "docker_tag": "gr0v1ty/nano-node:46696f7646a3708c7a607f3850d1d99719b84da8",
     "build_started_at": "2024-10-17T21:42:55Z",
     "run_id": "11393506838"
+  },
+  {
+    "hash": "46926fe6df58a47a4719ac824e2a4324a15f12bf",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Fix vote generator CI races (#5164)\n\n* Stabilize vote_generator.basic_broadcast setup\n\nDisable backlog scanning in the test node so setup cannot start an election and record a final vote before the explicit normal vote request.\n\nValidation: 10 repetitions on each of the LMDB and RocksDB backends using .ai/ai_test.sh; formatting check passed.\n\n* Commit final vote records before publishing permits\n\nCommit the final-vote transaction before passing permits to the broadcaster. Otherwise a final vote can be observed before its record is visible to the normal verifier, causing a subsequent normal vote request to remain non-final.\n\nValidation: 73 voting tests passed on each of the LMDB and RocksDB backends, including the existing upgrade regression. The same suite passed with coverage instrumentation; remaining uncovered paths concern queue rejection, capacity checks, configuration, and defensive branches. Formatting check passed.",
+    "pull_request": "5164",
+    "created_at": "2026-09-09T13:00:06Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-09T14:51:24Z",
+    "run_id": null
   },
   {
     "hash": "46a4e9a633c61cf6c9963165cc1e899cf788f179",
@@ -49994,6 +50020,19 @@
     "run_id": "8284072067"
   },
   {
+    "hash": "f1244ee46278b378faee3e4e64f88dcfeab5e2b5",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Disable core dumps for expected death tests in CI (#5163)\n\n* Disable core dumps for expected death tests in CI\n\nRun death-test suites separately with core dumps disabled when CI enables dump collection. Keep core dumps for other tests and preserve failures from both phases.\n\nThis prevents successful death tests from filling the runner disk before the rest of the suite starts.\n\n* Make the death-test core dump opt-out explicit and guard it\n\nReplace the `unset COREDUMP_DIR` subshell with a NANO_DISABLE_CORE_DUMPS flag\nhandled by run-tests.sh. The previous form relied on the reader knowing that\nrun-tests.sh re-raises the limit whenever COREDUMP_DIR is set, so unsetting it\nwas load bearing rather than incidental. Setting the limit with `ulimit -c 0`\ncovers the hard limit as well.\n\nFail the run if the death-test filter stops matching anything. The split rests\nentirely on the `DeathTest` suite name suffix; if that convention drifts, the\ndeath tests silently rejoin the dump-collecting pass and fill the runner's disk\nagain with nothing reporting it.\n\nMove the test executable path into a common.sh helper, now that both\nrun-tests.sh and run-core-tests.sh need it.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 5 <noreply@anthropic.com>",
+    "pull_request": "5163",
+    "created_at": "2026-09-09T12:59:23Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-09T14:51:24Z",
+    "run_id": null
+  },
+  {
     "hash": "f131db8e9d764678aaaa53ea3cbe8c7fed7f70f0",
     "type": "pull_request",
     "title": "Add transaction refresh support to store crawlers",
@@ -50998,6 +51037,22 @@
     "docker_tag": "gr0v1ty/nano-node:f5a3c5630e4b28bbe8e50cffedd33ea688d95642",
     "build_started_at": "2024-03-10T20:14:43Z",
     "run_id": "8224504096"
+  },
+  {
+    "hash": "f5ca548620fc506e810e065e9c9ce7c65e92777e",
+    "type": "pull_request",
+    "title": "Fix use-after-free in rpc test response helper",
+    "author": "pwojcikdev",
+    "body": "## Problem\n\n`test_response` chains `async_connect` → `async_write` → `async_read` with handlers capturing a raw `this`, while callers hold it by value or `unique_ptr`. Nothing ties the object's lifetime to the operations it has started, so dropping the caller's handle mid-flight leaves queued handlers pointing at freed memory.\n\nA failing `ASSERT_TIMELY` inside `wait_response_impl` is exactly that path — it expands to a bare `return`, so the stack allocated `test_response` is destroyed with its request still in flight.\n\nThis is what the macOS TSAN job hit on [run 34330170091](https://github.com/nanocurrency/nano-node/actions/runs/34330170091/job/102396641368): `rpc.receivable_offset_and_sorting` exceeded the 5s `wait_response` deadline, and the pending write completion then started a read on the destroyed socket while `~system()` drained the io_context:\n\n```\nrpc_context.cpp:25: Failure\nValue of: system.poll ()   Actual: Deadline expired\n...\n#15 nano::test::test_response::run(unsigned short)::$_0 ... ::'lambda'\n#14 boost::beast::http::async_read (...)\n#6  boost::beast::detail::make_work_guard\nSUMMARY: ThreadSanitizer: SEGV on unknown address 0xffff880208a6edd0\n```\n\nThe bug is latent on every green run; it only bites when a request times out.\n\n## Fix\n\n`test_response` is now `enable_shared_from_this`, with each handler carrying a lifetime guard in the idiom already used in `nano/node/transport/tcp_socket.cpp`:\n\n```cpp\nboost::beast::http::async_write (sock, req, [this, /* lifetime guard */ this_s = shared_from_this ()] (...) {\n```\n\n- Construction goes through `test_response::prepare (request, io_ctx)` and `test_response::send (request, port, io_ctx)`. The constructor takes a private tag, so stack allocating a `test_response` — the shape that caused this bug — is now a compile error.\n- `request` was a `ptree const &` into the caller's frame. Now that the object can legitimately outlive its caller, that was a second dangling hazard; it becomes a value copy.\n\nAfter a timeout the pending handler holds the last reference and runs safely during teardown; if the request never completes, `~io_context` destroys the handlers, dropping the last reference.\n\n## Verification\n\nA temporary repro that drops the handle with a request in flight and then pumps the io_context:\n\n| | result |\n|---|---|\n| before, ASAN | `ERROR: AddressSanitizer: stack-use-after-scope`, abort (exit 134) — connect handler writing `status` into the destroyed object, reached from `system::poll` |\n| after, ASAN | passes, no sanitizer reports |\n| full `rpc_test`, ASAN | 231/231 passed, no sanitizer reports |\n\nNote that a plain debug build does not surface this — the freed stack memory stays intact — so ASAN (or TSAN, as in CI) is needed to reproduce.\n\n## Not included\n\nThe other half of that CI failure is the 5s `wait_response` deadline being too tight for macOS TSAN, where `DEADLINE_SCALE_FACTOR` is `1` for lmdb and `2` only for rocksdb (`code_sanitizers.yml:38`). With this change such a timeout produces a clean `Deadline expired` failure instead of a SEGV plus a red sanitizer report, but the test can still flake. Happy to follow up separately.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5166,
+    "label": "pwojcikdev:rpc-test-response-lifetime",
+    "created_at": "2026-09-09T13:15:41Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-09T14:51:24Z",
+    "run_id": null
   },
   {
     "hash": "f5dac0eb8b700e12a538545eaf21924b322d72ea",
