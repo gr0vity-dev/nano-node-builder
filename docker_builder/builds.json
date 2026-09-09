@@ -20359,11 +20359,11 @@
     "title": "Keep routing votes to supported evicted forks\n\nAn evicted fork still needs its route while a representative's current\nvote references it. Retain that route so later votes reach the election\nand recorded support can readmit the block. Remove it when the last such\nvote moves away, and disconnect an unvoted fork at eviction. This bounds\nthe route set by the held blocks plus current vote targets.\n\nConnect admitted forks while holding the election mutex so replacement\nand route updates stay ordered. Whole-election cleanup uses the router's\nelection index.",
     "pull_request": "5159",
     "created_at": "2026-08-28T17:13:38Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-09T06:31:26Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:614bebfa4e3427b981cd576825ec4b8cda3b66cd",
     "build_started_at": "2026-09-07T23:00:44Z",
-    "run_id": null
+    "run_id": "34317045101"
   },
   {
     "hash": "6160f54aa8a7be3549ce00533cb7536c4d361524",
