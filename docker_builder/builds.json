@@ -7039,11 +7039,11 @@
     "title": "Test final tally across a winner switch (#5162)\n\n* Test final tally across a winner switch\n\nThe election ballot derives the winner weight, the final winner weight and\nfinal quorum from the recorded votes on every evaluation, always for\nwhichever block currently holds the winner slot. Nothing is carried over\nbetween rounds, so a winner switch re-derives all three.\n\nThe ballot suite does not exercise a switch: the existing final weight test\nplaces final votes on a losing fork, where the winner never moves. Add\nballot tests that move the winner between forks and check that the final\nweight drops to the new winner's own final votes, that it is not pooled\nwith the displaced fork's, and that final quorum is revoked by a switch and\nrestored when the old winner regains the slot with its retained final\nvotes.\n\nAdd an election test on a live node that forks a chain, casts a final vote\nfor the initial winner from a minor representative and then moves the\nwinner with a normal genesis vote, checking that the reported final tally\nfollows the winner and that the confirming record carries only the final\nweight cast for the confirmed block.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01Su28rKn3wBFwps6yGbMXkX\n\n* Clarify comment on final quorum check\n\nCo-authored-by: Copilot Autofix powered by AI <175728472+Copilot@users.noreply.github.com>\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>\nCo-authored-by: Copilot Autofix powered by AI <175728472+Copilot@users.noreply.github.com>",
     "pull_request": "5162",
     "created_at": "2026-09-09T13:06:01Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-09T15:23:20Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:20ac59ea138286fc52f1db083ff7624b2be9c4f2",
     "build_started_at": "2026-09-09T14:51:24Z",
-    "run_id": null
+    "run_id": "34366359900"
   },
   {
     "hash": "20af3a2811b37f50b2587fb65270c0f8227d7104",
