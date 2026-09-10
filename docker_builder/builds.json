@@ -26185,7 +26185,7 @@
     "pull_request": "5159",
     "created_at": "2026-08-31T15:10:38Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-09-07T23:00:44Z",
     "run_id": null
@@ -34072,6 +34072,19 @@
     "built_at": "2023-09-27T19:31:05Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:a1cc7a5a8c044746d6e05a9316c055b858002da1"
+  },
+  {
+    "hash": "a1ccec51a113f95e8adedff9595c7acc6e11364b",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Fix use-after-free in rpc test response helper (#5166)\n\n* Fix use-after-free in rpc test response helper\n\n`test_response` chained async_connect -> async_write -> async_read with handlers\ncapturing a raw `this`, while callers held it by value or unique_ptr. Nothing tied\nthe object's lifetime to the operations it had started, so dropping the caller's\nhandle mid-flight left queued handlers pointing at freed memory. A failing\nASSERT_TIMELY inside `wait_response_impl` is exactly that path, since it expands\nto a bare `return`.\n\nThe macOS TSAN CI job hits this as a SEGV during `~system()`: the RPC request times\nout, the stack allocated `test_response` is destroyed, and the pending write\ncompletion then starts a read on the destroyed socket while the teardown poll loop\ndrains the io_context.\n\nMake `test_response` shared and give every handler a lifetime guard. Construction\ngoes through `prepare`/`send`, so stack allocating one - the shape that caused the\nbug - no longer compiles. `request` becomes a value copy, as the object can now\nlegitimately outlive the caller's ptree.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\n\n* Join worker threads in rpc simultaneous_calls\n\nThe worker threads were detached while capturing `test_responses`, `promise` and\n`count` by reference. A failing assertion returns from the test body and destroys\nthose stack objects, so any assertion firing while the threads are still running\nleft them writing into dead memory - the same defect as the response helper, one\nscope up. Injecting an early assertion failure and running under ASAN reports\n`stack-use-after-scope` in the `--count` decrement.\n\n`std::jthread` would cover this, but libc++ on macOS does not provide it, so add a\n`join_guard` next to the other test guards and join explicitly. It is declared after\nthe objects the threads capture, so it is destroyed first and joins before they go\naway.\n\nJoining right after the spawn loop instead would be simpler, but this test exists to\nexercise threading issues under TSAN, which relies on the io_context being pumped by\nthe `ASSERT_TIMELY` below while the workers are still calling `run`. The guard keeps\nthat overlap and only changes the failure path.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 5 <noreply@anthropic.com>",
+    "pull_request": "5166",
+    "created_at": "2026-09-10T08:02:24Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-10T09:43:57Z",
+    "run_id": null
   },
   {
     "hash": "a1d7cdc47c29a89c71e228522c6a12c2ae3d5a66",
