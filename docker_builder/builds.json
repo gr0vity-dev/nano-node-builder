@@ -14443,11 +14443,11 @@
     "title": "Raise sub-5s test waits that depend on background threads (#5169)\n\n`websocket.started_election` failed on the Windows lmdb CI job because\nits 1s wait for the election to appear expired on a slow runner. The\nblock goes through the block processor and scheduler before an election\nexists, so 1s is a tight budget under load; every other wait in that\ntest already uses 5s.\n\nSurvey the rest of core_test for waits under 5s and raise the ones that\nsit on the same kind of background latency: block processing, cementing\nand successor activation, local rep voting, real TCP delivery, wallet\nactions and observer callbacks. Waits that are intentionally short stay\nas they are: negative checks (`ASSERT_ALWAYS`/`ASSERT_NEVER` and the\nreceive activation sleep), the bandwidth limiter tests that are required\nto finish under 1s, waits that are already satisfied by the time they\nrun, and the disabled `local_votes_cache` tests. The processing_queue\nparallel test keeps proving parallelism at 5s, since serial processing\nwould take 32s.\n\nCo-authored-by: Claude Fable 5.1 <noreply@anthropic.com>",
     "pull_request": "5169",
     "created_at": "2026-09-10T17:32:43Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-10T20:17:20Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:44cf1faeecd287eb66b89868f2e9957f3163f25b",
     "build_started_at": "2026-09-10T19:46:03Z",
-    "run_id": null
+    "run_id": "34522329536"
   },
   {
     "hash": "44d2dbbdf75520f5274adae33bda79447e8de384",
