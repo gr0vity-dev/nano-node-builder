@@ -14437,6 +14437,19 @@
     "run_id": "24104074673"
   },
   {
+    "hash": "44cf1faeecd287eb66b89868f2e9957f3163f25b",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Raise sub-5s test waits that depend on background threads (#5169)\n\n`websocket.started_election` failed on the Windows lmdb CI job because\nits 1s wait for the election to appear expired on a slow runner. The\nblock goes through the block processor and scheduler before an election\nexists, so 1s is a tight budget under load; every other wait in that\ntest already uses 5s.\n\nSurvey the rest of core_test for waits under 5s and raise the ones that\nsit on the same kind of background latency: block processing, cementing\nand successor activation, local rep voting, real TCP delivery, wallet\nactions and observer callbacks. Waits that are intentionally short stay\nas they are: negative checks (`ASSERT_ALWAYS`/`ASSERT_NEVER` and the\nreceive activation sleep), the bandwidth limiter tests that are required\nto finish under 1s, waits that are already satisfied by the time they\nrun, and the disabled `local_votes_cache` tests. The processing_queue\nparallel test keeps proving parallelism at 5s, since serial processing\nwould take 32s.\n\nCo-authored-by: Claude Fable 5.1 <noreply@anthropic.com>",
+    "pull_request": "5169",
+    "created_at": "2026-09-10T17:32:43Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-10T19:46:03Z",
+    "run_id": null
+  },
+  {
     "hash": "44d2dbbdf75520f5274adae33bda79447e8de384",
     "type": "pull_request",
     "title": "Fix block reuse races in tests",
@@ -48371,6 +48384,19 @@
     "docker_tag": "gr0v1ty/nano-node:e9608c89e530b0d2647610ba0f6f1d90fa965ddc",
     "build_started_at": "2024-11-22T23:40:48Z",
     "run_id": "11984260775"
+  },
+  {
+    "hash": "e9642068151d9a487b851a433caab1ac272359a1",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Read rep weights for a tally as a single consistent snapshot (#5167)\n\n* Read rep weights for a tally as a single consistent snapshot\n\nThe election ballot read each voting rep's weight with a separate locked\nlookup, so a tally over N reps cost N lock acquisitions and could\ninterleave with ledger updates that touch several reps at once. The\nonline weight total summed per-rep reads the same way.\n\nAdd a batched rep_weights::get and ledger::weights that read all requested\nreps under one lock, make the ballot's weight query take a span of reps,\nand use it from the election and from online_reps::calculate_online.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>\n\n* Apply a representative and balance change as one rep weight update\n\nmove_add_sub implemented a block that changes representative and balance\nat once as a move followed by a separate add or sub, each taking the\nrep_weights mutex on its own. Between the two steps the cache held an\nintermediate state, with the balance difference missing from or left\nbehind on one of the two reps, and a batch read could observe it.\n\nCompute both new weights up front, write both to the store, and update\nboth cache entries together with the committed and unused totals under\none lock. move becomes the equal-amount case of the same operation.\n\nrep_weights_move_add_sub_snapshot and weights_snapshot_send_change\nobserve the intermediate state with the previous implementation and\npass with this one. The rep_weights unit tests are renamed and\ndocumented consistently and assert the stored and cached weights\nalongside the entry counts.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>\n\n* Check rep weight accounting through every block type and rollback\n\nNo test asserted the committed and unused weight totals while blocks\nwere processed and rolled back, and a receive into an epoch-opened\naccount, whose previous representative is the zero account, had no\nweight assertion in either direction.\n\nweights_all_block_types drives legacy send, open, receive and change,\nstate send, open, receive and send with a representative change, a\nplain representative change, an epoch upgrade, an epoch open and a\nreceive into it through the ledger, then rolls every block back. After\neach step the cached and stored weights are compared with a model of\neach account's representative and balance, the committed total with\nthe sum of balances and the unused total with what became pending, and\na ledger rebuilt from the store is checked the same way.\n\nrep_weights_append_from covers the startup merge directly.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>\n\n* Guarantee the rep weight snapshot tests observe the update\n\nThe snapshot tests released the writer after the reader's first read\nand stopped the reader once the writer was done, so a schedule that\npauses the reader right after the release lets the writer finish\nunobserved and the test pass on a single read.\n\nMake the writer wait after every update, block and rollback until the\nreader has taken another snapshot, so every state the writer produces\nis observed. The iteration counts drop to a hundred rounds or blocks,\nwhich keeps the handshake cheap and the tests short.\n\nAdd deterministic counterparts that need no scheduling luck. A\nnano::test::hooked_backend wraps the store backend and runs a callback\nbefore every point access, and a ledger store can be built on it.\nrep_weights_move_add_sub_mid_update and weights_snapshot_mid_update\nbatch-read the cache from that callback, which runs inside the update\nbefore the cache lock is taken, exactly where a concurrent reader could\ninterleave. Both fail deterministically against the former split\nimplementation, together with the two unequal-amount snapshot tests,\nand pass against the current one.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>\n\n* Read the cached tally of an incoming fork as one weight snapshot\n\nelection::publish summed the vote cache weight behind a fork arriving\nat a full ballot with one ledger.weight call per voter, the per-rep\npattern the batched ledger.weights replaced on the rest of the tally\npath. Collect the voters and read their weights in one batched call,\nso a weight moving between two of them while the sum is taken is\ncounted once.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Fable 5.1 <noreply@anthropic.com>",
+    "pull_request": "5167",
+    "created_at": "2026-09-10T17:33:51Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-10T19:46:03Z",
+    "run_id": null
   },
   {
     "hash": "e96a053e51c867326162c686d416b7a9eb789f29",
