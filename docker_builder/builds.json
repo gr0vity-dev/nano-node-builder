@@ -34190,7 +34190,7 @@
     "pull_request": "5166",
     "created_at": "2026-09-10T08:02:24Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-09-10T09:43:57Z",
     "run_id": null
@@ -48860,6 +48860,19 @@
     "docker_tag": "gr0v1ty/nano-node:eb034ae04df72b28b868f8fadea0374b039770f1",
     "build_started_at": "2024-09-05T17:37:17Z",
     "run_id": "10725390973"
+  },
+  {
+    "hash": "eb10f451324375d7b4fcf21126a0c24a2e091d55",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rename the RPC server classes and move the HTTP test client to test_common (#5172)\n\n* Rename `nano::rpc` to `nano::rpc_server`\n\nThe class is the HTTP listener that accepts RPC connections and hands\nrequests to a handler. Naming it after the protocol made it read like\nthe RPC API itself and clashed with the `nano::rpc_*` config and handler\ntypes around it. This is a mechanical rename, including the header and\nsource files, with no behavioural change.\n\n* Rename `rpc_handler` to `rpc_dispatcher`\n\nThe class parses the JSON envelope of one request, enforces control\nlevel access and hands the request to a `rpc_handler_interface`\nbackend. Calling it a handler made it read as the same layer as the\nbackend contract and its implementations. This is a mechanical rename,\nincluding the header and source files.\n\n* Move the HTTP test client to `test_common`\n\n`test_response` is a plain JSON over HTTP client with no knowledge of\nthe RPC API, but it lived in `rpc_test` and pulled in the IPC server\nand request processor headers it never used. It moves to `test_common`\nwith only the includes it needs, so the upcoming `rpc_server` unit\ntests in the core suite can drive the server with the same client the\nRPC API tests use.",
+    "pull_request": "5172",
+    "created_at": "2026-09-11T22:12:30Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-11T23:12:40Z",
+    "run_id": null
   },
   {
     "hash": "eb141ba94069dd702d398e929aba9467e03d79b6",
