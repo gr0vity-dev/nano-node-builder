@@ -15939,6 +15939,22 @@
     "docker_tag": "gr0v1ty/nano-node:4b7f91f191a347d386e6d42348c461171104ed6f"
   },
   {
+    "hash": "4b910367706209fa3b55a427303d0072a10ad93a",
+    "type": "pull_request",
+    "title": "Rename the RPC server classes and move the HTTP test client to test_common",
+    "author": "pwojcikdev",
+    "body": "## Problem\n\n`nano::rpc` is the HTTP listener that accepts RPC connections, not the RPC API, and `rpc_handler` is the envelope parser that dispatches to an `rpc_handler_interface` backend, so both names read as the wrong layer. `test_response`, a plain JSON-over-HTTP test client, lived in `rpc_test` and pulled in the IPC server and request processor headers it never used.\n\n## Change\n\nMechanical preparation for the RPC shutdown work in #5168, split out so it can land on its own, one commit per step:\n\n1. Rename `nano::rpc` to `nano::rpc_server`, including the files.\n2. Rename `rpc_handler` to `rpc_dispatcher`, including the files.\n3. Move `test_response` to `test_common` with only the includes it needs, so the core suite can drive the server with the same client the RPC API tests use.\n\nNo behavioural change. clang-format re-sorts the includes the renames displaced.\n\n## Verification\n\n- Full debug build on macOS, wallet included.\n- `rpc.version`, `rpc.stop`, `rpc.simultaneous_calls`, the `enable_control` tests, `rpc.account_balance`, `rpc.work_generate_with_peers_defaults_distributed` and `ipc.*` pass with both backends.\n- `systest/rpc_stop.sh` passes.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5172,
+    "label": "pwojcikdev:rpc-renames",
+    "created_at": "2026-09-11T18:19:54Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-11T18:27:26Z",
+    "run_id": null
+  },
+  {
     "hash": "4b97a2dd9614bf449e64dfb97b548db364a867c5",
     "type": "pull_request",
     "title": "Bound the account count accepted by wallet RPC commands",
@@ -45244,6 +45260,22 @@
     "docker_tag": "gr0v1ty/nano-node:d9c8c38f626a1fe652d23a2774f9be031d42e51d",
     "build_started_at": "2026-01-06T08:31:39Z",
     "run_id": "20742668665"
+  },
+  {
+    "hash": "d9e27dae632b649f63ab1c8c981d749a2e6ca38e",
+    "type": "pull_request",
+    "title": "Extract rpc_process and terminate the RPC child after a grace period",
+    "author": "pwojcikdev",
+    "body": "## Problem\n\nWhen RPC runs in a child process, the daemon spawns `nano_rpc` and, on shutdown, `wait`s on it after everything else has stopped. The child only exits when it is signalled itself, so a `SIGTERM` that reaches only the daemon hangs it forever. The wallet's `terminate` call sits behind `#if USE_BOOST_PROCESS`, which nothing defines, so quitting the wallet orphans the child. Both owners also duplicate the spawn code, including the existence check of the configured executable.\n\n## Change\n\n`nano::rpc_process` owns the child for both the daemon and the wallet. The constructor spawns it and, as before, throws when the executable is missing. `stop` gives the child a grace period of five seconds to exit on its own, as it does when both processes were signalled together, and terminates it otherwise, so an owner never waits on it indefinitely. The daemon's stop order is otherwise unchanged.\n\nPreparation for the RPC shutdown work in #5168, split out so it can land on its own.\n\n## Verification\n\n- Full debug build on macOS, wallet included.\n- New `systest/rpc_child_process_terminate.sh` starts the node in child-process mode, signals only the daemon and checks that it exits, that the child was terminated after the grace period and that the child's port stopped serving. It skips when `NANO_RPC_EXE` is not set; CI sets it.\n- `systest/rpc_stop.sh` passes.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5171,
+    "label": "pwojcikdev:rpc-process",
+    "created_at": "2026-09-11T18:18:59Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-11T18:27:26Z",
+    "run_id": null
   },
   {
     "hash": "d9f96473da3f3ea80ddacc2f72c858999dff040b",
