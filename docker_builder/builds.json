@@ -31610,11 +31610,11 @@
     "title": "Compose the election status on demand\n\nThe election kept a full election_status member, mixing the last-evaluation\nwinner mirror and tally cache with the one-shot confirmation timestamps,\nwhile status_locked overwrote half the fields on every read. Keep the last\nevaluation result and the confirmation timestamps as dedicated members and\ncompose the status purely on demand from the ballot. The status struct\nbecomes a plain aggregate and a live election always reports ongoing,\ndropping the write-only stopped assignment.",
     "pull_request": "5159",
     "created_at": "2026-08-26T12:39:16Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-11T15:40:28Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:959169ce93da280b57abc714a3b56db0d534c8b1",
     "build_started_at": "2026-09-07T23:00:44Z",
-    "run_id": null
+    "run_id": "34614378320"
   },
   {
     "hash": "9594e8b2dc240dfead15567062fce5f684725e2b",
