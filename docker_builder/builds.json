@@ -34840,7 +34840,7 @@
     "pull_request": "N/A",
     "created_at": "2026-08-20T17:26:52Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-09-07T23:00:44Z",
     "run_id": null
@@ -51741,6 +51741,22 @@
     "docker_tag": "gr0v1ty/nano-node:f80ed3712cab9c7af91bfd1ba5b2177865f1d9c9",
     "build_started_at": "2026-04-08T12:37:16Z",
     "run_id": "24174160511"
+  },
+  {
+    "hash": "f81937d12e5574120f32d70774530ef9f5ccc1bb",
+    "type": "pull_request",
+    "title": "Extract rpc_process and terminate the RPC child after a grace period",
+    "author": "pwojcikdev",
+    "body": "## Problem\n\nWhen RPC runs in a child process, the daemon spawns `nano_rpc` and, on shutdown, `wait`s on it after everything else has stopped. The child only exits when it is signalled itself, so a `SIGTERM` that reaches only the daemon hangs it forever. The wallet's `terminate` call sits behind `#if USE_BOOST_PROCESS`, which nothing defines, so quitting the wallet orphans the child. Both owners also duplicate the spawn code, including the existence check of the configured executable.\n\n## Change\n\n`nano::rpc_process` owns the child for both the daemon and the wallet. The constructor spawns it and, as before, throws when the executable is missing. `stop` gives the child a grace period of five seconds to exit on its own, as it does when both processes were signalled together, and terminates it otherwise, so an owner never waits on it indefinitely. The daemon's stop order is otherwise unchanged.\n\nPreparation for the RPC shutdown work in #5168, split out so it can land on its own.\n\n## Verification\n\n- Full debug build on macOS, wallet included.\n- New `systest/rpc_child_process_terminate.sh` starts the node in child-process mode, signals only the daemon and checks that it exits, that the child was terminated after the grace period and that the child's port stopped serving. It skips when `NANO_RPC_EXE` is not set; CI sets it.\n- `systest/rpc_stop.sh` passes.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5171,
+    "label": "pwojcikdev:rpc-process",
+    "created_at": "2026-09-11T18:18:59Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-12T01:06:26Z",
+    "run_id": null
   },
   {
     "hash": "f82f161df1b10b2afee0d225ef73ea958882db10",
