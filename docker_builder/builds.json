@@ -39112,11 +39112,11 @@
     "title": "Extract `rpc_process` and terminate the RPC child after a grace period (#5171)\n\nThe daemon waited on the `nano_rpc` child forever after stopping, so a\nsignal that reached only the daemon hung it, and the wallet's terminate\ncall sat behind `USE_BOOST_PROCESS`, which nothing defines, so it\norphaned the child on quit. Spawning and stopping the child now lives\nin `nano::rpc_process`, shared by both: stopping gives the child a few\nseconds to exit on its own and terminates it otherwise.",
     "pull_request": "5171",
     "created_at": "2026-09-12T08:55:43Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-12T18:53:27Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:bb2064bd1b0d93edd8efa471d801df3d3bafde98",
     "build_started_at": "2026-09-12T09:34:24Z",
-    "run_id": null
+    "run_id": "34711008418"
   },
   {
     "hash": "bb43943fe0928c348e8b2d37b5f64e6a8b49a66a",
