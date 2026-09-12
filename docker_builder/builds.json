@@ -34839,11 +34839,11 @@
     "title": "Extract election ballot bookkeeping\n\nMove vote tracking, tallies, winner selection, and fork replacement into a\nstandalone, thoroughly tested component. Remove the synthetic null vote and\nmake equal-weight tally ordering deterministic. A single private\nstatus_locked helper composes the public status copy from the ballot and the\nlog lines read the ballot counts directly, with the status accessors paired\nas get_status/get_extended_status over status_locked/extended_status_locked.\nThe status copy itself moves behind the class, tests query the winner\ninstead of reaching into it. The vote broadcast path re-evaluates\nunconditionally, so the outgoing vote references the freshly retallied\nleader.",
     "pull_request": "N/A",
     "created_at": "2026-08-20T17:26:52Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-12T01:35:58Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:a540b5cc667abc46ad0f0f122cd2fbc97a64fc09",
     "build_started_at": "2026-09-07T23:00:44Z",
-    "run_id": null
+    "run_id": "34663798719"
   },
   {
     "hash": "a54a4a52d2b6c91732b20d5a0eae2d31b211ecad",
