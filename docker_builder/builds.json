@@ -32722,6 +32722,22 @@
     "run_id": "12897238534"
   },
   {
+    "hash": "99fbbf7705dc7d79d4fb44b0991b1caeea918b72",
+    "type": "pull_request",
+    "title": "Introduce rpc_host and run every RPC owner on it",
+    "author": "pwojcikdev",
+    "body": "## Problem\n\nEvery RPC owner composes the same three things by hand: an HTTP listener, the backend that serves its requests and the IO threads they run on. `nano_rpc` builds its own `io_context` and `thread_runner`, the daemon and the wallet put the listener on the node's `io_context`, and the RPC test harness copies the daemon's arrangement with nothing pinning the two together. Each owner also spells out its own stop order.\n\nThe in-process daemon is where this bit: a `stop` request closed the RPC acceptor from an IO thread while the main thread closed it again, which is the `rpc_stop.sh` segfault on macOS in #5166's CI run.\n\n## Change\n\n`rpc_host` owns the composition, split out of #5168 as the base for the shutdown rework:\n\n- `start` binds the listener and serves requests through the backend on the host's own IO threads; `stop` closes the listener, stops the threads and releases the backend, once.\n- `nano_rpc`, the daemon, the wallet, the RPC test harness and the slow-test wrapper run on it. In-process RPC therefore serves on dedicated threads sized by the existing `[process] io_threads` setting instead of the node's `io_context`, and the `nano_rpc` IO threads report the role \"I/O (RPC)\".\n- `rpc_server::stop` is idempotent through an atomic exchange, which removes the concurrent double close. The bound port is cached at start so `listening_port` stays valid after the acceptor is closed, and a cancelled accept no longer logs an error.\n- Stop semantics are otherwise unchanged here: handlers still close the listener themselves and `nano_rpc` still only closes its listener on a `stop`. Routing stop requests to the owner and draining responses in flight follow in the next PRs.\n- Core tests drive the host with an echo backend from `core_test/fakes`; the bind-failure test skips on Windows through new `consteval` platform predicates in `config.hpp`, beside the sanitizer ones.\n\n## Verification\n\n- Full debug build on macOS, wallet included; format check clean.\n- Full `rpc_test` suite on both backends, `rpc_host.*` and `ipc.*` on both backends.\n- `rpc.stop`, `rpc.simultaneous_calls`, `rpc.version` and `rpc_host.*` looped 30 times each without a failure.\n- `systest/rpc_stop.sh` and `systest/rpc_child_process_terminate.sh` pass, the latter with the new `nano_rpc` as the child.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5173,
+    "label": "pwojcikdev:rpc-host",
+    "created_at": "2026-09-12T12:41:03Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-12T16:12:39Z",
+    "run_id": null
+  },
+  {
     "hash": "9a3696d59f5c407fd6069978272da1c5e9cd30be",
     "type": "pull_request",
     "pull_request": 4509,
