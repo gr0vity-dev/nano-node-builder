@@ -50283,11 +50283,11 @@
     "title": "Disable core dumps for expected death tests in CI (#5163)\n\n* Disable core dumps for expected death tests in CI\n\nRun death-test suites separately with core dumps disabled when CI enables dump collection. Keep core dumps for other tests and preserve failures from both phases.\n\nThis prevents successful death tests from filling the runner disk before the rest of the suite starts.\n\n* Make the death-test core dump opt-out explicit and guard it\n\nReplace the `unset COREDUMP_DIR` subshell with a NANO_DISABLE_CORE_DUMPS flag\nhandled by run-tests.sh. The previous form relied on the reader knowing that\nrun-tests.sh re-raises the limit whenever COREDUMP_DIR is set, so unsetting it\nwas load bearing rather than incidental. Setting the limit with `ulimit -c 0`\ncovers the hard limit as well.\n\nFail the run if the death-test filter stops matching anything. The split rests\nentirely on the `DeathTest` suite name suffix; if that convention drifts, the\ndeath tests silently rejoin the dump-collecting pass and fill the runner's disk\nagain with nothing reporting it.\n\nMove the test executable path into a common.sh helper, now that both\nrun-tests.sh and run-core-tests.sh need it.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 5 <noreply@anthropic.com>",
     "pull_request": "5163",
     "created_at": "2026-09-09T12:59:23Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-13T23:55:59Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:f1244ee46278b378faee3e4e64f88dcfeab5e2b5",
     "build_started_at": "2026-09-09T14:51:24Z",
-    "run_id": null
+    "run_id": "34789634034"
   },
   {
     "hash": "f131db8e9d764678aaaa53ea3cbe8c7fed7f70f0",
