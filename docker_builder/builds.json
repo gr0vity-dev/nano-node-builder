@@ -45203,11 +45203,11 @@
     "title": "Fix vote route cleanup racing with dispatched votes and blocks\n\nThe vote router looks a route up under its lock and releases it before\ndelivering the vote, so a vote can reach an election after the route it\nwas dispatched through has been pruned: either the last supporting vote\nfor an evicted fork moved away, or a publish evicted the unsupported\nblock. The election then records a current vote for an unheld hash that\nnothing routes, and later votes for it fall back to the vote cache. An\naccepted vote for an unheld hash now routes it again, so both orderings\nconverge on the same routes.\n\nErasing a live election left it able to accept blocks and votes already\ndispatched to it and to register routes after its disconnect. The erase\nnow cancels the election before disconnecting it, and the cancel reports\nthe state it found so stats and logs describe the election as it was\nerased.",
     "pull_request": "5159",
     "created_at": "2026-09-02T21:35:05Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-13T10:18:32Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:d924a9ed450144ae71bc25b80a2fd35a333dfac0",
     "build_started_at": "2026-09-07T23:00:44Z",
-    "run_id": null
+    "run_id": "34750168998"
   },
   {
     "hash": "d937fa2bf4354c55106eb3bb3d4f932d398fab5b",
