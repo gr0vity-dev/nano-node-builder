@@ -34917,11 +34917,11 @@
     "title": "Introduce rpc_host and run every RPC owner on it (#5173)\n\n* Introduce `rpc_host` and run every owner on it\n\nEvery owner composed the same three things by hand, an HTTP listener,\nthe backend that serves its requests and the IO threads they run on,\nand each spelled out its own order for stopping them; the test harness\ncopied the daemon's order with nothing pinning the two together.\n\n`rpc_host` owns the composition. `start` binds the listener and runs\nthe backend on the host's own IO threads, `stop` closes the listener,\nstops the threads and releases the backend, once. `nano_rpc`, the\ndaemon, the wallet, the RPC test harness and the slow test wrapper run\non it, so in-process RPC now serves on threads sized by the existing\n`[process] io_threads` setting instead of the node's.\n\n`rpc_server::stop` becomes idempotent, since on host threads a handler\nclosing the listener from an IO thread runs concurrently with the\nowner's stop; the bound port is cached at start so it stays readable\nafter the acceptor is closed, and a cancelled accept is no longer\nlogged as an error. A `bind_failure` test that Windows cannot satisfy\nskips itself through new `consteval` platform predicates beside the\nsanitizer ones.\n\n* Guard the RPC acceptor against a close racing its accept handler\n\nThe accept handler re-arms the acceptor on an IO thread and checked\n`is_open` on it, while the owner closes the acceptor from its own\nthread. With the listener on the host's own IO threads the two run\nconcurrently, which ThreadSanitizer reported in\n`rpc_host.destroy_without_stop`. Both now take the server's mutex, and\nthe handler consults the stopped flag instead of the acceptor.",
     "pull_request": "5173",
     "created_at": "2026-09-14T13:04:31Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-14T19:04:08Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:a5aab87c4b66902c8d4a2ea3657e57a8704f1518",
     "build_started_at": "2026-09-14T18:32:31Z",
-    "run_id": null
+    "run_id": "34881408975"
   },
   {
     "hash": "a5ac56bf399d93e38c0ee00774a15cc117fa408f",
