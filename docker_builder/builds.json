@@ -45768,7 +45768,7 @@
     "label": "pwojcikdev:config-loading",
     "created_at": "2026-09-16T17:08:03Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-09-16T19:43:08Z",
     "run_id": null
@@ -48497,6 +48497,19 @@
     "docker_tag": "gr0v1ty/nano-node:e917c925c3863bca558f2a5a597808e76ef3e7e4",
     "build_started_at": "2025-03-22T12:49:12Z",
     "run_id": "14008710801"
+  },
+  {
+    "hash": "e91bd2c3116c2daaf1ba1bd45c82adadc46e3957",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Remove the IO contexts nothing runs on anymore (#5176)\n\n* Remove the daemon IO context left without users\n\nThe node runs its own IO context, and with rpc_host the in-process RPC\nserver now runs on its own too, so the one the daemon set up was serving\nnobody while still starting a thread per configured IO thread. Drop it,\nalong with the stale claim that its runner had to outlive node start and\nstop. The wallet kept the same pair for the same reasons, and the\nbenchmarks kept the includes.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\n\n* Stop test nodes directly\n\nStopping a node used to be deferred to a separate thread so the test\nthread could keep pumping the shared IO context, without which the node\nwould never finish stopping. Nodes now run their own IO threads, so the\ntest thread can simply wait for stop() to return.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\n\n* Drop test IO runners that no longer drive anything\n\nThese runners spawned threads for the test system IO context back when\nnodes ran on it. Nothing posts node work there anymore, and since\nrpc_host brought its own IO threads the runner in the bootstrap slow\ntest has no RPC server to serve either, so the threads just idled.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\n\n* Start the node IO threads once the node is fully constructed\n\nThe IO runner sat right after the ledger in the member list, so its\nthreads were already running while the rest of the node was still being\nbuilt, and on teardown it was destroyed in the middle of the components\nthat post work to it. Move it to the end of the member list, where\nconstruction and destruction bracket every component that uses it.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 5 <noreply@anthropic.com>",
+    "pull_request": "5176",
+    "created_at": "2026-09-17T00:26:48Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-17T00:38:38Z",
+    "run_id": null
   },
   {
     "hash": "e926ccd6f50316d3a34a62cdb8ceab8a91c51bea",
