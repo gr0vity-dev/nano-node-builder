@@ -53357,6 +53357,22 @@
     "run_id": "12472662305"
   },
   {
+    "hash": "ff27f85cf162c17af24cc8598b3a490cd7872ba5",
+    "type": "pull_request",
+    "title": "Log available disk space for the ledger database",
+    "author": "pwojcikdev",
+    "body": "Adds visibility into the free space on the volume holding the ledger, both for the operator running the node and for reading logs after the fact.\n\n- **At startup**, right after the existing `Ledger path:` line, so every log carries a baseline reading.\n- **On every monitor tick**, alongside the other periodic status lines, escalating to `warn` below 10 GiB available and `critical` below 1 GiB.\n\n```\n[node]    [info] Ledger path: /home/nano/Nano/data.ldb\n[node]    [info] Ledger disk space: 884.85 GiB available of 1.81 TiB (47.6% free)\n[monitor] [info] Ledger disk space: 884.85 GiB available of 1.81 TiB (47.6% free)\n```\n\nThe space is queried for the database path rather than the data directory, so a ledger placed on its own volume is reported correctly.\n\n### Implementation\n\n`nano::get_disk_space` joins the other filesystem helpers in `nano/lib/files.hpp`, returning an optional `disk_space_info{capacity, available}`. It treats both a failed `error_code` and the `-1` sentinel `std::filesystem::space` leaves in unresolvable fields as \"unknown\".\n\nRendering lives entirely in `nano/lib/formatting.hpp` as `nano::log::as_disk_space`, following the existing `as_nano` / `as_node_id` lazy-wrapper idiom, with `as_size` underneath it for byte counts. Keeping it there leaves the query API free of formatting concerns; `formatting.hpp` only forward-declares the struct via `fwd.hpp`, so the dependency exists solely in `formatting.cpp`.\n\nThe two call sites log independently rather than sharing a helper, since what they have in common is the data, not the log statement. The thresholds stay private to `monitor.cpp` next to the only code that acts on them, which means the startup record is informational only — in practice the monitor's first tick follows a few milliseconds later and emits the warning, so the gap only matters with `[node.monitor] enable=false`.\n\n### Testing\n\n`filesystem.disk_space` covers the query including the unresolvable-path case; `log_format.as_size` and `log_format.as_disk_space` cover the rendering, including the zero-capacity division guard. The low/critical branches are not covered — exercising them needs a filesystem near capacity.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5177,
+    "label": "pwojcikdev:ledger-disk-space-logging",
+    "created_at": "2026-09-17T17:40:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-17T18:40:19Z",
+    "run_id": null
+  },
+  {
     "hash": "ff40dece0dcf90d70377ec1972261dcc792affa6",
     "type": "pull_request",
     "pull_request": 3781,
