@@ -28964,6 +28964,19 @@
     "docker_tag": "gr0v1ty/nano-node:89aa09daab4b686483c027c38aa365deb30e641a"
   },
   {
+    "hash": "89b849c4782eeb621c37553ff5bca90646da6a9e",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Log available disk space for the ledger database (#5177)\n\nRecord the free space on the volume holding the ledger at startup and on\nevery monitor tick, so operators notice a filling disk and post-mortem log\nanalysis can tell whether the node ran out of space.\n\nAdd `nano::get_disk_space` alongside the other filesystem helpers and a\n`nano::log::as_disk_space` wrapper to render it, keeping the formatting out\nof the query API. The monitor escalates to a warning below 10 GiB and to a\ncritical message below 1 GiB.\n\nCo-authored-by: Claude Opus 5 <noreply@anthropic.com>",
+    "pull_request": "5177",
+    "created_at": "2026-09-17T22:35:25Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-17T23:42:19Z",
+    "run_id": null
+  },
+  {
     "hash": "89baf79cb1bbb65d3b5fea1595d9f1aebef1a2f1",
     "type": "commit",
     "created_at": "2023-03-07T21:15:33Z",
