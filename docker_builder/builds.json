@@ -49382,6 +49382,22 @@
     "run_id": "9568195704"
   },
   {
+    "hash": "ec961530cdfa7fec11767c4970972b60b817a59f",
+    "type": "pull_request",
+    "title": "Raise the sccache hit ratio to 99% by scoping the version macros",
+    "author": "RickiNano",
+    "body": "CI currently lands a sccache hit ratio of just **40-80%**\r\nThe cause is the version macros.\r\n\r\n`GIT_COMMIT_HASH` and `TAG_VERSION_STRING` were passed to seven targets: \r\n`nano_lib`, `node`, `nano_node`, `nano_rpc`, `core_test`, `rpc_test` and `qt`, putting them on the compile command line of all 224 translation units.\r\n\r\nOnly `nano/lib/version.cpp` reads them.\r\n\r\nsccache keys on the command line, so a macro that changes with every commit invalidated every object in those targets. `core_test` (99 files) and `node` (62 files) rebuilt from cold on every commit, and because only `develop` populates the cache, the entries a pull request reads were written by a build whose hash no longer matches anything, hence the swing between 40% and 80% rather than a steady number.\r\n\r\nThis attaches the six version macros to `version.cpp` alone and drops them from the targets that never used them. `ACTIVE_NETWORK` stays as-is.\r\n\r\nI have measured the sccache hit ratio after the change to a consistent **99%** cache read.",
+    "draft": false,
+    "pull_request": 5178,
+    "label": "RickiNano:sccache-hit-ratio",
+    "created_at": "2026-09-19T13:03:07Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-19T13:27:21Z",
+    "run_id": null
+  },
+  {
     "hash": "ec9ff1b0f326de17adfa94a06a194e85556174c4",
     "type": "pull_request",
     "pull_request": 4222,
