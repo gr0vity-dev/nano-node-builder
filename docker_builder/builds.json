@@ -24422,6 +24422,22 @@
     "run_id": "17465890603"
   },
   {
+    "hash": "73899ab4afe909fc2d387789c7b25f1cb4edea41",
+    "type": "pull_request",
+    "title": "Deliver votes that arrive while their election is starting",
+    "author": "pwojcikdev",
+    "body": "A vote could be left unused in the vote cache when an election for one of its hashes started\nwhile the vote was being routed. This is the cause of the intermittent\n`active_elections.fork_replacement_tally` failure on the Linux RocksDB jobs\n(`cemented_count` 40 instead of 41), seen on #5175 and #5181.\n\n## The race\n\n`vote_router::vote` looks up the elections for all hashes of a vote, votes on the ones it\nfound, and only then caches the hashes that had no election. A starting election connects its\nroute and then reads the vote cache. If it does both between the router's lookup and the\nrouter's cache insert, it finds the cache empty, and the vote is cached afterwards with nothing\nleft to read it. The hinted scheduler does see the cached hash, but starting an election that\nalready exists is a no-op.\n\nThe window is widest for a vote that covers a block and its dependent, which is what the test\nsends: confirming the send gets it cemented, cementing activates the destination account, and\nthe open block's election starts while the same vote is still on its way into the cache.\nLocally the cache read trails the insert by only 150 to 700 µs on both backends, so a short\nstall of the voting thread reverses them. The race itself does not depend on the backend. On\nthe CI runners RocksDB presumably reaches the election start sooner, as its commits are not\nsynced.\n\n## Fix\n\nAfter caching, the router looks the unmatched hashes up once more and votes on any election\nthat connected in the meantime. An election connects before it reads the cache, so a vote that\nmisses the first lookup is seen by the second lookup or by the cache read. The documentation\nof `connect` states that ordering.\n\nThe second lookup upgrades the reported code only when the election counts the vote. If the\nelection already got the vote from the cache, the repeated delivery is not a replay by the\nrepresentative, and the hash stays `indeterminate`.\n\n## Tests\n\nThree `vote_router` tests. An election built by hand takes a `vote_action` callback, which\nruns on the voting thread inside `election::vote`, exactly in the router's window. The tests\nstart the second election from there, so they are single-threaded and involve no timing, and\n`vote_during_election_start` fails without the fix.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5184,
+    "label": "pwojcikdev:vote-router-lost-vote",
+    "created_at": "2026-09-20T22:58:23Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-20T23:29:31Z",
+    "run_id": null
+  },
+  {
     "hash": "7397a9eb3d98cbdc1ef97a5f4414935139637025",
     "type": "pull_request",
     "title": "Database backend configuration",
@@ -48384,6 +48400,19 @@
     "docker_tag": "gr0v1ty/nano-node:e79f4a8d1cb681be65cebc04f346973b2ac84955",
     "build_started_at": "2024-12-22T20:34:49Z",
     "run_id": "12458714464"
+  },
+  {
+    "hash": "e7c96025bb07baea9840aad45bd63b8274a3e1bc",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Stop the vote rebroadcaster before testing queue deduplication (#5183)\n\nCo-authored-by: Claude Opus 5 <noreply@anthropic.com>",
+    "pull_request": "5183",
+    "created_at": "2026-09-20T22:55:16Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-20T23:29:31Z",
+    "run_id": null
   },
   {
     "hash": "e7f28c6a92a5d6f4dc5321b995f38c2bce394608",
