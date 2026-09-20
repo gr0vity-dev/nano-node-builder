@@ -32691,6 +32691,22 @@
     "run_id": "12056850217"
   },
   {
+    "hash": "99514317bb571fa88b72be2465f452277f264ab8",
+    "type": "pull_request",
+    "title": "Unify config loading, validation and template rendering",
+    "author": "pwojcikdev",
+    "body": "Cleans up how configuration files are located, parsed, validated and rendered. One commit per step, each building and passing tests on its own.\n\n## Fixes\n- `process.ipc_address` in `config-rpc.toml` had no effect: the deserializer overwrote it with the RPC bind address.\n- `--generate_config rpc` ignored `--network` and always printed dev network defaults.\n- `get_required_child` returned the parent table on a missing key; both child lookups dereferenced null when the key held a plain value.\n- Syntax errors in a config file were reported at the wrong line whenever `--config` overrides were present (and off by one without them), because overrides were concatenated in front of the file text.\n- `--update_config` aligned two serialized documents line by line and produced garbage as soon as they differed in shape, e.g. when the file set `peering_port`.\n- The lmdb to rocksdb migration did not honour `--config`.\n\n## Refactoring\n- **One loader.** `read_config_file` / `load_config_file` in `nano/lib/config.hpp` locate the file, apply overrides and deserialize. The node, RPC, access, wallet and log loaders are wrappers. Reading a path never creates the file any more; writing truncates instead of overwriting in place.\n- **Overrides as tree edits.** Each `key=value` override is parsed on its own and merged into the document. Repeated overrides of one key now let the last one win.\n- **Override extraction in one place.** `nano::config_overrides (variables_map)` replaces nine copies of the `--config` lookup.\n- **Validation split from parsing.** `node_config::validate ()` holds the range checks, `validate (flags)` adds the flag conflicts that `flags_config_conflicts` used to check. The loader validates after deserializing. All violations are reported in one message, and parse errors accumulate instead of dropping all but the first.\n- **Unknown keys are reported.** The table wrapper records what the deserializers read; the loader warns on stderr about everything else. Round-trip tests check that the node, RPC and log configs read back every key they write.\n- **Template rendering as a tree walk.** `nano/lib/config_template.hpp` replaces the line-based `to_string` / `merge_defaults` helpers. `--generate_config` output is unchanged byte for byte; `--update_config` now reports the unknown keys it drops.\n\n## Notes\n- Unknown keys warn rather than fail; the log config keeps its fall-back-to-defaults policy on error.\n- `erase_default_values` and its two tests are removed since nothing outside the tests used it.\n- Verified with the full `core_test` and `rpc_test` suites on both backends, and a Qt5 build of `nano_wallet`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5175,
+    "label": "pwojcikdev:config-loading",
+    "created_at": "2026-09-16T17:08:03Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-20T13:45:26Z",
+    "run_id": null
+  },
+  {
     "hash": "997b26279e4d5e20ef510e3ab507594977ed46a0",
     "type": "commit",
     "author": "pwojcikdev",
