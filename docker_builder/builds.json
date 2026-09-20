@@ -4338,6 +4338,19 @@
     "run_id": "19405923989"
   },
   {
+    "hash": "1514cf1f1d10fd7c96b50ccd11d9e469692d05c9",
+    "type": "commit",
+    "author": "RickiNano",
+    "title": "Fix block JSON account decoding and add standalone serialization tests (#5179)\n\n* Decode open and change block JSON accounts as addresses\n\n* Tests for standalone block deserialize and deserialize_json methods",
+    "pull_request": "5179",
+    "created_at": "2026-09-20T14:06:56Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-20T17:00:26Z",
+    "run_id": null
+  },
+  {
     "hash": "151722f183fa6ca670d0c54de582aa78321b93d0",
     "type": "pull_request",
     "title": "Use memory weight instead of exact weight when computing wallet reps.",
@@ -8954,6 +8967,19 @@
     "docker_tag": "gr0v1ty/nano-node:2b0c6648fd85a3ae7eab3472ef70888971b1eb0e",
     "build_started_at": "2025-09-03T18:45:08Z",
     "run_id": "17443015079"
+  },
+  {
+    "hash": "2b0c943034dfa2265b89f9293204528f717af3ed",
+    "type": "commit",
+    "author": "RickiNano",
+    "title": "Scope the version macros to the file that consumes them (#5178)\n\nCMake reads the abbreviated commit hash at configure time and passed it as\n-DGIT_COMMIT_HASH, alongside -DTAG_VERSION_STRING, to seven targets:\nnano_lib, node, nano_node, nano_rpc, core_test, rpc_test and qt. Only\nnano/lib/version.cpp reads either macro, so every other definition was\ndead, but it still landed on the compile command line of all 224\ntranslation units in those targets.\n\nsccache keys its cache on that command line, so a definition that changes\nwith every commit invalidates every object in the target. The two most\nexpensive targets, core_test at 99 files and node at 62, were rebuilt from\ncold on each commit, and because only develop populates the cache, the\nentries a pull request reads were written by a build whose hash no longer\nmatches anything.\n\nAttach the six version macros to version.cpp with\nset_source_files_properties and drop the definitions from the targets that\nnever used them. ACTIVE_NETWORK stays where it was, since it is stable\nacross commits and genuinely public.\n\nCo-authored-by: Claude Opus 5 <noreply@anthropic.com>",
+    "pull_request": "5178",
+    "created_at": "2026-09-20T14:05:37Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-20T17:00:26Z",
+    "run_id": null
   },
   {
     "hash": "2b1e7116d3d1977dda9dffc398d27bf7fd4cbea2",
@@ -33610,6 +33636,22 @@
     "docker_tag": "gr0v1ty/nano-node:9e17b25cdf92834dc2b3b0ab05a8ea259f4b4911"
   },
   {
+    "hash": "9e209fa7b75bc69b050f6c68a739e3fd624d49d5",
+    "type": "pull_request",
+    "title": "Read command line config overrides in one place",
+    "author": "pwojcikdev",
+    "body": "Nine call sites re-implemented the lookup of the `--config` command line option that\n`update_flags` already performs. A `variables_map` overload of `nano::config_overrides`\nreplaces them all.\n\nThree follow on from that:\n\n- the lmdb-to-rocksdb migration now honours `--config` like every other command,\n- the stale TODO on `--initialize` goes away, since `inactive_node` already receives the\n  overrides through the flags,\n- the wallet drops an unused copy.\n\nIndependent of the rest of the config work — this applies to `develop` unchanged.\nSecond slice carved out of #5175.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5181,
+    "label": "pwojcikdev:cli-config-overrides",
+    "created_at": "2026-09-20T16:15:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-20T17:00:26Z",
+    "run_id": null
+  },
+  {
     "hash": "9e2303222b916d14bc68f87e51e09980e87fc083",
     "type": "commit",
     "created_at": "2024-01-26T17:35:11Z",
@@ -37943,6 +37985,22 @@
     "built_at": "2023-03-06T17:45:53Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:b4fdc073eebb09093c908529f1079bf4a813eb45"
+  },
+  {
+    "hash": "b500a52447df0a4ebf26a15115eb758f66f80881",
+    "type": "pull_request",
+    "title": "Fix config parsing bugs and split the config tests",
+    "author": "pwojcikdev",
+    "body": "Six independent fixes in the config layer, plus a test split that gives the table\nwrapper its own suite. No API changes. This is the first slice carved out of #5175.\n\n## Fixes\n\n- `process.ipc_address` in `config-rpc.toml` was parsed correctly and then overwritten\n  with the RPC bind address, so the key had no effect.\n- `--generate_config rpc` always used dev network constants, printing the wrong default\n  port under `--network beta` or `live`. The node branch already used the active network.\n- `tomlconfig::get_required_child` returned the *parent* table when the key was missing,\n  so the caller went on reading the parent's keys as if they were the child's. Both child\n  lookups also dereferenced a null table when the key held a plain value.\n- Negative numbers were accepted for unsigned settings: `lexical_cast` wrapped `-1` into\n  18446744073709551615. The stringified value is now also checked for presence before\n  being dereferenced, which a key holding a table or an array would previously have done\n  on an empty option.\n- Type descriptions for error messages were a fixed list of explicit specializations, so\n  `size_t` settings reported \"is not an unknown type\" and addresses had no description at\n  all. They are now derived from the type.\n- Leftovers: a duplicated `enable_sign_hash` getter, an unused qtwallet config path, a\n  redundant table copy in `daemon_config`, `jsonconfig` includes that no config translation\n  unit uses any more, and a typo in an lmdb type annotation.\n\n## Test split\n\n`toml.cpp` mixed tests of the table wrapper with tests of the config classes that sit on\ntop of it. The wrapper tests move to a `tomlconfig` suite in its own file, leaving\n`toml.cpp` to the `toml_config` tests of `daemon_config`, `rpc_config` and `log_config`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5180,
+    "label": "pwojcikdev:config-fixes",
+    "created_at": "2026-09-20T16:03:52Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-20T17:00:26Z",
+    "run_id": null
   },
   {
     "hash": "b509b4604560fdd0d37fb226ef76d54ceaaa4dd0",
@@ -46700,6 +46758,22 @@
     "run_id": "12872137163"
   },
   {
+    "hash": "dfa906de1e6ee2c2f0e61b67f4f48fef9498c5f2",
+    "type": "pull_request",
+    "title": "Share one RocksDB block cache across all column families",
+    "author": "RickiNano",
+    "body": "Rocksdb cache is currently allocated per column family, so each of the 16 tables gets its own fixed slice.\r\nA single shared cache is more efficient: RocksDB moves the memory to whichever tables are actually hot instead of stranding it in idle ones.\r\n\r\nread_cache now means a shared total rather than a per-table amount, so the default moves from 32 MB to 256 MB and the configurable range widens to 1-16384 MB.\r\n\r\nI have been running this setup for a few weeks without issues",
+    "draft": false,
+    "pull_request": 5182,
+    "label": "RickiNano:rocksdb-caching",
+    "created_at": "2026-09-20T16:34:25Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-20T17:00:26Z",
+    "run_id": null
+  },
+  {
     "hash": "dfc36690077bd368dd0e5157afdffed7dbf0c364",
     "type": "pull_request",
     "title": "Traffic shaping",
@@ -48792,6 +48866,22 @@
     "docker_tag": "gr0v1ty/nano-node:ea29e6267565c7bc02ab9a61c1b6bf8c3c81225a",
     "build_started_at": "2026-08-18T13:56:17Z",
     "run_id": "32151780141"
+  },
+  {
+    "hash": "ea3a1c6745935dbdf393bfad0da9bf251c6833b5",
+    "type": "pull_request",
+    "title": "Unify config loading, validation and template rendering",
+    "author": "pwojcikdev",
+    "body": "Cleans up how configuration files are located, parsed, validated and rendered. One commit per step, each building and passing tests on its own.\n\n## Fixes\n- `process.ipc_address` in `config-rpc.toml` had no effect: the deserializer overwrote it with the RPC bind address.\n- `--generate_config rpc` ignored `--network` and always printed dev network defaults.\n- `get_required_child` returned the parent table on a missing key; both child lookups dereferenced null when the key held a plain value.\n- Syntax errors in a config file were reported at the wrong line whenever `--config` overrides were present (and off by one without them), because overrides were concatenated in front of the file text.\n- `--update_config` aligned two serialized documents line by line and produced garbage as soon as they differed in shape, e.g. when the file set `peering_port`.\n- The lmdb to rocksdb migration did not honour `--config`.\n\n## Refactoring\n- **One loader.** `read_config_file` / `load_config_file` in `nano/lib/config.hpp` locate the file, apply overrides and deserialize. The node, RPC, access, wallet and log loaders are wrappers. Reading a path never creates the file any more; writing truncates instead of overwriting in place.\n- **Overrides as tree edits.** Each `key=value` override is parsed on its own and merged into the document. Repeated overrides of one key now let the last one win.\n- **Override extraction in one place.** `nano::config_overrides (variables_map)` replaces nine copies of the `--config` lookup.\n- **Validation split from parsing.** `node_config::validate ()` holds the range checks, `validate (flags)` adds the flag conflicts that `flags_config_conflicts` used to check. The loader validates after deserializing. All violations are reported in one message, and parse errors accumulate instead of dropping all but the first.\n- **Unknown keys are reported.** The table wrapper records what the deserializers read; the loader warns on stderr about everything else. Round-trip tests check that the node, RPC and log configs read back every key they write.\n- **Template rendering as a tree walk.** `nano/lib/config_template.hpp` replaces the line-based `to_string` / `merge_defaults` helpers. `--generate_config` output is unchanged byte for byte; `--update_config` now reports the unknown keys it drops.\n\n## Notes\n- Unknown keys warn rather than fail; the log config keeps its fall-back-to-defaults policy on error.\n- `erase_default_values` and its two tests are removed since nothing outside the tests used it.\n- Verified with the full `core_test` and `rpc_test` suites on both backends, and a Qt5 build of `nano_wallet`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5175,
+    "label": "pwojcikdev:config-loading",
+    "created_at": "2026-09-16T17:08:03Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-20T17:00:26Z",
+    "run_id": null
   },
   {
     "hash": "ea3fb2ac2f2b4d277c6f71083c4100f7c94dd35c",
