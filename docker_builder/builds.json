@@ -8991,11 +8991,11 @@
     "title": "Scope the version macros to the file that consumes them (#5178)\n\nCMake reads the abbreviated commit hash at configure time and passed it as\n-DGIT_COMMIT_HASH, alongside -DTAG_VERSION_STRING, to seven targets:\nnano_lib, node, nano_node, nano_rpc, core_test, rpc_test and qt. Only\nnano/lib/version.cpp reads either macro, so every other definition was\ndead, but it still landed on the compile command line of all 224\ntranslation units in those targets.\n\nsccache keys its cache on that command line, so a definition that changes\nwith every commit invalidates every object in the target. The two most\nexpensive targets, core_test at 99 files and node at 62, were rebuilt from\ncold on each commit, and because only develop populates the cache, the\nentries a pull request reads were written by a build whose hash no longer\nmatches anything.\n\nAttach the six version macros to version.cpp with\nset_source_files_properties and drop the definitions from the targets that\nnever used them. ACTIVE_NETWORK stays where it was, since it is stable\nacross commits and genuinely public.\n\nCo-authored-by: Claude Opus 5 <noreply@anthropic.com>",
     "pull_request": "5178",
     "created_at": "2026-09-20T14:05:37Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-20T22:12:37Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:2b0c943034dfa2265b89f9293204528f717af3ed",
     "build_started_at": "2026-09-20T17:00:26Z",
-    "run_id": null
+    "run_id": "35539272566"
   },
   {
     "hash": "2b1e7116d3d1977dda9dffc398d27bf7fd4cbea2",
