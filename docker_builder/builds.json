@@ -59,6 +59,22 @@
     "run_id": "8489871128"
   },
   {
+    "hash": "003bea7cbab52909576707a779069af35162cf93",
+    "type": "pull_request",
+    "title": "Fix config parsing bugs and split the config tests",
+    "author": "pwojcikdev",
+    "body": "Six independent fixes in the config layer, plus a test split that gives the table\nwrapper its own suite. No API changes. This is the first slice carved out of #5175.\n\n## Fixes\n\n- `process.ipc_address` in `config-rpc.toml` was parsed correctly and then overwritten\n  with the RPC bind address, so the key had no effect.\n- `--generate_config rpc` always used dev network constants, printing the wrong default\n  port under `--network beta` or `live`. The node branch already used the active network.\n- `tomlconfig::get_required_child` returned the *parent* table when the key was missing,\n  so the caller went on reading the parent's keys as if they were the child's. Both child\n  lookups also dereferenced a null table when the key held a plain value.\n- Negative numbers were accepted for unsigned settings: `lexical_cast` wrapped `-1` into\n  18446744073709551615. The stringified value is now also checked for presence before\n  being dereferenced, which a key holding a table or an array would previously have done\n  on an empty option.\n- Type descriptions for error messages were a fixed list of explicit specializations, so\n  `size_t` settings reported \"is not an unknown type\" and addresses had no description at\n  all. They are now derived from the type.\n- Leftovers: a duplicated `enable_sign_hash` getter, an unused qtwallet config path, a\n  redundant table copy in `daemon_config`, `jsonconfig` includes that no config translation\n  unit uses any more, and a typo in an lmdb type annotation.\n\n## Test split\n\n`toml.cpp` mixed tests of the table wrapper with tests of the config classes that sit on\ntop of it. The wrapper tests move to a `tomlconfig` suite in its own file, leaving\n`toml.cpp` to the `toml_config` tests of `daemon_config`, `rpc_config` and `log_config`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5180,
+    "label": "pwojcikdev:config-fixes",
+    "created_at": "2026-09-20T16:03:52Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-20T19:18:55Z",
+    "run_id": null
+  },
+  {
     "hash": "003e553e2574063852b609bb650b79e15da0694b",
     "type": "pull_request",
     "pull_request": 4325,
@@ -43614,6 +43630,22 @@
     "docker_tag": "gr0v1ty/nano-node:d15849eec2a25ceb7c1e1788f09b1d5e3bce9c5c",
     "build_started_at": "2024-04-26T21:01:42Z",
     "run_id": "8854223060"
+  },
+  {
+    "hash": "d166d59a4d583a18b3ee0a8dd0fdcaa72b6121d6",
+    "type": "pull_request",
+    "title": "Stop the vote rebroadcaster before testing queue deduplication",
+    "author": "pwojcikdev",
+    "body": "The `vote_rebroadcaster.duplicate_vote_ignored` test is flaky — it failed the `Linux [lmdb | clang]` job of the latest `develop` run while the other nine jobs passed.\n\n`push` deduplicates only against votes currently waiting in the queue: `next` erases the signature from `queue_hashes` as soon as the processing thread dequeues the vote. Having no peers does not stall that drain the way the test's comment assumed — `network::check_capacity` short-circuits to success when there are no channels, so the processing thread is free to consume the first vote immediately. When that consumption lands between the two pushes, the second push is legitimately accepted again and the test fails.\n\nQueue-scoped deduplication is intentional: repeated rebroadcasts are throttled separately by `vote_rebroadcaster_index` at broadcast time. This change makes the test match that contract by stopping the processing thread first, so the first push stays queued and the duplicate check is deterministic regardless of scheduling. It mirrors #5155, which fixed the same flake in `block_rebroadcaster.duplicate_block`.\n\nVerified by widening the window with a 50 ms sleep between the pushes: 5/5 failures with CI's exact assertion before the change, 5/5 passes after.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5183,
+    "label": "pwojcikdev:claude/vote-rebroadcaster-duplicate-test-09b2e5",
+    "created_at": "2026-09-20T18:39:13Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-20T19:18:55Z",
+    "run_id": null
   },
   {
     "hash": "d17339c7414ab88d905a5c4b26b9996cbeb52daf",
