@@ -2935,6 +2935,19 @@
     "run_id": "8360363439"
   },
   {
+    "hash": "0e741ee22ed84f4ed6574252a9b2f442bc340aaf",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Fix config parsing bugs and split the config tests (#5180)\n\n* Split the config tests by the layer they exercise\n\nThe toml suite mixed tests of the table wrapper with tests of the config\nclasses that sit on top of it. The wrapper tests move to a tomlconfig\nsuite in their own file, leaving toml.cpp to the toml_config tests of\ndaemon_config, rpc_config and log_config.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\n\n* Apply the configured RPC IPC address\n\nThe RPC config deserializer parsed process.ipc_address correctly but then\nstored the RPC bind address in its place, so the key had no effect.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>\n\n* Generate the RPC sample config for the active network\n\n--generate_config rpc always used dev network constants, so the printed\ndefault port ignored --network. The node branch already used the active\nnetwork.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>\n\n* Return an empty table for a missing or non-table child\n\nget_required_child returned the parent table when the key was missing, so\nthe caller went on reading the parent's keys as if they were the child's.\nBoth child lookups also dereferenced a null table when the key held a\nplain value. Report the error and hand back an empty table instead.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>\n\n* Reject negative numbers for unsigned settings\n\nlexical_cast wraps a negative number into an unsigned target, so\n`bandwidth_limit = -1` was accepted as 18446744073709551615 instead of\nbeing reported. Values destined for an unsigned type are now checked for\na minus sign first. The stringified value is also checked for presence\nbefore being dereferenced, which a key holding a table or an array would\npreviously have done on a null optional.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\n\n* Derive config type descriptions from the type\n\nType descriptions were a list of explicit specializations, so any type\nnot on the list fell through to \"an unknown type\". size_t, which several\nnode settings use, is such a type on platforms where it is neither\nuint64_t nor unsigned int, and addresses had no description at all. A\nsingle if constexpr chain derives the description from the type instead,\ncovering every integral width and naming IPv6 addresses.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\n\n* Remove leftovers from the config classes\n\nDrop a duplicated enable_sign_hash getter, an unused qtwallet config path\nand a redundant table copy in daemon_config, jsonconfig includes that no\nconfig translation unit uses any more, and a typo in an lmdb type\nannotation.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>\n\n* Keep the first configuration error\n\nThe child lookups assigned the error object directly, so a structural\nproblem found late in a document replaced the parse failure that came\nbefore it and the loader reported the wrong cause. They now go through\nset_error_once, which follows the policy configbase already documents\nfor conditionally_set_error: the first error is the one that explains\nthe rest.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\n\n* Cover non-scalar values at scalar keys\n\nA table or an array where a setting expects a scalar is rejected with\ninvalid_value and the target keeps the value it had. Nothing exercised\nthat shape before, the tests only ever fed wrong scalars. String targets\nare the case that depends on the presence check in get_config: an empty\nstring converts successfully, so without the check a non-scalar would be\nread as an empty value instead of being reported.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 5 <noreply@anthropic.com>",
+    "pull_request": "5180",
+    "created_at": "2026-09-21T16:17:13Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-21T18:46:23Z",
+    "run_id": null
+  },
+  {
     "hash": "0e80477d2ab079c229c41215d3e8c39e860a0ade",
     "type": "commit",
     "created_at": "2023-03-07T20:25:33Z",
@@ -7745,6 +7758,22 @@
     "docker_tag": "",
     "build_started_at": "2024-11-03T11:33:29Z",
     "run_id": "11650974040"
+  },
+  {
+    "hash": "24940883f93e6ac7de4ff3d7f395c1f4eddac0d8",
+    "type": "pull_request",
+    "title": "CI: Cache Windows builds",
+    "author": "RickiNano",
+    "body": "Enables sccache for Windows CI builds, matching the caching already in place for Linux and macOS. The default MSVC generator ignores compiler launchers, so this switches Windows to Ninja and fixes what that switch broke along the way:\r\n\r\n- RocksDB's generic ASM language was claiming .asm ahead of MASM, breaking Boost.Context — pinned CMAKE_ASM_SOURCE_FILE_EXTENSIONS before RocksDB enables the language.\r\n- RocksDB hardcodes /Zi and /d2Zi+, which defeat compiler caching (shared PDB; sccache rejects /d2Zi+ outright). A new cmake/Modules/RocksDBMsvcCache.cmake, hooked in via CMAKE_PROJECT_rocksdb_INCLUDE, strips those after RocksDB sets its own flags; the rest of the project switches /Zi//ZI → /Z7 when a compiler launcher is active.\r\n- Git's link.exe was shadowing the MSVC linker once bash put /usr/bin first on PATH — removed during prepare.\r\n\r\nTested on my own fork with warmed cache:: Windows lmdb (https://github.com/RickiNano/nano-node/actions/runs/32287902103) and Windows rocksdb (https://github.com/RickiNano/nano-node/actions/runs/32287902103) both went green with a 97%+ cache hit rate, and build times dropped ~30% or approximately 20 minutes.",
+    "draft": false,
+    "pull_request": 5149,
+    "label": "RickiNano:ci-windows-cache",
+    "created_at": "2026-08-20T15:57:40Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-21T18:46:23Z",
+    "run_id": null
   },
   {
     "hash": "24a55d8f6bd73bc41f390cb5fee7fb50cd326d4d",
@@ -19680,6 +19709,22 @@
     "docker_tag": "gr0v1ty/nano-node:5d5fefb602d8bd56bc0cb6b0abf024e33ed0ca84"
   },
   {
+    "hash": "5da4499442dbe88bb0c0f85e92204a7b735d796d",
+    "type": "pull_request",
+    "title": "Deliver forks that arrive while their election is starting",
+    "author": "pwojcikdev",
+    "body": "A fork could be left unused in the fork cache when the election for its root started while the\nfork was being handled. This is the same shape as #5184, on the fork side.\n\n## The race\n\nA processed fork is handled in two steps. An observer registered by `active_elections` offers it\nto the election for its root, which does nothing when there is no such election. An observer\nregistered in the `node` constructor puts it into the fork cache, which a starting election reads\nright after it is inserted. Observers run in registration order and `active_elections` is\nconstructed first, so every fork was offered first and cached last, with the observers of the\npriority scheduler, the bounded backlog, bootstrap and the local block broadcaster in between.\n\nAn election that was inserted and read the cache between those two steps was not there for the\noffer and found the cache empty. Nothing offers the fork again until the block is processed once\nmore.\n\nThe priority scheduler's observer sits inside that window, and it activates the account of every\nblock that was just added to the ledger. A block and its fork that arrive in the same batch\ntherefore start the election right between the offer and the caching of the fork. In a local debug\nbuild the caching trails the offer by about 110 µs and the election's read trails the caching by\nonly about 75 µs, on both backends, and roughly one such fork in a hundred is missed.\n\n## Fix\n\nThe fork is cached first and offered to elections second, in one observer. An election is inserted\nbefore it reads the cache, and both the insertion and the offer's lookup happen under the\nelections mutex, so a fork that the offer does not deliver is found by that read.\n\n## Tests\n\n`fork_cached_before_publish` holds an election inside its `election_started` notification. That\nnotification runs under the elections mutex, so the offer cannot proceed, and the test expects the\nfork to reach the cache regardless. It involves no timing and fails without the fix.\n\n`fork_during_election_start` processes 64 blocks together with their forks in one batch and\nexpects every election to hold both blocks. Without the fix at least 30 of the 64 forks were\nmissed in every run, on both backends.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5185,
+    "label": "pwojcikdev:active-elections-lost-fork",
+    "created_at": "2026-09-21T16:31:38Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-21T18:46:23Z",
+    "run_id": null
+  },
+  {
     "hash": "5da7d0f1165447bd83ed96d656cc7d839e502d6d",
     "type": "pull_request",
     "pull_request": 4185,
@@ -22999,6 +23044,19 @@
     "built_at": "2023-03-29T02:58:06Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:6c1bc2e1a9598690634edf3d7c21e719822440de"
+  },
+  {
+    "hash": "6c44fc993ae6bbbf4c26ce19cf07766f4a306486",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Read command line config overrides in one place (#5181)\n\nNine call sites re-implemented the lookup of the --config option that\nupdate_flags already performs. A variables_map overload of\nconfig_overrides replaces them. The lmdb to rocksdb migration now honours\n--config like every other command, the stale TODO on initialize goes\naway since inactive_node already receives the overrides through the\nflags, and the wallet drops an unused copy.\n\nCo-authored-by: Claude Fable 5.1 <noreply@anthropic.com>",
+    "pull_request": "5181",
+    "created_at": "2026-09-21T16:20:08Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-21T18:46:23Z",
+    "run_id": null
   },
   {
     "hash": "6c69b4ad4a961a7c4ee24b9b16ac83e9ad03ffb8",
