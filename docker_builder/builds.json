@@ -24726,6 +24726,22 @@
     "run_id": "8246243895"
   },
   {
+    "hash": "7521a3641056affe90596e76d3b6805e25f72a1d",
+    "type": "pull_request",
+    "title": "Fix config parsing bugs and split the config tests",
+    "author": "pwojcikdev",
+    "body": "Six independent fixes in the config layer, plus a test split that gives the table\nwrapper its own suite. No API changes. This is the first slice carved out of #5175.\n\n## Fixes\n\n- `process.ipc_address` in `config-rpc.toml` was parsed correctly and then overwritten\n  with the RPC bind address, so the key had no effect.\n- `--generate_config rpc` always used dev network constants, printing the wrong default\n  port under `--network beta` or `live`. The node branch already used the active network.\n- `tomlconfig::get_required_child` returned the *parent* table when the key was missing,\n  so the caller went on reading the parent's keys as if they were the child's. Both child\n  lookups also dereferenced a null table when the key held a plain value.\n- Negative numbers were accepted for unsigned settings: `lexical_cast` wrapped `-1` into\n  18446744073709551615. The stringified value is now also checked for presence before\n  being dereferenced, which a key holding a table or an array would previously have done\n  on an empty option.\n- Type descriptions for error messages were a fixed list of explicit specializations, so\n  `size_t` settings reported \"is not an unknown type\" and addresses had no description at\n  all. They are now derived from the type.\n- Leftovers: a duplicated `enable_sign_hash` getter, an unused qtwallet config path, a\n  redundant table copy in `daemon_config`, `jsonconfig` includes that no config translation\n  unit uses any more, and a typo in an lmdb type annotation.\n\n## Test split\n\n`toml.cpp` mixed tests of the table wrapper with tests of the config classes that sit on\ntop of it. The wrapper tests move to a `tomlconfig` suite in its own file, leaving\n`toml.cpp` to the `toml_config` tests of `daemon_config`, `rpc_config` and `log_config`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5180,
+    "label": "pwojcikdev:config-fixes",
+    "created_at": "2026-09-20T16:03:52Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-21T13:19:30Z",
+    "run_id": null
+  },
+  {
     "hash": "752317263499aca6ec54119c308267df33173f73",
     "type": "commit",
     "created_at": "2024-03-14T15:00:18Z",
