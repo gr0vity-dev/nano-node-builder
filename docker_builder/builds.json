@@ -7016,11 +7016,11 @@
     "title": "Render config templates with a tree walk (#5186)\n\n--generate_config post-processed the library writer's output line by\nline and --update_config aligned two such outputs line by line, which\nasserted and produced garbage as soon as the two documents differed in\nshape, for example when the file set peering_port and the defaults did\nnot. A small renderer in config_template now walks the table, writes\nheaders and doc comments itself and comments a value out on request;\nthe update variant compares each value with its default. The output of\n--generate_config is unchanged byte for byte. The diff and merge\nhelpers leave tomlconfig along with the erase_default_values tooling\nthat nothing used.\n\nCo-authored-by: Claude Fable 5.1 <noreply@anthropic.com>",
     "pull_request": "5186",
     "created_at": "2026-09-21T22:02:54Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-21T22:48:43Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:206759db0f6ea512eab73e6e71964366f89fb2ed",
     "build_started_at": "2026-09-21T22:17:06Z",
-    "run_id": null
+    "run_id": "35661845968"
   },
   {
     "hash": "20718b0eb994a79214de21d172a9fb46163269d3",
