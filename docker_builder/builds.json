@@ -8082,6 +8082,22 @@
     "run_id": "15926275501"
   },
   {
+    "hash": "264a992d44d5a38698484bd8a9f30473d5c6bf17",
+    "type": "pull_request",
+    "title": "Migrate GH Actions to Node 24",
+    "author": "RickiNano",
+    "body": "GitHub removes Node 20 from the Actions runners on **23 September 2026**\r\n([Deprecation of Node 20 on GitHub Actions runners](https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/)).\r\nAfter that, node20 actions fail to start. Every job here begins with `checkout`, so all CI on `develop` breaks. The `ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION` opt-out expires on the same date.\r\n\r\nPR bumps every action to a node 24 release:\r\n\r\n| Action | Before | Runtime | After | Runtime |\r\n| --- | --- | --- | --- | --- |\r\n| `actions/checkout` | v4 | node20 | v5 | node24 |\r\n| `actions/upload-artifact` | v4 (v3 in flamegraphs) | node20 / node16 | v6 | node24 |\r\n| `actions/download-artifact` | v4 | node20 | v7 | node24 |\r\n| `actions/setup-python` | v4.3.0 | node16 | v6.3.0 | node24 |\r\n| `mozilla-actions/sccache-action` | v0.0.9 | node20 | v0.0.11 | node24 |\r\n\r\nThe two node16 pins weren't failing today — the runner has been silently force-upgrading node16 actions to node20. That crutch goes away with Node 20 itself.\r\n`upload-artifact@v6` and `download-artifact@v7` are the matched pair (both shipped 2025-12-12 on `@actions/artifact` v4), not a typo.",
+    "draft": false,
+    "pull_request": 5187,
+    "label": "RickiNano:node-v24",
+    "created_at": "2026-09-22T09:06:09Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-22T10:14:04Z",
+    "run_id": null
+  },
+  {
     "hash": "264ce72637f508a42997bbfaa306fff9afe8ec6a",
     "type": "pull_request",
     "title": "Enum utils",
