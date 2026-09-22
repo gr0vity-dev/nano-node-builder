@@ -8517,6 +8517,22 @@
     "run_id": "8689302589"
   },
   {
+    "hash": "28a19cede95771e796ab12005f9378ae7d77700e",
+    "type": "pull_request",
+    "title": "Fix race in send_node_id_handshake_tcp",
+    "author": "pwojcikdev",
+    "body": "`network.send_node_id_handshake_tcp` asserted that neither node had a channel immediately after `start_tcp`:\n\n```cpp\nnode0->network.tcp_channels.start_tcp (node1->network.endpoint ());\nASSERT_EQ (0, node0->network.size ());\nASSERT_EQ (0, node1->network.size ());\n```\n\n`start_tcp` is `tcp_listener::connect`, which spawns `connect_impl` on the listener strand and returns. The connect, the handshake and `tcp_channels::create` — the call that makes `network.size ()` report 1 — all run on io threads, and nothing synchronises the test thread with them. The assertion holds only if the test thread gets there first, which on a loaded runner it need not.\n\nCI hit it on macOS [lmdb]:\n\n```\nnano/core_test/network.cpp:109: Failure\nExpected equality of these values:\n  0\n  node0->network.size ()\n    Which is: 1\n```\n\n## Change\n\nAssert the baseline before the connection is started. `network.multi_keepalive` directly below already has it in that order, and the same move fixed a sibling race in this file in #5137.\n\n`node0`'s baseline is already asserted at the top of the test, before `node1` exists, so only `node1`'s has to move. The unused `std::weak_ptr<nano::node> node_w (node0);` goes with it; it has been dead since the `start_tcp` callback was removed in 2021.\n\n## Tests\n\n`network.send_node_id_handshake_tcp` and the full `network.*` suite pass on both LMDB and RocksDB.\n\nThe original failure did not reproduce locally: 60 repeats of the pre-fix test with every core loaded all passed. This machine is far less contended than the macOS runner, so the diagnosis rests on the code path rather than on a local reproduction.\n\nThe rest of the suites were checked for the same shape — an assertion about state an asynchronous call changes, placed after that call without a retrying wait. Every other connection-starting site (`start_tcp`, `merge_peer`, `establish_tcp`) either puts the baseline before the call or waits with `ASSERT_TIMELY`. `active_elections.cached_vote_election_start` reads the same way at `ASSERT_FALSE (node.block_confirmed_or_being_confirmed (send3->hash ()))` after `process_active (send3)`, but nothing can confirm `send3` at that point — the vote cache holds votes only for `open1`, `open2` and `send4` — so that one cannot flip and is left alone.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5191,
+    "label": "pwojcikdev:send-node-id-handshake-race",
+    "created_at": "2026-09-22T17:21:42Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-22T18:25:10Z",
+    "run_id": null
+  },
+  {
     "hash": "28af014a737d77111cab868e16904a4b5ebfce1c",
     "type": "pull_request",
     "title": "Remove temporary channels",
@@ -25210,6 +25226,19 @@
     "run_id": "11668642102"
   },
   {
+    "hash": "769456146d44a6c4cd827c99a5201475601df2ba",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Observe a voting representative once per vote (#5189)\n\n* Refresh an observed representative in place\n\nObserving a known representative erased and reinserted its entry, which frees and allocates a\nnode for every counted vote. Updating the time of the existing entry only moves it within the\ntime index.\n\n* Observe a voting representative once per vote\n\nEvery election that counted a hash of a vote observed its representative, which takes the online\nweight lock once per hash although only the first call can change anything. The vote router now\nannounces a vote that at least one election holds before it reaches any of them, and the node\nobserves the representative there: once per vote and still ahead of every quorum check.\n\nThe observer applies the principal weight threshold the elections apply, so the same\nrepresentatives count towards the online weight. A representative is now also observed when its\nvote reaches an election that only ignores it because of the vote cooldown.",
+    "pull_request": "5189",
+    "created_at": "2026-09-22T16:56:37Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-22T18:25:10Z",
+    "run_id": null
+  },
+  {
     "hash": "76a5211adfa0d0400441de4a7d48ffc204b9ff1c",
     "type": "pull_request",
     "title": "Use coroutines in tcp listener",
@@ -34612,6 +34641,19 @@
     "run_id": "23346526375"
   },
   {
+    "hash": "a26c8e09d9daac18a4ec0102184316190c298e1a",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Notify observers without copying them (#5188)\n\nEvery notification copied the whole list of observers under a lock, which costs an allocation and\na copy of each `std::function`. The list is now immutable and replaced as a whole when an observer\nis added, so a notification only takes a reference to it through `boost::atomic_shared_ptr`.\n\nOverlapping notifications therefore share one callable instead of each calling its own copy, which\nthe class states as part of the observer contract.\n\nThe remaining mutex only serializes the rare list updates, so it is no longer registered with the\ntimed lock tracking.",
+    "pull_request": "5188",
+    "created_at": "2026-09-22T17:05:33Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-22T18:25:10Z",
+    "run_id": null
+  },
+  {
     "hash": "a288a3a0ef35060e2b560263986c213331c76cdc",
     "type": "pull_request",
     "title": "Handle `gap_epoch_open_pending` block status when bootstrapping",
@@ -36503,6 +36545,19 @@
     "built_at": "2023-09-15T16:28:48Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:ac56df90d2d8e9614825dc567b054d145e6ce6f2"
+  },
+  {
+    "hash": "ac5930147fce745ec4655fb03476758d8d8cac53",
+    "type": "commit",
+    "author": "RickiNano",
+    "title": "Migrate GH Actions to Node 24 (#5187)",
+    "pull_request": "5187",
+    "created_at": "2026-09-22T11:16:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-22T18:25:10Z",
+    "run_id": null
   },
   {
     "hash": "ac611e3b3ec97131a79d3a17be6160b7c91a1983",
@@ -46710,6 +46765,22 @@
     "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2025-12-31T15:35:39Z",
+    "run_id": null
+  },
+  {
+    "hash": "dea82f56a23babd5a3a87aeb3df4e7d069ec8252",
+    "type": "pull_request",
+    "title": "Load every config file through one loader",
+    "author": "pwojcikdev",
+    "body": "Node, RPC, access and wallet configs each carried their own copy of the file-plus-overrides loading logic. They now share one loader: `read_config_file` locates the file, applies the overrides and deserializes on top of the config passed in, and `load_config_file` wraps it for callers that want a throwing interface. The per-file readers become thin wrappers.\n\nThree behaviour fixes fall out of the consolidation:\n\n- the access config ignored command line overrides entirely, and now honours them like every other file,\n- the wallet's reader wrote `config-qtwallet.toml` before reading it, so reading a config created it as a side effect; no reader creates a file any more,\n- writing a config truncates instead of overwriting in place, so a shorter document no longer leaves a tail of the previous one behind.\n\nOne visible change: whether a config file was found is now reported on stderr for every file. Previously only `config-log.toml` did this, because it was the only one routed through the shared helper.\n\nFourth slice carved out of #5175, following #5180, #5181 and #5186.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5190,
+    "label": "pwojcikdev:config-loader",
+    "created_at": "2026-09-22T15:41:09Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-22T18:25:10Z",
     "run_id": null
   },
   {
