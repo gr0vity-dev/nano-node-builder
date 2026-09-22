@@ -11430,6 +11430,22 @@
     "run_id": "9215373921"
   },
   {
+    "hash": "3621a9cb81d065fa10a5a78e0f66480561cba7dd",
+    "type": "pull_request",
+    "title": "Deliver forks that arrive while their election is starting",
+    "author": "pwojcikdev",
+    "body": "A fork could be left unused in the fork cache when the election for its root started while the\nfork was being handled. This is the same shape as #5184, on the fork side.\n\n## The race\n\nA processed fork is handled in two steps. An observer registered by `active_elections` offers it\nto the election for its root, which does nothing when there is no such election. An observer\nregistered in the `node` constructor puts it into the fork cache, which a starting election reads\nright after it is inserted. Observers run in registration order and `active_elections` is\nconstructed first, so every fork was offered first and cached last, with the observers of the\npriority scheduler, the bounded backlog, bootstrap and the local block broadcaster in between.\n\nAn election that was inserted and read the cache between those two steps was not there for the\noffer and found the cache empty. Nothing offers the fork again until the block is processed once\nmore.\n\nThe priority scheduler's observer sits inside that window, and it activates the account of every\nblock that was just added to the ledger. A block and its fork that arrive in the same batch\ntherefore start the election right between the offer and the caching of the fork. In a local debug\nbuild the caching trails the offer by about 110 µs and the election's read trails the caching by\nonly about 75 µs, on both backends, and roughly one such fork in a hundred is missed.\n\n## Fix\n\nThe fork is cached first and offered to elections second, in one observer. An election is inserted\nbefore it reads the cache, and both the insertion and the offer's lookup happen under the\nelections mutex, so a fork that the offer does not deliver is found by that read.\n\n## Tests\n\n`fork_cached_before_publish` holds an election inside its `election_started` notification. That\nnotification runs under the elections mutex, so the offer cannot proceed, and the test expects the\nfork to reach the cache regardless. It involves no timing and fails without the fix.\n\n`fork_during_election_start` processes 64 blocks together with their forks in one batch and\nexpects every election to hold both blocks. Without the fix at least 30 of the 64 forks were\nmissed in every run, on both backends.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5185,
+    "label": "pwojcikdev:active-elections-lost-fork",
+    "created_at": "2026-09-21T16:31:38Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-22T23:45:45Z",
+    "run_id": null
+  },
+  {
     "hash": "3621d2df32664df0f2842abc81416dc4ccadf152",
     "type": "pull_request",
     "pull_request": 3727,
@@ -34836,6 +34852,22 @@
     "docker_tag": "gr0v1ty/nano-node:a32bc3057182675bd5ce29d3601e1adfa768a776",
     "build_started_at": "2026-08-07T03:26:48Z",
     "run_id": "31153407332"
+  },
+  {
+    "hash": "a33795fd51b083371c77b11981ffac631db035b8",
+    "type": "pull_request",
+    "title": "Deliver votes that arrive while their election is starting",
+    "author": "pwojcikdev",
+    "body": "A vote could be left unused in the vote cache when an election for one of its hashes started\nwhile the vote was being routed. This is the cause of the intermittent\n`active_elections.fork_replacement_tally` failure on the Linux RocksDB jobs\n(`cemented_count` 40 instead of 41), seen on #5175 and #5181.\n\n## The race\n\n`vote_router::vote` looks up the elections for all hashes of a vote, votes on the ones it\nfound, and only then caches the hashes that had no election. A starting election connects its\nroute and then reads the vote cache. If it does both between the router's lookup and the\nrouter's cache insert, it finds the cache empty, and the vote is cached afterwards with nothing\nleft to read it. The hinted scheduler does see the cached hash, but starting an election that\nalready exists is a no-op.\n\nThe window is widest for a vote that covers a block and its dependent, which is what the test\nsends: confirming the send gets it cemented, cementing activates the destination account, and\nthe open block's election starts while the same vote is still on its way into the cache.\nLocally the cache read trails the insert by only 150 to 700 µs on both backends, so a short\nstall of the voting thread reverses them. The race itself does not depend on the backend. On\nthe CI runners RocksDB presumably reaches the election start sooner, as its commits are not\nsynced.\n\n## Fix\n\nAfter caching, the router looks the unmatched hashes up once more and votes on any election\nthat connected in the meantime. An election connects before it reads the cache, so a vote that\nmisses the first lookup is seen by the second lookup or by the cache read. The documentation\nof `connect` states that ordering.\n\nThe second lookup upgrades the reported code only when the election counts the vote. If the\nelection already got the vote from the cache, the repeated delivery is not a replay by the\nrepresentative, and the hash stays `indeterminate`.\n\n## Tests\n\nThree `vote_router` tests. An election built by hand takes a `vote_action` callback, which\nruns on the voting thread inside `election::vote`, exactly in the router's window. The tests\nstart the second election from there, so they are single-threaded and involve no timing, and\n`vote_during_election_start` fails without the fix.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5184,
+    "label": "pwojcikdev:vote-router-lost-vote",
+    "created_at": "2026-09-20T22:58:23Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-22T23:45:45Z",
+    "run_id": null
   },
   {
     "hash": "a34640cdc35e9427e624fe105f2ea0da39404b39",
