@@ -4406,6 +4406,19 @@
     "run_id": "8360363439"
   },
   {
+    "hash": "1531d49962bc2432240adec2f0a8a2655cc91ca4",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Deliver votes that arrive while their election is starting (#5184)\n\n* Deliver votes that arrive while their election is starting\n\nA vote for a hash without an election is cached so that an election starting later can read it.\nAn election that started between the route lookup and the cache insert could read the cache\nfirst, which left the vote unused for as long as that election lived. The router now looks the\nunmatched hashes up once more after caching them.\n\nThis made `active_elections.fork_replacement_tally` fail intermittently, as it sends each final\nvote only once.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>\n\n* Observe representatives before retrying vote routing\n\n---------\n\nCo-authored-by: Claude Fable 5.1 <noreply@anthropic.com>",
+    "pull_request": "5184",
+    "created_at": "2026-09-23T13:17:27Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-23T17:06:18Z",
+    "run_id": null
+  },
+  {
     "hash": "155360413a8ef2a738b7f4def973a56b00974648",
     "type": "pull_request",
     "title": "Disable core dumps for expected death tests in CI",
@@ -38051,6 +38064,22 @@
     "docker_tag": "gr0v1ty/nano-node:b41943214be091f32bc35b484259ff6bb8a5fc64"
   },
   {
+    "hash": "b41a29872bf7a80e2df9670fcfd0013c2e4a28f5",
+    "type": "pull_request",
+    "title": "Deliver forks that arrive while their election is starting",
+    "author": "pwojcikdev",
+    "body": "A fork could be left unused in the fork cache when the election for its root started while the\nfork was being handled. This is the same shape as #5184, on the fork side.\n\n## The race\n\nA processed fork is handled in two steps. An observer registered by `active_elections` offers it\nto the election for its root, which does nothing when there is no such election. An observer\nregistered in the `node` constructor puts it into the fork cache, which a starting election reads\nright after it is inserted. Observers run in registration order and `active_elections` is\nconstructed first, so every fork was offered first and cached last, with the observers of the\npriority scheduler, the bounded backlog, bootstrap and the local block broadcaster in between.\n\nAn election that was inserted and read the cache between those two steps was not there for the\noffer and found the cache empty. Nothing offers the fork again until the block is processed once\nmore.\n\nThe priority scheduler's observer sits inside that window, and it activates the account of every\nblock that was just added to the ledger. A block and its fork that arrive in the same batch\ntherefore start the election right between the offer and the caching of the fork. In a local debug\nbuild the caching trails the offer by about 110 µs and the election's read trails the caching by\nonly about 75 µs, on both backends, and roughly one such fork in a hundred is missed.\n\n## Fix\n\nThe fork is cached first and offered to elections second, in one observer. An election is inserted\nbefore it reads the cache, and both the insertion and the offer's lookup happen under the\nelections mutex, so a fork that the offer does not deliver is found by that read.\n\n## Tests\n\n`fork_cached_before_publish` holds an election inside its `election_started` notification. That\nnotification runs under the elections mutex, so the offer cannot proceed, and the test expects the\nfork to reach the cache regardless. It involves no timing and fails without the fix.\n\n`fork_during_election_start` processes 64 blocks together with their forks in one batch and\nexpects every election to hold both blocks. Without the fix at least 30 of the 64 forks were\nmissed in every run, on both backends.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5185,
+    "label": "pwojcikdev:active-elections-lost-fork",
+    "created_at": "2026-09-21T16:31:38Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-23T17:06:18Z",
+    "run_id": null
+  },
+  {
     "hash": "b426defe95f9817bdcb9ab314c588d957ffe44bc",
     "type": "pull_request",
     "pull_request": 4276,
@@ -38351,6 +38380,22 @@
     "docker_tag": "gr0v1ty/nano-node:b53b72dcc48c325e50305249d3e64e63dacb5aef",
     "build_started_at": "2026-02-12T22:39:32Z",
     "run_id": "21967034508"
+  },
+  {
+    "hash": "b53e1f7d398779c0ebbb3dc853bfdce4777fecbf",
+    "type": "pull_request",
+    "title": "Build and test the Qt wallet in CI",
+    "author": "pwojcikdev",
+    "body": "The Qt wallet executable was neither compiled nor run on pull requests, so a change that made it refuse to start on a fresh data directory passed CI in an earlier revision of #5190.\nThis makes CI build the wallet and start it.\n\n- The CI test builds now build every target instead of `all_tests`, so the wallet, the benchmarks and the IPC test client are compiled on every pull request.\n- A new system test, `systest/wallet_startup.sh`, starts the wallet without a display four times on one data directory: fresh, restarted, after its config was deleted and after its config was emptied. Each start must get as far as starting the node and, according to the wallet's own log, open the same wallet and account every time, and the config must name what it opened.\n- The wallet logs which wallet and account it opened, the wallet it created, and a warning whenever it falls back to a different wallet or account than the one configured. Previously, losing the config with several wallets in the store made the wallet silently open another one.\n- `flush_level` is now a `config-log.toml` setting next to `default_level`. The log file is only flushed straight away for entries at that level, error by default.\n\nThe test fails on the wallet from #5190 before its fix, with `the wallet refused to start (fresh install)`, and each of its checks was confirmed to fail against a wallet broken in the matching way.\n\nIt runs on Linux and macOS. On Windows the wallet is built but not started: its Qt libraries are only copied next to it at install time, and the test job has no Qt runtime on its path.\n\nDepends on #5190 and is based on it, so its commits show here until it is merged.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5193,
+    "label": "pwojcikdev:wallet-ci",
+    "created_at": "2026-09-23T16:06:27Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-23T17:06:18Z",
+    "run_id": null
   },
   {
     "hash": "b54aef1bf1b539aa259d487945fc7e4aa4ae56d8",
@@ -49939,6 +49984,22 @@
     "docker_tag": "gr0v1ty/nano-node:ed3856717aed9d4949dc83eed30187563f6b6b44",
     "build_started_at": "2024-04-08T18:28:25Z",
     "run_id": "8605042820"
+  },
+  {
+    "hash": "ed389d74564ae18477a0ea31d4e72f6728ab9418",
+    "type": "pull_request",
+    "title": "Load every config file through one loader",
+    "author": "pwojcikdev",
+    "body": "Node, RPC, access and wallet configs each carried their own copy of the file-plus-overrides loading logic, next to a separate throwing helper for the log config and the benchmarks.\nThey now share one loader: `read_config_file` locates the file, applies the overrides and deserializes on top of the config it is given, and `load_config_file` keeps the throwing interface the log config and the benchmarks use.\nThe per-file readers become thin wrappers.\n\nWhat changes for operators:\n\n- Every config file now reports on stderr whether it was found, as `config-log.toml` already did.\n- Config errors name the file they are about, e.g. `config-node.toml: Failed to parse value type at line 2` instead of the bare message, so it is clear which file is broken.\n- No reader creates a config file any more; the wallet's reader used to write a default `config-qtwallet.toml` before reading it.\n- Writing a config replaces the whole file, so a shorter document no longer leaves the tail of the previous one behind.\n\nThe Qt wallet config needed its own fix, because it treated its `wallet` and `account` keys as required and so could not be read from the empty document a missing file becomes.\nThe two keys now come together: a document with neither keeps the generated defaults, while one with only one of them, or an invalid value, is still reported.\nTo make this testable, the wallet config reader and writer move from the wallet executable into the library, and resolving which wallet and account the wallet opens moves out of `run_wallet` into `nano::wallet::open_configured_wallet`.\nNew tests cover reading and writing the wallet config, and the startup sequence against a test node: a fresh install, a restart, a lost config and a locked wallet.\n\nFourth slice carved out of #5175, following #5180, #5181 and #5186.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5190,
+    "label": "pwojcikdev:config-loader",
+    "created_at": "2026-09-22T15:41:09Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-23T17:06:18Z",
+    "run_id": null
   },
   {
     "hash": "ed4c175f949b854f5e8858fb71f98ca58694ae7e",
