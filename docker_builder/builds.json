@@ -25261,11 +25261,11 @@
     "title": "Observe a voting representative once per vote (#5189)\n\n* Refresh an observed representative in place\n\nObserving a known representative erased and reinserted its entry, which frees and allocates a\nnode for every counted vote. Updating the time of the existing entry only moves it within the\ntime index.\n\n* Observe a voting representative once per vote\n\nEvery election that counted a hash of a vote observed its representative, which takes the online\nweight lock once per hash although only the first call can change anything. The vote router now\nannounces a vote that at least one election holds before it reaches any of them, and the node\nobserves the representative there: once per vote and still ahead of every quorum check.\n\nThe observer applies the principal weight threshold the elections apply, so the same\nrepresentatives count towards the online weight. A representative is now also observed when its\nvote reaches an election that only ignores it because of the vote cooldown.",
     "pull_request": "5189",
     "created_at": "2026-09-22T16:56:37Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-23T07:19:29Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:769456146d44a6c4cd827c99a5201475601df2ba",
     "build_started_at": "2026-09-22T18:25:10Z",
-    "run_id": null
+    "run_id": "35828281211"
   },
   {
     "hash": "76a5211adfa0d0400441de4a7d48ffc204b9ff1c",
