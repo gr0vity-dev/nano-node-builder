@@ -4412,11 +4412,11 @@
     "title": "Deliver votes that arrive while their election is starting (#5184)\n\n* Deliver votes that arrive while their election is starting\n\nA vote for a hash without an election is cached so that an election starting later can read it.\nAn election that started between the route lookup and the cache insert could read the cache\nfirst, which left the vote unused for as long as that election lived. The router now looks the\nunmatched hashes up once more after caching them.\n\nThis made `active_elections.fork_replacement_tally` fail intermittently, as it sends each final\nvote only once.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>\n\n* Observe representatives before retrying vote routing\n\n---------\n\nCo-authored-by: Claude Fable 5.1 <noreply@anthropic.com>",
     "pull_request": "5184",
     "created_at": "2026-09-23T13:17:27Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-09-23T17:33:45Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:1531d49962bc2432240adec2f0a8a2655cc91ca4",
     "build_started_at": "2026-09-23T17:06:18Z",
-    "run_id": null
+    "run_id": "35893315361"
   },
   {
     "hash": "155360413a8ef2a738b7f4def973a56b00974648",
