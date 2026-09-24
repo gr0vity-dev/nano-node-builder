@@ -619,6 +619,22 @@
     "run_id": "6747114077"
   },
   {
+    "hash": "0386f8b9935267d7870f836309a32f2402106370",
+    "type": "pull_request",
+    "title": "Load every config file through one loader",
+    "author": "pwojcikdev",
+    "body": "Node, RPC, access and wallet configs each carried their own copy of the file-plus-overrides loading logic, next to a separate throwing helper for the log config and the benchmarks.\nThey now share one loader: `read_config_file` locates the file, applies the overrides and deserializes on top of the config it is given, and `load_config_file` keeps the throwing interface the log config and the benchmarks use.\nThe per-file readers become thin wrappers.\n\nWhat changes for operators:\n\n- Every config file now reports on stderr whether it was found, as `config-log.toml` already did.\n- Config errors name the file they are about, e.g. `config-node.toml: Failed to parse value type at line 2` instead of the bare message, so it is clear which file is broken.\n- No reader creates a config file any more; the wallet's reader used to write a default `config-qtwallet.toml` before reading it.\n- Writing a config replaces the whole file, so a shorter document no longer leaves the tail of the previous one behind.\n\nThe Qt wallet config needed its own fix, because it treated its `wallet` and `account` keys as required and so could not be read from the empty document a missing file becomes.\nThe two keys now come together: a document with neither keeps the generated defaults, while one with only one of them, or an invalid value, is still reported.\nTo make this testable, the wallet config reader and writer move from the wallet executable into the library, and resolving which wallet and account the wallet opens moves out of `run_wallet` into `nano::wallet::open_configured_wallet`.\nNew tests cover reading and writing the wallet config, and the startup sequence against a test node: a fresh install, a restart, a lost config and a locked wallet.\n\nFourth slice carved out of #5175, following #5180, #5181 and #5186.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5190,
+    "label": "pwojcikdev:config-loader",
+    "created_at": "2026-09-22T15:41:09Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-24T01:05:54Z",
+    "run_id": null
+  },
+  {
     "hash": "039903c82d4288383717fd5f74f3bd46efd75c98",
     "type": "commit",
     "author": "pwojcikdev",
@@ -19568,6 +19584,22 @@
     "docker_tag": "gr0v1ty/nano-node:5c89b2aa9bcb6c062d48d6b4663359d998b2d059",
     "build_started_at": "2023-11-01T11:39:46Z",
     "run_id": "6719186611"
+  },
+  {
+    "hash": "5c93320421b623531204db201aa2dd3f3deeec5a",
+    "type": "pull_request",
+    "title": "Build and test the Qt wallet in CI",
+    "author": "pwojcikdev",
+    "body": "The Qt wallet executable was neither compiled nor run on pull requests, so a change that made it refuse to start on a fresh data directory passed CI in an earlier revision of #5190.\nThis makes CI build the wallet and start it.\n\n- The CI test builds now build every target instead of `all_tests`, so the wallet, the benchmarks and the IPC test client are compiled on every pull request.\n- A new system test, `systest/wallet_startup.sh`, starts the wallet without a display four times on one data directory: fresh, restarted, after its config was deleted and after its config was emptied. Each start must get as far as starting the node and, according to the wallet's own log, open the same wallet and account every time, and the config must name what it opened.\n- The wallet logs which wallet and account it opened, the wallet it created, and a warning whenever it falls back to a different wallet or account than the one configured. Previously, losing the config with several wallets in the store made the wallet silently open another one.\n- `flush_level` is now a `config-log.toml` setting next to `default_level`. The log file is only flushed straight away for entries at that level, error by default.\n\nThe test fails on the wallet from #5190 before its fix, with `the wallet refused to start (fresh install)`, and each of its checks was confirmed to fail against a wallet broken in the matching way.\n\nIt runs on Linux and macOS. On Windows the wallet is built but not started: its Qt libraries are only copied next to it at install time, and the test job has no Qt runtime on its path.\n\nDepends on #5190 and is based on it, so its commits show here until it is merged.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5193,
+    "label": "pwojcikdev:wallet-ci",
+    "created_at": "2026-09-23T16:06:27Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-24T01:05:54Z",
+    "run_id": null
   },
   {
     "hash": "5ca17def1b91752f7bf810b27154352ff01f2a8b",
