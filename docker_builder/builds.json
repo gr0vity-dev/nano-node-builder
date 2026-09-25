@@ -31055,6 +31055,19 @@
     "run_id": "8619600783"
   },
   {
+    "hash": "9235bda03f04b0d9d37ec1477b7176c25ddb80ce",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Deliver forks that arrive while their election is starting (#5185)\n\n* Deliver forks that arrive while their election is starting\n\nA fork is offered to the election for its root and cached so that an\nelection starting later can read it. Those were two `blocks_processed`\nobservers, and the one caching the fork ran last. An election that\nstarted between them was not there for the offer and read the cache\nbefore the fork got into it, so it did not learn about the fork until\nthe block was processed again. The fork is now cached first, in the same\nobserver that offers it to elections.\n\n* Encapsulate processed fork handling",
+    "pull_request": "5185",
+    "created_at": "2026-09-25T00:58:46Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-25T05:29:28Z",
+    "run_id": null
+  },
+  {
     "hash": "92442c97e19dd8bf7827cc2908f81f90249ba102",
     "type": "pull_request",
     "title": "Update RocksDb to V8.9.2",
