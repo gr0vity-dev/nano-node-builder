@@ -2003,6 +2003,22 @@
     "run_id": "17517513574"
   },
   {
+    "hash": "0a4d61792f035b5ae558282c6a8442c765dd3764",
+    "type": "pull_request",
+    "title": "Build and test the Qt wallet in CI",
+    "author": "pwojcikdev",
+    "body": "The Qt wallet executable was neither compiled nor run on pull requests, so a change that made it refuse to start on a fresh data directory passed CI in an earlier revision of #5190.\nThis makes CI build the wallet and start it.\n\n- The CI test builds now build every target instead of `all_tests`, so the wallet, the benchmarks and the IPC test client are compiled on every pull request.\n- A new system test, `systest/wallet_startup.sh`, starts the wallet without a display four times on one data directory: fresh, restarted, after its config was deleted and after its config was emptied. Each start must get as far as starting the node and, according to the wallet's own log, open the same wallet and account every time, and the config must name what it opened.\n- The wallet logs which wallet and account it opened, the wallet it created, and a warning whenever it falls back to a different wallet or account than the one configured. Previously, losing the config with several wallets in the store made the wallet silently open another one.\n- `flush_level` is now a `config-log.toml` setting next to `default_level`. The log file is only flushed straight away for entries at that level, error by default.\n\nThe test fails on the wallet from #5190 before its fix, with `the wallet refused to start (fresh install)`, and each of its checks was confirmed to fail against a wallet broken in the matching way.\n\nIt runs on Linux and macOS. On Windows the wallet is built but not started: its Qt libraries are only copied next to it at install time, and the test job has no Qt runtime on its path.\n\nDepends on #5190 and is based on it, so its commits show here until it is merged.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5193,
+    "label": "pwojcikdev:wallet-ci",
+    "created_at": "2026-09-23T16:06:27Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-26T17:52:56Z",
+    "run_id": null
+  },
+  {
     "hash": "0a5d18158248a3ec698b0e5915f2de4577b7f3ba",
     "type": "commit",
     "author": "pwojcikdev",
