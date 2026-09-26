@@ -25271,6 +25271,19 @@
     "run_id": "16604304474"
   },
   {
+    "hash": "764a595bb9859d1042e887268963e08f72798404",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Build and test the Qt wallet in CI (#5193)\n\n* Make the log flush level configurable\n\nThe log file is written through a buffer that is only flushed for\nentries at the flush level, error by default, or when it fills up, so\ninfo entries could take a minute to reach the file and were lost when\nthe process was killed. The level could only be set in code. It is now\nthe flush_level key of config-log.toml, next to default_level.\n\n* Build every target in the CI test builds\n\nThe test builds only built the all_tests target, which covers the test\nsuites and the executables they run. The Qt wallet, the benchmarks and\nthe IPC test client were therefore not compiled on pull requests at all,\nand a change that broke one of them went unnoticed until a release\nbuild. The test builds now build every target.\n\n* Log which wallet and account the Qt wallet opens\n\nOn startup the Qt wallet opens the wallet and account its config names,\nbut open_configured_wallet falls back to another wallet or account, or\ncreates one, when the named one is missing. None of this was logged, so\na wallet that silently opened a different wallet than configured, which\nhappens whenever the config is lost and the store holds more than one,\nleft no trace. It now logs the wallet and account it opened, the wallet\nit created, and a warning whenever it substitutes a wallet or an\naccount, next to the wallet store's own startup lines.\n\n* Test the Qt wallet's startup in the system tests\n\nNo test ran the wallet executable, so a change that made it refuse to\nstart on a fresh data directory passed CI. The new system test starts it\nwithout a display on a fresh data directory, again on the same one,\nafter its config was deleted and after it was emptied, as an interrupted\nwrite leaves it. Each start must get as far as starting the node and,\naccording to the wallet's own log, open the same wallet and account\nevery time, and the config must name the wallet and account it opened.\n\nThe runner passes the wallet on Linux and macOS when it was built. On\nWindows its Qt libraries are only copied next to it at install time, so\nit cannot run from the build directory there.",
+    "pull_request": "5193",
+    "created_at": "2026-09-26T18:23:13Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-26T20:13:11Z",
+    "run_id": null
+  },
+  {
     "hash": "765fbef0ea133b048eb62305458fd5871f9e7451",
     "type": "commit",
     "author": "pwojcikdev",
