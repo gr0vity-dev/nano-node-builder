@@ -20707,6 +20707,22 @@
     "run_id": "29963834573"
   },
   {
+    "hash": "61150d468350646dbc46b259316ac9c70e9d414c",
+    "type": "pull_request",
+    "title": "Fix double sccache write attempts",
+    "author": "RickiNano",
+    "body": "The lmdb and rocksdb jobs in each matrix are building identical binaries, so they share an sccache namespace. Both jobs write to the same namespace which causes cache write errors.\r\n\r\nThis PR makes only the LMDB matrix write the cache. \r\nThe PR also removes the Develop-only guard so pushes to any PR is now also updating cache for improved performance",
+    "draft": false,
+    "pull_request": 5194,
+    "label": "RickiNano:sccache-double-writes",
+    "created_at": "2026-09-27T17:44:30Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-27T19:54:42Z",
+    "run_id": null
+  },
+  {
     "hash": "614bebfa4e3427b981cd576825ec4b8cda3b66cd",
     "type": "commit",
     "author": "pwojcikdev",
