@@ -51427,6 +51427,22 @@
     "run_id": "11650924721"
   },
   {
+    "hash": "f305e0cd92d3e26e8466f7a2e7e8fdd5fb8a4f6a",
+    "type": "pull_request",
+    "title": "Apply config overrides as edits to the parsed document",
+    "author": "pwojcikdev",
+    "body": "Command line overrides (`--config`, `--rpcconfig`) were rendered as TOML text and handed to the parser together with the config file, which made a repeated key behave differently depending on whether the file existed.\nWith a file present the first value was kept and the later ones were silently ignored.\nWithout a file the load failed with `Key <name> already present at line N`, where the line is one in the override text, not in anything the operator wrote.\n\nEach override is now parsed by itself and merged into the parsed document.\n\n- Overrides take precedence over the file, and a key given more than once takes the last value, as is conventional for command line options.\n- Dotted keys descend into tables and create them as needed. An override replaces a value of a different shape, and an array override replaces the whole array.\n- A malformed override is reported with its own text, for example `config-node.toml: Invalid config override \"node.foo\": Value must follow after a '=' at line 1`.\n\n`tomlconfig` loses the two-stream `read` overloads and gains `apply_override` and `apply_overrides`.\n\nThe two stream-merging tests in `toml.cpp` are replaced by `tomlconfig.override_*`.\n`config_file.repeated_override_last_wins` covers a repeated key through the loader, with and without a file, and fails on develop.\n\nPart of splitting #5175 into smaller pull requests, after #5190.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5195,
+    "label": "pwojcikdev:config-overrides",
+    "created_at": "2026-09-28T14:31:09Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-28T14:34:11Z",
+    "run_id": null
+  },
+  {
     "hash": "f30ec1162212f6ec84cad8a6f6e0fb8a8d2ebc82",
     "type": "commit",
     "created_at": "2023-10-19T14:48:20Z",
