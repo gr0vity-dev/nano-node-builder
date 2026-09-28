@@ -4897,6 +4897,22 @@
     "run_id": "13267033564"
   },
   {
+    "hash": "1704614f56a90cce99505c4f550b008e1cf8f941",
+    "type": "pull_request",
+    "title": "Apply config overrides as edits to the parsed document",
+    "author": "pwojcikdev",
+    "body": "Command line overrides (`--config`, `--rpcconfig`) were rendered as TOML text and handed to the parser together with the config file, which made a repeated key behave differently depending on whether the file existed.\nWith a file present the first value was kept and the later ones were silently ignored.\nWithout a file the load failed with `Key <name> already present at line N`, where the line is one in the override text, not in anything the operator wrote.\n\nEach override is now parsed by itself and merged into the parsed document.\n\n- Overrides take precedence over the file, and a key given more than once takes the last value, as is conventional for command line options.\n- Dotted keys descend into tables and create them as needed. An override replaces a value of a different shape, and an array override replaces the whole array.\n- A malformed override is reported with its own text, for example `config-node.toml: Invalid config override \"node.foo\": Value must follow after a '=' at line 1`.\n\n`tomlconfig` loses the two-stream `read` overloads and gains `apply_override` and `apply_overrides`.\n\nThe two stream-merging tests in `toml.cpp` are replaced by `tomlconfig.override_*`.\n`config_file.repeated_override_last_wins` covers a repeated key through the loader, with and without a file, and fails on develop.\n\nPart of splitting #5175 into smaller pull requests, after #5190.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5195,
+    "label": "pwojcikdev:config-overrides",
+    "created_at": "2026-09-28T14:31:09Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-28T20:43:16Z",
+    "run_id": null
+  },
+  {
     "hash": "1715e787e653f8513c3694f7915af22f36b50b58",
     "type": "pull_request",
     "title": "migrate_database_lmdb_to_rocksdb improvements",
@@ -12800,6 +12816,22 @@
     "docker_tag": "gr0v1ty/nano-node:3c9a6ce53f2bfa0b4e4afc65b3a483bfc6cfc467",
     "build_started_at": "2026-06-08T19:50:09Z",
     "run_id": "27162861849"
+  },
+  {
+    "hash": "3c9ac74995ca5f712e11841d0bf459d0b8c31fac",
+    "type": "pull_request",
+    "title": "Update fmt to 11.1.4, spdlog to 1.15.2 and the macOS runner to macos-26",
+    "author": "pwojcikdev",
+    "body": "develop does not build with Apple clang 21 (Xcode 27). fmt 10.0.0 fails with `call to consteval function 'fmt::basic_format_string<...>' is not a constant expression` in `format-inl.h`, in `chrono.h` and in spdlog's `fmt_helper.h`. Newer clang versions no longer treat two evaluations of a string literal as the same object in a constant expression, which the compile time check of a format string relied on. fmt fixed this in its commit `cacc3108`, first released in 11.1.0.\n\n## Versions\n\n| fmt | Apple clang 21 |\n|---|---|\n| 10.0.0 (current), 10.1.0, 10.1.1, 10.2.0, 10.2.1 | does not compile |\n| 11.0.0, 11.0.1, 11.0.2 | does not compile |\n| 11.1.0 and later | compiles |\n\nfmt moves to 11.1.4, the last patch release of the first line that compiles. spdlog is built against this fmt and supports fmt 11.1 from 1.15.1 on, so it moves from 1.12.0 to 1.15.2, the release that bundles fmt 11.1.4. fmt 11.2.0 deprecates `fmt::localtime` and 12.0.0 removes it, so going further needs a change in `nano/lib/logging.cpp` and is left for later.\n\n## Changes\n\n- `fmt::formatter<boost::system::error_code>` gets a `constexpr` `parse` and a `const` `format`. fmt 11 requires both.\n- `active_elections.cpp` includes `fmt/ranges.h`, where `fmt::join` lives since fmt 11.0. Only a build without precompiled headers shows this, which is how CI builds.\n- `SPDLOG_FWRITE_UNLOCKED` is turned off. Since 1.15.1 spdlog writes with `fwrite_unlocked` where the platform has it, which includes the console sinks on Linux. They write to stdout and stderr, which other code writes to as well (gtest in the test binaries, `std::cerr` warnings, the timed locks report), and the unlocked functions are only safe on a stream that has a single writer. With the option off spdlog writes the way 1.12 did.\n\nThe first two changes compile with fmt 10 as well.\n\n## Behaviour\n\nRunning the format strings nano uses through both fmt versions shows one difference: a `float` of 1e7 or more formatted with a plain `{}` now uses exponent notation (`16777216` becomes `1.6777216e+07`). nano formats no such value. The log file name and the log lines are unchanged.\n\n## macOS CI\n\nEvery macOS job currently fails in its Prepare step. Homebrew no longer builds bottles for macOS 14, so `brew install qt@5` on the `macos-14` runner compiles several of its dependencies from source, and the rebuilt `openssl@3` cannot be linked over the `openssl@1.1` that the image ships. GitHub also retires the `macos-14` images on November 2 (actions/runner-images#13518). The macOS unit test, sanitizer and Build & Deploy jobs therefore move to `macos-26`, which has bottles for all of them and ships OpenSSL 3. Its compiler is clang 21, which cannot build fmt 10.0.0, so the runner move and the fmt update only pass together and are in one PR (this replaces #5198).\n\n## Testing\n\n- Apple clang 21: debug build with precompiled headers, and a release build of every target without precompiled headers and with the Qt wallet.\n- Core and RPC tests on LMDB and RocksDB, and the system tests. The 8 death tests and `socket_timeout.connect` could not run in the sandbox this was developed in, which allows neither writing to `/tmp` nor outbound connections; everything else passes.\n- GCC 13.2 and clang 16: syntax check of every nano, fmt and spdlog source file.\n- MSVC was not built locally. fmt 11 requires `/utf-8` there, which the `fmt` and `spdlog` targets pass on to every target that links `nano_lib`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5197,
+    "label": "pwojcikdev:fmt-spdlog-update",
+    "created_at": "2026-09-28T14:53:31Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-28T20:43:16Z",
+    "run_id": null
   },
   {
     "hash": "3ca0480cde19764f6c9929c6e84e5a63e13fa44f",
@@ -28099,6 +28131,22 @@
     "docker_tag": "gr0v1ty/nano-node:8357dd5565deac3d49619491bda919a6568b17fd",
     "build_started_at": "2025-10-11T21:42:26Z",
     "run_id": "18435109047"
+  },
+  {
+    "hash": "836757eac464ab0884118bcdb5f8d525c92503ae",
+    "type": "pull_request",
+    "title": "Fix race in online_reps.vote_observed_once",
+    "author": "pwojcikdev",
+    "body": "`online_reps.vote_observed_once` (#5189) failed the Linux ASAN job on #5193 with a stack-use-after-scope. The cause is a vote cache lookup that runs late, which can also fail the test's `rep_update` assertion without any sanitizer.\n\n### What happens\n\n1. Each election the test starts queues a vote cache lookup for its block. The cache is still empty.\n2. On a busy runner the vote cache thread gets to those lookups late.\n3. The test routes its vote: the representative is observed once, the elections count the vote, and the router caches it.\n4. The late lookups find the cached vote and route it again. The elections are still active, so `vote_matched` fires again and the representative is observed again. The elections ignore the vote as a replay.\n\nIf step 4 lands before the test's assertions, `rep_update` is 1 instead of 0. If it lands after the test body returned, the test's own `vote_matched` observer writes to `online_before_elections`, a local already out of scope, while `system` is still stopping the node. That write is the ASAN report.\n\n### Changes\n\n- `nano::test::shared_flag` and `nano::test::shared_counter`: test helpers whose copies share one heap value, so an observer can capture a copy whatever the declaration order. The test's flag uses it.\n- `nano::vote_cache_processor_config`: the vote cache processor gets its own config, with `max_triggered` moved from `vote_processor_config` and a new `enable` switch. Neither is written to the config file, since elections rely on the processor for votes that arrived before they started. A peering-only node turns it off along with the vote processor; it runs no elections, so the only change there is one idle thread fewer.\n- `online_reps.vote_observed_once` turns the processor off, so its vote reaches the router only through the test's own calls.\n\n### Testing\n\n- Forced the late delivery under ASAN with a temporary test: the old capture reproduces the CI report, the shared flag stays clean.\n- A temporary test running one late lookup confirmed the `rep_update` failure.\n- New `vote_cache_processor.delivers_cached_vote` and `vote_cache_processor.disabled`. The latter fails 20 out of 20 runs with the `enable` check removed.\n- `online_reps.vote_observed_once` passed 50 out of 50 runs per backend, and the vote suites, `active_elections`, config and peering-only tests pass on LMDB and RocksDB.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5196,
+    "label": "pwojcikdev:late-vote-cache-delivery",
+    "created_at": "2026-09-28T14:52:20Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-28T20:43:16Z",
+    "run_id": null
   },
   {
     "hash": "8375c6f050e5719f2c26675680123d6ff71dc946",
