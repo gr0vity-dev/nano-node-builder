@@ -1391,6 +1391,19 @@
     "docker_tag": "gr0v1ty/nano-node:0798470393f100e7ce94e7cbe79548783e95ed77"
   },
   {
+    "hash": "079ab7c7bbfbcd551219f101dd417b8e95535ddd",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Fix race in online_reps.vote_observed_once (#5196)\n\n* Add shared flag and counter test helpers\n\nA test's observer on a node component can still run after the test\nbody returns, because node threads keep running until `system` stops\nthe node. An observer that captured a local by reference then writes\nto a dead stack slot. online_reps.vote_observed_once did this, and the\nLinux ASAN job reported a stack-use-after-scope when the vote cache\nthread delivered the test's vote during teardown.\n\n`nano::test::shared_flag` and `nano::test::shared_counter` keep their\nvalue on the heap and share it between copies, so an observer can\ncapture a copy whatever the declaration order. The test's flag now\nuses it.\n\n* Give the vote cache processor its own config\n\nThe vote cache processor read its only setting, `max_triggered`, from\n`vote_processor_config` and could not be turned off. It now has\n`vote_cache_processor_config` holding `max_triggered` and an `enable`\nswitch, which `start` honours the way `vote_processor` honours its\nown. Neither field is written to the config file: elections rely on\nthe processor for votes that arrived before they started.\n\nA peering-only node turns it off along with the vote processor. It\nruns no elections, so the only change there is one idle thread fewer.\n\n* Keep vote cache deliveries out of online_reps.vote_observed_once\n\nEach election the test starts queues a vote cache lookup. When the\ncache thread runs such a lookup only after the test's vote got cached,\nit routes the vote a second time. The elections are still active, so\n`vote_matched` fires again and the representative is observed again.\nIf that happens before the test's assertions, `rep_update` is 1\ninstead of 0.\n\nThe test checks what a single call to the router observes, so it\nturns the processor off.",
+    "pull_request": "5196",
+    "created_at": "2026-09-29T13:35:10Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-29T18:15:46Z",
+    "run_id": null
+  },
+  {
     "hash": "079d25341cc241f7835021a88491a02c97cf43ec",
     "type": "commit",
     "created_at": "2023-02-19T19:12:10Z",
@@ -24183,6 +24196,19 @@
     "docker_tag": "gr0v1ty/nano-node:7079ea42dad5f2df9bdd113e588e8b8a8076070e",
     "build_started_at": "2024-08-22T09:33:21Z",
     "run_id": "10505776346"
+  },
+  {
+    "hash": "7093218144af5c7bbc846e785ea13f9cb3320033",
+    "type": "commit",
+    "author": "RickiNano",
+    "title": "Fix Windows compile on newer Visual Studio versions (#5199)",
+    "pull_request": "5199",
+    "created_at": "2026-09-29T13:35:30Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-29T18:15:46Z",
+    "run_id": null
   },
   {
     "hash": "70a5592f963e5e2a0f5d5b2440f53f10be013ef8",
