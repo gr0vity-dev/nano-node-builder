@@ -12828,7 +12828,7 @@
     "label": "pwojcikdev:fmt-spdlog-update",
     "created_at": "2026-09-28T14:53:31Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-09-28T20:43:16Z",
     "run_id": null
@@ -24131,6 +24131,19 @@
     "built_at": "2023-04-04T20:52:56Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:7066cea478cc7398f1929cea9ddd08f8d00e78a5"
+  },
+  {
+    "hash": "70681e52679c498c5937a8f9f912b8ee2b7bcdb0",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Update fmt to 11.1.4, spdlog to 1.15.2 and the macOS runner to macos-26 (#5197)\n\n* Prepare formatting code for fmt 11\n\nfmt 11 requires the format function of a formatter to be const, and it\ncalls parse at compile time for every replacement field, so parse has\nto be constexpr. The formatter for boost::system::error_code was\nneither.\n\nfmt::join for ranges moved from fmt/format.h to fmt/ranges.h, which\nactive_elections.cpp did not include. A build with precompiled headers\ndoes not show this, because the precompiled header includes every fmt\nheader.\n\nBoth changes compile with fmt 10 as well.\n\n* Update fmt to 11.1.4 and spdlog to 1.15.2\n\nfmt 10.0.0 does not compile with Apple clang 21, the compiler of\nXcode 27. Newer clang versions no longer treat two evaluations of a\nstring literal as the same object in a constant expression, which the\ncompile time check of a format string relied on, so every use of\nFMT_STRING failed with \"call to consteval function is not a constant\nexpression\". fmt fixed this in 11.1.0. No 10.x or 11.0.x release has\nthe fix.\n\nspdlog is built against this fmt and supports fmt 11.1 from 1.15.1 on.\n1.15.2 is the release that bundles fmt 11.1.4.\n\n* Keep spdlog writes locked\n\nSince 1.15.1 spdlog writes with fwrite_unlocked where the platform has\nit, which includes the console sinks on Linux. They write to stdout and\nstderr, which other code writes to as well, and the unlocked functions\nare only safe on a stream that has a single writer. With the option\nturned off spdlog writes the way 1.12 did.\n\n* Move macOS CI jobs to the macos-26 runner\n\nHomebrew no longer builds bottles for macOS 14, so installing qt@5 on\nthe macos-14 runner compiles several of its dependencies from source.\nThe rebuilt openssl@3 then cannot be linked over the openssl@1.1 that\nthe image ships, brew exits with an error and every macOS job stops in\nits prepare step. GitHub also retires the macos-14 image on\n2026-11-02.\n\nThe macos-26 image has bottles for all of them and ships OpenSSL 3, so\nnothing is built from source. Its default Xcode 26.6 reports clang 21,\nwhich fmt 10.0.0 does not compile with, so this needs fmt 11.1 or\nlater.",
+    "pull_request": "5197",
+    "created_at": "2026-09-28T22:03:13Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-29T00:33:53Z",
+    "run_id": null
   },
   {
     "hash": "7077f59575b766db127f71bcdad3757148e324ce",
