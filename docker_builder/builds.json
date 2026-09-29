@@ -7862,6 +7862,22 @@
     "run_id": "8660276962"
   },
   {
+    "hash": "24d8bf29b8b96aed9b4761887a1d57e6973ec870",
+    "type": "pull_request",
+    "title": "Fix Windows compile on Visual Studio 2026",
+    "author": "RickiNano",
+    "body": "Visual Studio 2026 no longer compiles the node. Its STL (_MSVC_STL_VERSION 145) removed the stdext checked iterators. The bundled Crypto++ 8.7.0 still calls stdext::make_checked_array_iterator in integer.cpp on MSVC, so the cryptopp target fails to build.\r\n\r\nThis change adds crypto/cryptopp_msvc_compat.hpp, which is force-included (/FI) only into the cryptopp target on MSVC. The header provides a pass-through replacement, and only when STL version is ≥ 145. Older Visual Studio versions and other compilers are not affected.\r\n\r\nThe shim can be removed once the Crypto++ submodule is updated to a version that no longer uses the checked iterators.\r\n\r\n🤖 Generated with Claude Code (https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5199,
+    "label": "RickiNano:Windows-compile",
+    "created_at": "2026-09-29T08:06:44Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-09-29T12:43:05Z",
+    "run_id": null
+  },
+  {
     "hash": "24d99df5e31188bcf4daed8f85ab915e2b0aff76",
     "type": "commit",
     "author": "pwojcikdev",
@@ -35873,6 +35889,22 @@
     "docker_tag": "gr0v1ty/nano-node:a7b09f81548da43ef93a86a147248636c7d2cf59"
   },
   {
+    "hash": "a7bb27a1ec564752261eadf96c773448e7bf702c",
+    "type": "pull_request",
+    "title": "Fix race in online_reps.vote_observed_once",
+    "author": "pwojcikdev",
+    "body": "`online_reps.vote_observed_once` (#5189) failed the Linux ASAN job on #5193 with a stack-use-after-scope. The cause is a vote cache lookup that runs late, which can also fail the test's `rep_update` assertion without any sanitizer.\n\n### What happens\n\n1. Each election the test starts queues a vote cache lookup for its block. The cache is still empty.\n2. On a busy runner the vote cache thread gets to those lookups late.\n3. The test routes its vote: the representative is observed once, the elections count the vote, and the router caches it.\n4. The late lookups find the cached vote and route it again. The elections are still active, so `vote_matched` fires again and the representative is observed again. The elections ignore the vote as a replay.\n\nIf step 4 lands before the test's assertions, `rep_update` is 1 instead of 0. If it lands after the test body returned, the test's own `vote_matched` observer writes to `online_before_elections`, a local already out of scope, while `system` is still stopping the node. That write is the ASAN report.\n\n### Changes\n\n- `nano::test::shared_flag` and `nano::test::shared_counter`: test helpers whose copies share one heap value, so an observer can capture a copy whatever the declaration order. The test's flag uses it.\n- `nano::vote_cache_processor_config`: the vote cache processor gets its own config, with `max_triggered` moved from `vote_processor_config` and a new `enable` switch. Neither is written to the config file, since elections rely on the processor for votes that arrived before they started. A peering-only node turns it off along with the vote processor; it runs no elections, so the only change there is one idle thread fewer.\n- `online_reps.vote_observed_once` turns the processor off, so its vote reaches the router only through the test's own calls.\n\n### Testing\n\n- Forced the late delivery under ASAN with a temporary test: the old capture reproduces the CI report, the shared flag stays clean.\n- A temporary test running one late lookup confirmed the `rep_update` failure.\n- New `vote_cache_processor.delivers_cached_vote` and `vote_cache_processor.disabled`. The latter fails 20 out of 20 runs with the `enable` check removed.\n- `online_reps.vote_observed_once` passed 50 out of 50 runs per backend, and the vote suites, `active_elections`, config and peering-only tests pass on LMDB and RocksDB.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5196,
+    "label": "pwojcikdev:late-vote-cache-delivery",
+    "created_at": "2026-09-28T14:52:20Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-29T12:43:05Z",
+    "run_id": null
+  },
+  {
     "hash": "a7c6e2db8a7638891d2968c828091e1f062972be",
     "type": "pull_request",
     "title": "Remove unused `process_live_dispatcher`",
@@ -43126,6 +43158,22 @@
     "built_at": "2023-03-05T15:55:03Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:cce0b01f2d4a537839f68617c2de9c00dacdb340"
+  },
+  {
+    "hash": "cce729a8f512972061bc4c3dfbf610d9b7feb77b",
+    "type": "pull_request",
+    "title": "Apply config overrides as edits to the parsed document",
+    "author": "pwojcikdev",
+    "body": "Command line overrides (`--config`, `--rpcconfig`) were rendered as TOML text and handed to the parser together with the config file, which made a repeated key behave differently depending on whether the file existed.\nWith a file present the first value was kept and the later ones were silently ignored.\nWithout a file the load failed with `Key <name> already present at line N`, where the line is one in the override text, not in anything the operator wrote.\n\nEach override is now parsed by itself and merged into the parsed document.\n\n- Overrides take precedence over the file, and a key given more than once takes the last value, as is conventional for command line options.\n- Dotted keys descend into tables and create them as needed. An override replaces a value of a different shape, and an array override replaces the whole array.\n- A malformed override is reported with its own text, for example `config-node.toml: Invalid config override \"node.foo\": Value must follow after a '=' at line 1`.\n\n`tomlconfig` loses the two-stream `read` overloads and gains `apply_override` and `apply_overrides`.\n\nThe two stream-merging tests in `toml.cpp` are replaced by `tomlconfig.override_*`.\n`config_file.repeated_override_last_wins` covers a repeated key through the loader, with and without a file, and fails on develop.\n\nPart of splitting #5175 into smaller pull requests, after #5190.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5195,
+    "label": "pwojcikdev:config-overrides",
+    "created_at": "2026-09-28T14:31:09Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-09-29T12:43:05Z",
+    "run_id": null
   },
   {
     "hash": "cceecaec717ce99e9d86ac8ff06b1b31e1790c42",
