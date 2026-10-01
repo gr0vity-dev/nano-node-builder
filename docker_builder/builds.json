@@ -21946,6 +21946,19 @@
     "docker_tag": "gr0v1ty/nano-node:66a7a469070397d2daf23481894dfdd365980b85"
   },
   {
+    "hash": "66adc77e7842ab6ca4cafb0b274fb4109acc37a3",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Apply config overrides as edits to the parsed document (#5195)\n\n* Apply config overrides as edits to the parsed document\n\nOverrides were rendered as TOML text and merged with the file by the\nparser, which treated a repeated key differently depending on whether\nthe file existed: with a file present the first value was kept and the\nrest silently ignored, without one the whole load failed with \"Key\n<name> already present at line N\", naming a line in a document the\noperator never wrote.\n\nEach override is now parsed by itself and merged into the tree,\ndescending into tables and replacing values. Overrides take precedence\nover the file, a key given more than once takes the value of the last\none, as is conventional for command line options, and a malformed\noverride is reported with its own text.\n\n* Report a missing config file from the open attempt itself\n\nThe loader checked std::filesystem::exists before reading, a separate\nstep from the open that cannot tell a file that is absent from one\nthe node is not allowed to read.\n\nnano::open_file opens a path for reading as nano::result<std::ifstream>\nand carries the OS reason of a failed open as a std::error_code. The\nloader treats std::errc::no_such_file_or_directory as \"use the\ndefaults\" and returns every other failure, so an unreadable config file\nis an error instead of being silently ignored. tomlconfig::read (path)\nis gone; the class parses streams only.\n\n* Start from an empty document when the config file is missing\n\nReading a file replaces the document, but the missing-file path only\nmerged the overrides into whatever the passed document already held,\nso a reused document kept keys from a previous read. Reset it first,\nso the result holds only the overrides in both cases, as documented.",
+    "pull_request": "5195",
+    "created_at": "2026-09-30T23:11:44Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-01T01:22:17Z",
+    "run_id": null
+  },
+  {
     "hash": "66bffe2e5c35f5643b611c64b6211118483dee67",
     "type": "pull_request",
     "pull_request": 4461,
