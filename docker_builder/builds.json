@@ -41951,6 +41951,22 @@
     "run_id": "25499628725"
   },
   {
+    "hash": "c6a3f4e29f4e959caf66117f540ca8009b1311c3",
+    "type": "pull_request",
+    "title": "Add peer blocklist by node id and address",
+    "author": "pwojcikdev",
+    "body": "Operators can now refuse specific peers. A peer is identified by its node id or by its IP address, and a blocklisted peer never gets a channel in either direction: addresses are refused before a connection is made, node ids once the handshake has proven the id.\n\n## Configuration\n\nThe list lives in its own file, `peer-blocklist.toml` in the data directory, separate from `config-node.toml` so it can be maintained and shared on its own:\n\n```toml\n[blocklist]\nnode_ids = [\"node_1abc...\", \"node_3xyz...\"]\nip_addresses = [\"192.0.2.1\", \"2001:db8::1\"]\n```\n\n`nano_node --generate_config blocklist` prints a template. IPv4 addresses match whether they are written plain or in the v4 mapped IPv6 form peers connect with. An entry that is not a node id or an IP address, or a list that is not an array of strings, stops the node from starting with an error naming the file and the entry. A missing file means an empty list. The node logs the loaded counts at startup. Both the daemon and the Qt wallet read the file.\n\n## Behaviour\n\n- Inbound connections from a blocklisted address are refused at accept, outbound ones before the socket is opened, including preconfigured peers and the `keepalive` RPC. No reachout attempt is recorded for a blocklisted address.\n- A peer whose node id is blocklisted is refused where channels are created, once the handshake has proven the id. Other nodes from the same address still connect.\n- An entry added at runtime (`node.peer_blocklist.add`) takes effect at the next connection cleanup, which closes every channel whose peer is now blocklisted; the peer is refused when it reconnects.\n- Rejections are counted under the `blocklisted` stat detail of `tcp_listener_rejected`, `tcp_channels_rejected` and `tcp_channels_purge`, a refused outbound connect reports the new `peer_blocklisted` error, and the list shows up in the container info.\n\nThe scope is direct peering only: work peers, RPC and websocket clients are unaffected, and blocks or votes from a blocklisted node still arrive through other peers. The list differs from the existing peer exclusion, which is an automatic, temporary penalty by address.\n\n## Commits\n\n1. Add peer blocklist container\n2. Refuse blocklisted peers\n3. Drop connected peers once they are blocklisted\n4. Load the peer blocklist from its own config file\n\n## Tests\n\n`peer_blocklist.*` in `nano/core_test/peer_blocklist.cpp`: container behaviour, both identities in both directions, a third node staying connected, dropping a live channel, the config round trip and every rejected file shape.\n\n## Known limitations, left for follow-ups\n\n- Reloading the file without a restart, and subnet entries.\n- A blocklisted preconfigured peer is skipped silently except at debug level, as `tcp_listener::connect` never invokes the callback on a synchronous rejection, which is pre-existing behaviour for every rejection reason.\n- A blocklisted node id reached through its advertised endpoint is retried about once per attempt cutoff, as the endpoint itself is not remembered.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5200,
+    "label": "pwojcikdev:peer-blocklist",
+    "created_at": "2026-09-30T16:21:16Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-07T23:44:19Z",
+    "run_id": null
+  },
+  {
     "hash": "c6b1f3092d0b859fe4eca7a49b3362a5694c727e",
     "type": "pull_request",
     "pull_request": 4345,
