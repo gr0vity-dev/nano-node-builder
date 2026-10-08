@@ -51720,6 +51720,19 @@
     "run_id": "8786244291"
   },
   {
+    "hash": "f32f120a326ac6eab41c442f81bd7b9b18c2b0da",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add peer blocklist by node id and address (#5200)\n\n* Add peer blocklist container\n\nNode ids and IP addresses this node refuses to connect with, kept in a\nthread-safe set. IPv4 addresses are stored in the v4 mapped IPv6 form\npeers are seen with, so an entry matches however the address is\nspelled. Nothing consults the container yet.\n\n* Refuse blocklisted peers\n\nAddresses are refused by the listener before a connection is made, in\nboth directions, and by reachout tracking, so no attempt is recorded\nfor them. Node ids are refused where channels are created, once the\nhandshake has proven the id, so a blocklisted peer never gets a channel\neither way. Rejections are counted under the blocklisted stat and a\nrefused outbound connect reports peer_blocklisted.\n\n* Drop connected peers once they are blocklisted\n\nAn entry added while its peer is connected takes effect at the next\nconnection cleanup, which closes every channel whose node id or\naddress is blocklisted, counted under tcp_channels_purge. The peer is\nthen refused when it reconnects.\n\n* Load the peer blocklist from its own config file\n\nThe list lives in peer-blocklist.toml in the data directory, separate\nfrom the node config so it can be maintained and shared on its own. A\nsingle [blocklist] table holds the node_ids and ip_addresses lists,\nand the file is read through the common config loader by the daemon\nand the wallet. An entry that is not a node id or an IP address, or a\nlist that is not an array of strings, stops the node from starting\nwith an error naming the file and the entry. The node reports the\nloaded counts at startup and --generate_config blocklist prints a\ntemplate.",
+    "pull_request": "5200",
+    "created_at": "2026-10-08T09:50:48Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-08T10:06:45Z",
+    "run_id": null
+  },
+  {
     "hash": "f3341a887dd99cded8910f1fd6c622dafd659cf7",
     "type": "pull_request",
     "title": "Fix rpc.send_epoch_2 generating work for wrong hash",
