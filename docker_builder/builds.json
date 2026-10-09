@@ -18769,6 +18769,22 @@
     "docker_tag": "gr0v1ty/nano-node:586248686f94c1a0b16833e8b8bc0621a8864fec"
   },
   {
+    "hash": "5878621788a9ab41a897967a59c82f605e12bbe9",
+    "type": "pull_request",
+    "title": "Rate-limit topo bootstrap repair heads",
+    "author": "pwojcikdev",
+    "body": "## Problem\n\nWith topo bootstrap enabled, a synced node ramps to 100% disk read time after a few minutes and stays there (observed on Windows + RocksDB).\n\nRepair heads re-scan the already-discovered topo range indefinitely, and `topo_scan::maybe_advance` zeroes a head's timestamp whenever a page makes progress, so the head re-fires as soon as the reply lands. On a synced node every repair page \"makes progress\", so the `cooldown` never engages; when a band is exhausted the head is immediately re-armed on the same band. The only limits are the shared `topo_rate_limit` (500 req/s) and the 64-page pre-check queue, so the sweep runs as fast as the pre-check can read the ledger, i.e. it pegs the disk by construction.\n\nIf the ledger has no topo index (`--populate_topo_index` never run on an existing ledger), `topo_strategy::precheck` falls back to probing every entry by hash, which turns that sweep into ~1.6k random block reads per page with `fill_cache = false`.\n\n## Changes\n\n- Add `bootstrap.topo_scan.repair_rate_limit` (default 20 req/s, `0` = unlimited) and a dedicated `nano::rate_limiter` in `topo_strategy`. It is applied through `head_gates.include_repair`, so a throttled repair head never stalls the spearhead on the shared scan thread; the spearhead keeps its current pacing.\n- Repair heads no longer run at all when `ledger.flags.topo_index` is off. The spearhead still works there (its pages are bounded), but a perpetual sweep needs the sequential topology crawler to be sane.\n\n## Testing\n\n`bootstrap.*`, `bootstrap_topo_scan.*`, `bootstrap_topo_blocks.*`, `toml.*` pass. Not reproduced locally; the fix follows from the code path above and should be verified on the affected Windows/RocksDB setup.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5161,
+    "label": "pwojcikdev:topo-repair-rate-limit",
+    "created_at": "2026-09-02T21:45:57Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-09T15:47:09Z",
+    "run_id": null
+  },
+  {
     "hash": "588397e52e9a4835721308303eca0f9955d1a2a5",
     "type": "pull_request",
     "title": "Limit batch size for block processor",
@@ -38849,6 +38865,22 @@
     "run_id": "8718868163"
   },
   {
+    "hash": "b64a98e1d772f1c06e23b184adb09b7e141846fc",
+    "type": "pull_request",
+    "title": "Show a ledger loading indicator on the wallet splash screen",
+    "author": "pwojcikdev",
+    "body": "Starting the wallet on a full ledger showed the splash screen frozen for minutes. The node was constructed on the GUI thread, so the splash stopped painting while the ledger loaded and the OS reported the wallet as not responding, with no hint that anything was happening.\n\n## How it works\n\nThe node is now constructed on a worker thread while the GUI thread keeps pumping events, so the splash screen stays painted and responsive. It shows \"Loading ledger, this may take a while…\" above the logo until the main window replaces it. The seed backup reminder keeps its place at the bottom, reworded to sentence case.\n\nA new `splash_screen` class in `nano/nano_wallet` paints the status line and ignores clicks: a stock `QSplashScreen` hides itself when clicked, which would leave a minutes-long load with no window at all now that clicks get processed.\n\nThe ellipsis is appended as a code point rather than written into the literal, since MSVC decodes non-ASCII literals in the local code page unless `/utf-8` is set.\n\n## Commits\n\n1. Give `qt`, `nano_wallet` and `qt_test` their own CMake lists. The three GUI targets were the last ones still defined in the root list. Each now has a list next to its sources, and the root keeps the Qt lookup, the shared include path and the packaging rules. Binaries still land in the build root, so CI paths are unchanged.\n2. Show a ledger loading indicator on the wallet splash screen.\n\n## Tests\n\nNo automated test: the splash class lives in the wallet executable, which `qt_test` does not link. Verified by hand with an offscreen render of the splash (status line above the logo, reminder below, click ignored) and a headless dev network run of the wallet, which loads the ledger from the worker thread, starts peering and reaches the main window with no Qt warnings.\n\n## Known limitations, left for follow-ups\n\n- The indicator is a static line, not per-phase progress. Reporting the ledger's phases (block count, representative weights, consistency check) would need a progress callback in `ledger_options`.\n- Quitting during the load is ignored until the main window appears, which matches the previous frozen behavior.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5203,
+    "label": "pwojcikdev:wallet-ledger-loading-indicator",
+    "created_at": "2026-10-09T15:44:54Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-09T15:47:09Z",
+    "run_id": null
+  },
+  {
     "hash": "b64fd555549aaf019eb3c674366276f6e36c7a26",
     "type": "pull_request",
     "pull_request": 4119,
@@ -39565,6 +39597,22 @@
     "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2024-12-20T12:38:32Z",
+    "run_id": null
+  },
+  {
+    "hash": "b9e7c3220738c84c7986fe4043a107a12a0c8210",
+    "type": "pull_request",
+    "title": "Route, cache and tally votes without per-vote allocations",
+    "author": "pwojcikdev",
+    "body": "A vote that reaches a node is routed to its elections, counted by their ballots and remembered by the vote cache. Each of those steps allocated per vote, mostly once per hash or once per voter: hash maps for the routing results, a `multi_index` node for every cached voter, and a vector, a map and two hash maps for every tally. Under load that is thousands of short lived allocations per second on every vote processor thread. This PR takes them off that path and adds benchmarks that count allocations, so they stay off.\n\n## Benchmarks\n\n`nano/benchmarks/vote_processing.cpp` measures what one vote costs on a vote processor thread, by what happens to its hashes: *unmatched* (no election claims the hash, the vote goes to the cache), *counted* (a live election counts it), *replay* and *late* (recently confirmed), plus the signature check alone and the end to end `vote_processor::vote_blocking` call. Every benchmark reports time, heap allocations and bytes per vote and the throughput of 1 and 4 threads. Allocations are counted per thread by replacing `operator new` in the benchmark binary, so allocations made directly through `malloc` are not seen.\n\nRelease build on an Apple M-series laptop, one thread, median of 3 repetitions. *Before* is the benchmark commit on develop, *after* is the tip of this branch. The fixture runs 1024 elections and 64 representatives on the dev network.\n\n| scenario | allocs/vote before | after | bytes/vote before | after | µs/vote before | after |\n|---|---|---|---|---|---|---|\n| unmatched, 1 hash | 6.75 | 0.25 | 4,648 | 108 | 0.46 | 0.29 |\n| unmatched, 16 hashes | 66.0 | 4.00 | 12,880 | 1,728 | 4.88 | 2.98 |\n| unmatched, 255 hashes | 968.3 | 63.8 | 149,104 | 27,540 | 76.1 | 57.9 |\n| counted, 1 hash | 44.7 | 0.08 | 4,066 | 336 | 4.09 | 2.46 |\n| counted, 16 hashes | 676.5 | 1.25 | 64,000 | 5,352 | 46.2 | 16.9 |\n| counted, 255 hashes | 10,655 | 19.9 | 1,020,814 | 85,298 | 682.1 | 225.6 |\n| replay, 1 hash | 4.00 | 0 | 152 | 0 | 0.31 | 0.20 |\n| replay, 16 hashes | 40.0 | 0 | 2,576 | 0 | 3.16 | 1.68 |\n| late, 1 hash | 2.00 | 0 | 72 | 0 | 0.15 | 0.10 |\n| late, 16 hashes | 20.0 | 0 | 1,224 | 0 | 1.50 | 1.06 |\n| unmatched, 16 hashes, end to end | 66.0 | 4.00 | 12,881 | 1,728 | 40.5 | 43.3 |\n| counted, 16 hashes, end to end | 676.5 | 1.25 | 64,000 | 5,352 | 80.6 | 55.7 |\n\nThe unmatched scenario still allocates once per new cache entry, since the cache itself is a `multi_index`. The end to end rows include the signature check, about 35 µs per vote, which dominates them. With 4 threads the per-vote times gain less, as the router and the cache serialize on their locks, while the allocation counts are the same.\n\n## Vote router\n\n`nano::vote_results` holds one code per position of the vote's hash list, in a `static_vector` with a `bitset` of routed positions, instead of a hash map with its own copy of the hashes. It lives on the stack whatever the size of the vote. Matched elections go into a `static_vector` sized by the hash limit of a vote, with a release assert at each insertion, and repeated hashes are found with a `flat_set` of positions over a `static_vector`. `vote_code` shrinks to a byte to keep the codes compact. Routing allocates nothing for any vote, whether it is late, a replay, unmatched or matched by every hash.\n\n## Vote cache\n\nAn entry keeps its voters in a `small_vector` instead of a `multi_index`, which allocated a node per voter. The first four voters live inline, a representative or the lightest voter is found by a short linear scan over at most `max_voters` small records, and a new entry is moved into the cache instead of copied. The router caches every vote it counts, so on a node in sync nearly every entry hears from all online representatives: the first voter past the inline ones reserves room for `max_voters` at once, so an entry allocates once and exactly as much as it may ever hold.\n\n## Election ballot\n\nEvery counted vote evaluates its election, and every evaluation built a vector of all voters, a map with their weights, two hash maps of block weights and a tally map. The weight query now fills a caller provided span under the same single lock (`ledger::weights` and `rep_weights::get` gain positional overloads), so a tally still reads all weights as one consistent snapshot. Voters and weights sit side by side in small vectors on the stack with room for 256 representatives, the weights per block in a small flat map, and the evaluation finds the heaviest held block directly instead of ordering a tally map it then only reads the front of. Recorded votes move to a `boost::unordered_flat_map`, which lays them out contiguously for the tally.\n\nRelease asserts now guard what the tally relies on: a non-null block and weight query, a winner that is never evicted, votes that do not change while their weights are read, and weight sums that do not overflow.\n\n## Vote rebroadcaster\n\nThe signatures of queued votes live in a `boost::unordered_flat_set` instead of a node based set, so once the table has grown to the working size of the queue, queuing a vote allocates nothing.\n\n## Inline sizes\n\nThe stack buffers are sized for the live network rather than for the benchmark fixture. A vote carries up to 255 hashes and under load most of them match a live election, so the matches are bounded by that limit. An election counts only principal representatives, around a hundred on the live network, so a tally keeps room for 256 before it allocates. A cached hash fills up to `max_voters` as a rule, so the cache reserves that at the first spill rather than regrowing.\n\n## Commits\n\n1. Add vote processing benchmarks with allocation counters\n2. Keep the voters of a cached hash in a small vector\n3. Route votes without allocating\n4. Tally an election without allocating\n5. Track queued rebroadcasts in a flat set\n6. Election ballot hardenings\n7. Grow the voters of a cached hash to the limit at once\n8. Route a vote of any size without allocating\n9. Tally up to 256 representatives without allocating\n10. Add a counted benchmark with 255 hashes\n\n## Tests\n\n- `vote_router.vote_repeated_hash`, `vote_router.vote_filter`, `vote_router.vote_max_hashes`: repeated hashes, filtered routing and a vote of maximum size keep their results.\n- `vote_cache.entry_keeps_heaviest_voters`, `vote_cache.entry_newer_vote_replaces_older`: the lightest voter is evicted at the cap, and a newer vote from the same representative replaces the older one.\n- `election_ballot.tally_many_voters_and_hashes` and the `election_ballot_DeathTest` cases: a tally over many voters and forks, and every new release assert, from a null block or weight query to a vote recorded during the weight query and overflowing weight sums.\n- `ledger.weights`: the positional weight query answers slot by slot, from the cache and from the bootstrap table.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5202,
+    "label": "pwojcikdev:vote-hotpath-2",
+    "created_at": "2026-10-09T11:13:24Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-09T15:47:09Z",
     "run_id": null
   },
   {
