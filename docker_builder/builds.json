@@ -36820,6 +36820,22 @@
     "run_id": "20751608363"
   },
   {
+    "hash": "ab0ab317f57aae9f6b4662c12f8aeedf7cf3f981",
+    "type": "pull_request",
+    "title": "Fix LMDB reader slot exhaustion in `wallet.password_race_corrupt_seed`",
+    "author": "pwojcikdev",
+    "body": "`wallet.password_race_corrupt_seed` intermittently aborts on CI:\n\n```\nAssertion `success (status)` failed: status: -30790 (MDB_READERS_FULL: Environment maxreaders limit reached)\n```\n\nThe test started 300 threads: 100 groups of rekey to \"0000\", rekey to \"1234\" and `enter_password (\"1234\")`. Every password attempt and every successful rekey calls `wallets::refresh_rep_keys_cache`, which opens a wallet read transaction before it waits on `wallets::mutex`. The wallet environment runs with `MDB_NOTLS` and LMDB's default of 126 reader slots, one per open read transaction, so threads queued on the mutex can use up every slot. Before the representative keys cache was added, both calls used only write transactions, which take no reader slot.\n\nThis change cuts the test to 10 groups (30 threads) and names the group count as a constant. The wallet write transaction serializes the operations either way, so the extra threads only added queueing.\n\nTesting: `wallet.password_race*` passes locally on LMDB and RocksDB.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5204,
+    "label": "pwojcikdev:wallet-password-race-threads",
+    "created_at": "2026-10-11T15:42:24Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-11T19:28:00Z",
+    "run_id": null
+  },
+  {
     "hash": "ab3036759876a802da6092d1f0a40cbcf9abeab2",
     "type": "pull_request",
     "pull_request": 4485,
