@@ -23143,6 +23143,19 @@
     "run_id": "27399758590"
   },
   {
+    "hash": "6b6128735b4e736116af0afe4cf3bb2bef0058b7",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Show a ledger loading indicator on the wallet splash screen (#5203)\n\n* Give `qt`, `nano_wallet` and `qt_test` their own CMake lists\n\nThe three GUI targets were the last ones still defined in the root\nlist, left there since 2014 while every other component moved into a\nlist next to its sources. Each now has its own, and the root keeps what\nthey share: the Qt lookup, the submodules include path and the\npackaging rules. Binaries still land in the build root, since the\nruntime output directory is set globally, so CI paths are unchanged.\n\n* Show a ledger loading indicator on the wallet splash screen\n\nThe wallet constructed the node on the GUI thread, so the splash screen\nstopped painting for the minutes a full ledger takes to load and the OS\nreported the wallet as not responding. The node is now constructed on a\nworker thread while the GUI thread keeps pumping events, and the splash\nshows \"Loading ledger, this may take a while…\" above the logo until the\nmain window replaces it.\n\nThe splash is the only window during the load, so it no longer hides\nitself on click, which a stock QSplashScreen does. The seed backup\nreminder keeps its place at the bottom, reworded to sentence case.\n\nA Quit from the Dock or Cmd-Q while the node is still loading ends the\nwallet right away. The wait runs on a nested Qt event loop rather than\nprocessEvents polling: with no Qt event loop running, the Cocoa delegate\nanswers a quit with \"terminate now\" and AppKit calls exit () under the\nworker thread still inside the node constructor, leaving the process\nunwinding for a while with a generic Dock icon. With the loop running,\nQt hands the quit to it instead. A half-built node cannot be cancelled\nor unwound, so the wallet logs the request, flushes the log and ends the\nprocess with _Exit, which the ledger upgrades are written to survive.\n\n* Set the wallet application icon on macOS and Linux\n\nset_application_icon was empty outside Windows, so a bare nano_wallet\nbinary showed the generic executable icon in the Dock and in Linux\nwindow managers. The packaged .app was unaffected, since its icon comes\nfrom Info.plist. The 512px image from Nano.icns is now in the Qt\nresources and set as the application icon right after the application\nis created, so the splash screen and error dialogs carry it too.",
+    "pull_request": "5203",
+    "created_at": "2026-10-11T13:41:52Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-11T15:04:08Z",
+    "run_id": null
+  },
+  {
     "hash": "6b6df38cd5d5b8c08a108b6ac993f742fe5d1832",
     "type": "commit",
     "created_at": "2024-01-26T16:05:30Z",
