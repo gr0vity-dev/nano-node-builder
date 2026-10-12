@@ -12937,11 +12937,11 @@
     "title": "Fix LMDB reader slot exhaustion in `wallet.password_race_corrupt_seed` (#5204)\n\nThe test started 300 threads that rekey or enter the password. Each\npassword attempt and successful rekey refreshes the representative keys\ncache, which opens a wallet read transaction before waiting on the\nwallets mutex, so every queued thread holds one of the 126 reader slots\nLMDB provides by default. On CI enough threads queued up to exhaust\nthem and the test aborted with MDB_READERS_FULL.\n\nTen groups of three threads stay well below the limit. The wallet write\ntransaction serializes the operations either way, so the extra threads\nadded queueing, not interleavings.",
     "pull_request": "5204",
     "created_at": "2026-10-12T17:28:19Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-12T19:37:37Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:3d0e33a231e4ff7477e04c8993743549afa66565",
     "build_started_at": "2026-10-12T19:07:28Z",
-    "run_id": null
+    "run_id": "38295525886"
   },
   {
     "hash": "3d14f1e46d960d255355da1fcf3c26f1bfe907e2",
