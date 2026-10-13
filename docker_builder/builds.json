@@ -20657,7 +20657,7 @@
     "label": "pwojcikdev:vote-relay-fable-2",
     "created_at": "2026-10-01T10:50:17Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-10-12T19:07:28Z",
     "run_id": null
@@ -35960,6 +35960,22 @@
     "docker_tag": "gr0v1ty/nano-node:a73fbc808fcb5a9f92a5171fa641f3e623288d0b",
     "build_started_at": "2026-08-18T02:05:34Z",
     "run_id": "32090572413"
+  },
+  {
+    "hash": "a742cee37a93328e6fbccf9a255239de51cb46d8",
+    "type": "pull_request",
+    "title": "Unify message deserialization",
+    "author": "pwojcikdev",
+    "body": "Messages reached the node through two parsers. TCP used `nano::deserialize_message` from the messages library, with the header checks written inline in `tcp_server`. The in-process channel used `transport::message_deserializer`, a callback-driven reader with its own header checks, its own switch over message types and its own status enum. The two copies had drifted:\n\n- They reported different statuses for the same header faults and checked them in a different order.\n- The null block fix from #5078 never reached the inproc copy.\n- The inproc copy applied the sender's network filter instead of the receiver's.\n- A message type added to the TCP parser alone was dropped over inproc without a trace, which is what happened to the vote relay messages in #5201.\n- The round-trip tests ran against the inproc copy, so the parser TCP relies on had two tests.\n\nThis change leaves one parser in the messages library, routes both transports through it, and tests it directly. #5201 will be rebased onto it.\n\n## How it works\n\n- `nano::deserialize_message_header` parses a header and checks that it belongs to this network, uses a supported protocol version and names a known message type.\n- `nano::deserialize_message_payload` parses the payload that follows a validated header. TCP reads the header and the payload separately and calls the two in turn, with the same statuses and check order as before.\n- `nano::deserialize_message` parses one complete serialized message and requires the payload to match the length its header declares.\n- The inproc channel parses with `deserialize_message`, using the destination's uniquers the way the destination parses network input. It does not use a network filter:\n  - The filter defends against the same publish or vote arriving from many peers. A test transport has to deliver the repeats a caller sends on purpose.\n  - The digest stays zero. `message_processor` only requires a digest on TCP channels, and clearing a zero digest does nothing.\n- The sender no longer counts an inproc message under `message`/`in`. That count doubled the receiver's own count on self channels.\n- An inproc parse failure other than insufficient work trips a `debug_assert`. A message serialized in the same process can only fail on its content, so any other failure means serialization and parsing disagree.\n- The switches over `message_type` in the parser, `is_valid_message_type` and `payload_length_bytes` no longer have a `default` case. Clang flags a message type missing from any of them, and the `-Werror` CI build fails on it.\n- A publish header naming `invalid`, `not_a_block` or an undefined block type is rejected as `invalid_header`:\n  - A publish takes its payload length from that block type. Computing the length for such a header reached a `debug_assert` in `block::size`, so a peer could abort a debug build.\n  - Release builds rejected it one step later, as `invalid_publish_message`.\n- Removed: `transport::message_deserializer`, `parse_status`, the stale includes and forward declaration, and the `message_size_too_big` stat detail, which only `parse_status` used. The forward declaration of `deserialize_message_status` now sits in the namespace the enum lives in.\n\n## Tests\n\n- `nano/core_test/deserialize_message.cpp` replaces `message_deserializer.cpp` and tests the shared parser:\n  - A table of sample messages covers every message type and every way a header declares its payload length: each block type, confirmations on both sides of the wider count field, each handshake and telemetry version, and each ascending bootstrap payload.\n  - The round-trip test fails when a message type the header check accepts has no sample, so a new type cannot skip parsing support.\n  - Also covered: header validation, truncated payloads, trailing bytes on strict and extensible message types, duplicate filtering and digests, uniquers, insufficient work, length mismatches, and payload edge cases such as empty confirmation requests and unknown ascending bootstrap payload types.\n- `nano/core_test/inproc.cpp`:\n  - Repeated sends are delivered and counted only by the destination.\n  - A block without enough work is dropped.\n  - The send callback reports the serialized size.\n- `tcp_server.rejects_publish_without_block_type`: a publish header naming no block type closes the connection with `invalid_header`.\n\n## Known limitations, left for follow-ups\n\n- An `asc_pull_ack` block list ends wherever the payload stops parsing as a block. A truncated list is accepted with the blocks before the cut, as it was before this change. The tests record that behaviour.\n- `nano/fuzzer_test/fuzz_buffer.cpp` still calls the long-removed `message_parser` and does not build. Pointing it at `nano::deserialize_message` comes next.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n",
+    "draft": false,
+    "pull_request": 5205,
+    "label": "pwojcikdev:unify-message-deserializer",
+    "created_at": "2026-10-12T21:49:09Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-13T01:17:30Z",
+    "run_id": null
   },
   {
     "hash": "a744e254ea79053e7ff0549e542069796ad88a65",
