@@ -10047,7 +10047,7 @@
     "label": "pwojcikdev:qt-wallet-switching",
     "created_at": "2026-10-13T20:37:17Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-10-13T20:42:35Z",
     "run_id": null
@@ -10718,6 +10718,22 @@
     "docker_tag": "gr0v1ty/nano-node:3218a49c4012c5b8d326f4398624b3210afce375",
     "build_started_at": "2024-03-14T18:48:42Z",
     "run_id": "8286061496"
+  },
+  {
+    "hash": "322930c15affcb885ed8d4c2395d66f4e4298bad",
+    "type": "pull_request",
+    "title": "Switch, create and restore wallets in the Qt wallet",
+    "author": "pwojcikdev",
+    "body": "The Qt wallet shows the one wallet it opens on startup. The node's other wallets, created over RPC or left behind by an earlier config, could only be reached by editing `config-qtwallet.toml` while the wallet was closed. After a lost config the wallet opened whichever wallet the store listed first. Restoring a seed meant Import seed, which replaces the seed of the shown wallet and clears its accounts.\n\nThis change adds a Wallets screen for switching between the node's wallets, creating a new one and restoring one from a seed. The wallet also remembers the wallet and account picked last again. On the way it fixes regressions from #5046, which made the GUI keep a copy of the account it shows instead of a reference to it.\n\n## How it works\n\n- The accounts screen gains a Wallets button. The Wallets screen lists every wallet in the store with its balance and number of accounts, sorted by id, with the shown wallet in bold.\n- Use wallet shows the selected wallet with its first account, creating one in a wallet that has none.\n  - A locked wallet without accounts cannot get an account, so switching to it is refused, with the reason shown on the button.\n  - A wallet destroyed since the list was shown is refused the same way and dropped from the list.\n- Create wallet adds a wallet with a new seed. Restore wallet from seed adds a wallet with the given seed and the accounts the ledger shows that seed has used. Either way the new wallet is shown, and the wallet shown before keeps its seed and accounts.\n- A seed to restore must be 64 hex digits. `decode_hex` also accepts fewer digits and pads them with zeros, so a seed missing a digit would otherwise restore a different wallet without a word.\n- Picks are reported to `nano_qt::wallet::selection_observer` with the wallet id and the account. The GUI is handed the wallet rather than its id, so it looks the id up in the store.\n  - The wallet executable keeps the pick in its wallet config, which it writes on exit as before.\n  - Use account and Import seed report their picks too. Since #5046 the GUI held a copy of the configured account, so the pick was lost and every start showed the configured account again.\n- The GUI assumed its wallet never changes, so switching touches the places that relied on that:\n  - The lock observer is installed on each wallet as it is shown and drops events from a wallet no longer shown.\n  - The lock button, the status line and the wallet balance are refreshed for the new wallet. The status line warns about a wallet unlocked with the empty password. The new `wallet::unlocked_with_empty_password` checks for that without attempting the password, because a failed attempt locks a wallet that has one.\n  - Sending, searching for receivables and the empty password attempt on startup now take the wallet when they are queued, and for a send the account too. They used to read both on another thread.\n- Fixes on the way:\n  - The history on the main screen stayed on the startup account whichever account Use account or a seed import picked.\n  - The account viewer never showed the account entered into it, and its copy was even taken from a member that was not initialized yet.\n  - Both histories now get their account handed over on every refresh.\n  - Refresh Wallet and importing an adhoc key each started another wallet balance refresh loop, which ran every minute for as long as the wallet ran. Updating the label is now separate from the one loop the accounts screen starts.\n- The Qt wallet tests move from the `wallet`, `client` and `history` suites to `qt_wallet`. `wallet.change_seed` and `wallet.epoch_2_validation` existed in both `core_test` and `qt_test`.\n\n## Tests\n\n- `qt_wallet.use_wallet`, `use_wallet_without_accounts`, `use_wallet_destroyed` and `use_wallet_lock_state` cover the Wallets screen, switching and the refused switches. They also check that the lock state shown follows the shown wallet only.\n- `qt_wallet.create_wallet` and `restore_wallet` cover adding wallets, including refused seeds and the wallet shown before keeping its seed and accounts.\n- `qt_wallet.select_account_observer` covers the picks reported by Use account and Import seed.\n- `qt_wallet.select_account_history` and `account_viewer_history` check that both histories follow their account.\n- `qt_wallet.refresh_wallet_balance` checks that Refresh Wallet updates the wallet balance right away.\n- `wallet.unlocked_with_empty_password` covers the new check. It neither unlocks a locked wallet nor locks one unlocked with its own password, and it tells a failed empty password attempt apart from a wallet unlocked by it.\n\n## Known limitations, left for follow-ups\n\n- Keeping the pick in the wallet config, in `nano_wallet`'s entry point, has no automated test. The observer it hooks into is tested.\n- Two data races predate this change:\n  - The GUI still reads the shown account from other threads, in `ongoing_refresh` and in the `account_balance` observer.\n  - `wallet::lock_observer` is an unsynchronized `std::function`, which the GUI now assigns whenever a wallet is shown.\n- Import seed still accepts a seed shorter than 64 hex digits.\n- The wallet id column is cut off at the default window width.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5206,
+    "label": "pwojcikdev:qt-wallet-switching",
+    "created_at": "2026-10-13T20:37:17Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-13T23:54:15Z",
+    "run_id": null
   },
   {
     "hash": "324be978fa0ca9c7c85719616ceb21221a3bd8be",
