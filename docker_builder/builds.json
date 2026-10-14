@@ -6830,7 +6830,7 @@
     "pull_request": "5202",
     "created_at": "2026-10-09T16:36:47Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-10-14T13:23:35Z",
     "run_id": null
@@ -35572,6 +35572,22 @@
     "run_id": "9177618678"
   },
   {
+    "hash": "a39d916a19ef7e72796c8f42e363c8fff4a09f4b",
+    "type": "pull_request",
+    "title": "Add missing components to `node::container_info`",
+    "author": "pwojcikdev",
+    "body": "`node::container_info` left out four components that hold queues or client-driven state. The bootstrap server and the websocket server had no `container_info` at all, and the block rebroadcaster and ledger notifications had one that was never called. This adds all four and removes the TODO that listed the missing components. The rest of that list keeps nothing in memory worth reporting: peer history lives in the database, port mapping holds a fixed pair of mappings and the epoch upgrader holds a single future.\n\n## How it works\n\n- The bootstrap server reports its request queue, the same way the message processor does.\n- The websocket server reports four entries, all empty when websockets are disabled:\n  - `sessions`: entries in the listener's session list. A closed session keeps its entry, and its allocation, until the next accepted connection prunes the list.\n  - `send_queue`: messages waiting in the sessions' send queues, which grow while a client reads slower than the node publishes.\n  - `subscriptions`: topic subscriptions across all sessions.\n  - `filter_accounts`: accounts in confirmation filters plus representatives in vote filters. Clients choose how many to add, with no limit.\n- A send queue is only accessed through its session's strand, so each session mirrors the queue size in an atomic that container info reads. Messages still waiting to run on the strand are not counted yet.\n- Subscription filters report their size through a new virtual `options::filter_size ()`. Container info locks the session list and then each session's subscriptions, the order broadcasting already uses.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5207,
+    "label": "pwojcikdev:node-container-info",
+    "created_at": "2026-10-14T10:23:44Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T18:03:49Z",
+    "run_id": null
+  },
+  {
     "hash": "a3a2a5f1a2f9baa1d1c9cbc3d0d0306fb04dcbfc",
     "type": "pull_request",
     "pull_request": 4211,
@@ -37734,6 +37750,22 @@
     "docker_tag": "gr0v1ty/nano-node:aea87f12208baa955671655d90415c0d5a7d466a",
     "build_started_at": "2026-01-17T21:41:24Z",
     "run_id": "21101292005"
+  },
+  {
+    "hash": "aeb06d8d585481fed38b652d99f999e3de72bd81",
+    "type": "pull_request",
+    "title": "Switch, create and restore wallets in the Qt wallet",
+    "author": "pwojcikdev",
+    "body": "The Qt wallet shows the one wallet it opens on startup. The node's other wallets, created over RPC or left behind by an earlier config, could only be reached by editing `config-qtwallet.toml` while the wallet was closed. After a lost config the wallet opened whichever wallet the store listed first. Restoring a seed meant Import seed, which replaces the seed of the shown wallet and clears its accounts.\n\nThis change adds a Wallets screen for switching between the node's wallets, creating a new one and restoring one from a seed. The wallet also remembers the wallet and account picked last again. On the way it fixes regressions from #5046, which made the GUI keep a copy of the account it shows instead of a reference to it.\n\n## How it works\n\n- The accounts screen gains a Wallets button. The Wallets screen lists every wallet in the store with its balance and number of accounts, sorted by id, with the shown wallet in bold.\n- Use wallet shows the selected wallet with its first account, creating one in a wallet that has none.\n  - A locked wallet without accounts cannot get an account, so switching to it is refused, with the reason shown on the button.\n  - A wallet destroyed since the list was shown is refused the same way and dropped from the list.\n- Create wallet adds a wallet with a new seed. Restore wallet from seed adds a wallet with the given seed and the accounts the ledger shows that seed has used. Either way the new wallet is shown, and the wallet shown before keeps its seed and accounts.\n- A seed to restore must be 64 hex digits. `decode_hex` also accepts fewer digits and pads them with zeros, so a seed missing a digit would otherwise restore a different wallet without a word.\n- Picks are reported to `nano_qt::wallet::selection_observer` with the wallet id and the account. The GUI is handed the wallet rather than its id, so it looks the id up in the store.\n  - The wallet executable keeps the pick in its wallet config, which it writes on exit as before.\n  - Use account and Import seed report their picks too. Since #5046 the GUI held a copy of the configured account, so the pick was lost and every start showed the configured account again.\n- The GUI assumed its wallet never changes, so switching touches the places that relied on that:\n  - The lock observer is installed on each wallet as it is shown and drops events from a wallet no longer shown.\n  - The lock button, the status line and the wallet balance are refreshed for the new wallet. The status line warns about a wallet unlocked with the empty password. The new `wallet::unlocked_with_empty_password` checks for that without attempting the password, because a failed attempt locks a wallet that has one.\n  - Sending, searching for receivables and the empty password attempt on startup now take the wallet when they are queued, and for a send the account too. They used to read both on another thread.\n- Fixes on the way:\n  - The history on the main screen stayed on the startup account whichever account Use account or a seed import picked.\n  - The account viewer never showed the account entered into it, and its copy was even taken from a member that was not initialized yet.\n  - Both histories now get their account handed over on every refresh.\n  - Refresh Wallet and importing an adhoc key each started another wallet balance refresh loop, which ran every minute for as long as the wallet ran. Updating the label is now separate from the one loop the accounts screen starts.\n- The Qt wallet tests move from the `wallet`, `client` and `history` suites to `qt_wallet`. `wallet.change_seed` and `wallet.epoch_2_validation` existed in both `core_test` and `qt_test`.\n\n## Tests\n\n- `qt_wallet.use_wallet`, `use_wallet_without_accounts`, `use_wallet_destroyed` and `use_wallet_lock_state` cover the Wallets screen, switching and the refused switches. They also check that the lock state shown follows the shown wallet only.\n- `qt_wallet.create_wallet` and `restore_wallet` cover adding wallets, including refused seeds and the wallet shown before keeping its seed and accounts.\n- `qt_wallet.select_account_observer` covers the picks reported by Use account and Import seed.\n- `qt_wallet.select_account_history` and `account_viewer_history` check that both histories follow their account.\n- `qt_wallet.refresh_wallet_balance` checks that Refresh Wallet updates the wallet balance right away.\n- `wallet.unlocked_with_empty_password` covers the new check. It neither unlocks a locked wallet nor locks one unlocked with its own password, and it tells a failed empty password attempt apart from a wallet unlocked by it.\n\n## Known limitations, left for follow-ups\n\n- Keeping the pick in the wallet config, in `nano_wallet`'s entry point, has no automated test. The observer it hooks into is tested.\n- Two data races predate this change:\n  - The GUI still reads the shown account from other threads, in `ongoing_refresh` and in the `account_balance` observer.\n  - `wallet::lock_observer` is an unsynchronized `std::function`, which the GUI now assigns whenever a wallet is shown.\n- Import seed still accepts a seed shorter than 64 hex digits.\n- The wallet id column is cut off at the default window width.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5206,
+    "label": "pwojcikdev:qt-wallet-switching",
+    "created_at": "2026-10-13T20:37:17Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T18:03:49Z",
+    "run_id": null
   },
   {
     "hash": "aec1d845b2ec5f07a7907113a7fda3b32402fde9",
@@ -44420,6 +44452,22 @@
     "docker_tag": "gr0v1ty/nano-node:cf844c583a8a732fbbffc40ccb59136729d8ef63",
     "build_started_at": "2024-01-31T16:56:18Z",
     "run_id": "7729573301"
+  },
+  {
+    "hash": "cfaddaa7dc84f6bfbc4f5fc4d1ecb28626610877",
+    "type": "pull_request",
+    "title": "Remove command line options that nothing reads",
+    "author": "RickiNano",
+    "body": "Five command line options were still declared but nothing reads them anymore. Each one shows up in `--help` and parses without error, but has no effect:\n\n| Option | Declared in |\n| --- | --- |\n| `--debug_verify_profile_batch` | `nano/nano_node/entry.cpp` |\n| `--debug_unconfirmed_frontiers` | `nano/nano_node/entry.cpp` |\n| `--disable_unchecked_cleanup` | `nano/node/cli.cpp` |\n| `--disable_unchecked_drop` | `nano/node/cli.cpp` |\n| `--inactive_votes_cache_size` | `nano/node/cli.cpp` |\n\nNone of them has a handler, a `node_flags` field or a config setting behind it, so this PR removes the declarations instead of wiring them up.\n\n**Behaviour change:** a node started with one of these options now exits with an unrecognised option error instead of silently ignoring it. Operators with one of them in a launch script will need to drop it.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5210,
+    "label": "RickiNano:remove-dead-cli-flags",
+    "created_at": "2026-10-14T16:55:42Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T18:03:49Z",
+    "run_id": null
   },
   {
     "hash": "cfc1c14cacc1050ec624e084a0bae43137abffc9",
