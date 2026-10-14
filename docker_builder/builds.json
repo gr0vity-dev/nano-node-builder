@@ -6829,11 +6829,11 @@
     "title": "Carry what the node knows about a vote along with it\n\nThe vote processor looked up a representative's tier to queue its vote, then every election the\nvote reached looked up the weight again, once per hash, the vote cache looked it up once more,\nthe rebroadcaster asked for the tier a second time and the node observer compared the weight\nagainst the principal minimum once again.\n\nA vote context now carries the vote with its source and channel, the representative's tier and\nweight and whether elections count it, all established once by `vote_processor::context` when\nthe vote is queued. The router and both observer sets read the record instead of looking anything\nup. The router answers a non-principal vote as unknown itself, hands an election the\nrepresentative, timestamp, source and tier, and hands the vote cache the vote with its weight. A\nvote with 255 hashes costs one weight lookup instead of 255, the cache needs no weight query and\nthe principal check lives in one place.\n\nTests route votes synchronously with `node::route_vote` and vote on an election directly with the\ntier left at its default, the longest cooldown. The cache gains an insert action as the hook its\nweight query used to be. The node's message, block and vote entry points are grouped and\ncommented. Dedicated tests check that the record carries the vote's origin and the\nrepresentative's weight and tier.",
     "pull_request": "5202",
     "created_at": "2026-10-09T16:36:47Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-14T18:34:43Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:1edcd697d8f64a697b39fba34e1dd08e7af9593b",
     "build_started_at": "2026-10-14T13:23:35Z",
-    "run_id": null
+    "run_id": "38611945080"
   },
   {
     "hash": "1ee3a9d6ae99acb05f4535a5cfb4123007a510c2",
