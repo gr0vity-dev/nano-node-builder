@@ -6784,6 +6784,19 @@
     "run_id": "11034870267"
   },
   {
+    "hash": "1ec9824b7c37ed13e8582714ae63a27cef5eedb6",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Election ballot hardenings",
+    "pull_request": "N/A",
+    "created_at": "2026-09-30T13:55:07Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
+  },
+  {
     "hash": "1ed268e01fb401bb8930c41299bbd38eebcf74f5",
     "type": "pull_request",
     "title": "Fix version strings",
@@ -6808,6 +6821,19 @@
     "built_at": "2023-04-05T17:46:57Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:1ed7c33a52afc72c00a9f3e5edd8e2973419787d"
+  },
+  {
+    "hash": "1edcd697d8f64a697b39fba34e1dd08e7af9593b",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Carry what the node knows about a vote along with it\n\nThe vote processor looked up a representative's tier to queue its vote, then every election the\nvote reached looked up the weight again, once per hash, the vote cache looked it up once more,\nthe rebroadcaster asked for the tier a second time and the node observer compared the weight\nagainst the principal minimum once again.\n\nA vote context now carries the vote with its source and channel, the representative's tier and\nweight and whether elections count it, all established once by `vote_processor::context` when\nthe vote is queued. The router and both observer sets read the record instead of looking anything\nup. The router answers a non-principal vote as unknown itself, hands an election the\nrepresentative, timestamp, source and tier, and hands the vote cache the vote with its weight. A\nvote with 255 hashes costs one weight lookup instead of 255, the cache needs no weight query and\nthe principal check lives in one place.\n\nTests route votes synchronously with `node::route_vote` and vote on an election directly with the\ntier left at its default, the longest cooldown. The cache gains an insert action as the hook its\nweight query used to be. The node's message, block and vote entry points are grouped and\ncommented. Dedicated tests check that the record carries the vote's origin and the\nrepresentative's weight and tier.",
+    "pull_request": "5202",
+    "created_at": "2026-10-09T16:36:47Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
   },
   {
     "hash": "1ee3a9d6ae99acb05f4535a5cfb4123007a510c2",
@@ -7727,6 +7753,22 @@
     "docker_tag": "gr0v1ty/nano-node:23b245eed8fb44bc8500b50aa2cb00c11cff8f3c",
     "build_started_at": "2025-01-18T20:12:32Z",
     "run_id": "12847082977"
+  },
+  {
+    "hash": "23c388c73ba717e01ff35e5d75a7a9472534725d",
+    "type": "pull_request",
+    "title": "Require seeds and keys to be exactly 64 hex digits",
+    "author": "pwojcikdev",
+    "body": "Seeds and keys given to the RPC, the CLI and the Qt wallet are decoded with `decode_hex`, which reads anywhere from 1 to 64 hex digits and pads the missing ones with leading zeros. At 64 characters it also takes `0x` followed by 62 digits, or a leading minus sign that wraps the value around. A seed or key that is mistyped or cut short therefore still decodes, as a different but valid seed or key, and is used without a word. `wallet_change_seed` replaces the wallet's seed with it and clears the accounts, `wallet_create` restores a wallet from it, and Import seed in the Qt wallet does what `wallet_change_seed` does once confirmed with 'clear keys'.\n\nThis change makes every seed and key input take exactly 64 hex digits and refuse any other text with the error it already reports for text that does not decode.\n\n## Upgrade notes\n\n- The RPC actions `wallet_change_seed`, `wallet_create`, `deterministic_key`, `wallet_add`, `key_expand`, `block_create`, `sign`, `epoch_upgrade` and `account_get` answer a seed or key that is not exactly 64 hex digits with `Bad seed`, `Bad private key` or `Bad public key`. Shorter values used to be padded with leading zeros, so clients that drop leading zeros have to pad to 64 digits.\n- The CLI commands `--wallet_create` and `--wallet_change_seed`, through `--seed` and the legacy `--key`, `--wallet_add_adhoc`, `--key_expand` and `--account_get` fail with their invalid seed or key message instead.\n\n## How it works\n\n- `nano::try_parse_raw_key`, for seeds and private keys, and `nano::try_parse_public_key` accept exactly 64 ASCII hex digits and return `std::nullopt` for any other text. They follow `try_parse_wallet_id`.\n- The RPC actions and CLI commands above use them, as do `nano_node --debug_bootstrap_generate` and Import seed and Import adhoc key in the Qt wallet. Import seed keeps its messages, picking one by the length of the text.\n- `sign` replaced any error from reading the key, such as `Bad private key` or a wallet error, with the error for a missing key whenever it ended up without one. It now keeps the earlier error.\n- `--key_expand` and `--account_get` ignored the decode result and printed keys for whatever a failed decode left behind. They now fail.\n- The comments above the wallet index loops in `wallets` no longer claim the wallet ids they parse have 64 digits.\n\n## Tests\n\n- `numbers.try_parse_key` and `numbers.try_parse_key_malformed` cover the parsers, including text `decode_hex` accepts: missing digits, a `0x` prefix, signs, whitespace and non-ASCII.\n- `rpc.malformed_seed_or_key` sends every action above a seed or key missing a digit and one with a `0x` prefix, then checks that the wallet kept its seed and account and that no wallet was created. `rpc.account_get` and `rpc.key_expand` cover the two actions that had no tests.\n- `cli.key_expand`, `cli.account_get`, `cli.wallet_malformed_seed_or_key` and `cli.wallet_seed_and_key` cover the CLI commands, with seeds and keys refused and accepted.\n- `wallet.import_malformed_seed` and `wallet.import_malformed_adhoc_key` cover the Qt wallet.\n\n## Known limitations, left for follow-ups\n\n- #5206 adds Restore wallet from seed to the Qt wallet, with its own length-only check. It should switch to `try_parse_raw_key` once both are in, and its rename of the Qt test suites needs to pick up the two Qt tests added here.\n- Wallet ids, block hashes, roots and the hex form of `link` still go through the lenient `decode_hex`. A hex `link` missing a digit in `block_create` names a different account.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5209,
+    "label": "pwojcikdev:strict-seed-key-parsing",
+    "created_at": "2026-10-14T11:47:17Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
   },
   {
     "hash": "23c6bb5b40486b66a705f42720c6e8182a688063",
@@ -13790,6 +13832,19 @@
     "run_id": "7520404676"
   },
   {
+    "hash": "40c4844551f3a81edf9f7519d6662fec1f6e7020",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Screen out untiered votes before the vote cache\n\nThe vote cache admitted a vote from any account, while elections count only principal\nrepresentatives. That let anyone fill the cache with throwaway keys: five of them voting on the\nsame hashes trigger the full voter reservation, and a vote names up to 255 hashes, so a few\nhundred votes would reserve the cache's whole budget.\n\nThe router now hands the cache only a vote whose representative has a tier, read from the vote\ncontext, as the rebroadcaster already requires. Elections never counted those votes, so nothing\nis lost. Tests whose votes reach the cache through the router wait for the representative's\ntier, which the node refreshes every half second on the dev network.",
+    "pull_request": "5202",
+    "created_at": "2026-10-09T16:41:12Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
+  },
+  {
     "hash": "40cc5aed81aaa399921ce95f7aeeeec9471ee11a",
     "type": "pull_request",
     "pull_request": 4286,
@@ -14404,6 +14459,19 @@
     "built_at": "2023-03-05T17:23:35Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:431a3374c06f16b53595933a45aee1187d218ac5"
+  },
+  {
+    "hash": "431bc790723112898adbbe7ca550bf5a4b3b1fc8",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "List Boost.Container as a direct dependency\n\nThe node and secure libraries link `Boost::container` for the small vectors and flat maps on the\nvote path, but the root list of Boost libraries only provided it as a dependency of beast and\nthread. The list is meant to name every library nano-node uses directly, so container joins it.",
+    "pull_request": "5202",
+    "created_at": "2026-10-09T14:46:21Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
   },
   {
     "hash": "431cf8339eb0f4c72091e392e96a04bf4dc0c4d0",
@@ -15239,6 +15307,19 @@
     "run_id": "9089229637"
   },
   {
+    "hash": "47096bc621572ad0bacd8e474d8cdb30dff62602",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add a counted benchmark with 255 hashes\n\nThe counted scenario voted with 1 and 16 hashes, within the inline room the router and the ballot\nhad, so a vote of the maximum size that matches every hash, the shape of a vote under load, was\nnever measured. The iteration counts now come from a helper that delivers every vote exactly once,\nsince 255 does not divide the election count.",
+    "pull_request": "5202",
+    "created_at": "2026-10-09T14:16:20Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
+  },
+  {
     "hash": "471036d744ebcc1b7062d6a6411c76d7af90a1d1",
     "type": "commit",
     "author": "pwojcikdev",
@@ -15957,6 +16038,22 @@
     "docker_tag": "gr0v1ty/nano-node:49bd174ec625771d4ac51eb5da5bf3c980c23e99",
     "build_started_at": "2026-01-27T13:57:01Z",
     "run_id": "21399952504"
+  },
+  {
+    "hash": "49bd989c682e4361815e5b74197586a97d463801",
+    "type": "pull_request",
+    "title": "Add missing components to `node::container_info`",
+    "author": "pwojcikdev",
+    "body": "`node::container_info` left out four components that hold queues or client-driven state. The bootstrap server and the websocket server had no `container_info` at all, and the block rebroadcaster and ledger notifications had one that was never called. This adds all four and removes the TODO that listed the missing components. The rest of that list keeps nothing in memory worth reporting: peer history lives in the database, port mapping holds a fixed pair of mappings and the epoch upgrader holds a single future.\n\n## How it works\n\n- The bootstrap server reports its request queue, the same way the message processor does.\n- The websocket server reports four entries, all empty when websockets are disabled:\n  - `sessions`: entries in the listener's session list. A closed session keeps its entry, and its allocation, until the next accepted connection prunes the list.\n  - `send_queue`: messages waiting in the sessions' send queues, which grow while a client reads slower than the node publishes.\n  - `subscriptions`: topic subscriptions across all sessions.\n  - `filter_accounts`: accounts in confirmation filters plus representatives in vote filters. Clients choose how many to add, with no limit.\n- A send queue is only accessed through its session's strand, so each session mirrors the queue size in an atomic that container info reads. Messages still waiting to run on the strand are not counted yet.\n- Subscription filters report their size through a new virtual `options::filter_size ()`. Container info locks the session list and then each session's subscriptions, the order broadcasting already uses.\n\n## Tests\n\n- `websocket.container_info`: sessions, subscriptions and filter accounts through subscribing, updating a filter, unsubscribing and disconnecting.\n- `websocket.container_info_send_queue`: 32 messages of 1 MiB sent to a client that is not reading back up in its send queue, which drains once the client reads them.\n- `bootstrap_server.container_info`: with no server threads, queued requests show up with one queue per channel.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5207,
+    "label": "pwojcikdev:node-container-info",
+    "created_at": "2026-10-14T10:23:44Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
   },
   {
     "hash": "49cf520bfdd82486ad05e57586c920bf1133aba3",
@@ -17631,6 +17728,22 @@
     "run_id": "23408707344"
   },
   {
+    "hash": "5267da32f058e78dd4be17eacf34abe062ac7a21",
+    "type": "pull_request",
+    "title": "Lock session subscriptions when broadcasting confirmations",
+    "author": "pwojcikdev",
+    "body": "`listener::broadcast_confirmation` now looks up a session's confirmation subscription and builds the message under the session's `subscriptions_mutex`, the lock `session::handle_message` holds while a client subscribes, updates or unsubscribes. The lock is released before `session::write`, which takes it again, so the order stays `sessions_mutex` before `subscriptions_mutex`.\n\nThe new `websocket.confirmation_resubscribe_during_broadcast` test keeps changing a client's confirmation subscription while confirmations are broadcast, then checks that the final options shape the message the client receives.\n\nThe TLS websocket session and stream are gone: nothing created a TLS session, and with `NANO_SECURE_RPC` defined neither `websocket.cpp` nor `websocket_stream.cpp` compiled, since the session left its logger uninitialized and the stream wrapper returned the TLS layer where the socket was expected.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5208,
+    "label": "pwojcikdev:websocket-session-fixes",
+    "created_at": "2026-10-14T11:29:03Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
+  },
+  {
     "hash": "5279d2bce47b6cc2ace208592adb52dbdf2b8056",
     "type": "pull_request",
     "title": "migrate_database_lmdb_to_rocksdb improvements",
@@ -18167,6 +18280,19 @@
     "docker_tag": "gr0v1ty/nano-node:54df41ea8bba6ec302288295e5c716e469654658",
     "build_started_at": "2025-04-14T13:55:25Z",
     "run_id": "14447486801"
+  },
+  {
+    "hash": "54f15328d9241ac2ed59ea54ce527035abe02567",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Keep the voters of a cached hash in a small vector\n\nAn entry of the vote cache indexed its voters with a `multi_index`, which allocates a node per\nvoter on top of the container itself, and a new entry was copied into the cache together with\nthem. There are at most 64 voters and each one is a small record, so they now live in a\n`boost::container::small_vector`: the first ones need no allocation, finding a representative or\nthe lowest weight is a short linear scan, and a new entry is moved into the cache.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+    "pull_request": "N/A",
+    "created_at": "2026-09-21T19:45:33Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
   },
   {
     "hash": "55018eade5345d52b3f108a9075bea39c7bf1eb2",
@@ -28248,6 +28374,19 @@
     "run_id": "6709398625"
   },
   {
+    "hash": "82bc563990d7fa7f3a0438dc1450acbae31eb42a",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Tally an election without allocating\n\nEvery counted vote evaluates its election, and every evaluation built a vector of all voters, a\nmap with their weights, two hash maps of block weights and a tally map: roughly one allocation per\nvoter, for every vote.\n\nThe weight query now fills a caller provided span under the same single lock, so a tally still\nreads all weights as one consistent snapshot. Voters and weights sit side by side in small vectors\non the stack, the weights per block in a small flat map, and the evaluation finds the heaviest\nheld block directly instead of ordering a tally map it then only reads the front of. Recorded\nvotes move to a flat map, which also lays them out contiguously for the tally.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+    "pull_request": "N/A",
+    "created_at": "2026-09-21T20:02:11Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
+  },
+  {
     "hash": "82d14238ae84cdec0b5b26884b016d7c283537e3",
     "type": "pull_request",
     "title": "Bound the growth of `election_winner_details` set",
@@ -30261,6 +30400,19 @@
     "docker_tag": "gr0v1ty/nano-node:8c8a69bf4a109a14ee04f800c4006d1d03505c52",
     "build_started_at": "2024-09-03T10:47:28Z",
     "run_id": "10681451014"
+  },
+  {
+    "hash": "8c915008d53dc67b8ec91ea2be92579d3b6b5a69",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Route, cache and tally votes without per-vote allocations (#5202)",
+    "pull_request": "5202",
+    "created_at": "2026-10-14T12:59:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
   },
   {
     "hash": "8c9e97f41a9d3aa93293facb08cd24a175c44da9",
@@ -35973,6 +36125,19 @@
     "run_id": "11350499260"
   },
   {
+    "hash": "a6bb69d70d9b95d27e65b439c029fa0cc71d5d63",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Keep the vote cache processor out of the benchmarks\n\nThe fixture waited for the vote cache processor's queue to drain after starting elections, but\nthe processor swaps the queue out before it looks the hashes up, so the wait could end while the\nlookups were still running and overlapping the first votes of a measurement. The cache is empty\nwhenever elections start here, so there is nothing to replay: the processor is now disabled like\nthe schedulers, and the wait is gone.",
+    "pull_request": "5202",
+    "created_at": "2026-10-09T14:54:57Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
+  },
+  {
     "hash": "a6d7d1ce6669b9f966602e528c884bf3d29b89d4",
     "type": "commit",
     "author": "pwojcikdev",
@@ -36456,6 +36621,19 @@
     "docker_tag": "gr0v1ty/nano-node:a865db54960bc66e77791792b5e55caff1b5ffbb",
     "build_started_at": "2024-12-06T11:07:35Z",
     "run_id": "12197931406"
+  },
+  {
+    "hash": "a870f9317f6914cc2e380c65b8d7558742ae9722",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Route votes without allocating\n\nThe vote router reported its results in a hash map and kept the matched elections in another one,\nwhich costs a node per hash plus the tables, and it collected the unmatched hashes once more for\nthe second route lookup.\n\n`nano::vote_results` now holds one code per position of the vote's list of hashes and no hashes of\nits own, so it lives on the stack whatever the size of the vote. Matched elections go into a\n`small_vector`, and repeated hashes are found with a `flat_set` of positions over a\n`static_vector`. `vote_code` shrinks to a byte to keep the codes compact.\n\nRouting a vote that is late, a replay or unmatched no longer allocates at all. Repeated hashes and\nfiltered routing keep their behaviour and are now covered by tests, as is a vote of maximum size.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+    "pull_request": "N/A",
+    "created_at": "2026-09-21T19:54:16Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
   },
   {
     "hash": "a875267715c062e6c08f500df06c2371f2f37d17",
@@ -37064,6 +37242,19 @@
     "docker_tag": "gr0v1ty/nano-node:abe7466d95b2863acb603fcdc64b71dad66460d2",
     "build_started_at": "2024-02-05T21:08:46Z",
     "run_id": "7790861885"
+  },
+  {
+    "hash": "abec2245b34cd02321090cff92e5951eda4017de",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Track queued rebroadcasts in a flat set\n\nThe rebroadcaster remembers the signatures of the votes in its queue in a node based set, which\nallocates for every vote that gets queued and frees it again when the vote leaves the queue. A\n`boost::unordered_flat_set` keeps the signatures in its table, so once the table has grown to the\nworking size of the queue, queuing a vote allocates nothing.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+    "pull_request": "N/A",
+    "created_at": "2026-09-21T21:49:58Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
   },
   {
     "hash": "abee720246d0341dce8ddd0743ea642386c12c7c",
@@ -41354,6 +41545,19 @@
     "built_at": "2023-10-09T19:41:36Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:c17cf7a89735dd9beb50443e4e6556d8a0e68245"
+  },
+  {
+    "hash": "c1801eb6e4dda5cf9cbb05579ee6a9de1c0e0332",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Grow the voters of a cached hash to the limit at once\n\nA vote cache entry keeps its first four voters inline, which suits a hash that only a few\nrepresentatives vote on. The router caches every vote it counts as well, so on a node in sync\nnearly every entry hears from all online representatives and fills up to `max_voters`: the\ninline voters are left behind after the fourth vote and the list reallocates about seven times\non its way to the limit, ending with more capacity than the limit needs.\n\nAn entry that outgrows its inline voters now reserves room for `max_voters` at once, so it\nallocates once and exactly as much as it may ever hold. Entries that stay small still allocate\nnothing.",
+    "pull_request": "N/A",
+    "created_at": "2026-10-09T08:46:39Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
   },
   {
     "hash": "c18b9f31cbf1fa9eb5466e97e1023ee72645c0ef",
@@ -48911,6 +49115,19 @@
     "run_id": "13663572604"
   },
   {
+    "hash": "e5ce854c2ff65a9772dec782de7f6718551bd39e",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Route a vote of any size without allocating\n\nThe matched elections of a vote sat in a small vector with inline room for 16, the hash count\nof the benchmark votes. A vote carries up to 255 hashes and under load, where the cost of\nrouting matters most, nearly all of them match a live election, so routing such a vote spilled\nthe vector and reallocated it several times.\n\nThe matches now live in a static vector sized by the hash limit of a vote, like the positions\nand result codes beside it. A vote matches at most once per distinct hash, so the vector cannot\noverflow, and routing no longer allocates whatever the size of the vote.",
+    "pull_request": "N/A",
+    "created_at": "2026-10-09T08:46:52Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
+  },
+  {
     "hash": "e5d0428428b34d684a8d4fa8de23efd79d91ea29",
     "type": "pull_request",
     "pull_request": 4424,
@@ -49899,6 +50116,19 @@
     "run_id": "36197025905"
   },
   {
+    "hash": "ea3e793b361779aa76823022ac0a4628891a39b5",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Screen out non-principal votes in the router\n\nThe router answered a non-principal vote as unknown only after matching its hashes to elections,\nwith the dev network exempt so that tests can vote with any key, so the match was still announced\nand the node's observer repeated the principal check. The router now skips the election lookup\nfor such a vote, so it never matches, and the observer no longer repeats the check.\n\nThe exemption becomes the node flag `all_reps_principal`, on by default in a dev run only, which\na test can switch off to exercise the real rule. Tests pin that rule at the principal minimum,\nunder the flag and with bootstrap weights.",
+    "pull_request": "5202",
+    "created_at": "2026-10-11T15:42:35Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
+  },
+  {
     "hash": "ea3fb2ac2f2b4d277c6f71083c4100f7c94dd35c",
     "type": "commit",
     "author": "pwojcikdev",
@@ -50277,6 +50507,19 @@
     "docker_tag": "gr0v1ty/nano-node:eb55b98ad74aa0b746d598f5f71866797da8d7c6",
     "build_started_at": "2024-03-08T20:19:22Z",
     "run_id": "8208601453"
+  },
+  {
+    "hash": "eb69fb195b7965c363df0ae9ea6264790add981b",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add vote processing benchmarks with allocation counters\n\nMeasures what a vote costs on a vote processor thread, by what happens to its hashes: unmatched,\ncounted, replay and late, plus the signature check and the end to end `vote_blocking` call.\nEvery benchmark reports time, heap allocations and bytes per vote and the total throughput, from\n1 and 4 threads.\n\nAllocations are counted per thread by replacing the plain `operator new` in the benchmarks binary.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+    "pull_request": "N/A",
+    "created_at": "2026-09-21T19:12:15Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
   },
   {
     "hash": "eb6b0b3a8ca620f53736a57ea8e2b412a7c47de0",
@@ -52768,6 +53011,19 @@
     "docker_tag": "gr0v1ty/nano-node:f6ad9d7800b84c36de31b8871880ed17c2c14f6c",
     "build_started_at": "2024-03-31T13:38:29Z",
     "run_id": "8498608998"
+  },
+  {
+    "hash": "f6b1f3bb4522cb9b3ca7fa64a68a3281755d3588",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Tally up to 256 representatives without allocating\n\nA tally kept the voters and their weights on the stack for up to 128 representatives, twice the\ncount of the benchmark fixture. An election counts only the votes of principal representatives\nand the live network has around a hundred of them, so the margin was thin: once their number\ncrosses the limit, every counted vote allocates twice again.\n\nThe inline room doubles to 256, which costs 6 KB more of stack per tally and leaves ample room\nfor the set of principal representatives to grow.",
+    "pull_request": "5202",
+    "created_at": "2026-10-09T08:47:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T13:23:35Z",
+    "run_id": null
   },
   {
     "hash": "f6b676ea5eb49f87ee536a83b01026102fc0c5a0",
