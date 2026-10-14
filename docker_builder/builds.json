@@ -5172,6 +5172,22 @@
     "run_id": "8214449124"
   },
   {
+    "hash": "17fad57547eea363987996217354dd245c6186e3",
+    "type": "pull_request",
+    "title": "Wait for systest processes to exit before removing data directories",
+    "author": "pwojcikdev",
+    "body": "System tests could fail after they had passed. In the CI run of #5206 (Linux [rocksdb | gcc]), `bind_failure.sh` printed `PASS: Node exited gracefully with code 1`, then its exit trap killed the first node and ran `rm -rf` on the data directories while that node was still shutting down. `rm` failed with `Directory not empty` on the node's RocksDB directory, `set -e` made that the script's exit status, and the runner reported `Systest failed: bind_failure.sh (1)`. `systest_cleanup` in `systest/lib/common.sh` killed and removed in the same order.\n\n## How it works\n\n- `systest_cleanup` sends SIGTERM to every registered process and waits for each to exit before it dumps log tails and removes data directories, so a dumped tail now ends with the node's own shutdown.\n- A process still running 30 seconds after SIGTERM gets SIGKILL, with a message on stderr, so a hung process cannot stall the job. The bound leaves room for the 5 seconds the node gives its RPC child process to exit. The test's result stands either way.\n- `new_datadir` used to append to a list, but scripts call it as `DATADIR=$(new_datadir)`, so the append ran in a subshell and was lost: the shared cleanup never removed a data directory or dumped a log tail. The directories now live inside one temporary directory made when `common.sh` is sourced, and the cleanup finds them there. Call sites are unchanged.\n- Every enabled systest now uses the shared helpers. `bind_failure.sh`, `daemon_interrupt.sh`, `rpc_stop.sh` and `runtime_files.sh` replace their own exit traps and readiness loops with `new_datadir`, `register_pid` and `wait_for_file`. `cli_wallet_create.sh` and `node_initialize.sh` never removed their data directories and now take them from `new_datadir`.\n- `runtime_files.sh` now fails at the readiness wait when the node does not come up, where it used to carry on to its later checks.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5211,
+    "label": "pwojcikdev:systest-cleanup-race",
+    "created_at": "2026-10-14T19:44:34Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T21:34:24Z",
+    "run_id": null
+  },
+  {
     "hash": "18289551c6b18493274da1a8bd45bc21a8a0b50b",
     "type": "pull_request",
     "title": "Remove unnecessary com file for Win",
@@ -24049,6 +24065,22 @@
     "docker_tag": "gr0v1ty/nano-node:6eeaf217ee4795ffdc67d6d54e5bcaf85d20fa44",
     "build_started_at": "2024-05-10T13:16:28Z",
     "run_id": "9033039707"
+  },
+  {
+    "hash": "6eecdcf1614be06d4cdcf57b56d3ef183633fe30",
+    "type": "pull_request",
+    "title": "Give each ballot ordering a single definition",
+    "author": "pwojcikdev",
+    "body": "The election ballot has two orderings: blocks rank by weight then hash, and a representative's votes advance by timestamp then hash. Both break ties towards the higher hash, and that agreement is load-bearing: final votes all share one timestamp, so a representative can only ever move its final vote to a higher hash. The winner of a tie has to be that higher hash, or it would be a fork that no representative already committed elsewhere could still follow.\n\nBefore this change the block order was written out four times, as the map comparator, the two scans in `evaluate` and the eviction scan in `insert`, and the vote order once more inside the replay check. Nothing tied the copies together, and the only hint that the two tie-breaks must agree was the word \"mirroring\" in a comment.\n\nNow `tally_key` carries a defaulted three-way comparison and every tally ranking uses it, with the map ordered by `std::greater`. A new `vote_key` does the same for a representative's votes, and the replay check compares two keys. The class invariants state the agreement between the two tie-breaks and why it matters. No behavior changes.\n\nTests:\n- `tally_key.order`, `vote_key.order`: the primary field decides first whatever the hashes, equal primaries resolve to the higher hash, only an identical pair compares equal, and the final marker ranks above every ordinary timestamp.\n- `election_ballot.final_votes_follow_tie_broken_winner`: two equal representatives final-vote opposite forks, the tie resolves to the higher hash without quorum, the representative on the loser can follow the winner with a final vote while the one on the winner cannot be pulled back, and the election then reaches final quorum.\n- The `tally_map.order` description no longer claims that winner selection, quorum checks and RPC listings inherit the map order, which has not been true since the evaluation stopped building the map.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5212,
+    "label": "pwojcikdev:ballot-ordering-keys",
+    "created_at": "2026-10-14T19:55:06Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T21:34:24Z",
+    "run_id": null
   },
   {
     "hash": "6ef44cdac5cc280a4f4a711e5c5660856b476f43",
@@ -53668,6 +53700,22 @@
     "docker_tag": "gr0v1ty/nano-node:f942d9051540ffe5dedb6f4aff33b5086d809dfb",
     "build_started_at": "2024-03-26T12:23:37Z",
     "run_id": "8435869528"
+  },
+  {
+    "hash": "f954a5f3de6134fd83b09266ef2fa3023e968bfb",
+    "type": "pull_request",
+    "title": "Keep the OpenCL headers out of the work pool header",
+    "author": "RickiNano",
+    "body": "`nano/lib/work.hpp` included `nano/node/openclwork.hpp`, but it uses nothing declared there. The work pool takes OpenCL generation as a plain `std::function`, `opencl_work_func_t`, which is defined in `work.hpp` itself, and `opencl_work` is already forward declared.\n\nThat one include:\n- **made `nano/lib` depend on `nano/node`**, the wrong way round for the layering.\n- **leaked the OpenCL C headers into a third of the project.** `<CL/cl.h>`, or `<OpenCL/opencl.h>` on macOS, along with the `CL_USE_DEPRECATED_OPENCL_1_2_APIS` / `CL_SILENCE_DEPRECATION` macros, reached every file that includes the work pool. That is at least 141 of the 417 `.cpp` files, through `wallet.hpp`, `websocket.hpp`, `distributed_work.hpp`, `node_wrapper.hpp` and `test_common/system.hpp`.\n- **made any edit to `openclwork.hpp` or `openclconfig.hpp` rebuild all of those files** rather than the handful that use OpenCL.\n\n### Changes\n- `work.hpp` no longer includes `openclwork.hpp`. It now includes the two headers it actually uses: `work_version.hpp`, because `work_item` holds a `work_version` by value, and `fwd.hpp` for `network_constants`.\n- Five files had been getting types through the removed include, and now include them directly:\n\n| File | Added |\n| --- | --- |\n| `nano/node/cli.cpp` | `openclwork.hpp` |\n| `nano/nano_node/entry.cpp` | `openclwork.hpp` |\n| `nano/messages/deserialize_message.cpp` | `constants.hpp` |\n| `nano/core_test/fakes/work_peer.hpp` | `constants.hpp` |\n\nThe Qt wallet's `entry.cpp` already includes `openclwork.hpp` directly.\n\n### Testing\n- Full Debug build of every target on Windows (MSVC) with no errors.\n- 192 `core_test` tests covering work, distributed work, messages, wallets, config and CLI pass.\n- The Qt wallet and fuzzer targets were not built locally, and neither was the Linux/macOS code. Those are left to CI.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5213,
+    "label": "RickiNano:work-hpp-no-opencl",
+    "created_at": "2026-10-14T20:17:09Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-14T21:34:24Z",
+    "run_id": null
   },
   {
     "hash": "f98193c7bfe8dde7d2b6d9beaa6ded24ecb89397",
