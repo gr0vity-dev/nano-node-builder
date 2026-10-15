@@ -13732,6 +13732,22 @@
     "run_id": "8896623898"
   },
   {
+    "hash": "402c0e7ca2a69441a2528fcb95f3e095d43364ff",
+    "type": "pull_request",
+    "title": "CI: print sccache diagnostics and allow writes outside develop",
+    "author": "pwojcikdev",
+    "body": "The unit-test workflow reports sccache write-error counts without the backend diagnostics needed to explain them. Enable server/cache debug logging in the Linux and macOS jobs and print the complete log immediately after cache statistics, including when the build fails. Configure the log path before sccache starts, redact URL query strings, and suspend Actions command parsing while printing the file.\n\nSet `SCCACHE_GHA_RW_MODE` to `READ_WRITE` for both jobs so branches other than `develop` also attempt cache writes. Keep the existing cache namespaces and matrix configurations.\n\nValidation: actionlint 1.7.12, YAML parsing, Bash syntax, and `git diff --check` passed. Exercised logging setup and output with missing and empty files, paths containing spaces, signed URLs, workflow-command text, an unterminated final line, and a 20,000-line log. GitHub Actions execution remains to be verified by CI; no C++ sources changed.\n",
+    "draft": true,
+    "pull_request": 5215,
+    "label": "nanocurrency:codex/sccache-diagnostics",
+    "created_at": "2026-10-15T21:45:42Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-15T23:43:38Z",
+    "run_id": null
+  },
+  {
     "hash": "40306635ec11ac12d7cca712c83f8a812079e9de",
     "type": "commit",
     "created_at": "2024-02-20T18:09:04Z",
@@ -37267,6 +37283,19 @@
     "run_id": "8355682154"
   },
   {
+    "hash": "ab632089529dcb5d9d667850b263ceaeada3dcc5",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add missing components to `node::container_info` (#5207)\n\n`node::container_info` left out four components that hold queues or client state: the bootstrap server and the websocket server had no `container_info` yet, and the block rebroadcaster and ledger notifications had one that was never called. All four are reported now. Peer history, port mapping and the epoch upgrader, which the removed TODO also listed, keep nothing in memory worth reporting.\n\nThe bootstrap server reports its request queue. The websocket server reports its sessions, the messages waiting in their send queues, their subscriptions and the accounts held in their subscription filters, which clients can grow without limit. A send queue is only accessed through its session's strand, so each session mirrors the queue size in an atomic that container info reads.",
+    "pull_request": "5207",
+    "created_at": "2026-10-15T21:50:49Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-15T23:43:38Z",
+    "run_id": null
+  },
+  {
     "hash": "ab8d3a7a414997561c37125a5039574d149413fb",
     "type": "commit",
     "author": "clemahieu",
@@ -52810,6 +52839,22 @@
     "docker_tag": "gr0v1ty/nano-node:f4ab147aa11bad4395e586989615baf370756358",
     "build_started_at": "2026-04-01T15:39:53Z",
     "run_id": "23866443886"
+  },
+  {
+    "hash": "f4c26290536668641901fcb6e622c0700e8a0013",
+    "type": "pull_request",
+    "title": "Fix wallet lock ordering and raise the LMDB reader slot limit",
+    "author": "pwojcikdev",
+    "body": "`wallets::mutex` guards the open wallets map, and several wallet paths took it in an order that let unrelated callers pile up behind slow work.\n\n**Read transactions were opened before the mutex.** `refresh_rep_keys_cache`, `exists` and `exists_any` opened their wallet read transaction first and then waited for the mutex, so every queued caller held one of LMDB's reader slots, 126 by default, and a refresh that lost the race for the mutex could overwrite a newer representative key cache with an older snapshot. This is what exhausted the reader table in `wallet.password_race_corrupt_seed` before #5204 capped its thread count. They now take the mutex first and open the transaction under it.\n\n**The write transaction was awaited under the mutex.** `reload`, `create`, `create_from_json` and `destroy` held the mutex while waiting for the wallet write transaction, so a writer busy with a rekey's key derivation or a commit's fsync stalled every wallet lookup, including the representative refreshes. `reload` runs every second on the dev network and every five minutes on the live network. The transaction now comes first; where a wallet table is created, the transaction commits before the mutex is released, because LMDB keeps a new table private to its transaction until then.\n\n**The reader table was left at LMDB's default.** The environment flags comment claimed `MDB_NOTLS` avoids reader slot exhaustion; it only ties slots to transactions instead of threads. Both environments now ask for 1024 slots, 64 KB of lock file, which LMDB applies to existing lock files when the node opens them exclusively.\n\n**New deterministic accounts were registered as representatives before their insert committed.** A reps scan whose snapshot predated the commit rebuilt the representative index without the account, and the account stayed out of the voting key cache until the next scan, 15 minutes on the live network. `insert_adhoc` already committed first. The single deterministic inserts now register after the commit through a shared helper, and `change_seed` and `deterministic_restore` run a full representative refresh after their transaction.\n\nEach change comes with a test: queued callers holding no reader slot, a lookup answering while a reload waits for the writer, 512 open read transactions, and seed inserts registering their representatives without a reps scan.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5216,
+    "label": "pwojcikdev:wallet-lock-order",
+    "created_at": "2026-10-15T22:40:10Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-15T23:43:38Z",
+    "run_id": null
   },
   {
     "hash": "f4ce5b968325bbbb670f0d883eb40d0048474177",
