@@ -16079,7 +16079,7 @@
     "label": "pwojcikdev:node-container-info",
     "created_at": "2026-10-14T10:23:44Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-10-14T13:23:35Z",
     "run_id": null
@@ -22961,6 +22961,22 @@
     "docker_tag": "gr0v1ty/nano-node:69285accf17076b2c0225d3eb80967a6eadd1755",
     "build_started_at": "2024-04-14T22:18:13Z",
     "run_id": "8683214086"
+  },
+  {
+    "hash": "692b369603613d31b148b9754ae618dba046cbe9",
+    "type": "pull_request",
+    "title": "Keep the TOML parser out of the config header",
+    "author": "RickiNano",
+    "body": "`nano/lib/config.hpp` included `nano/lib/tomlconfig.hpp`, and through it the header-only cpptoml parser, only for the helpers that read a config file into a `tomlconfig`. About a dozen files call those helpers. `nano/lib/logging.hpp` also included `tomlconfig.hpp`, though it only names `tomlconfig` by reference.\n\nBecause of those two includes, cpptoml reached **250 of the 417 translation units**. As a result:\n- cpptoml and the standard headers it pulls in (`<iostream>`, `<fstream>`, `<map>`, `<unordered_map>`, …) were parsed far more often than they were used.\n- any edit to `tomlconfig.hpp` or the config file helpers rebuilt most of the tree.\n\nWith this change, cpptoml reaches **39 translation units**.\n\n### Changes\n- `read_config_file`, `load_config_file` and `prefix_config_error` move unchanged from `config.hpp`/`config.cpp` to the new `nano/lib/config_file.hpp`/`config_file.cpp`. Every file that calls them now includes the new header.\n- `config.hpp` no longer includes `tomlconfig.hpp`.\n- `logging.hpp` uses the forward declarations of `tomlconfig` and `error` in `nano/lib/fwd.hpp` and no longer includes `tomlconfig.hpp`.\n- Files that implement `serialize_toml`/`deserialize_toml` now include `tomlconfig.hpp` themselves.\n- About 60 files had been getting standard headers (`<algorithm>`, `<iostream>`, `<sstream>`, …) through cpptoml. They now include those headers directly.\n\n### Testing\n- Not built locally, so CI is the only build check.\n- A static check found that every caller of the moved helpers includes `config_file.hpp`.\n- A scan for use of cpptoml's standard headers without a direct include found nothing introduced by this change.\n- The Qt wallet, Linux and macOS builds are the most likely places for a missing standard header to show up.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5214,
+    "label": "RickiNano:config-file-header",
+    "created_at": "2026-10-15T19:59:47Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-15T21:24:14Z",
+    "run_id": null
   },
   {
     "hash": "694d975fe20573103ed90e36a750d5e21777c51d",
@@ -42850,6 +42866,22 @@
     "run_id": "12620764316"
   },
   {
+    "hash": "c848c7a7a58097f7f4b5132c808377084c208dda",
+    "type": "pull_request",
+    "title": "Switch, create and restore wallets in the Qt wallet",
+    "author": "pwojcikdev",
+    "body": "The Qt wallet shows the one wallet it opens on startup. The node's other wallets, created over RPC or left behind by an earlier config, could only be reached by editing `config-qtwallet.toml` while the wallet was closed. After a lost config the wallet opened whichever wallet the store listed first. Restoring a seed meant Import seed, which replaces the seed of the shown wallet and clears its accounts.\n\nThis change adds a Wallets screen for switching between the node's wallets, creating a new one and restoring one from a seed. The wallet also remembers the wallet and account picked last again. On the way it fixes regressions from #5046, which made the GUI keep a copy of the account it shows instead of a reference to it.\n\n## How it works\n\n- The accounts screen gains a Wallets button. The Wallets screen lists every wallet in the store with its balance and number of accounts, sorted by id, with the shown wallet in bold.\n- Use wallet shows the selected wallet with its first account, creating one in a wallet that has none.\n  - A locked wallet without accounts cannot get an account, so switching to it is refused, with the reason shown on the button.\n  - A wallet destroyed since the list was shown is refused the same way and dropped from the list.\n- Create wallet adds a wallet with a new seed. Restore wallet from seed adds a wallet with the given seed and the accounts the ledger shows that seed has used. Either way the new wallet is shown, and the wallet shown before keeps its seed and accounts.\n- The seed to restore is parsed like the one Import seed takes, with `nano::try_parse_raw_key` from #5209, so it must be exactly 64 hex digits.\n- Picks are reported to `nano_qt::wallet::selection_observer` with the wallet id and the account. The GUI is handed the wallet rather than its id, so it looks the id up in the store.\n  - The wallet executable keeps the pick in its wallet config, which it writes on exit as before.\n  - Use account and Import seed report their picks too. Since #5046 the GUI held a copy of the configured account, so the pick was lost and every start showed the configured account again.\n- The GUI assumed its wallet never changes, so switching touches the places that relied on that:\n  - The lock observer is installed on each wallet as it is shown and drops events from a wallet no longer shown.\n  - The lock button, the status line and the wallet balance are refreshed for the new wallet. The status line warns about a wallet unlocked with the empty password. The new `wallet::unlocked_with_empty_password` checks for that without attempting the password, because a failed attempt locks a wallet that has one.\n  - Sending, searching for receivables and the empty password attempt on startup now take the wallet when they are queued, and for a send the account too. They used to read both on another thread.\n  - Passwords and the seed import confirmation typed for the previous wallet are cleared, so an unlock, password change or seed import submitted after the switch cannot act on the new wallet.\n- Fixes on the way:\n  - The history on the main screen stayed on the startup account whichever account Use account or a seed import picked.\n  - The account viewer never showed the account entered into it, and its copy was even taken from a member that was not initialized yet.\n  - Both histories now get their account handed over on every refresh.\n  - Refresh Wallet and importing an adhoc key each started another wallet balance refresh loop, which ran every minute for as long as the wallet ran. Updating the label is now separate from the one loop the accounts screen starts.\n- The Qt wallet tests move from the `wallet`, `client` and `history` suites to `qt_wallet`. `wallet.change_seed` and `wallet.epoch_2_validation` existed in both `core_test` and `qt_test`.\n\n## Tests\n\n- `qt_wallet.use_wallet`, `use_wallet_without_accounts`, `use_wallet_destroyed` and `use_wallet_lock_state` cover the Wallets screen, switching and the refused switches. They also check that the lock state shown follows the shown wallet only.\n- `qt_wallet.use_wallet_clears_typed_input` checks that passwords and the seed import confirmation typed before a switch are gone after it.\n- `qt_wallet.create_wallet` and `restore_wallet` cover adding wallets, including refused seeds and the wallet shown before keeping its seed and accounts.\n- `qt_wallet.select_account_observer` covers the picks reported by Use account and Import seed.\n- `qt_wallet.select_account_history` and `account_viewer_history` check that both histories follow their account.\n- `qt_wallet.refresh_wallet_balance` checks that Refresh Wallet updates the wallet balance right away.\n- `wallet.unlocked_with_empty_password` covers the new check. It neither unlocks a locked wallet nor locks one unlocked with its own password, and it tells a failed empty password attempt apart from a wallet unlocked by it.\n\n## Known limitations, left for follow-ups\n\n- Keeping the pick in the wallet config, in `nano_wallet`'s entry point, has no automated test. The observer it hooks into is tested.\n- Two data races predate this change:\n  - The GUI still reads the shown account from other threads, in `ongoing_refresh` and in the `account_balance` observer.\n  - `wallet::lock_observer` is an unsynchronized `std::function`, which the GUI now assigns whenever a wallet is shown.\n- The wallet id column is cut off at the default window width.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n",
+    "draft": false,
+    "pull_request": 5206,
+    "label": "pwojcikdev:qt-wallet-switching",
+    "created_at": "2026-10-13T20:37:17Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-15T21:24:14Z",
+    "run_id": null
+  },
+  {
     "hash": "c8762e77df0246965f88049bae31f7432ec99cb3",
     "type": "pull_request",
     "title": "Use exceptions for store initialization errors",
@@ -43163,6 +43195,19 @@
     "docker_tag": "gr0v1ty/nano-node:c9d1666b51167123853daf10ffd9a68932ae2e5b",
     "build_started_at": "2024-11-28T19:45:18Z",
     "run_id": "12074714097"
+  },
+  {
+    "hash": "c9d5a92cfcd59569d0450deab66b5f3fbdf7e341",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Lock session subscriptions when broadcasting confirmations (#5208)",
+    "pull_request": "5208",
+    "created_at": "2026-10-15T21:04:47Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-15T21:24:14Z",
+    "run_id": null
   },
   {
     "hash": "c9e052fe581cdd65ee7a05584288673e902110e0",
@@ -47577,6 +47622,19 @@
     "docker_tag": "gr0v1ty/nano-node:dd5073944f78523ceff082f3bfe3bde06257a1d9",
     "build_started_at": "2024-10-31T03:33:18Z",
     "run_id": "11607976079"
+  },
+  {
+    "hash": "dd508906e69c97b16498fab4043647b526585f4d",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Require seeds and keys to be exactly 64 hex digits (#5209)\n\n* Add strict hex parsers for seeds and keys\n\ndecode_hex reads a 256-bit value from anywhere between 1 and 64 hex digits, padding the missing digits with leading zeros, and at 64 characters it also takes 0x followed by 62 digits, or a leading minus sign that wraps the value around. A seed or key that is mistyped or cut short therefore still decodes, as a different seed or key.\n\ntry_parse_raw_key, for seeds and private keys, and try_parse_public_key accept exactly 64 ASCII hex digits and nothing else.\n\n* Require 64 hex digit seeds and keys in RPC actions\n\nThe RPC actions that take a seed or key decoded it with decode_hex, so a seed missing a digit became a different seed: wallet_change_seed replaced the wallet's seed with it and cleared the accounts, wallet_create restored a wallet from it, and deterministic_key derived its keys.\n\nwallet_change_seed, wallet_create, deterministic_key, wallet_add, key_expand, block_create, sign, epoch_upgrade and account_get now take seeds and keys only as exactly 64 hex digits and answer any other text with their existing Bad seed, Bad private key or Bad public key error. Clients that drop leading zeros have to pad to 64 digits.\n\nsign replaced any error from reading the key, such as Bad private key or a wallet error, with the error for a missing key whenever it ended up without one. It now keeps the earlier error.\n\n* Require 64 hex digit seeds and keys in CLI commands\n\nThe CLI commands that take a seed or key decoded it with decode_hex, so a seed missing a digit became a different seed: --wallet_change_seed replaced the wallet's seed with it and --wallet_create restored a wallet from it. --key_expand and --account_get ignored the decode result and printed keys for whatever a failed decode left behind.\n\n--wallet_create and --wallet_change_seed, through --seed and the legacy --key, --wallet_add_adhoc, --key_expand, --account_get and nano_node --debug_bootstrap_generate now take exactly 64 hex digits and fail with their invalid seed or key message otherwise.\n\n* Require 64 hex digit seeds and keys in the Qt wallet\n\nImport seed decoded the typed seed with decode_hex, so a seed missing a digit passed as a different seed and, once confirmed with 'clear keys', replaced the wallet's seed and cleared its accounts. Its \"length must be 64\" message only showed for text that failed to decode, such as a seed that was too long. Import adhoc key took a short private key the same way.\n\nBoth now take exactly 64 hex digits. Import seed keeps its messages, picking one by the length of the text.\n\n* Fix wallet index comments claiming a 64 digit check\n\nThe comments above the two loops over the wallet index said entries are skipped unless they parse as a 64-char hex wallet id. try_parse_wallet_id accepts fewer digits too, padding them with leading zeros, so the comments now only promise a hex wallet id. The loops behave the same: wallet tables are named with all 64 digits, and send_action_ids does not parse.",
+    "pull_request": "5209",
+    "created_at": "2026-10-15T18:57:00Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-15T21:24:14Z",
+    "run_id": null
   },
   {
     "hash": "dd5a00c1d3359bc27d9a75d369d4e1f7b70f6724",
