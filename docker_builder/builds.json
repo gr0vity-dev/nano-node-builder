@@ -13854,11 +13854,11 @@
     "title": "Screen out untiered votes before the vote cache\n\nThe vote cache admitted a vote from any account, while elections count only principal\nrepresentatives. That let anyone fill the cache with throwaway keys: five of them voting on the\nsame hashes trigger the full voter reservation, and a vote names up to 255 hashes, so a few\nhundred votes would reserve the cache's whole budget.\n\nThe router now hands the cache only a vote whose representative has a tier, read from the vote\ncontext, as the rebroadcaster already requires. Elections never counted those votes, so nothing\nis lost. Tests whose votes reach the cache through the router wait for the representative's\ntier, which the node refreshes every half second on the dev network.",
     "pull_request": "5202",
     "created_at": "2026-10-09T16:41:12Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-15T04:54:21Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:40c4844551f3a81edf9f7519d6662fec1f6e7020",
     "build_started_at": "2026-10-14T13:23:35Z",
-    "run_id": null
+    "run_id": "38681219427"
   },
   {
     "hash": "40cc5aed81aaa399921ce95f7aeeeec9471ee11a",
