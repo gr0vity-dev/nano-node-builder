@@ -4644,6 +4644,19 @@
     "run_id": "17702225864"
   },
   {
+    "hash": "15c89290fe62c6f98c53b074e39809396713be30",
+    "type": "commit",
+    "author": "RickiNano",
+    "title": "Keep the OpenCL headers out of the work pool header (#5213)\n\n`nano/lib/work.hpp` included `nano/node/openclwork.hpp` although it uses nothing declared there:\nthe work pool takes OpenCL generation as a plain `std::function`, and `opencl_work` is already\nforward declared. The include made the lib layer depend on the node layer and carried the OpenCL\nC headers, and the macros set before them, into every file that includes the work pool, a third\nof the project, so any change to the OpenCL headers rebuilt all of it.\n\nThe work pool header now includes only what it uses. The few files that relied on it for OpenCL\ntypes or network constants include those headers themselves.\n\nCo-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
+    "pull_request": "5213",
+    "created_at": "2026-10-15T12:58:57Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-15T14:10:21Z",
+    "run_id": null
+  },
+  {
     "hash": "15e57ffd70ffde66279ea48542821f900f3210ef",
     "type": "commit",
     "author": "pwojcikdev",
@@ -27232,6 +27245,19 @@
     "run_id": "8736883422"
   },
   {
+    "hash": "7d7051028fe461f3e41b9a8c5e9c3b815271a5bc",
+    "type": "commit",
+    "author": "RickiNano",
+    "title": "Remove command line options that nothing reads (#5210)\n\nFive options were still declared but no longer read by anything: `--debug_verify_profile_batch`,\n`--debug_unconfirmed_frontiers`, `--disable_unchecked_cleanup`, `--disable_unchecked_drop` and\n`--inactive_votes_cache_size`. They appeared in `--help` and parsed without complaint, so a node\nstarted with one of them silently ignored it.\n\nPassing one of them now fails with an unrecognised option error, the same as any other unknown\noption.\n\nCo-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
+    "pull_request": "5210",
+    "created_at": "2026-10-15T13:01:53Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-15T14:10:21Z",
+    "run_id": null
+  },
+  {
     "hash": "7d96fe779d08a70bb7a1653d63cdd54074509301",
     "type": "pull_request",
     "title": "Rework token bucket rate limiting",
@@ -44701,6 +44727,19 @@
     "run_id": "8295661667"
   },
   {
+    "hash": "d0bd70cbc7ba0742b32d08bd4dda78cba4718e98",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Wait for systest processes to exit before removing data directories (#5211)\n\n* Wait for systest processes to exit before removing data directories\n\nThe shared systest cleanup and the exit trap of bind_failure.sh killed\nthe nodes and removed their data directories right away, while the\nnodes were still shutting down and writing to them. On CI\nbind_failure.sh printed its PASS and then exited 1: `rm -rf` failed\nwith \"Directory not empty\" on the RocksDB directory of the node it had\njust signalled, and `set -e` made that the script's exit status.\n\nThe cleanup now waits for every registered process to exit before it\ndumps log tails and removes data directories, so a dumped tail also\nends with the node's shutdown. A process still running 30 seconds\nafter SIGTERM gets SIGKILL, so a hung process cannot stall CI, and the\ntest result stands either way.\n\n`new_datadir` never registered a directory: scripts call it in a\n`$(...)` subshell, which dropped the list it appended to, so the\ncleanup removed no data directory and dumped no log tail. It now\ncreates the directories inside one temporary directory made when\ncommon.sh is sourced, and the cleanup finds them there.\n\nbind_failure.sh now uses the shared helpers instead of its own exit\ntrap and readiness loop.\n\n* Move the remaining systests onto the shared helpers\n\ndaemon_interrupt.sh, rpc_stop.sh and runtime_files.sh had their own\nexit traps, which removed the data directory without waiting for the\nnode when a test failed while the node was running, and their own\nreadiness loops. cli_wallet_create.sh and node_initialize.sh never\nremoved their data directories at all. They now use `new_datadir`,\n`register_pid` and `wait_for_file` from lib/common.sh, so every\nsystest stops its processes, dumps log tails on failure and removes\nits data directories the same way.\n\nruntime_files.sh now fails at the readiness wait when the node does\nnot come up, where it used to carry on to its later checks.",
+    "pull_request": "5211",
+    "created_at": "2026-10-15T12:58:17Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-15T14:10:21Z",
+    "run_id": null
+  },
+  {
     "hash": "d0bdc6b0514eae741a03f2e8afb4a681370c6c8f",
     "type": "pull_request",
     "pull_request": 4412,
@@ -51802,6 +51841,19 @@
     "docker_tag": "gr0v1ty/nano-node:f0a8deae483f9fc5500fc10259a25acb7fea0c02",
     "build_started_at": "2024-05-13T10:46:03Z",
     "run_id": "9061738560"
+  },
+  {
+    "hash": "f0b3400b7a1f274840e3111dad7ab1749b58e9fe",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Give each ballot ordering a single definition (#5212)\n\nThe tally map ordered blocks with a hand-written comparator, evaluate ranked the winner and the\nleader with std::pair comparisons and insert found its eviction victim with a third, all spelling\nout the same weight-then-hash order. The replay check in vote () spelled out the timestamp-then-hash\norder of a representative's votes the same way. Nothing tied the copies together, and the only hint\nthat the two hash tie-breaks must agree was the word \"mirroring\" in a comment.\n\ntally_key now carries a defaulted three-way comparison and every tally ranking uses it, with the map\nordered by std::greater. A new vote_key does the same for a representative's votes, and the replay\ncheck compares two keys. Both orderings are tested directly, and a ballot test pins why their\ntie-breaks must agree: final votes all share one timestamp, so a representative can only ever move\nits final vote to a higher hash, and a tie-broken winner must be that hash for every representative\nto be able to follow it.",
+    "pull_request": "5212",
+    "created_at": "2026-10-15T13:01:10Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-15T14:10:21Z",
+    "run_id": null
   },
   {
     "hash": "f0e147826ccc248df595019d62f20a1342914761",
