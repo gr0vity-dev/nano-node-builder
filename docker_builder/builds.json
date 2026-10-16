@@ -18333,11 +18333,11 @@
     "title": "Keep the voters of a cached hash in a small vector\n\nAn entry of the vote cache indexed its voters with a `multi_index`, which allocates a node per\nvoter on top of the container itself, and a new entry was copied into the cache together with\nthem. There are at most 64 voters and each one is a small record, so they now live in a\n`boost::container::small_vector`: the first ones need no allocation, finding a representative or\nthe lowest weight is a short linear scan, and a new entry is moved into the cache.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
     "pull_request": "N/A",
     "created_at": "2026-09-21T19:45:33Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-16T06:49:11Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:54f15328d9241ac2ed59ea54ce527035abe02567",
     "build_started_at": "2026-10-14T13:23:35Z",
-    "run_id": null
+    "run_id": "38860617101"
   },
   {
     "hash": "55018eade5345d52b3f108a9075bea39c7bf1eb2",
