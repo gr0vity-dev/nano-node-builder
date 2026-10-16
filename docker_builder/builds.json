@@ -10065,6 +10065,22 @@
     "docker_tag": "gr0v1ty/nano-node:2e1f21b2a132ba287e4466924aefc5d59406c31b"
   },
   {
+    "hash": "2e21736ab271263e412a51ef5b1dc8689437addc",
+    "type": "pull_request",
+    "title": "Keep the TOML parser out of the config header",
+    "author": "RickiNano",
+    "body": "`nano/lib/config.hpp` included `nano/lib/tomlconfig.hpp`, and through it the header-only cpptoml parser, only for the helpers that read a config file into a `tomlconfig`. About a dozen files call those helpers. `nano/lib/logging.hpp` also included `tomlconfig.hpp`, though it only names `tomlconfig` by reference.\n\nBecause of those two includes, cpptoml reached **250 of the 417 translation units**. As a result:\n- cpptoml and the standard headers it pulls in (`<iostream>`, `<fstream>`, `<map>`, `<unordered_map>`, …) were parsed far more often than they were used.\n- any edit to `tomlconfig.hpp` or the config file helpers rebuilt most of the tree.\n\nWith this change, cpptoml reaches **39 translation units**.\n\n### Changes\n- `read_config_file`, `load_config_file` and `prefix_config_error` move unchanged from `config.hpp`/`config.cpp` to the new `nano/lib/config_file.hpp`/`config_file.cpp`. Every file that calls them now includes the new header.\n- `config.hpp` no longer includes `tomlconfig.hpp`.\n- `logging.hpp` uses the forward declarations of `tomlconfig` and `error` in `nano/lib/fwd.hpp` and no longer includes `tomlconfig.hpp`.\n- Files that implement `serialize_toml`/`deserialize_toml` now include `tomlconfig.hpp` themselves.\n- About 60 files had been getting standard headers (`<algorithm>`, `<iostream>`, `<sstream>`, …) through cpptoml. They now include those headers directly.\n\n### Testing\n- Not built locally, so CI is the only build check.\n- A static check found that every caller of the moved helpers includes `config_file.hpp`.\n- A scan for use of cpptoml's standard headers without a direct include found nothing introduced by this change.\n- The Qt wallet, Linux and macOS builds are the most likely places for a missing standard header to show up.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5214,
+    "label": "RickiNano:config-file-header",
+    "created_at": "2026-10-15T19:59:47Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-16T18:55:29Z",
+    "run_id": null
+  },
+  {
     "hash": "2e34a13af2c814c9e54d8d6b3fb24c773f7e4c0f",
     "type": "pull_request",
     "title": "Gracefully stop `rpc` on failure",
@@ -12865,6 +12881,22 @@
     "docker_tag": "gr0v1ty/nano-node:3baac25d88ab137c98e8e3c0a342213a6c4ee33a",
     "build_started_at": "2024-02-17T18:15:00Z",
     "run_id": "7943455753"
+  },
+  {
+    "hash": "3bcc740649698ed913a1a8b0100132daa95507a9",
+    "type": "pull_request",
+    "title": "Keep the hot lookup tables flat",
+    "author": "pwojcikdev",
+    "body": "Follow-up to #5202. Several tables on the vote and block paths were `std::unordered_map` or `std::unordered_set`, which allocate a node per entry and chase a pointer per lookup: the vote and block uniquers that record every received vote and block, the vote generator's and block rebroadcaster's deduplication, the cementing set's batch, the solicitor's per-loop requests, the erased election callbacks, the vote cache processor's batch and the bucket size tallies. They are `boost::unordered_flat_map` or set now, so inserts allocate nothing once a table has grown and lookups stay within it. The copies handed to RPC keep their `std::unordered_map` type.\n\nThe representative weight cache stays a `std::unordered_map` on purpose. It allocates nothing at steady state either way, and a tally looks up the same few representatives again and again, about 32 lookups per tally in the vote benchmark, so the table never leaves L1. There a flat map lookup measured about 1 ns slower than libc++'s: half of it is Boost's post-mixing of the hash, since the account hash does not declare itself avalanching, and half its group probe, which on ARM emulates x86's movemask with several NEON instructions. One build showed counted votes about ten percent slower with the flat map, but the same two binaries ranged from 5% faster to 43% slower when only the stack or heap placement changed, so that gap was mostly memory layout rather than the map. With the whole allocation series applied, counted votes measure level with develop.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n\n",
+    "draft": false,
+    "pull_request": 5220,
+    "label": "pwojcikdev:flat-lookup-tables",
+    "created_at": "2026-10-16T12:03:49Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-16T18:55:29Z",
+    "run_id": null
   },
   {
     "hash": "3bda9a2eed28ec5c518fdfc36c5c178df2c83596",
@@ -21341,6 +21373,22 @@
     "run_id": "6763097488"
   },
   {
+    "hash": "62576f6f27ccc991dcc6ea1634ef19857874a105",
+    "type": "pull_request",
+    "title": "Copy an election's votes and hashes without node-based containers",
+    "author": "pwojcikdev",
+    "body": "Follow-up to #5202 on the election side. An election handed the request loop a snapshot of its votes as a `std::unordered_map` built from the ballot's flat map, one node per voter plus the table, every time a vote request or block broadcast was due, and the solicitor only looked representatives up in it. The debug logs on election start, erase and expiry listed the held block hashes through a `std::unordered_set` built from a copy of the ballot's block map, whether the log was on or not.\n\nThe ballot now names its vote map type, and the snapshot, the extended status and the ballot's copy use it, so a copy is one allocation; the public `election::votes ()` keeps handing RPC a `std::unordered_map`. The ballot hands its held hashes out in a small vector sized for the default block limit. Its held blocks move to the same small flat map as the vote weight per hash beside them, since an election rarely holds more than a few, so the first ones need no allocation and a held-block check is a few comparisons. The header also says why the ballot weighs blocks in a small flat map, which it left unexplained.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n",
+    "draft": false,
+    "pull_request": 5218,
+    "label": "pwojcikdev:election-flat-copies",
+    "created_at": "2026-10-16T12:03:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-16T18:55:29Z",
+    "run_id": null
+  },
+  {
     "hash": "62774e010cfbea65731d751a1bb072ac2ec6b8e5",
     "type": "pull_request",
     "pull_request": 4154,
@@ -23972,6 +24020,22 @@
     "docker_tag": "gr0v1ty/nano-node:6d76f7a6af64c6c216a4d6bce1f3865389cb5eac",
     "build_started_at": "2025-10-12T20:55:21Z",
     "run_id": "18449856499"
+  },
+  {
+    "hash": "6d8039c315845cbd5a7e6effb15e75f078a30882",
+    "type": "pull_request",
+    "title": "Reserve a vote's hashes and make a block context's promise on demand",
+    "author": "pwojcikdev",
+    "body": "Two small allocation fixes found while following up on #5202.\n\nDeserializing a vote pushed its hashes one by one into an empty vector, so a vote of 255 hashes reallocated nine times. The rest of the stream is hashes, so the vector reserves that many first and grows once.\n\nEvery queued block carried a `std::promise`, which allocates its shared state on construction, although only a blocking submission ever reads the future. The promise is now made in `get_future`, and `set_result` skips a context without one.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5221,
+    "label": "pwojcikdev:allocation-small-fixes",
+    "created_at": "2026-10-16T12:03:51Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-16T18:55:29Z",
+    "run_id": null
   },
   {
     "hash": "6dcf92b85531b88f558bf2ed428f645a4e35c70e",
@@ -29491,6 +29555,22 @@
     "docker_tag": "gr0v1ty/nano-node:86a2d7d8452b94948076df7ee0b90f0da732b720",
     "build_started_at": "2024-05-04T09:36:39Z",
     "run_id": "8950103273"
+  },
+  {
+    "hash": "86ae28a3c5009d6d2a43898aa9cf2e997eb06ba7",
+    "type": "pull_request",
+    "title": "Hash the whole account and signature in a vote's full hash",
+    "author": "pwojcikdev",
+    "body": "`vote::full_hash` passed the size of a pointer as the length of the representative's account and of the signature, so it covered only their first eight bytes. Both are hashed in full now, and a test changes each of their bytes in turn to check that the full hash changes with it.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5222,
+    "label": "pwojcikdev:vote-full-hash",
+    "created_at": "2026-10-16T17:53:48Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-16T18:55:29Z",
+    "run_id": null
   },
   {
     "hash": "86c0cdfb433f86068ba23ef07f2733212dfd83d4",
@@ -39140,6 +39220,22 @@
     "docker_tag": "gr0v1ty/nano-node:b4ba2d5355a537c26ae1d81552f4f099e52a2e45",
     "build_started_at": "2025-02-11T21:24:58Z",
     "run_id": "13273145807"
+  },
+  {
+    "hash": "b4ba3e8ddd475662fefc686edd04dcfbf88057b3",
+    "type": "pull_request",
+    "title": "Serialize a flood's message once and sample its channels",
+    "author": "pwojcikdev",
+    "body": "Follow-up to #5202 on the sending side. A flood serialized its message again for every channel it reached, and it picked those channels by copying every peer into a deque, shuffling the whole list with the random pool and cutting it down to the fanout. The principal representative floods sorted every known representative into a multimap for each vote.\n\nChannels now accept a message serialized ahead of time through `channel::send_buffer`, and `network::send_to` serializes once for all channels of a flood. The channel container draws the fanout by reservoir sampling in one pass over the peers, uniform among the channels that pass the filter, with nothing allocated and no state kept between calls. The crawler hands the floods its principal channels straight from its index, and the ordered list it still builds for the solicitor and RPC sorts a vector instead of filling a multimap. A message's buffer is reserved from its header, so a message larger than the stream's own buffer grows its vector once.\n\nThe floods that leave principal representatives out sample twice the fanout and drop them outside the channel lock, because the crawler holds its own lock while it asks the container for peers. When principal representatives are dense among the candidates such a flood can reach fewer than the fanout.\n\nNew `message_sending` benchmarks measure the sending thread's work with the allocation counters from #5202: serializing a vote or a block, handing a vote to the channels of a flood, and picking those channels among 256 peers.\n\nRelease build, medians of three runs, single thread, measured at the benchmark commit and at the tip:\n\n| | before | after | allocs before | allocs after |\n|---|---|---|---|---|\n| serialize a vote of 255 hashes | 2.0 µs | 1.8 µs | 5 | 3 |\n| flood a 1-hash vote to 8 channels | 1.3 µs | 228 ns | 24 | 3 |\n| flood a 255-hash vote to 8 channels | 16.0 µs | 1.8 µs | 40 | 3 |\n| pick a flood's channels among 256 peers | 80.7 µs | 6.1 µs | 4 | 0 |\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5217,
+    "label": "pwojcikdev:message-sending",
+    "created_at": "2026-10-16T12:03:40Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-16T18:55:29Z",
+    "run_id": null
   },
   {
     "hash": "b4bd3967f60a517af8a9ff18612105ae30ef87d1",
