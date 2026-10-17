@@ -24263,7 +24263,7 @@
     "label": "pwojcikdev:ballot-ordering-keys",
     "created_at": "2026-10-14T19:55:06Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-10-14T21:34:24Z",
     "run_id": null
@@ -35153,6 +35153,22 @@
     "docker_tag": "gr0v1ty/nano-node:a018cbe59341766e3b10ffaad3d009dd6bc62d38",
     "build_started_at": "2025-09-13T21:23:59Z",
     "run_id": "17702370087"
+  },
+  {
+    "hash": "a0200dccc33aa924a0eb881612f7cc4e3709e81d",
+    "type": "pull_request",
+    "title": "Speed up RocksDB tests up to 3.6x by disabling auto compaction",
+    "author": "RickiNano",
+    "body": "## Speed up RocksDB tests up to 3.6x by disabling auto compaction\n\n`TransactionDB::Open` turns off auto compaction for every column family during recovery. It then turns it back on with a separate `SetOptions` call per column family, and each call rewrites the OPTIONS file. Every store open in the test suite pays this cost, and the tests open a lot of stores.\n\nThis PR adds `NANO_ROCKSDB_DISABLE_AUTO_COMPACTION`. When it is set, column families start with `disable_auto_compactions = true`, so RocksDB skips the re-enable step entirely.\n\n- The flag only takes effect on the dev network (`nano::is_dev_run()`), so it has no effect on live or beta nodes.\n- It is set for all RocksDB jobs in `unit_tests.yml`, `code_sanitizers.yml`, `coverage.yml`, and passed through to Docker in `run-docker-tests.sh`.\n- `flamegraphs.yml` is intentionally left unchanged so profiles reflect production behavior.\n\nWrites don't stall without compaction: RocksDB skips its L0 slowdown/stop triggers when auto compaction is disabled. No tests depend on background compaction, and `copy_with_compaction` still compacts because it calls `CompactRange` directly.\n\n### CI timings (upstream develop → this branch)\n\n| RocksDB job | Core Tests | RPC Tests |\n|---|---|---|\n| Windows | 2996 s → 877 s | 707 s → 160 s |\n| Linux clang | 1110 s → 493 s | 214 s → 61 s |\n| Linux gcc | 826 s → 492 s | 151 s → 60 s |\n| macOS | 845 s → 542 s | 137 s → 75 s |\n| Docker | 1153 s → 474 s | 232 s → 57 s |\n| Linux ASAN | 2700 s → 847 s | 583 s → 134 s |\n| Linux UBSAN | 1755 s → 619 s | 350 s → 90 s |\n| Linux LEAK | 1787 s → 872 s | 362 s → 138 s |\n| macOS ASAN | 2228 s → 612 s | 379 s → 89 s |\n| macOS TSAN | 2700 s → 1332 s | 1007 s → 283 s |\n\nCore tests run 1.6–3.6x faster and RPC tests 1.8–4.4x faster.\n\n**Trade-off:** CI no longer runs RocksDB background compaction alongside node code, including under the sanitizers.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5224,
+    "label": "RickiNano:rocksdb-dev-disable-auto-compaction",
+    "created_at": "2026-10-17T17:55:14Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-17T19:33:57Z",
+    "run_id": null
   },
   {
     "hash": "a024cf7005af634588ae849d9e56ea776217d29b",
