@@ -22435,11 +22435,11 @@
     "title": "Rate-limit topo bootstrap repair heads (#5161)\n\n* Rate-limit topo bootstrap repair heads\n\nRepair heads re-scan the discovered range indefinitely and re-fire as soon\nas a page makes progress, so on a synced node they sweep the whole ledger\nat line rate, bounded only by the pre-check throughput. Without the topo\nindex the pre-check probes every entry by hash, turning the sweep into a\nperpetual random-read storm that pegs the disk.\n\nAdd `topo_scan.repair_rate_limit` (20 req/s) with a dedicated limiter in\n`topo_strategy`, applied via the repair gate so a throttled repair head\nnever stalls the spearhead. Repair heads are also disabled entirely when\nthe ledger has no topo index.\n\nCo-Authored-By: Claude Code <noreply@anthropic.com>\n\n* Charge the repair limiter per page scan\n\nThe repair gate checked for one token but the round was charged its full fanout. With `repair_consideration` above one, a bucket holding at least one token but fewer than the fanout failed the charge, the failure was ignored, and repair rounds ran unthrottled until the bucket refilled past the fanout.\n\nThe limiter exists to bound the ledger pre-check, and that cost is per retired page, not per request; the shared topo limiter already bounds requests. Charge one token per repair round right where the gate admitted it, and assert the charge, since the scan thread is the limiter's only consumer.\n\n* Keep the trailing repair band on without the topo index\n\nRepair heads were gated off as a class when the ledger has no topo index, which also parked the trailing band: the head that re-scans the heights a spearhead fast-forward skips. Without it a node that never ran --populate_topo_index relies on the frontier scan to notice anything the jump left behind.\n\nOnly the broad sweep is the random-read storm. The trailing band is a few pages per fast-forward, so split the repair gate into one per head class, trailing and broad, and gate only the broad heads on the index. The trailing head stays under the rate limiter with the rest.\n\n---------\n\nCo-authored-by: Claude Code <noreply@anthropic.com>",
     "pull_request": "5161",
     "created_at": "2026-10-16T12:04:32Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-17T14:56:35Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:66f2cb9b097d60953f1b962add7f1df74c8a5c8a",
     "build_started_at": "2026-10-16T15:29:30Z",
-    "run_id": null
+    "run_id": "39040769883"
   },
   {
     "hash": "6704452691206e13a33d35517e9ff98e718aa63d",
