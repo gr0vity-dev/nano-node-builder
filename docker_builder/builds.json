@@ -20001,6 +20001,22 @@
     "run_id": "8949894039"
   },
   {
+    "hash": "5c4801c2b4e49c0c5946421ef68f51239f994f71",
+    "type": "pull_request",
+    "title": "Enable precompiled headers in Windows CI job",
+    "author": "RickiNano",
+    "body": "Turns on the existing `NANO_PRECOMPILED_HEADERS` option (#5070) for the Windows unit test job.\n\n### Changes\n- `ci/build.sh`: pass `NANO_PRECOMPILED_HEADERS` through to CMake. It defaults to `OFF`, so other jobs are unchanged.\n- `unit_tests.yml`: set `NANO_PRECOMPILED_HEADERS: \"ON\"` for `windows_test`.\n\nOnly Windows gets this. It's the one job without sccache, so it does a full build every run. Linux and macOS keep building without precompiled headers, so they still catch missing `#include`s that the precompiled header would hide on Windows.\n\n### Results\nDuration of the \"Build Tests\" step, measured on a fork:\n\n| Backend | Precompiled headers on (2 runs) | `develop` median (last 20 runs) |\n|---|---|---|\n| lmdb | 22.4 / 23.3 min | 36.4 min |\n| rocksdb | 16.7 / 23.1 min | 35.6 min |\n\nThat's roughly 10–15 minutes saved per Windows job. Runner speed varies a lot (recent `develop` builds took 22–39 min), so take the exact savings as approximate. All jobs passed with precompiled headers on.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5223,
+    "label": "RickiNano:ci-windows-pch",
+    "created_at": "2026-10-17T11:45:18Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-17T11:45:56Z",
+    "run_id": null
+  },
+  {
     "hash": "5c7b115c15cd8eaa6eff191921e520bceb3d573d",
     "type": "commit",
     "created_at": "2024-03-09T20:38:30Z",
