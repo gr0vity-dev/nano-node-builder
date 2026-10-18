@@ -28627,11 +28627,11 @@
     "title": "Tally an election without allocating\n\nEvery counted vote evaluates its election, and every evaluation built a vector of all voters, a\nmap with their weights, two hash maps of block weights and a tally map: roughly one allocation per\nvoter, for every vote.\n\nThe weight query now fills a caller provided span under the same single lock, so a tally still\nreads all weights as one consistent snapshot. Voters and weights sit side by side in small vectors\non the stack, the weights per block in a small flat map, and the evaluation finds the heaviest\nheld block directly instead of ordering a tally map it then only reads the front of. Recorded\nvotes move to a flat map, which also lays them out contiguously for the tally.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
     "pull_request": "N/A",
     "created_at": "2026-09-21T20:02:11Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-18T01:39:38Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:82bc563990d7fa7f3a0438dc1450acbae31eb42a",
     "build_started_at": "2026-10-14T13:23:35Z",
-    "run_id": null
+    "run_id": "39085896927"
   },
   {
     "hash": "82d14238ae84cdec0b5b26884b016d7c283537e3",
