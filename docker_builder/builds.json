@@ -6004,6 +6004,22 @@
     "run_id": "20438504556"
   },
   {
+    "hash": "1b762aa0c2a963843a286c6b937b1cbc132a788a",
+    "type": "pull_request",
+    "title": "Copy an election's votes and hashes without node-based containers",
+    "author": "pwojcikdev",
+    "body": "Follow-up to #5202 on the election side. An election handed the request loop a snapshot of its votes as a `std::unordered_map` built from the ballot's flat map, one node per voter plus the table, every time a vote request or block broadcast was due, and the solicitor only looked representatives up in it. The debug logs on election start, erase and expiry listed the held block hashes through a `std::unordered_set` built from a copy of the ballot's block map, whether the log was on or not.\n\nThe ballot now names its vote map type, and the snapshot, the extended status and the ballot's copy use it, so a copy is one allocation; the public `election::votes ()` keeps handing RPC a `std::unordered_map`. The ballot hands its held hashes out in a small vector sized for the default block limit. Its held blocks move to the same small flat map as the vote weight per hash beside them, since an election rarely holds more than a few, so the first ones need no allocation and a held-block check is a few comparisons. The header also says why the ballot weighs blocks in a small flat map, which it left unexplained.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n",
+    "draft": false,
+    "pull_request": 5218,
+    "label": "pwojcikdev:election-flat-copies",
+    "created_at": "2026-10-16T12:03:43Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-19T19:42:50Z",
+    "run_id": null
+  },
+  {
     "hash": "1b82076cbc8bb9b2793be781dcf515c039182a19",
     "type": "pull_request",
     "title": "Remove conditional compiling.",
@@ -19039,6 +19055,19 @@
     "run_id": "9207899868"
   },
   {
+    "hash": "58315522e2bc2aec11485d2b479afa14473b6e8a",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Hash the whole account and signature in a vote's full hash (#5222)\n\n`vote::full_hash` passed the size of a pointer as the length of the account and the signature, so it covered only their first eight bytes. Both are hashed in full now, and a test changes each of their bytes in turn to check that the full hash follows.",
+    "pull_request": "5222",
+    "created_at": "2026-10-19T14:41:29Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-19T19:42:50Z",
+    "run_id": null
+  },
+  {
     "hash": "585e3b66ab62be9250cbd43190c7fdd5a75c7bff",
     "type": "pull_request",
     "title": "Compile time autumn2024",
@@ -24052,6 +24081,22 @@
     "docker_tag": "gr0v1ty/nano-node:6d8039c315845cbd5a7e6effb15e75f078a30882",
     "build_started_at": "2026-10-16T18:55:29Z",
     "run_id": "39053624949"
+  },
+  {
+    "hash": "6dc59cccb4a9837afbeedb3613fc29829334ede1",
+    "type": "pull_request",
+    "title": "Keep the hot lookup tables flat",
+    "author": "pwojcikdev",
+    "body": "Follow-up to #5202. Several tables on the vote and block paths were `std::unordered_map` or `std::unordered_set`, which allocate a node per entry and chase a pointer per lookup: the vote and block uniquers that record every received vote and block, the vote generator's and block rebroadcaster's deduplication, the cementing set's batch, the solicitor's per-loop requests, the erased election callbacks, the vote cache processor's batch and the bucket size tallies. They are `boost::unordered_flat_map` or set now, so inserts allocate nothing once a table has grown and lookups stay within it. The copies handed to RPC keep their `std::unordered_map` type.\n\nThe representative weight cache stays a `std::unordered_map` on purpose. It allocates nothing at steady state either way, and a tally looks up the same few representatives again and again, about 32 lookups per tally in the vote benchmark, so the table never leaves L1. There a flat map lookup measured about 1 ns slower than libc++'s: half of it is Boost's post-mixing of the hash, since the account hash does not declare itself avalanching, and half its group probe, which on ARM emulates x86's movemask with several NEON instructions. One build showed counted votes about ten percent slower with the flat map, but the same two binaries ranged from 5% faster to 43% slower when only the stack or heap placement changed, so that gap was mostly memory layout rather than the map. With the whole allocation series applied, counted votes measure level with develop.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n\n",
+    "draft": false,
+    "pull_request": 5220,
+    "label": "pwojcikdev:flat-lookup-tables",
+    "created_at": "2026-10-16T12:03:49Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-19T19:42:50Z",
+    "run_id": null
   },
   {
     "hash": "6dcf92b85531b88f558bf2ed428f645a4e35c70e",
@@ -47953,6 +47998,22 @@
     "docker_tag": "gr0v1ty/nano-node:dd7ddf21e817a27124074fc8c15d366a068cad95",
     "build_started_at": "2025-07-12T10:18:56Z",
     "run_id": "16237179859"
+  },
+  {
+    "hash": "dd91b0fda1c17308acc3559f0313d0a7dbaa82a4",
+    "type": "pull_request",
+    "title": "Keep the vote router's table and the caches around it flat",
+    "author": "pwojcikdev",
+    "body": "Follow-up to #5202 on the tables a vote passes through after routing. The router kept its routes in a multi_index with a hashed index by hash and an ordered index by election, so every hash of every vote was looked up node by node and every new route allocated one. The recently confirmed cache was a multi_index with a sequenced index and two hashed ones: a node per confirmation and a node-based lookup for every vote hash without an election, the usual late vote on a node in sync. The rebroadcaster kept, per representative, the block hashes it rebroadcast and the full hashes of the votes in two multi_index containers, a node per block hash and one per vote.\n\nThe route table is a `boost::unordered_flat_map` from hash to the election's weak pointer; the ordered index only served disconnecting an election, which is now a sweep of the table once per election that ends. The recently confirmed cache fills a ring of `max_size` slots with two flat maps leading from a root or a hash to its slot, so a confirmation allocates nothing once the ring is full; an erased entry frees its keys and leaves its slot to the next confirmation. The rebroadcaster's per-representative history lives in flat tables with a deque of keys keeping the order of first appearance for eviction. The router's `vote` also gets comments on its stages and its duplicate check.\n\nRelease build, medians of three runs, develop and the tip run back to back from kept binaries with the whole allocation series applied; the late vote change comes from the recently confirmed cache:\n\n| | develop | tip |\n|---|---|---|\n| counted vote, 1 hash | 1.8 µs | 1.8 µs |\n| counted vote, 16 hashes | 14.4 µs | 14.2 µs |\n| unmatched vote, 255 hashes | 52.4 µs | 47.1 µs |\n| late vote, 1 hash | 132 ns | 108 ns |\n| late vote, 16 hashes | 1.1 µs | 845 ns |\n| late vote, 16 hashes, 4 threads | 11.8 µs | 9.8 µs |\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5219,
+    "label": "pwojcikdev:vote-routing-tables",
+    "created_at": "2026-10-16T12:03:46Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-19T19:42:50Z",
+    "run_id": null
   },
   {
     "hash": "dd93542cd96e711d3ceee4c8e86fe0cba8cf5d37",
