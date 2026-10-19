@@ -36940,11 +36940,11 @@
     "title": "Route votes without allocating\n\nThe vote router reported its results in a hash map and kept the matched elections in another one,\nwhich costs a node per hash plus the tables, and it collected the unmatched hashes once more for\nthe second route lookup.\n\n`nano::vote_results` now holds one code per position of the vote's list of hashes and no hashes of\nits own, so it lives on the stack whatever the size of the vote. Matched elections go into a\n`small_vector`, and repeated hashes are found with a `flat_set` of positions over a\n`static_vector`. `vote_code` shrinks to a byte to keep the codes compact.\n\nRouting a vote that is late, a replay or unmatched no longer allocates at all. Repeated hashes and\nfiltered routing keep their behaviour and are now covered by tests, as is a vote of maximum size.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
     "pull_request": "N/A",
     "created_at": "2026-09-21T19:54:16Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-19T02:07:20Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:a870f9317f6914cc2e380c65b8d7558742ae9722",
     "build_started_at": "2026-10-14T13:23:35Z",
-    "run_id": null
+    "run_id": "39186211246"
   },
   {
     "hash": "a875267715c062e6c08f500df06c2371f2f37d17",
