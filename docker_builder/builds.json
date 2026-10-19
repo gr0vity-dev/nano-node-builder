@@ -37494,11 +37494,11 @@
     "title": "Add missing components to `node::container_info` (#5207)\n\n`node::container_info` left out four components that hold queues or client state: the bootstrap server and the websocket server had no `container_info` yet, and the block rebroadcaster and ledger notifications had one that was never called. All four are reported now. Peer history, port mapping and the epoch upgrader, which the removed TODO also listed, keep nothing in memory worth reporting.\n\nThe bootstrap server reports its request queue. The websocket server reports its sessions, the messages waiting in their send queues, their subscriptions and the accounts held in their subscription filters, which clients can grow without limit. A send queue is only accessed through its session's strand, so each session mirrors the queue size in an atomic that container info reads.",
     "pull_request": "5207",
     "created_at": "2026-10-15T21:50:49Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-19T07:10:26Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:ab632089529dcb5d9d667850b263ceaeada3dcc5",
     "build_started_at": "2026-10-15T23:43:38Z",
-    "run_id": null
+    "run_id": "39211774632"
   },
   {
     "hash": "ab8d3a7a414997561c37125a5039574d149413fb",
