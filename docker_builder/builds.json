@@ -41986,11 +41986,11 @@
     "title": "Grow the voters of a cached hash to the limit at once\n\nA vote cache entry keeps its first four voters inline, which suits a hash that only a few\nrepresentatives vote on. The router caches every vote it counts as well, so on a node in sync\nnearly every entry hears from all online representatives and fills up to `max_voters`: the\ninline voters are left behind after the fourth vote and the list reallocates about seven times\non its way to the limit, ending with more capacity than the limit needs.\n\nAn entry that outgrows its inline voters now reserves room for `max_voters` at once, so it\nallocates once and exactly as much as it may ever hold. Entries that stay small still allocate\nnothing.",
     "pull_request": "N/A",
     "created_at": "2026-10-09T08:46:39Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-20T23:40:08Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:c1801eb6e4dda5cf9cbb05579ee6a9de1c0e0332",
     "build_started_at": "2026-10-14T13:23:35Z",
-    "run_id": null
+    "run_id": "39513083813"
   },
   {
     "hash": "c18b9f31cbf1fa9eb5466e97e1023ee72645c0ef",
