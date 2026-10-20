@@ -24093,7 +24093,7 @@
     "label": "pwojcikdev:flat-lookup-tables",
     "created_at": "2026-10-16T12:03:49Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-10-19T19:42:50Z",
     "run_id": null
@@ -37068,6 +37068,22 @@
     "docker_tag": "",
     "build_started_at": "2026-04-21T12:43:26Z",
     "run_id": "24737289483"
+  },
+  {
+    "hash": "a90e27b5f78b3585a1e06f6eb9babeae6d19fc2e",
+    "type": "pull_request",
+    "title": "Fix wallet lock ordering and raise the LMDB reader slot limit",
+    "author": "pwojcikdev",
+    "body": "`wallets::mutex` guards the open wallets map, and several wallet paths took it in an order that let unrelated callers pile up behind slow work.\n\n**Read transactions were opened before the mutex.** `refresh_rep_keys_cache`, `exists` and `exists_any` opened their wallet read transaction first and then waited for the mutex, so every queued caller held one of LMDB's reader slots, 126 by default, and a refresh that lost the race for the mutex could overwrite a newer representative key cache with an older snapshot. This is what exhausted the reader table in `wallet.password_race_corrupt_seed` before #5204 capped its thread count. They now take the mutex first and open the transaction under it.\n\n**The write transaction was awaited under the mutex.** `reload`, `create`, `create_from_json` and `destroy` held the mutex while waiting for the wallet write transaction, so a writer busy with a rekey's key derivation or a commit's fsync stalled every wallet lookup, including the representative refreshes. `reload` runs every second on the dev network and every five minutes on the live network. The transaction now comes first; where a wallet table is created, the transaction commits before the mutex is released, because LMDB keeps a new table private to its transaction until then.\n\n**The reader table was left at LMDB's default.** The environment flags comment claimed `MDB_NOTLS` avoids reader slot exhaustion; it only ties slots to transactions instead of threads. Both environments now ask for 1024 slots, 64 KB of lock file, which LMDB applies to existing lock files when the node opens them exclusively.\n\n**New deterministic accounts were registered as representatives before their insert committed.** A reps scan whose snapshot predated the commit rebuilt the representative index without the account, and the account stayed out of the voting key cache until the next scan, 15 minutes on the live network. `insert_adhoc` already committed first. The single deterministic inserts now register after the commit through a shared helper, and `change_seed` and `deterministic_restore` run a full representative refresh after their transaction.\n\nEach change comes with a test: queued callers holding no reader slot, a lookup answering while a reload waits for the writer, 512 open read transactions, and seed inserts registering their representatives without a reps scan.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5216,
+    "label": "pwojcikdev:wallet-lock-order",
+    "created_at": "2026-10-15T22:40:10Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-20T01:42:55Z",
+    "run_id": null
   },
   {
     "hash": "a945ab419dbb7c504b2a69021116290186f7a8b9",
