@@ -8399,6 +8399,19 @@
     "run_id": "18407644184"
   },
   {
+    "hash": "26d076467146f6bf49b541d3c25c594c20e493ec",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Re-read the end iterator while erasing in nano::erase_if\n\nThe helper saved end () before the loop, which only holds for node-based\ncontainers. Re-read it on every pass so the helper is correct for flat\ntables and sequence containers too, and cover both with tests.",
+    "pull_request": "5220",
+    "created_at": "2026-10-19T16:24:56Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-21T06:28:18Z",
+    "run_id": null
+  },
+  {
     "hash": "26f06511f8f624ccfad1b0516b90361835fde3eb",
     "type": "commit",
     "author": "pwojcikdev",
@@ -19339,6 +19352,19 @@
     "run_id": "8599087233"
   },
   {
+    "hash": "592bb0cb55ef1cd6074e3bca03b765df6f2869bb",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Drop the explicit hasher from the flat vote tables\n\nboost::hash already covers every nano key type by forwarding to\nstd::hash, so the flat containers get the same hash through their\ndefault template argument.",
+    "pull_request": "5220",
+    "created_at": "2026-10-19T16:40:07Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-21T06:28:18Z",
+    "run_id": null
+  },
+  {
     "hash": "5949c35b608553c0bd6a742770958bff5809b5b6",
     "type": "commit",
     "author": "pwojcikdev",
@@ -29046,6 +29072,22 @@
     "docker_tag": "gr0v1ty/nano-node:843dd3a91c7a33fc64440147fc4887b959d8b43c",
     "build_started_at": "2026-06-10T13:48:49Z",
     "run_id": "27280941653"
+  },
+  {
+    "hash": "8456a04b69c731bdcd313c0d347d9ec0f5c6b765",
+    "type": "pull_request",
+    "title": "Reserve a vote's hashes and make a block context's promise on demand",
+    "author": "pwojcikdev",
+    "body": "Two small allocation fixes found while following up on #5202.\n\nDeserializing a vote pushed its hashes one by one into an empty vector, so a vote of 255 hashes reallocated nine times. The rest of the stream is hashes, so the vector reserves that many first and grows once.\n\nEvery queued block carried a `std::promise`, which allocates its shared state on construction, although only a blocking submission ever reads the future. The promise is now made in `get_future`, and `set_result` skips a context without one.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5221,
+    "label": "pwojcikdev:allocation-small-fixes",
+    "created_at": "2026-10-16T12:03:51Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-21T06:28:18Z",
+    "run_id": null
   },
   {
     "hash": "845f37b710a139d350c66a8bfb94f8cb33e2aa0a",
@@ -38943,6 +38985,19 @@
     "docker_tag": "gr0v1ty/nano-node:b2e265186bf0db06660ea8bda1ee611483cda629",
     "build_started_at": "2024-04-30T14:39:22Z",
     "run_id": "8898743967"
+  },
+  {
+    "hash": "b31b84778648923bde9c948b065bc5e1d4852b46",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Keep the hot lookup tables flat (#5220)",
+    "pull_request": "5220",
+    "created_at": "2026-10-21T02:03:56Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-21T06:28:18Z",
+    "run_id": null
   },
   {
     "hash": "b34317004258d30fe38bdc64325a6ae20c8790c2",
