@@ -11176,11 +11176,11 @@
     "title": "Benchmark message serialization and floods\n\nMeasures what sending costs the sending thread: serializing a vote or a block into the buffer a channel sends, handing a vote to the channels of a flood, and picking those channels among 256 peers. The flood sends to fake channels, which serialize and drop, and the peers are local connections that carry no traffic, so the numbers are the sender's own work. Every benchmark reports time, heap allocations and bytes per message or flood.\n\nThe per-channel loop that every flood ended in moves into `network::send_to`, so the benchmark drives the same code as the floods. The allocation counter moves to the shared benchmark header and takes the name of its unit.",
     "pull_request": "5217",
     "created_at": "2026-10-15T21:52:15Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-22T02:18:40Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:333097e886a3a1d853b98f7ed9dd10831bc7286b",
     "build_started_at": "2026-10-21T20:35:10Z",
-    "run_id": null
+    "run_id": "39707558548"
   },
   {
     "hash": "3332bad6911de5a4f1f9885f67a10cd1f2201d88",
