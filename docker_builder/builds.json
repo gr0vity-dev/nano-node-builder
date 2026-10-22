@@ -29152,7 +29152,7 @@
     "label": "pwojcikdev:allocation-small-fixes",
     "created_at": "2026-10-16T12:03:51Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-10-21T06:28:18Z",
     "run_id": null
@@ -39089,6 +39089,22 @@
     "docker_tag": "gr0v1ty/nano-node:b362c7ca40cc9faa67c265b475e085c9c0779b8a",
     "build_started_at": "2024-09-05T08:19:09Z",
     "run_id": "10716588858"
+  },
+  {
+    "hash": "b363908d3d3c39a0a18b7b108a031ed3941a401c",
+    "type": "pull_request",
+    "title": "Copy an election's votes and hashes without node-based containers",
+    "author": "pwojcikdev",
+    "body": "Follow-up to #5202 on the election side. An election handed the request loop a snapshot of its votes as a `std::unordered_map` built from the ballot's flat map, one node per voter plus the table, every time a vote request or block broadcast was due, and the solicitor only looked representatives up in it. The debug logs on election start, erase and expiry listed the held block hashes through a `std::unordered_set` built from a copy of the ballot's block map, whether the log was on or not.\n\nThe ballot now names its vote map type, and the snapshot, the extended status and the ballot's copy use it, so a copy is one allocation; the public `election::votes ()`, which only tests call, keeps returning a `std::unordered_map`. The ballot hands its held hashes out in a small vector sized for the default block limit. Its held blocks move to the same small flat map as the vote weight per hash beside them, since an election rarely holds more than a few, so the first ones need no allocation and a held-block check is a few comparisons; that map is named too, `block_map`, and `blocks ()`, the election's copy and the extended status hand it out as is, so the RPC and log views no longer rebuild a `std::unordered_map` from it. The header also names the weight map and says why the ballot weighs blocks in a small flat map, which it left unexplained. The four debug lines that list an election's hashes take a lazy wrapper, `nano::log::as_election_hashes`, so a line the level drops no longer locks the election and copies them at all.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5218,
+    "label": "pwojcikdev:election-flat-copies",
+    "created_at": "2026-10-16T12:03:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-22T12:20:48Z",
+    "run_id": null
   },
   {
     "hash": "b3722ca73d9555c0b893fb46ce9e77aa2356bd7c",
