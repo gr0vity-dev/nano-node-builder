@@ -2294,6 +2294,19 @@
     "run_id": "7885945627"
   },
   {
+    "hash": "0b9ad5e5474a25e952afd3304a7f3023fd2457e5",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Copy an election's votes and hashes without node-based containers (#5218)\n\n* Say why the ballot weighs blocks in a small flat map\n\nThe map of vote weight per block hash is a sorted vector with inline room for a few entries, which the header left unexplained. The ballot now names the type, `weight_map`, and its comment says what the container is and why it fits an election that rarely weighs more than a few hashes.\n\n* Copy an election's votes flat for the request loop\n\nAn election handed the request loop a snapshot of its votes as a std::unordered_map built from the ballot's flat map, one node per voter plus the table, every time a vote request or block broadcast was due, and the solicitor only looked representatives up in it. The ballot now names its vote map type, and the snapshot, the extended status and the ballot's copy use it, so a copy is one allocation. The public `election::votes ()`, which only tests call, keeps returning a std::unordered_map.\n\n* Log an election's hashes without building a hash set\n\nThe debug logs on election start, erase and expiry listed the held block hashes through a std::unordered_set built from a copy of the ballot's block map, whether the log was on or not. The ballot now hands its held hashes out in a small vector sized for the default block limit.\n\n* Keep the ballot's held blocks in a small flat map\n\nThe ballot kept its competing blocks in a std::unordered_map, a node per block and a hashed lookup for every held-block check a counted vote makes, while the vote weight per hash beside them already sits in a small flat map. An election rarely holds more than a few blocks, so the held blocks move to the same container: the first ones need no allocation and a check is a few comparisons. Eviction already breaks ties by hash, so the sorted order changes nothing there. The ballot names the type, `block_map`, and hands it out as is from `blocks ()`, through the election's copy and in the extended status, so the RPC and log views of an election's blocks no longer rebuild a std::unordered_map from it.\n\n* List an election's hashes only when the log line is emitted\n\nThe four active elections debug lines passed the election's held block hashes as a ready-made list, so every start, erase, checkup cancel and stale report locked the election and copied its hashes before spdlog compared the level and dropped the line. The hashes now go in as a lazy wrapper, `nano::log::as_election_hashes`, whose stream operator fetches and joins them only while the line is formatted, in the style of the lib's `as_nano` and `as_size` wrappers. Node types get their own formatting header for it, as the transport layer has.\n\n* Build an election's extended status only when tracing can emit it\n\nconfirm_once built the extended status on every confirmation, a copy of the votes and blocks plus a full tally with a weight query per voter, to feed a trace line that is compiled out without tracing and a debug line that only reads four counters the plain status beside it already carries. The debug line now reads the plain status, and both the confirmation and the expiry trace calls build the extended status inside a compile-time tracing check, so a build without tracing never copies and tallies an election just to log it.",
+    "pull_request": "5218",
+    "created_at": "2026-10-22T17:40:24Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-22T20:35:47Z",
+    "run_id": null
+  },
+  {
     "hash": "0bac1274bf1ee44abdd06242c05a6f4cb59696cb",
     "type": "commit",
     "author": "clemahieu",
@@ -55187,6 +55200,22 @@
     "docker_tag": "gr0v1ty/nano-node:fd0a99945993e5b91514de86b8e11cf6935584e7",
     "build_started_at": "2024-09-17T09:35:37Z",
     "run_id": "10902375635"
+  },
+  {
+    "hash": "fd11d8a0c448869c9319c04a3524cd9dcacaf8dc",
+    "type": "pull_request",
+    "title": "Fix wallet lock ordering and raise the LMDB reader slot limit",
+    "author": "pwojcikdev",
+    "body": "`wallets::mutex` guards the open wallets map, and several wallet paths took it in an order that let unrelated callers pile up behind slow work.\n\n**Read transactions were opened before the mutex.** `refresh_rep_keys_cache`, `exists` and `exists_any` opened their wallet read transaction first and then waited for the mutex, so every queued caller held one of LMDB's reader slots, 126 by default, and a refresh that lost the race for the mutex could overwrite a newer representative key cache with an older snapshot. This is what exhausted the reader table in `wallet.password_race_corrupt_seed` before #5204 capped its thread count. They now take the mutex first and open the transaction under it.\n\n**The write transaction was awaited under the mutex.** `reload`, `create`, `create_from_json` and `destroy` held the mutex while waiting for the wallet write transaction, so a writer busy with a rekey's key derivation or a commit's fsync stalled every wallet lookup, including the representative refreshes. `reload` runs every second on the dev network and every five minutes on the live network. The transaction now comes first; where a wallet table is created, the transaction commits before the mutex is released, because LMDB keeps a new table private to its transaction until then.\n\n**The reader table was left at LMDB's default.** The environment flags comment claimed `MDB_NOTLS` avoids reader slot exhaustion; it only ties slots to transactions instead of threads. Both environments now ask for 1024 slots, 64 KB of lock file, which LMDB applies to existing lock files when the node opens them exclusively.\n\n**New deterministic accounts were registered as representatives before their insert committed.** A reps scan whose snapshot predated the commit rebuilt the representative index without the account, and the account stayed out of the voting key cache until the next scan, 15 minutes on the live network. `insert_adhoc` already committed first. The single deterministic inserts now register after the commit through a shared helper, and `change_seed` and `deterministic_restore` run a full representative refresh after their transaction.\n\nEach change comes with a test: queued callers holding no reader slot, a lookup answering while a reload waits for the writer, 512 open read transactions, and seed inserts registering their representatives without a reps scan.\n\n**`stop` could lose a scan thread's wakeup.** It set the stopped flag under `action_mutex` and notified the reps and receivable scan threads, which wait on `wallets::mutex`. A notify landing between a scan thread's predicate check and its wait was lost, and the thread slept its full interval, 15 minutes for the reps scan on the live network, before `stop` could join it. The flag is now set under `wallets::mutex` as well.\n\n**`container_info` read the action queue under the wrong mutex.** The queue size was read under `wallets::mutex` while the action thread changes the queue under `action_mutex`. It now takes `action_mutex`. Neither of these has a test: the lost wakeup has no deterministic hook, and container info methods are not tested.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n",
+    "draft": false,
+    "pull_request": 5216,
+    "label": "pwojcikdev:wallet-lock-order",
+    "created_at": "2026-10-15T22:40:10Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-22T20:35:47Z",
+    "run_id": null
   },
   {
     "hash": "fd1afe2ab7ebce00fd6ec039a24a219c962ba17a",
