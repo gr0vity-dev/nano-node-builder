@@ -20743,6 +20743,22 @@
     "run_id": "8356789849"
   },
   {
+    "hash": "5e9313c4bf10ad76403b0e2908eceae2f754a949",
+    "type": "pull_request",
+    "title": "Adjust CI job timeouts",
+    "author": "pwojcikdev",
+    "body": "Linux unit test jobs occasionally hit their 90-minute limit when a runner is slow to install packages. In [run 39986293395](https://github.com/nanocurrency/nano-node/actions/runs/39986293395), `apt-get install` in the Prepare step took about an hour on two Linux jobs, while it normally takes under a minute, and both jobs were cancelled during the tests. This gives the jobs more room.\n\n- `unit_tests.yml`: `linux_test` goes from 90 to 150 minutes. `macos_test` gets an explicit 150 minutes; it had no limit, so it ran under GitHub's 360-minute default, while recent runs take 18 to 48 minutes.\n- `code_sanitizers.yml`: both sanitizer jobs go from 120 to 150 minutes. The per-suite `timeout -sKILL` limits on core and RPC tests are unchanged.\n- `build_deploy.yml`: the 90-minute job limits are removed, so release builds run under the 360-minute maximum for GitHub-hosted runners.\n\nA follow-up will make the Linux prepare script restart stalled `apt-get` downloads.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5228,
+    "label": "pwojcikdev:ci-job-timeouts",
+    "created_at": "2026-10-23T20:49:01Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-23T23:04:44Z",
+    "run_id": null
+  },
+  {
     "hash": "5e9a369f35991c1903950fcc05d65c23c59cf16e",
     "type": "pull_request",
     "title": "Fix RPC shutdown races by routing stop requests to the owner",
@@ -54343,6 +54359,22 @@
     "built_at": "2023-02-22T15:07:14Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:f8587f630ac8abaf4438d7a80a50c93d8d58f245"
+  },
+  {
+    "hash": "f860ab8182d5e2ce5d37882d7773263f2396145b",
+    "type": "pull_request",
+    "title": "Give peer reachout a component of its own and let its trigger wake only its loop",
+    "author": "pwojcikdev",
+    "body": "Split out of #5226.\n\n## A reachout trigger wakes only the loop it is for\n\nThe five network loops waited on one condition variable without a predicate, so `trigger_reachout`, which the rep crawler calls every round while it lacks quorum, also ran a keepalive round and a cleanup round each time. Keepalives went out at the crawler's cadence rather than the keepalive period, and each cleanup round added a whole interval to the duplicate filter's epoch, so a node without quorum aged filter entries out in a fraction of the configured cutoff.\n\nEvery loop now waits with a predicate on `stopped`, which re-waits to the same deadline on any other wake-up, and the preconfigured loop waits on a trigger flag set under the mutex, as the telemetry trigger does.\n\n## Peer reachout as a component of its own\n\nWith the loops fixed, the reachout concern still sat in `network` next to unrelated ones. It now lives in `nano::network_reachout`: the loops over keepalive peers, cached peers and preconfigured peers, the address reachout the keepalive RPC uses, and the trigger, which the rep crawler now requests through `node::trigger_reachout`, with its own threads, condition variable and resolver. `merge_peer`, `track_reachout` and `not_a_peer` stay on the network, where the channel container asks them whether an endpoint may be connected to. Nothing moves in the config (`peer_reachout` and `cached_peer_reachout` stay under `[node.network]`) or in the stats.\n\n## Tests\n\nThe reachout tests now live in `network_reachout.cpp`:\n\n- `disabled`, formerly `network.disable_reachout`, waited a second and checked that no reachout had happened, which a node whose loops had not run yet passes too. It now checks that a node started after the flagged one, without the flags, went round all three reachout loops while the flagged node went round none.\n- `reconnect_cached`, formerly `network.reconnect_cached`, drops six bootstrap flags that have no bearing on the realtime channels it reconnects.\n- `resolve_and_connect` is new: the address reachout calls back with the endpoint it connected to, and a second reachout to the connected peer sends a keepalive down the existing channel instead of opening another.\n- `trigger_wakes_only_its_loop`, `trigger_keeps_filter_epoch` and `trigger_reaches_out` cover the trigger: a hundred triggers leave the keepalive and cleanup counters alone, do not age the duplicate filter, and bring the preconfigured reachout forward.\n\n## Left for later\n\n- `network::resolver` stays on the network because `distributed_work` resolves work peers through it; it belongs with that component.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5229,
+    "label": "pwojcikdev:network-reachout-component",
+    "created_at": "2026-10-23T21:40:19Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-23T23:04:44Z",
+    "run_id": null
   },
   {
     "hash": "f8695dced075991f8f23567b37ae98568e02d260",
