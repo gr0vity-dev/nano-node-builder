@@ -43712,7 +43712,7 @@
     "pull_request": "5208",
     "created_at": "2026-10-15T21:04:47Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-10-15T21:24:14Z",
     "run_id": null
@@ -49512,6 +49512,22 @@
     "docker_tag": "gr0v1ty/nano-node:e371484f3a305321e9f02eb18a9f05968d5fdf01",
     "build_started_at": "2026-06-29T20:59:21Z",
     "run_id": "28530063865"
+  },
+  {
+    "hash": "e38988f70c79f92a103d68127be66085cdbfd2d5",
+    "type": "pull_request",
+    "title": "Keep the TOML parser out of the config header",
+    "author": "RickiNano",
+    "body": "`nano/lib/config.hpp` included `nano/lib/tomlconfig.hpp`, and through it the header-only cpptoml parser, only for the helpers that read a config file into a `tomlconfig`. About a dozen files call those helpers. `nano/lib/logging.hpp` also included `tomlconfig.hpp`, though it only names `tomlconfig` by reference.\n\nBecause of those two includes, cpptoml reached **250 of the 417 translation units**. As a result:\n- cpptoml and the standard headers it pulls in (`<iostream>`, `<fstream>`, `<map>`, `<unordered_map>`, …) were parsed far more often than they were used.\n- any edit to `tomlconfig.hpp` or the config file helpers rebuilt most of the tree.\n\nWith this change, cpptoml reaches **39 translation units**.\n\n### Changes\n- `read_config_file`, `load_config_file` and `prefix_config_error` move unchanged from `config.hpp`/`config.cpp` to the new `nano/lib/config_file.hpp`/`config_file.cpp`. Every file that calls them now includes the new header.\n- `config.hpp` no longer includes `tomlconfig.hpp`.\n- `logging.hpp` uses the forward declarations of `tomlconfig` and `error` in `nano/lib/fwd.hpp` and no longer includes `tomlconfig.hpp`.\n- Files that implement `serialize_toml`/`deserialize_toml` now include `tomlconfig.hpp` themselves.\n- About 60 files had been getting standard headers (`<algorithm>`, `<iostream>`, `<sstream>`, …) through cpptoml. They now include those headers directly.\n\n### Testing\n- Not built locally, so CI is the only build check.\n- A static check found that every caller of the moved helpers includes `config_file.hpp`.\n- A scan for use of cpptoml's standard headers without a direct include found nothing introduced by this change.\n- The Qt wallet, Linux and macOS builds are the most likely places for a missing standard header to show up.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5214,
+    "label": "RickiNano:config-file-header",
+    "created_at": "2026-10-15T19:59:47Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-23T12:00:38Z",
+    "run_id": null
   },
   {
     "hash": "e38d9bf96d269e10ecd341686e077e4eb329ca27",
