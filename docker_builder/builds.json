@@ -41368,11 +41368,11 @@
     "title": "Pick a flood's channels without copying the peer list\n\nA flood picked its channels by copying every peer into a deque, shuffling the whole list with the random pool and cutting it down to the fanout, and the principal representative floods sorted every known representative into a multimap for each vote. The channel container now draws the fanout in one pass over the peers by reservoir sampling, uniform among the channels that pass the filter, with no copy and no state between calls. The floods that leave principal representatives out sample twice the fanout and keep the first candidates that are not principal, checked outside the channel lock because the crawler holds its own lock while it asks the container for peers. A sample is shuffled before it is returned, since its slots keep the walk order of the first channels, and keeping the front of an unshuffled sample would favour the oldest connections. The crawler hands the floods its principal channels straight from its index, and the ordered list it still builds for the solicitor and RPC sorts a vector instead of filling a multimap.\n\nThe targets benchmark measures the sampler now. Tests pin a sample's size, filter and order, and that a sample without principal representatives leaves them out and picks fairly among the rest. Both fairness tests fail on a sample left in walk order.",
     "pull_request": "5217",
     "created_at": "2026-10-15T22:53:17Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-23T07:07:15Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:bd4761040e799749e3fa815f37a57d1021790413",
     "build_started_at": "2026-10-21T20:35:10Z",
-    "run_id": null
+    "run_id": "39912337935"
   },
   {
     "hash": "bd53d74da93b6e9c986555dab273599f738911bb",
