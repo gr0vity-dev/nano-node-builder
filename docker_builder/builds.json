@@ -10027,6 +10027,22 @@
     "docker_tag": "gr0v1ty/nano-node:2d8dc01d517b3e29f3d0a75b9ff0791e5e86865f"
   },
   {
+    "hash": "2d99193807d0c1dee5cbfa6dc25886112be30635",
+    "type": "pull_request",
+    "title": "Rename --database_upgrade to --upgrade_database",
+    "author": "pwojcikdev",
+    "body": "Renames the `--database_upgrade` CLI command to `--upgrade_database`.\n\nThe other commands that rewrite the ledger name the action first: `--migrate_database_lmdb_to_rocksdb`, `--populate_topo_index`, `--drop_topo_index`, `--populate_extended_ledger_indices` and `--drop_extended_ledger_indices`. The upgrade command now reads the same way. The hint `--database_info` prints for an outdated ledger points at the new name.\n\nThe command was added in #5068 and has only shipped in V29 development builds, so the old name is dropped without an alias.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5231,
+    "label": "pwojcikdev:upgrade-database-flag",
+    "created_at": "2026-10-24T13:43:44Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T14:32:49Z",
+    "run_id": null
+  },
+  {
     "hash": "2d9cc2672727a4db0c555fb08d0dc396186d2299",
     "type": "pull_request",
     "title": "Send rep_crawler queries without holding the lock",
@@ -17440,6 +17456,19 @@
     "built_at": "2023-03-03T19:46:58Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:4f7d249ab997e4353d97f5d2fabc2f489c2790ec"
+  },
+  {
+    "hash": "4f8993c84eb39f02ebe82f858dc4eeaba4ac26ba",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Give peer reachout a component of its own and let its trigger wake only its loop (#5229)\n\n* Rewrite the reachout tests and test the address reachout\n\n`network.disable_reachout` waited a second and checked that no reachout\nhad happened, which a node whose loops had not run yet passes too. It\nnow starts a node without the flags after the flagged one and checks\nthat the second went round all three reachout loops while the first\nwent round none.\n\n`network.reconnect_cached` drops the six bootstrap flags it set, none of\nwhich touches the realtime channels it reconnects, and gets a block\ndescription and step comments.\n\n`network.reachout` is new: it reaches out to an address, checks the\ncallback reports the endpoint it connected to, and that a second\nreachout to the connected peer sends a keepalive down the existing\nchannel instead of opening another. The rep crawler is off for now,\nsince its reachout trigger also wakes the keepalive loop.\n\n* Let a reachout trigger wake only the preconfigured reachout loop\n\nThe five network loops wait on one condition variable with no predicate,\nso `trigger_reachout`, which the rep crawler calls every round while it\nlacks quorum, also ran a keepalive round and a cleanup round each time.\nKeepalives then went out at the crawler's cadence instead of the keepalive\nperiod, and each cleanup round added a whole interval to the duplicate\nfilter's epoch, aging entries out in a fraction of the configured cutoff.\n\nEvery loop now waits with a predicate on `stopped`, which re-waits to the\nsame deadline on any other wake-up, and the preconfigured loop waits on a\ntrigger flag set under the mutex, as the telemetry trigger does. Three\ntests pin it down: a hundred triggers leave the keepalive and cleanup\ncounters alone, do not age the filter, and bring the preconfigured\nreachout forward. `network.reachout` no longer needs the rep crawler off\nto see a quiet keepalive loop.\n\n* Move peer reachout out of the network into `network_reachout`\n\nThe network ran five loops on one condition variable: cleanup, keepalive\nand three kinds of reachout, the last with a trigger from the rep crawler\nthat is what woke the other loops before the previous fix. Reaching out\nto peers is a concern of its own, like the peer history and the rep\ncrawler, so it gets its own component with its own threads, condition\nvariable and resolver: the loops over keepalive peers, cached peers and\npreconfigured peers, the address reachout the keepalive RPC uses, and the\ntrigger, which the rep crawler now asks the node for. `merge_peer`,\n`track_reachout` and `not_a_peer` stay on the network, since they answer\nwhether this node may connect to an endpoint and the channel container\nasks them too. The reachout config keys stay under the network's table\nand the stats keep their type.\n\nThe reachout tests move to network_reachout.cpp under the\n`network_reachout` suite: `disabled`, `resolve_and_connect`, the three\ntrigger tests and `reconnect_cached`.",
+    "pull_request": "5229",
+    "created_at": "2026-10-24T12:42:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T14:32:49Z",
+    "run_id": null
   },
   {
     "hash": "4f99a456a7c03f9cd18f1977dd22e86a8b583bb9",
@@ -29398,6 +29427,38 @@
     "docker_tag": "gr0v1ty/nano-node:852347e723c15988bf8d3b473677e9661306089e",
     "build_started_at": "2024-04-03T20:40:14Z",
     "run_id": "8545236562"
+  },
+  {
+    "hash": "852b877bc3abc70f48bbe779bae8d3f740bf3d59",
+    "type": "pull_request",
+    "title": "Keep the macOS wallet in the light appearance",
+    "author": "pwojcikdev",
+    "body": "The Qt wallet does not support dark mode yet: its stylesheets hardcode light theme colors, such as black text and a light grey account field, which clash with the palette macOS hands out under the dark appearance.\n\n`Info.plist` already opts out with `NSRequiresAquaSystemAppearance`, but only the packaged app bundle has an `Info.plist`, so a `nano_wallet` binary run on its own, as from a build directory, followed the system appearance.\n\nThe wallet now sets the application appearance to Aqua right after the `QApplication` is created, through `set_application_appearance` next to `set_application_icon`. Qt 5 follows the effective appearance and rebuilds its palette and native style to match, so the splash screen, error dialogs and main window all come up light. The macOS implementation lives in `plat/darwin/appearance.mm` and `nano_wallet` now links AppKit; other platforms get an empty implementation and are unchanged.\n\nThe `Info.plist` key stays, so the packaged app keeps opting out before any code runs.\n\nFollow-up: proper dark mode support means replacing the hardcoded colors with palette roles, after which this override can go.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5230,
+    "label": "pwojcikdev:qt-wallet-light-appearance",
+    "created_at": "2026-10-24T13:38:44Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T14:32:49Z",
+    "run_id": null
+  },
+  {
+    "hash": "852b941d56439aa4be7d15d31341f3829b840010",
+    "type": "pull_request",
+    "title": "Rework the network tests and fix what they turned up",
+    "author": "pwojcikdev",
+    "body": "A read of `nano/core_test/network.cpp` and `peer_container.cpp` found that about twenty of their tests never touched `nano::network`, four were `DISABLED` and stale, and none of the current listing, flooding, capacity or handshake functions had a direct test. Eleven commits rework the suite; the new tests then turned up a defect and some code nothing calls, which three commits fix; four more bring the tests the rework moved or left alone up to the same style and fix two things found on the way. The reachout trigger fix and the `network_reachout` component that the same work turned up landed on their own in #5229, which this PR builds on.\n\n## The test suite\n\n### Relocations\n\n`peer_container.cpp` becomes `tcp_channels.cpp` first, since there is no `peer_container` class and the file tests the channel container behind `nano::network`; its suites follow the file name. Then tests that belong to another component move to that component's file, under its suite name and with that file's comment style, and nothing else about them changes:\n\n| Tests | New home |\n|---|---|\n| `parse_endpoint.*`, `network.ipv6` | `network_functions.cpp` |\n| `receivable_processor.confirm_insufficient_pos`, `confirm_sufficient_pos` | `election.cpp` |\n| `receivable_processor.send_with_receive`, `network.receive_weight_change` | `wallet.cpp` |\n| `network.send_node_id_handshake_tcp`, `send_insufficient_work`, `filter_invalid_network_bytes`, `filter_invalid_version_using`, `peer_container.depeer_on_outdated_version` | `tcp_server.cpp` |\n| `peer_exclusion.validate` | new `peer_exclusion.cpp` |\n| `network.loopback_channel` | `inproc.cpp` |\n| `network.bandwidth_limiter_with_burst` | new `bandwidth_limiter.cpp` |\n\nThe one behavioural change on the way is in `wallet.send_with_receive`, which fed the same block object to two nodes' block processors; the second node now gets its own copy, which is what TSan was complaining about. The moves keep the tests as they were so that they read as moves; the style pass at the end of the branch gives each of them a block description, step comments and current declarations, with the assertion changes described below.\n\n### Deletions\n\nEight tests go: raw boost socket plumbing, boost's own address mapping, a ten-second wait for a port that `stop` zeroes synchronously, a confirm_ack test that sent no confirm_ack, a keepalive discovery test that `peer_discovery_via_peering_only_node` covers, a three-line duplicate of `cleanup_purge`, and the three `DISABLED` tests that have been off since 2024.\n\n### Rewrites\n\nThe survivors that waited for nothing, tested the old fanout formula, or set up state they never used are rewritten against the current code: `fanout` (was `DISABLED_list_fanout`), `reachout` (its reachout-disabling config was never passed to the node), `tcp_no_accept_excluded_peers`, `duplicate_revert_vote` and `no_self_incoming` (timed waits replaced by the stat that marks the event), `flood_block` (folded from two publish tests), `duplicate_revert_publish` and the two `purge_dead_channel` tests (six bootstrap flags nothing reads, a debug observer, an unused node). The tests whose behaviour was sound were left alone by the rewrite and brought up to the same style afterwards, so every test in `network.cpp` and `tcp_channels.cpp` now has a block description above it and one-line step comments inside.\n\nWhere that pass changed what a test asserts: `tcp_server.send_node_id_handshake_tcp` expected two handshake messages on the connecting side, which the two-step handshake gives it only when a second connection in the other direction races in; it now expects two on the accepting side and one on the connecting side, and one keepalive each. `peer_exclusion.validate` also checks that the second strike excludes the peer. `network.send_valid_publish` drops the wallets it never used and checks that the latest block becomes the one published. `network.cleanup_purge` checks that the purged channel is closed, not only counted. `inproc.loopback_channel` runs one node instead of two.\n\n### New coverage\n\n`list` (connection order, cut, filter, version form), `send_to_buffer`, `flood_block_initial`, `flood_message_all` with a channel stalled by starving the outbound limiter, `flood_block_many`, `check_capacity` in its three forms, `flood_keepalive`, `fill_keepalive_self` slots 0 and 1 plus `fill_keepalive_self_external`, `syn_cookies`, `verify_handshake_response` through every rejection, `prepare_handshake_response` per handshake version, and `tcp_channels.keepalive_idle` for the keepalive sweep. Branch coverage of `network.cpp` and `tcp_channels.cpp` from these suites, measured on the test commits before the reachout split: 79.0% and 81.2%. What stays uncovered is dead code (removed below), flag-only and defensive branches, rejections that need a peer the test system cannot produce (`not_a_peer` and the blocklist at channel creation, which the `peer_blocklist` suite covers), and `container_info`.\n\n## What the tests turned up\n\n### A channel the container drops is now closed\n\n`network::exclude`, which telemetry calls on a peer that reports another genesis, erased the channel from `tcp_channels` and nothing closed it: its socket, its server and its sending task kept running with no owner left to stop them. Whoever still held the channel, such as the message processor's queue origins, destroyed it after the node's io context had stopped, which asserts in debug builds and hangs the shutdown in release. `tcp_channels::erase` now takes the entry out under the mutex and closes its socket, server and channel outside it, the way `close` and `purge` already do. `network.exclude` checks the strike, the closed channel and the synchronous removal; `telemetry.genesis_mismatch_excludes_peer` sends a well signed ack for the wrong genesis over the wire and checks the same on the thread that processes messages.\n\n### Code nothing calls\n\nRemoved: `bootstrap_peer` on the network and the channel container, with the bootstrap attempt index and the channel timestamp only it used; `tcp_channels::random_fill`, whose live twin is on the network; `syn_cookies::validate`, superseded by the handshake's own validation; and `network::merge_peers`, which had one test that could not fail. The slow telemetry test read the first channel through a friend declaration and a `nano::transport` namespace wrapper; it now uses `network.list (1).front ()`, so both friend declarations go, one of which named a test class that never existed. Two stale comments go with them.\n\n### Node flags nothing reads\n\n`disable_lazy_bootstrap`, `disable_legacy_bootstrap`, `disable_wallet_bootstrap`, `disable_bootstrap_bulk_pull_server` and `disable_bootstrap_bulk_push_client` lost their last readers when legacy bootstrap was removed and have been inert for two releases. The members, the command line options and the tests setting them are gone; passing one of the options now fails as any unknown option does, which is how #5210 handled the same situation. `disable_bootstrap_listener` stays: it is still half of the two-flag switch that leaves the peering port unbound, though its help text describes behaviour that is long gone, which is a separate change.\n\n### A bandwidth limiter test that could not fail\n\n`network.bandwidth_limiter_with_burst` sent four publishes over inproc channels and checked that none was dropped. An inproc channel hands its message straight to the destination and never consults the limiter, so the test has passed regardless since the channel traffic rework. Two tests of what the node's limiter adds to the token bucket take its place: one bucket for bootstrap server traffic and one for every other traffic type, each from its own limit and burst ratio, the retry hint on a refused request, and the super rebroadcaster flag lifting the generic limit while the bootstrap limit stays.\n\n### The inproc channel named the wrong peer\n\nAn inproc channel took its node id and protocol version from the node it sends from rather than the node it sends to, so a channel between two nodes named the wrong peer, and the reply channel handed to the receiver named the receiver itself. Only loopback channels, which every use but two is, got it right, which is why no test noticed. The peer is now the destination, with a test on a channel between two nodes.\n\n## Left for later\n\n- The slow test suite's `peer_container.random_set` keeps its old suite name.\n- The help text of `disable_bootstrap_listener`, and the dead `to_bootstrap_connection` path behind it.\n- The inproc channel's remote and local endpoint are both still the sending node's endpoint, the same mistake one field over.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5226,
+    "label": "pwojcikdev:network-fixes",
+    "created_at": "2026-10-22T13:13:30Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T14:32:49Z",
+    "run_id": null
   },
   {
     "hash": "852df6d447235063692ffcd337d9b82562a77ec6",
@@ -50102,6 +50163,22 @@
     "docker_tag": "gr0v1ty/nano-node:e62602cc4ba478aba4c4cf65874bdd14b6e15ae6",
     "build_started_at": "2024-03-09T11:12:06Z",
     "run_id": "8214107450"
+  },
+  {
+    "hash": "e63d3b013a3b3da289cf6123a71120f4297e2383",
+    "type": "pull_request",
+    "title": "Stop the LMDB to RocksDB migration on an unreadable node config",
+    "author": "pwojcikdev",
+    "body": "`--migrate_database_lmdb_to_rocksdb` now stops when it cannot read the node config, instead of migrating with default database settings.\n\nUntil now, a `config-node.toml` that failed to parse, or a bad `--config` override, was silently ignored: the command fell back to the default `[node.lmdb]` and `[node.rocksdb]` settings and migrated with those. It now prints `Error reading config: ...` and returns `error_cli::reading_config` before it touches the ledger, the same way `--database_upgrade` handles it. A missing `config-node.toml` still means defaults, as for every other command.\n\nNo unit test: the command calls `nano::logger::initialize`, which would replace the `core_test` logger for every test that runs after it in the same process.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5232,
+    "label": "pwojcikdev:migrate-database-config-errors",
+    "created_at": "2026-10-24T13:43:46Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T14:32:49Z",
+    "run_id": null
   },
   {
     "hash": "e64670349edc5b8565d577646aebffc7983853ff",
