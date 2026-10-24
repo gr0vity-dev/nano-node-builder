@@ -719,6 +719,22 @@
     "docker_tag": "gr0v1ty/nano-node:04103e492b98961e5d6fa6f7a3dd2475caa48710"
   },
   {
+    "hash": "047d07e8723f186bf61b67913eda2d6e6699577f",
+    "type": "pull_request",
+    "title": "Make the inproc channel describe its destination as the peer",
+    "author": "pwojcikdev",
+    "body": "Split out of #5226.\n\nAn inproc channel took its node id and protocol version from the node it sends from rather than the node it sends to, so a channel between two nodes named the wrong peer, and the reply channel handed to the receiver named the receiver itself. Only loopback channels, which every use but two is, got it right, which is why no test noticed. The peer is now the destination.\n\n## Tests\n\n- `inproc.describes_destination` checks the node id on a channel between two nodes.\n\n## Left for later\n\n- The inproc channel's remote and local endpoint are both still the sending node's endpoint, the same mistake one field over.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5236,
+    "label": "pwojcikdev:inproc-channel-peer",
+    "created_at": "2026-10-24T15:05:28Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T17:32:01Z",
+    "run_id": null
+  },
+  {
     "hash": "0489bbf1c2c023295f8f9e08ab2205f347c19d90",
     "type": "pull_request",
     "title": "Bounded election buckets with dynamic reprioritization",
@@ -6102,6 +6118,22 @@
     "docker_tag": "gr0v1ty/nano-node:1b762aa0c2a963843a286c6b937b1cbc132a788a",
     "build_started_at": "2026-10-19T19:42:50Z",
     "run_id": "39313245823"
+  },
+  {
+    "hash": "1b8035380b07dad0fd317af228a56b6c79967c50",
+    "type": "pull_request",
+    "title": "Remove the bootstrap node flags nothing reads",
+    "author": "pwojcikdev",
+    "body": "Split out of #5226.\n\n`disable_lazy_bootstrap`, `disable_legacy_bootstrap`, `disable_wallet_bootstrap`, `disable_bootstrap_bulk_pull_server` and `disable_bootstrap_bulk_push_client` lost their last readers when legacy bootstrap was removed and have been inert for two releases. The members, the command line options and the tests setting them are gone. Passing one of the options now fails as any unknown option does, which is how #5210 handled the same situation.\n\n`disable_bootstrap_listener` stays: it is still half of the two-flag switch that leaves the peering port unbound, so the tests that set it keep it.\n\n## Left for later\n\n- The help text of `disable_bootstrap_listener` describes behaviour that is long gone, as does the `to_bootstrap_connection` path behind it.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5237,
+    "label": "pwojcikdev:dead-bootstrap-flags",
+    "created_at": "2026-10-24T15:05:31Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T17:32:01Z",
+    "run_id": null
   },
   {
     "hash": "1b82076cbc8bb9b2793be781dcf515c039182a19",
@@ -17713,6 +17745,22 @@
     "run_id": "30612944569"
   },
   {
+    "hash": "50dd02aa9ccbe96107114564ee31278ebe6f689d",
+    "type": "pull_request",
+    "title": "Remove the network code nothing calls",
+    "author": "pwojcikdev",
+    "body": "Split out of #5226.\n\nRemoved:\n\n- `bootstrap_peer` on the network and the channel container, with the bootstrap attempt index and the channel timestamp only it used, unused since legacy bootstrap went.\n- `tcp_channels::random_fill`, whose live twin is on the network.\n- `syn_cookies::validate`, superseded by the handshake's own validation.\n- `network::merge_peers`, whose only caller was `node.merge_peers`, a test that could not fail and goes with it.\n\nThe slow telemetry test read the first channel through a friend declaration and a `nano::transport` namespace wrapper; it now uses `network.list (1).front ()`, so both friend declarations on `tcp_channels` go, one of which named a test class that never existed.\n\nTwo stale comments go with them: `flood_block_many` never calls back for an empty deque, and the blank keepalive slot has nothing to do with node v19.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5238,
+    "label": "pwojcikdev:network-dead-code",
+    "created_at": "2026-10-24T15:05:34Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T17:32:01Z",
+    "run_id": null
+  },
+  {
     "hash": "50dd9ac5539fd47296ba69dd378d1c7f353149f6",
     "type": "commit",
     "author": "pwojcikdev",
@@ -22017,6 +22065,22 @@
     "run_id": "8224504096"
   },
   {
+    "hash": "641c0508cf23a3c4218b06608522f8516c67487c",
+    "type": "pull_request",
+    "title": "Exit non-zero when a node CLI command fails",
+    "author": "pwojcikdev",
+    "body": "`nano_node` and `nano_wallet` now exit with 1 when a CLI command fails. Until now they checked the error from `handle_node_options` only for an unknown command, so a command that printed an error still exited with 0 and scripts could not tell it from one that succeeded. `--help` and `--version` keep their exit codes.\n\nFor that to cover every command, `handle_node_options` now returns an error on the failure paths that only printed one: `--vacuum` and `--snapshot` on any exception, `--migrate_database_lmdb_to_rocksdb` when the migration throws, `--final_vote_clear` with neither `--root` nor `--all`, `--generate_config` with an unknown type, and `--wallet_decrypt_unsafe` for a key it cannot read or that does not match its account.\n\n`--diagnostics` no longer reports a missing OpenCL library as an error. OpenCL is optional and most nodes run without it, so with the new exit code it would otherwise fail on most servers.\n\nThe Docker entrypoint runs `nano_node --vacuum` under `set -e` before it starts the daemon (`--vacuum-over`). A failed vacuum would now stop the container from starting, so the entrypoint logs the failure and starts the node, as it did before.\n\nThe new `cli_exit_codes` systest checks the exit status of commands that succeed and of commands that fail on bad arguments, an unknown config type or an unreadable `config-node.toml`.\n\n`--migrate_database_lmdb_to_rocksdb` is also touched by #5232; whichever of the two merges second needs a small rebase.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5233,
+    "label": "pwojcikdev:cli-exit-codes",
+    "created_at": "2026-10-24T14:42:52Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T17:32:01Z",
+    "run_id": null
+  },
+  {
     "hash": "6420c0a1049e50722f8713abb448d4d3aab11c2f",
     "type": "pull_request",
     "title": "Fix database iterator-transaction lifetimes",
@@ -22293,6 +22357,22 @@
     "docker_tag": "gr0v1ty/nano-node:65aa6bba0c13a8a95f2a51bcf25543a62f5aeef5",
     "build_started_at": "2025-04-17T21:29:38Z",
     "run_id": "14525163192"
+  },
+  {
+    "hash": "65b20406a81c1c1945ce99d6247f8d268839379c",
+    "type": "pull_request",
+    "title": "Empty the wallet startup systest output file before each launch",
+    "author": "pwojcikdev",
+    "body": "The `wallet_startup` systest failed on CI at the step that deletes the wallet config: the start reported success and the opened wallet matched, yet no config had been recreated, and the data directory held log files for only two of the three starts.\n\n`start_wallet` launched the wallet with a truncating redirection and grepped the output file for \"Peering port\" right away. Bash performs the redirections of a background command inside the child after the fork, so when the child had not been scheduled yet the grep read the line of the previous start, the helper killed the new process before it had opened the file and returned success. The checks that followed read the same stale output, which is why the opened wallet matched while the config was missing.\n\nThe parent shell now empties the output file before the launch and the wallet appends to it, so the poll can only match output of the process it started.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+    "draft": false,
+    "pull_request": 5234,
+    "label": "pwojcikdev:systest-wallet-startup-race",
+    "created_at": "2026-10-24T14:46:16Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T17:32:01Z",
+    "run_id": null
   },
   {
     "hash": "65c82926f7c8049073ea558a7a21d5fff1cf9237",
@@ -34517,6 +34597,22 @@
     "docker_tag": "gr0v1ty/nano-node:9bc2f146c49abc18ecd416942feed5a2107b3114"
   },
   {
+    "hash": "9bcb1a48216e80753e9509d8fd2c9533cf649bad",
+    "type": "pull_request",
+    "title": "Cap blocks random responses and tighten bootstrap request checks",
+    "author": "pwojcikdev",
+    "body": "A `blocks_random` bootstrap request may name up to 128 hashes, and the server answered with every block it found. The response now stops at 100 blocks (`bootstrap_server::max_random_blocks`); the topology strategy already re-requests any hash a response leaves out, and its `fetch_batch` default now follows the same constant so a full request normally gets a full answer.\n\nWhile covering the other request types, the server suite went from 16 to 30 tests: each type has a test that a response stops at the requested count and one that a count or target outside the allowed range is dropped, plus a disabled server, the per-channel queue limit, pulls by unknown accounts and hashes, and frontiers from past the last account. Byte-level tests pin the blocks random parser at its limit, and two node tests cover responses the client must discard: a payload of the wrong type under a live id, and an unknown id.\n\nTwo checks are tightened on the way. The `start_type` and `target_type` bytes of a request were never validated, and a value outside the enum fell through to an empty or all-zero response; `verify` now drops such a request as invalid. The client's `verify` now also rejects a frontiers page with more entries than requested, as it does for blocks and topo index pages. `static_assert`s keep each response cap within the 16-bit header length field.\n\nEvery setting in `bootstrap_config.hpp` and every declaration in `bootstrap_server.hpp` now carries a one-line comment.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5239,
+    "label": "pwojcikdev:bootstrap-request-limits",
+    "created_at": "2026-10-24T15:42:25Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T17:32:01Z",
+    "run_id": null
+  },
+  {
     "hash": "9bcb65ca2434ce3bc78f37544e4ffaf2d673a326",
     "type": "commit",
     "created_at": "2024-03-07T17:12:10Z",
@@ -35829,6 +35925,22 @@
     "docker_tag": "gr0v1ty/nano-node:a1f3d7ed00700f3412948725c05eb47bf122b0b3",
     "build_started_at": "2024-03-04T16:38:34Z",
     "run_id": "8143765258"
+  },
+  {
+    "hash": "a1fd72a216e3907d1e37bd5e759cc041d0db2345",
+    "type": "pull_request",
+    "title": "Add vote relay for representatives a node cannot peer with",
+    "author": "pwojcikdev",
+    "body": "A node that cannot peer with enough representatives, typically because it sits behind NAT or a firewall, has no way to ask them for votes. It can only wait for whatever votes other nodes happen to rebroadcast, and a quiet election may never confirm for it. With this change the node asks a peer that can reach those representatives to fetch their votes on its behalf.\n\n## How it works\n\nTwo new messages carry the protocol. `vote_relay_req` names the blocks and the representatives whose votes the requester wants, with a flag for whether non-final votes are wanted too. `vote_relay_ack` carries a batch of votes for a request id, and an empty ack terminates the request. Both declare their payload length in the header and ignore bytes past the fields they know, as `telemetry_ack` and the ascending bootstrap messages do, so a later version can append fields without breaking older nodes.\n\nServing relay requests is opt-in: a node with `[node.vote_relay] enable = true` advertises the new `vote_relay` capability in the node id handshake and runs a relay thread. Asking is on by default: every node sends relay requests when a capable peer is connected and there are principal representatives it cannot reach itself. A peer that does not advertise the capability never receives the new message types, so older nodes are unaffected.\n\nOn the requesting node:\n\n- Each election loop round, the solicitor lists the principal representatives the rep crawler has no channel for. Those seen voting recently are ranked by weight, heaviest first, since they decide quorum. Those never seen voting get a few rotating slots so every one gets asked eventually. By default 32 representatives go into a request, 28 observed and 4 to explore.\n- Elections still missing votes from the same representatives share one request, split into chunks of 255 hashes and spread over the relays picked for the round (`relay_fanout`, one relay per round by default). Before quorum any vote settles a representative, after quorum only a final one does, and the request says which it wants.\n- An election sends a relay request at most every 30 seconds, a separate and much slower gate than its `confirm_req` cadence, because every relay request costs the relay upstream work.\n- Acks are matched to outstanding requests by id and relay channel, anything else is dropped as unsolicited. A request remembers the representatives and blocks it asked for, and a vote from any other representative or for other blocks is dropped as a `mismatch`, so a relay cannot claim to reach representatives it was never asked about. The votes go through the ordinary vote processor under a new `relay` vote source, so they are signature checked and counted by elections like any other vote, but the rep crawler never attributes them to the relay's channel. A completed request lingers for 5 seconds, because messages on one channel are processed on several threads and a vote ack can arrive after the terminator.\n\nOn the relay:\n\n- A request is first served from the vote cache. Every (block, representative) pair the cache cannot answer is registered in an index and the representative is queried with an ordinary `confirm_req` over the relay's own channel to it. Pairs already in flight for an earlier request are not queried again, the vote is shared with every waiter when it arrives. Representatives the relay has no channel to, or whose channel is full, are dropped from the request right away instead of waiting for votes that cannot come.\n- Votes are forwarded in acks of up to 64 as they come in, and the request ends with the empty terminator once every queried representative answered, or after `request_timeout` (5 seconds) with whatever arrived.\n- A relay cannot forge votes: each one carries the representative's signature and the requester verifies it. A relay can only withhold or delay.\n\nCaps on both sides keep a request bounded. A relay refuses requests naming more than `max_reps` representatives or no representative at all, holds at most `channel_limit` requests per peer, queued or waiting for votes, tracks at most `max_requests`, and both directions use a dedicated `vote_relay` traffic class. A refused request is answered with the empty terminator right away, so the requester frees its slot instead of waiting out its own timeout; a request the relay accepted but cannot track ends with whatever the cache had. A node with the relay disabled drops requests silently, it never advertised the capability. A requester allows `max_outstanding` unanswered requests per relay and `max_requests` overall, and stops asking a relay until it catches up or its lost requests expire.\n\n## Reachable stake\n\nThe node remembers the representatives whose votes a relay delivered, for as long as online representatives are remembered, and reports their weight as *relayed* stake. *Reachable* stake is peered and relayed together, each representative counted once. `node.online ()` and the monitor's quorum warning now test reachable stake instead of peered stake, so a node behind NAT that confirms through relays is no longer reported as unable to confirm. The monitor line prints all four figures and `confirmation_quorum` gains `relayed_stake_total` and `reachable_stake_total`.\n\n## Solicitor rewrite\n\n`confirmation_solicitor` is replaced by `vote_solicitor`. A round (`vote_solicitor_round`) is a pure planner that decides, per election, which reachable representatives to ask with `confirm_req`, which to send the winner block to, and which unreachable ones to ask through a relay. The solicitor then sends what the round accumulated. The caps are unchanged: 50 vote requests and fanout / 2 directed broadcasts per election, 30 broadcasts per round, representatives voting for a different block exempt. The planner does no I/O, so its decisions are unit tested directly.\n\n## Configuration\n\n```toml\n[node.vote_relay]\nenable = false           # Serve relay requests and advertise the capability\nrequest_timeout = 5000   # Wait for representatives before finishing a request, ms\nmax_requests = 4096      # Requests waiting for representative votes\nchannel_limit = 32       # Requests per peer, queued or waiting for votes\nbatch_size = 64          # Requests processed per batch, must be nonzero\nmax_reps = 64            # Representatives per request, larger requests are refused, must be nonzero\n\n[node.vote_relay_client]\nrequest_timeout = 60000  # Give up on a relay that never terminates a request, ms\nlinger_timeout = 5000    # A completed request keeps accepting late acks, ms\nmax_requests = 4096\nmax_outstanding = 64     # Unanswered requests per relay\n\n[node.vote_solicitor]\nrelay_fanout = 1         # Relays asked per election loop round, 0 disables relay requests\nrelay_reps = 32          # Representatives per relay request\nrelay_reps_observed = 28 # Slots for representatives seen voting, heaviest first\nrelay_reps_explore = 4   # Slots for representatives not seen voting, rotated\n```\n\n## Other changes\n\n- The magic_enum range of `stat::detail` goes from 512 to 1024. The relay's details would otherwise fall past it and lose their names.\n- The rep crawler returns representatives as a deque, like the node's other channel listings.\n\n## Tests\n\n- `message.vote_relay_*`: serialization of both messages, their limits and rejected payloads.\n- `deserialize_message*`: relay samples at the minimum and maximum counts, the non-final flag and the empty terminator go through every parser test, including truncation and trailing bytes.\n- `vote_relay_index.*`, `vote_relay.*` and `vote_relay_config.*` in `nano/core_test/vote_relay.cpp`: serving from the cache, the finality filter, querying representatives, deduplicating in-flight queries, timeouts, the `max_reps` and per-peer caps, refusals answered with the terminator, representatives behind a full channel, config validation, capability advertisement, and two nodes end to end.\n- `vote_relay_client_index.*` and `vote_relay_client.*`: request and ack matching, unsolicited acks and votes the request did not ask for, timeouts, both caps, lost requests expiring when relays are listed, acks after the terminator, relayed representatives and reachable stake.\n- `vote_solicitor_round.*`, `vote_solicitor.*`, `relay_rep_selector.*` and `vote_solicitor_config.*`: round planning and caps, fork exemptions, grouping of relay requests by missing representatives and finality, weight ranking and rotation, config validation, and an election confirming through a relay end to end.\n- `node.online`, `node.stake_*`, `election_pacing.relay_request_*`, `rpc.confirmation_quorum`, `network.topology_hidden_nodes`.\n- `nano/slow_test/vote_relay.cpp`: two relays, one public representative, three representatives and two spamming nodes behind NAT, through a spam burst with forks. Once with the relays rebroadcasting votes as usual and once with relay requests as the only path for the hidden representatives' votes. Every node cements everything and agrees on every frontier, the hidden nodes never peer with each other, every one of them receives votes through the relays and no ack is dropped as unsolicited. The test prints the relay counters and the stake figures per node.\n\n## Known limitations, left for follow-ups\n\n- A relay only serves representatives it has a channel to itself. A representative no public node can reach stays unreachable.\n- A vote arriving at the relay between the cache lookup and the registration of the request is missed, the request then ends on the relay's timeout.\n- Requests without a representative filter, votes from anyone on a block, are refused. They are reserved for a vote storage role.\n- Relays are picked at random among capable peers, there is no scoring of how well a relay answers.\n- Relayed votes do not make a representative peered. The rep crawler learns nothing through relays by design, so `peers_stake_total` stays what it was.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5201,
+    "label": "pwojcikdev:vote-relay-fable-2",
+    "created_at": "2026-10-01T10:50:17Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T17:32:01Z",
+    "run_id": null
   },
   {
     "hash": "a216b1508d51b804ea357bf82adef093d5099433",
@@ -49981,6 +50093,22 @@
     "built_at": "2023-09-13T01:51:03Z",
     "build_status": "fail",
     "docker_tag": ""
+  },
+  {
+    "hash": "e50f6fca3fd169bf826fb5f41527527cdd5db2d9",
+    "type": "pull_request",
+    "title": "Close the channels the container erases, like close and purge",
+    "author": "pwojcikdev",
+    "body": "`tcp_channels::close` and `purge` take their entries out under the mutex and close each one's socket, server and channel outside it, while `erase` only removed the entry. `erase` now does the same as the other two, so every way a channel leaves the container closes it. `network::erase` and `network::exclude` say so in their comments.\n\n## Tests\n\n- `network.exclude` checks the strike on the peer, the closed channel and socket, and that the channel leaves the container at once rather than at the next purge.\n- `telemetry.genesis_mismatch_excludes_peer` drives the same path from a telemetry ack received over the wire and checks it on the thread that processes messages.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5235,
+    "label": "pwojcikdev:tcp-channels-erase-close",
+    "created_at": "2026-10-24T15:05:26Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T17:32:01Z",
+    "run_id": null
   },
   {
     "hash": "e51108f63aaa5499ed68c091d53518309c009df9",
