@@ -3133,6 +3133,19 @@
     "run_id": "20641393166"
   },
   {
+    "hash": "0ecbe3949ba5b65487ba52d3374dfb5b64ede36a",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Adjust CI job timeouts (#5228)",
+    "pull_request": "5228",
+    "created_at": "2026-10-24T00:17:17Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T01:29:44Z",
+    "run_id": null
+  },
+  {
     "hash": "0ecf3a1701f9f9337acb98d6d5ec0ac04a0182a1",
     "type": "pull_request",
     "pull_request": 4269,
@@ -19337,6 +19350,19 @@
     "docker_tag": "gr0v1ty/nano-node:58b0093f709fd51fdca7a56c95b02c5cd0c70177",
     "build_started_at": "2026-02-02T17:03:21Z",
     "run_id": "21601128226"
+  },
+  {
+    "hash": "58d368cb95676ee5e0729197c701ecce23f664c9",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Keep the representative weight cache flat (#5227)\n\n* Benchmark the representative weight cache\n\nMeasures what the cache costs its callers with 64, 1k, 10k and 100k\ncached representatives: the weight of one representative with and\nwithout a cached weight, the weights of a ballot's hundred voters\nwritten into a span or returned as a map, setting a weight again, a\ncopy of the whole cache, and a mix of one tally and one lookup per vote\nwith an update every hundred votes. Every benchmark reports time, heap\nallocations and bytes per operation.\n\nThe cache under test stands alone, bound to a dev node's store view and\nfilled through `put`, which touches the cache only, so the numbers are\nthose of the table and its lock.\n\n* Keep the representative weight cache flat\n\nThe cache kept the weight of every representative at or above the cache\nminimum in a std::unordered_map, a node per representative. A copy of\nthe whole cache, which the rep tiers take on every refresh and the\nrepresentatives and representative_count RPCs on every call, allocated\na node per representative while it held the cache's lock, so a ledger\nwrite changing a weight waited for the whole copy. A batch read\nreturned as a map, as an election reads the weights of its voters,\nallocated a node per voter.\n\nThe cache is now a boost::unordered_flat_map, so a copy is one\nallocation and one pass over a contiguous table, an order of magnitude\nfaster at every size measured, and a lookup reads one table instead of\na bucket and a node. Before the bootstrap height the ledger's snapshot\ncopies the bootstrap weights into the same type, and the weight check\nof the node's entry point sums either kind of map. The header now also\nsays what the committed and unused weights hold and what the\nconsistency check asserts.\n\n* Test the weight snapshot and consistency check and regroup the weight tests\n\nThe whole-cache snapshot had no test of what it holds: it now has one\npinning that it carries exactly the representatives at or above the\ncache minimum with their weights, and that a snapshot already taken\nstays as it was while the cache moves on. The consistency check had\nonly ever been seen to pass; two death tests show it stopping the node\nwhen committed and unused weight do not add up to the supply and when\nthe committed weight leaves no room for the burned balance. The weight\ncache test also checks that a cache counts as empty until it is loaded.\n\nThe older ledger tests of weights join the weights group under its\nnaming scheme, each with a description: rollback_representation\nbecomes weights_rollback and now checks the result of its last\nrollback, representation becomes weights_legacy_blocks,\nchange_representative_move_representation becomes\nweights_change_without_balance and checks that the change moves\nnothing, bootstrap_weights becomes weights_bootstrap, and\nzero_rep_weight becomes weights_zero_representative on a bare ledger\ninstead of a whole node. Every test the change moves or edits gets\nstep comments saying what each block or rollback does to the weights.",
+    "pull_request": "5227",
+    "created_at": "2026-10-24T00:41:31Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-24T01:29:44Z",
+    "run_id": null
   },
   {
     "hash": "58d66ae2754dc53936e67fcb1bd1171e362b1704",
