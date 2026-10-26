@@ -326,11 +326,11 @@
     "title": "Make the inproc channel describe its destination as the peer (#5236)\n\nAn inproc channel took its node id and protocol version from the node it\nsends from rather than the node it sends to, so a channel between two nodes\nnamed the wrong peer, and the reply channel handed to the receiver named the\nreceiver itself. Only a loopback channel, where the two coincide, got it\nright, which is why no test noticed.\n\nThe peer is now the destination, and `inproc.describes_destination` checks\nit on a channel between two nodes.",
     "pull_request": "5236",
     "created_at": "2026-10-26T00:38:48Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-26T02:03:59Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:01a085bedd824f2fe9c789326d54737a9a502f95",
     "build_started_at": "2026-10-26T01:34:35Z",
-    "run_id": null
+    "run_id": "40254874521"
   },
   {
     "hash": "01a1e672f8264a34191706957db1d4f91242d922",
