@@ -320,6 +320,19 @@
     "run_id": "8003038674"
   },
   {
+    "hash": "01a085bedd824f2fe9c789326d54737a9a502f95",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Make the inproc channel describe its destination as the peer (#5236)\n\nAn inproc channel took its node id and protocol version from the node it\nsends from rather than the node it sends to, so a channel between two nodes\nnamed the wrong peer, and the reply channel handed to the receiver named the\nreceiver itself. Only a loopback channel, where the two coincide, got it\nright, which is why no test noticed.\n\nThe peer is now the destination, and `inproc.describes_destination` checks\nit on a channel between two nodes.",
+    "pull_request": "5236",
+    "created_at": "2026-10-26T00:38:48Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-26T01:34:35Z",
+    "run_id": null
+  },
+  {
     "hash": "01a1e672f8264a34191706957db1d4f91242d922",
     "type": "commit",
     "author": "pwojcikdev",
@@ -20520,6 +20533,19 @@
     "run_id": "11902466950"
   },
   {
+    "hash": "5d4d05dd4b6e69d9ef3752d2beb73ede5ace9411",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rename --database_upgrade to --upgrade_database (#5231)\n\nThe other commands that rewrite the ledger name the action first:\n--migrate_database_lmdb_to_rocksdb, --populate_topo_index,\n--drop_topo_index and the extended ledger index commands. The upgrade\ncommand now reads the same way. It has only shipped in V29 development\nbuilds, so the old name goes without an alias.",
+    "pull_request": "5231",
+    "created_at": "2026-10-26T01:18:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-26T01:34:35Z",
+    "run_id": null
+  },
+  {
     "hash": "5d4d3f30b2df74317c45efd60839956cd23ed6ea",
     "type": "pull_request",
     "title": "Benchmarking suite",
@@ -27732,6 +27758,22 @@
     "run_id": "8409177637"
   },
   {
+    "hash": "7d31d57e0d926a6616265b4e36d58ea7677987ae",
+    "type": "pull_request",
+    "title": "Remove the bootstrap node flags nothing reads",
+    "author": "pwojcikdev",
+    "body": "Split out of #5226.\n\n`disable_lazy_bootstrap`, `disable_legacy_bootstrap`, `disable_wallet_bootstrap`, `disable_bootstrap_bulk_pull_server` and `disable_bootstrap_bulk_push_client` lost their last readers when legacy bootstrap was removed and have been inert for two releases. The members and the tests setting them are gone.\n\nThe command line options stay so that existing launch commands keep working: they still parse, `--help` lists them as deprecated, and they have no effect. `cli.deprecated_node_flags` checks that each of them parses.\n\n`disable_bootstrap_listener` stays: it is still half of the two-flag switch that leaves the peering port unbound, so the tests that set it keep it.\n\n## Left for later\n\n- The help text of `disable_bootstrap_listener` describes behaviour that is long gone, as does the `to_bootstrap_connection` path behind it.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5237,
+    "label": "pwojcikdev:dead-bootstrap-flags",
+    "created_at": "2026-10-24T15:05:31Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-26T01:34:35Z",
+    "run_id": null
+  },
+  {
     "hash": "7d34852cc75a937e94f31c33e22aa70add8ac751",
     "type": "commit",
     "created_at": "2023-05-26T13:42:15Z",
@@ -28096,6 +28138,19 @@
     "docker_tag": "gr0v1ty/nano-node:7e99e7361673b8e35af8f672354f7e35a235a321",
     "build_started_at": "2025-11-07T11:44:40Z",
     "run_id": "19168704787"
+  },
+  {
+    "hash": "7e9e7f909d6d3b0bd84fcd6a1ba0002069680e6a",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Keep the macOS wallet in the light appearance (#5230)\n\nThe wallet's stylesheets hardcode light theme colors, such as black\ntext and a light grey account field, so it does not render correctly\nunder the macOS dark appearance. Info.plist opts out with\nNSRequiresAquaSystemAppearance, but only the packaged app bundle has\nan Info.plist, so a nano_wallet binary run on its own followed the\nsystem appearance.\n\nThe wallet now sets the application appearance to Aqua right after the\nQApplication is created. Qt follows the effective appearance and\nrebuilds its palette and native style to match, and error dialogs\nshown before the main window get the light appearance too. Other\nplatforms are unchanged.",
+    "pull_request": "5230",
+    "created_at": "2026-10-26T01:20:00Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-26T01:34:35Z",
+    "run_id": null
   },
   {
     "hash": "7ea2a1b7ce7d63f0e3d6e8799e8ef72726c73405",
@@ -41557,6 +41612,22 @@
     "docker_tag": "gr0v1ty/nano-node:bcebd82f19b69a3264d129c30bdb4234f942f6a1",
     "build_started_at": "2025-04-18T10:40:57Z",
     "run_id": "14533896583"
+  },
+  {
+    "hash": "bcec67402ff32f6558371a0ae014498215798cf1",
+    "type": "pull_request",
+    "title": "Exit non-zero when a node CLI command fails",
+    "author": "pwojcikdev",
+    "body": "`nano_node` and `nano_wallet` now exit with 1 when a CLI command fails. Until now they checked the error from `handle_node_options` only for an unknown command, so a command that printed an error still exited with 0 and scripts could not tell it from one that succeeded. `--help` and `--version` keep their exit codes.\n\nFor that to cover every command, `handle_node_options` now returns an error on the failure paths that only printed one: `--vacuum` and `--snapshot` on any exception, `--migrate_database_lmdb_to_rocksdb` when the migration throws, `--final_vote_clear` with neither `--root` nor `--all`, `--generate_config` with an unknown type, and `--wallet_decrypt_unsafe` for a key it cannot read or that does not match its account.\n\n`--diagnostics` no longer reports a missing OpenCL library as an error. OpenCL is optional and most nodes run without it, so with the new exit code it would otherwise fail on most servers.\n\nThe Docker entrypoint runs `nano_node --vacuum` under `set -e` before it starts the daemon (`--vacuum-over`). A failed vacuum would now stop the container from starting, so the entrypoint logs the failure and starts the node, as it did before.\n\nThe new `cli_exit_codes` systest checks the exit status of commands that succeed and of commands that fail on bad arguments, an unknown config type or an unreadable `config-node.toml`.\n\n`--migrate_database_lmdb_to_rocksdb` is also touched by #5232; whichever of the two merges second needs a small rebase.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5233,
+    "label": "pwojcikdev:cli-exit-codes",
+    "created_at": "2026-10-24T14:42:52Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-26T01:34:35Z",
+    "run_id": null
   },
   {
     "hash": "bcf11c2bbd2a8aed41d3714e7821342efb5ccfd8",
