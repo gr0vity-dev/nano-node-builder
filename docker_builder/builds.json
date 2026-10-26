@@ -16620,11 +16620,11 @@
     "title": "Exit non-zero when a node CLI command fails (#5233)\n\n* Report every failing node CLI command in its error code\n\nvacuum, snapshot and the LMDB to RocksDB migration printed their\nfailures without setting the returned error, and so did\nfinal_vote_clear without --root or --all, generate_config with an\nunknown type and wallet_decrypt_unsafe for a key it could not read.\nSet it on each.\n\nA missing OpenCL library no longer counts as a diagnostics failure:\nOpenCL is optional and most nodes run without it.\n\n* Exit non-zero when a node CLI command fails\n\nnano_node and nano_wallet checked the error from handle_node_options\nonly for an unknown command, so a command that failed still exited\nwith 0 and scripts could not tell. Exit with 1 instead.\n\nThe Docker entrypoint runs --vacuum under set -e before it starts the\ndaemon. It now logs a failed vacuum and starts the node, as it did\nbefore, unless the vacuum left data.ldb missing. Then it stops and\npoints to backup.vacuum.ldb instead of starting on an empty ledger.\n\nThe cli_exit_codes systest checks that commands that succeed exit with\n0 and that commands that fail exit with 1.",
     "pull_request": "5233",
     "created_at": "2026-10-26T16:56:45Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-26T20:03:27Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:4aecc40b82a6eff408fc5c3d0f4a0726619494ea",
     "build_started_at": "2026-10-26T19:31:30Z",
-    "run_id": null
+    "run_id": "40387491607"
   },
   {
     "hash": "4af4ff59f30b93cbc0c113226a5044e9c4f82ed5",
