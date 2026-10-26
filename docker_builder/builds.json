@@ -16614,6 +16614,19 @@
     "run_id": "25603729709"
   },
   {
+    "hash": "4aecc40b82a6eff408fc5c3d0f4a0726619494ea",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Exit non-zero when a node CLI command fails (#5233)\n\n* Report every failing node CLI command in its error code\n\nvacuum, snapshot and the LMDB to RocksDB migration printed their\nfailures without setting the returned error, and so did\nfinal_vote_clear without --root or --all, generate_config with an\nunknown type and wallet_decrypt_unsafe for a key it could not read.\nSet it on each.\n\nA missing OpenCL library no longer counts as a diagnostics failure:\nOpenCL is optional and most nodes run without it.\n\n* Exit non-zero when a node CLI command fails\n\nnano_node and nano_wallet checked the error from handle_node_options\nonly for an unknown command, so a command that failed still exited\nwith 0 and scripts could not tell. Exit with 1 instead.\n\nThe Docker entrypoint runs --vacuum under set -e before it starts the\ndaemon. It now logs a failed vacuum and starts the node, as it did\nbefore, unless the vacuum left data.ldb missing. Then it stops and\npoints to backup.vacuum.ldb instead of starting on an empty ledger.\n\nThe cli_exit_codes systest checks that commands that succeed exit with\n0 and that commands that fail exit with 1.",
+    "pull_request": "5233",
+    "created_at": "2026-10-26T16:56:45Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-26T19:31:30Z",
+    "run_id": null
+  },
+  {
     "hash": "4af4ff59f30b93cbc0c113226a5044e9c4f82ed5",
     "type": "pull_request",
     "title": "Add work_server_use_peers field to config",
@@ -42924,6 +42937,19 @@
     "run_id": "8214009875"
   },
   {
+    "hash": "c3ae3c9df40edcee810df2e125378d0857551d02",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Remove the network code nothing calls (#5238)\n\n`bootstrap_peer` on the network and on the channel container, with the\nbootstrap attempt index and the channel timestamp only it used, went\nunused when legacy bootstrap was removed. `tcp_channels` kept a\n`random_fill` while the network has the one in use, `syn_cookies::validate` lost its caller to\nthe handshake's own validation, and `network::merge_peers` had only a\ntest that could not fail.\n\nThe slow telemetry test read the first channel through a friend\ndeclaration and a `nano::transport` namespace wrapper; `network.list (1)`\ngives it the same channel through the public API, so both friend\ndeclarations go, one of which named a test class that never existed. Two\nstale comments go with them: `flood_block_many` never calls back for an\nempty deque, and the blank keepalive slot has nothing to do with node v19.",
+    "pull_request": "5238",
+    "created_at": "2026-10-26T16:36:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-26T19:31:30Z",
+    "run_id": null
+  },
+  {
     "hash": "c3b3614223baa1f738806d0fec61b53581940628",
     "type": "commit",
     "created_at": "2024-03-19T11:08:25Z",
@@ -42986,6 +43012,19 @@
     "docker_tag": "gr0v1ty/nano-node:c409f5dbc427cac28b133b804752be0deaa4a61f",
     "build_started_at": "2025-12-02T16:12:59Z",
     "run_id": "19865392715"
+  },
+  {
+    "hash": "c41c5d0e34637f65be6bed30ad9073442add035d",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Remove the bootstrap node flags nothing reads (#5237)\n\n`disable_lazy_bootstrap`, `disable_legacy_bootstrap`,\n`disable_wallet_bootstrap`, `disable_bootstrap_bulk_pull_server` and\n`disable_bootstrap_bulk_push_client` lost their last readers when legacy\nbootstrap was removed and have been inert for two releases. The members\nand every test that set them go. The command line options stay so that\nexisting launch commands still parse: `--help` lists them as deprecated\nand they have no effect.",
+    "pull_request": "5237",
+    "created_at": "2026-10-26T16:30:54Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-26T19:31:30Z",
+    "run_id": null
   },
   {
     "hash": "c4372137eeb6eda63a9ae9c7c04acc641af567cd",
