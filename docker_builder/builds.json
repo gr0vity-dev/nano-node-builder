@@ -5556,6 +5556,19 @@
     "run_id": "11368687585"
   },
   {
+    "hash": "192c6385c742de3fb9978667161458b8c8748360",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Switch, create and restore wallets in the Qt wallet (#5206)",
+    "pull_request": "5206",
+    "created_at": "2026-10-26T20:32:37Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-26T23:16:07Z",
+    "run_id": null
+  },
+  {
     "hash": "193b1ced5edef64add759e6fee75cf2fb126ad76",
     "type": "pull_request",
     "title": "Refactor wallet API to use nano::result (boost outcome) and direct return values",
@@ -7590,6 +7603,22 @@
     "docker_tag": "gr0v1ty/nano-node:2121503e311c5ea333d61861239fe80574493c02",
     "build_started_at": "2026-08-20T16:15:58Z",
     "run_id": "32391005719"
+  },
+  {
+    "hash": "212ad56b5b635fb0504d99abefcfd5f036fae05b",
+    "type": "pull_request",
+    "title": "Keep heavy library headers out of widely included headers",
+    "author": "RickiNano",
+    "body": "Eleven widely included headers pulled in boost.thread, boost.circular_buffer, boost.outcome, boost.iostreams or a large part of asio, though most of the files that include them use only a declaration or two from those headers. With precompiled headers off, the default, **282 of the 438 nano translation units** now compile with fewer headers and about 12% faster, which makes a full rebuild of nano about **11% faster**.\n\n### Changes\n- `threading.hpp`: `thread_attributes::get_default` moves into `thread_runner.cpp`, its only user, so boost.thread leaves the header. The header also drops an unused `utility.hpp`.\n- `stats.hpp`: the private `sampler_entry` is now defined in `stats.cpp`, so `boost::circular_buffer` goes with it.\n- `channel.hpp` no longer includes `tcp_socket.hpp`, which it never used.\n- `testutil.hpp` no longer includes `test_channel.hpp`. `transport/fwd.hpp` forward declares `test_channel` instead.\n- `fair_queue_traits.hpp` is folded into `fair_queue.hpp`, which declares the channel `alive` trait. The trait's definition moves to the new `fair_queue.cpp`, so the queue no longer needs `channel.hpp`. Every channel queue now sees the specialization. Before, a queue whose file missed the traits header would silently fall back to the default trait.\n- `message.hpp` forward declares `shared_const_buffer` instead of including `asio.hpp`.\n- `backend.hpp` drops an unused `result.hpp`. `open_file` moves from `files.hpp` to the new `open_file.hpp`, so boost.outcome only reaches the files that use `nano::result`. `files.hpp` also drops `<fstream>`, which only `open_file` needed.\n- `active_elections` holds its `thread_pool` through a `unique_ptr`, so its header no longer includes `thread_pool.hpp`.\n- `db_val.hpp` forward declares `endpoint_key` and drops an unused `stream.hpp`.\n- `messages/common.hpp` takes `stream` and `object_stream` from `fwd.hpp`.\n- Files that relied on these headers for other declarations now include what they use.\n\n### Testing\n- Not rebuilt locally after rebasing onto the current `develop`.\n- A static check found nothing left that uses the removed `fair_queue_traits.hpp` or `thread_attributes`, and that every caller of `open_file` includes `open_file.hpp`.\n- A scan for use of `std::fstream`, `nano::result` or `boost::circular_buffer` without a direct include found every such file still covered.\n- The Qt wallet, fuzzers, Linux and macOS builds are the most likely places for a missing include to show up, so CI is the check there.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5241,
+    "label": "RickiNano:Trim-header-includes",
+    "created_at": "2026-10-26T20:45:14Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-26T23:16:07Z",
+    "run_id": null
   },
   {
     "hash": "214968564730c075e8abde8e378b04e612bb0ffe",
@@ -10295,6 +10324,22 @@
     "docker_tag": "gr0v1ty/nano-node:2e3f92f8094e89b02bcfd0d16ad541fada6221f2",
     "build_started_at": "2026-06-12T16:39:05Z",
     "run_id": "27429374453"
+  },
+  {
+    "hash": "2e9147b1cb2c5c586320ad35abee960e87f3d50b",
+    "type": "pull_request",
+    "title": "Rework the network tests",
+    "author": "pwojcikdev",
+    "body": "A read of `nano/core_test/network.cpp` and `peer_container.cpp` found that about twenty of their tests never touched `nano::network`, four were `DISABLED` and stale, and none of the current listing, flooding, capacity or handshake functions had a direct test. This PR reworks both files: tests that belong to another component move to that component's file, tests that prove nothing go, the ones that wait for nothing or test the old API are rewritten, and the network's current API gets direct tests. It changes only tests; the production changes the rework turned up went in on their own in #5229, #5236, #5237 and #5238.\n\n## Relocations\n\n`peer_container.cpp` becomes `tcp_channels.cpp` first, since there is no `peer_container` class and the file tests the channel container behind `nano::network`; its suites follow the file name. Then tests that belong to another component move to that component's file, under its suite name and with that file's comment style, and nothing else about them changes:\n\n| Tests | New home |\n|---|---|\n| `parse_endpoint.*`, `network.ipv6` | `network_functions.cpp` |\n| `receivable_processor.confirm_insufficient_pos`, `confirm_sufficient_pos` | `election.cpp` |\n| `receivable_processor.send_with_receive`, `network.receive_weight_change` | `wallet.cpp` |\n| `network.send_node_id_handshake_tcp`, `send_insufficient_work`, `filter_invalid_network_bytes`, `filter_invalid_version_using`, `peer_container.depeer_on_outdated_version` | `tcp_server.cpp` |\n| `peer_exclusion.validate` | new `peer_exclusion.cpp` |\n| `network.loopback_channel` | `inproc.cpp` |\n| `network.bandwidth_limiter_with_burst` | new `bandwidth_limiter.cpp` |\n\nThe one behavioural change on the way is in `wallet.send_with_receive`, which fed the same block object to two nodes' block processors; the second node now gets its own copy, which is what TSan was complaining about. The moves keep the tests as they were so that they read as moves; a style pass at the end gives each of them a block description, step comments and current declarations, with the assertion changes described below.\n\n## Deletions\n\nEight tests go: raw boost socket plumbing, boost's own address mapping, a ten-second wait for a port that `stop` zeroes synchronously, a confirm_ack test that sent no confirm_ack, a keepalive discovery test that `peer_discovery_via_peering_only_node` covers, a three-line duplicate of `cleanup_purge`, and the three `DISABLED` tests that have been off since 2024.\n\n## Rewrites\n\nThe survivors that waited for nothing, tested the old fanout formula, or set up state they never used are rewritten against the current code: `fanout` (was `DISABLED_list_fanout`), `reachout` (its reachout-disabling config was never passed to the node), `tcp_no_accept_excluded_peers`, `duplicate_revert_vote` and `no_self_incoming` (timed waits replaced by the stat that marks the event), `flood_block` (folded from two publish tests), `duplicate_revert_publish` and the two `purge_dead_channel` tests (a `disable_bootstrap_listener` flag that has no effect on its own, a debug observer, an unused node). The tests whose behaviour was sound were left alone by the rewrite and brought up to the same style afterwards, so every test in `network.cpp` and `tcp_channels.cpp` now has a block description above it and one-line step comments inside.\n\nWhere the style pass changed what a test asserts: `tcp_server.send_node_id_handshake_tcp` expected two handshake messages on the connecting side, which the two-step handshake gives it only when a second connection in the other direction races in; it now expects two on the accepting side and one on the connecting side, and one keepalive each. `peer_exclusion.validate` also checks that the second strike excludes the peer. `network.send_valid_publish` drops the wallets it never used and checks that the latest block becomes the one published. `network.cleanup_purge` checks that the purged channel is closed, not only counted. `inproc.loopback_channel` runs one node instead of two.\n\n## New tests\n\n`list` (connection order, cut, filter, version form), `send_to_buffer`, `flood_block_initial`, `flood_message_all` with a channel stalled by starving the outbound limiter, `flood_block_many`, `check_capacity` in its three forms, `flood_keepalive`, `fill_keepalive_self` slots 0 and 1 plus `fill_keepalive_self_external`, `syn_cookies`, `verify_handshake_response` through every rejection, `prepare_handshake_response` per handshake version, and `tcp_channels.keepalive_idle` for the keepalive sweep.\n\nBranch coverage of `network.cpp` and `tcp_channels.cpp` from the `network` and `tcp_channels` suites: 85.5% and 82.5%. The branches they leave untaken are mostly flag, configuration, shutdown and defensive checks; the rejections at channel creation of a peer on an outdated protocol version and of peers the test system cannot produce (`not_a_peer`, and the blocklist, which the `peer_blocklist` suite covers); a merge whose connection fails to start; and an empty `flood_block_many`.\n\n## The bandwidth limiter test\n\n`network.bandwidth_limiter_with_burst` sent four publishes over inproc channels and checked that none was dropped. An inproc channel hands its message straight to the destination and never consults the limiter, so the test has passed regardless since the channel traffic rework. Two tests of what the node's limiter adds to the token bucket take its place: one bucket for bootstrap server traffic and one for every other traffic type, each from its own limit and burst ratio, the retry hint on a refused request, and the super rebroadcaster flag lifting the generic limit while the bootstrap limit stays.\n\n## Left for later\n\n- The slow test suite's `peer_container.random_set` keeps its old suite name.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5226,
+    "label": "pwojcikdev:network-fixes",
+    "created_at": "2026-10-22T13:13:30Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-26T23:16:07Z",
+    "run_id": null
   },
   {
     "hash": "2e9f5bd1f439b6750f50c73d3cb9531903c3c894",
@@ -35122,6 +35167,22 @@
     "run_id": "8298619683"
   },
   {
+    "hash": "9db209cb0efd25a388a34be40cd921a0b5e29610",
+    "type": "pull_request",
+    "title": "Shard the message processor so a channel's messages stay in order",
+    "author": "pwojcikdev",
+    "body": "The message processor drained one fair queue with up to two threads, each taking a batch of 4096 messages round-robin over channels, so two threads could hold consecutive messages of one channel and process them in either order. Any protocol that pairs messages on a channel sees them out of order under load; the vote relay (#5201) sends a request's vote acks followed by an empty terminating ack and has to keep completed requests around to catch acks that overtake the terminator.\n\n## What changes\n\nThe processor now holds one shard per configured thread, each with its own fair queue, mutex, condition variable and thread, and a channel always lands in the shard its address hashes to, through `nano::pointer_hash` in the new `nano/lib/hashing.hpp`, whose tests check that addresses laid out at a stride spread over a handful of buckets. One thread drains a shard in arrival order, so the messages of a channel are processed one after another in the order they arrived, whatever their types. The batch size, the per-channel cap (`max_queue`) and the round-robin fairness between the channels of a shard are unchanged, and a shard wakes its single thread with `notify_one` instead of waking every thread for every message. `container_info` lists one entry per shard.\n\n`threads` keeps its meaning. Its default was at most two, one per four cores, because every thread added to the pool contended on its one lock; shards do not contend, so the default is now one thread per two cores, two at least and six at most. Two shards keep one peer's slow handler, a telemetry signature check or a bootstrap reply, from stalling every other peer; beyond six the shards thin out over a few hundred peers and the fullest one holds a storm's drain back for no gain at steady load.\n\nThe receiving side cannot see the traffic type a sender queued a message under, only its message type, so the guarantee is per channel rather than per traffic type, which is the stronger one.\n\n## Benchmark\n\n`nano/benchmarks/message_processing.cpp` drives a `nano::message_processor` of its own, bound to a dev network node, with four producer threads handing keepalives over on 256 channels, four per channel in a row as a peer sends them: a storm that fills every channel's queue before the processor starts, steady offered rates of 200k, 1M and 4M messages per second, and a peer sending half of 1M per second, at one, two and four processing threads. Keepalives keep the handler inside the channel, and a self-reported port makes the handler ask the channel for its remote endpoint, which is how the benchmark sees each message being processed and which message went before it.\n\nRelease build, medians of 3 repetitions, Apple Silicon with 8 performance cores, under a load average of 7 to 9 from other work. \"pool\" is the benchmark at e5d0050cff against the processor before this change, \"sharded\" the same benchmark at a2424a5999.\n\nStorm of full queues, drained from a standing start:\n\n| | 1 thread | 2 threads | 4 threads |\n|---|---|---|---|\n| pool, million msgs/s | 7.27 | 7.88 | 9.15 |\n| sharded, million msgs/s | 6.86 | 6.48 | 7.32 |\n| pool, messages processed after a later one of their channel | 0 | 39% | 62% |\n| sharded, same | 0 | 0 | 0 |\n\nThe sharded drain is bounded by its fullest shard, and 256 channels hash into shards unevenly by a few percent, which costs up to a fifth of the drain rate. Everything below is where the sharded processor is ahead.\n\nSteady 1M messages per second:\n\n| | 1 thread | 2 threads | 4 threads |\n|---|---|---|---|\n| pool, processed | 1.00M | 0.79M | 0.59M |\n| sharded, processed | 1.00M | 1.00M | 1.00M |\n| pool, wait p50 / p99 µs | 24 / 99 | 21 / 93 | 24 / 128 |\n| sharded, wait p50 / p99 µs | 24 / 90 | 16 / 66 | 12 / 53 |\n\nProcessed below the offered rate with nothing dropped means the io threads were held up on the processor's lock: the pool gets slower with every thread added. With 4M per second offered the pool handled 1.18M, 0.83M and 0.53M at one, two and four threads, the sharded processor 1.17M, 1.43M and 1.98M, which is as fast as the four producers hand over.\n\nOne peer sending half of 1M messages per second:\n\n| | 1 thread | 2 threads | 4 threads |\n|---|---|---|---|\n| pool, loud peer's messages dropped | 25% | 25% | 29% |\n| sharded, same | 22% | 0.7% | 0.07% |\n| pool, other peers' wait p99 µs | 146 | 127 | 141 |\n| sharded, same | 201 | 72 | 50 |\n\nNo other peer dropped anything with either processor.\n\nThe choice between sharding and per-channel lanes drained by one thread at a time over a shared pool was made on throwaway models of both; that comparison is on the branch `message-processor-strategies` of this fork for reference and is not part of this PR.\n\n## Tests\n\n`message_processor.channel_order` fills a stopped processor with a thousand numbered keepalives on each of 64 channels, starts four threads and checks that every channel is left holding its last one. On the pool it fails with keepalive 960, the end of the second-to-last batch, which a slower thread finished after the final batch. `message_processor.channel_overfill` checks that a channel's queue takes exactly `max_queue` messages, drops and counts the next one, and that another channel served by the same thread still gets in.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5240,
+    "label": "pwojcikdev:message-processor-sharding",
+    "created_at": "2026-10-26T20:38:44Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-26T23:16:07Z",
+    "run_id": null
+  },
+  {
     "hash": "9dccf52a6fa06a6a75ffbf15eee572608325a23a",
     "type": "pull_request",
     "title": "Implement missing configuration components",
@@ -47617,6 +47678,19 @@
     "built_at": "2023-10-05T16:24:07Z",
     "build_status": "fail",
     "docker_tag": ""
+  },
+  {
+    "hash": "d94d25f08b871a22e360a1e38758667db22298c2",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Close the channels the container erases, like close and purge (#5235)",
+    "pull_request": "5235",
+    "created_at": "2026-10-26T20:33:25Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-26T23:16:07Z",
+    "run_id": null
   },
   {
     "hash": "d9637801ea6755879859201fcdb15d732839790a",
