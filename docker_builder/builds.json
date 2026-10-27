@@ -28204,11 +28204,11 @@
     "title": "Keep the macOS wallet in the light appearance (#5230)\n\nThe wallet's stylesheets hardcode light theme colors, such as black\ntext and a light grey account field, so it does not render correctly\nunder the macOS dark appearance. Info.plist opts out with\nNSRequiresAquaSystemAppearance, but only the packaged app bundle has\nan Info.plist, so a nano_wallet binary run on its own followed the\nsystem appearance.\n\nThe wallet now sets the application appearance to Aqua right after the\nQApplication is created. Qt follows the effective appearance and\nrebuilds its palette and native style to match, and error dialogs\nshown before the main window get the light appearance too. Other\nplatforms are unchanged.",
     "pull_request": "5230",
     "created_at": "2026-10-26T01:20:00Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-27T14:07:00Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:7e9e7f909d6d3b0bd84fcd6a1ba0002069680e6a",
     "build_started_at": "2026-10-26T01:34:35Z",
-    "run_id": null
+    "run_id": "40513219438"
   },
   {
     "hash": "7ea2a1b7ce7d63f0e3d6e8799e8ef72726c73405",
