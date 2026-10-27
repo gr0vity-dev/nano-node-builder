@@ -6631,11 +6631,11 @@
     "title": "Empty the wallet startup systest output file before each launch (#5234)\n\nThe start_wallet helper launched the wallet with a truncating\nredirection and polled the output file at once. Bash applies the\nredirections of a background command in the child after the fork, so\na poll that ran before the child was scheduled read the \"Peering port\"\nline of the previous start, killed the new process before it had\nopened the file and reported success. The step that deletes the config\nthen found none recreated, since nothing had run to write it.\n\nThe parent shell now empties the file before the launch and the wallet\nappends to it, so a match can only come from the process just started.",
     "pull_request": "5234",
     "created_at": "2026-10-27T14:36:29Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-10-27T19:29:22Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:1d78ad42e65ba3984efdcff6a3eb35dd5b9bf348",
     "build_started_at": "2026-10-27T18:53:59Z",
-    "run_id": null
+    "run_id": "40564194708"
   },
   {
     "hash": "1d87b4fe7d9f010dae36d4de003660b170acae8c",
