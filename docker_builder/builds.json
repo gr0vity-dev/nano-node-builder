@@ -7615,7 +7615,7 @@
     "label": "RickiNano:Trim-header-includes",
     "created_at": "2026-10-26T20:45:14Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-10-26T23:16:07Z",
     "run_id": null
@@ -32921,6 +32921,22 @@
     "run_id": "10737329285"
   },
   {
+    "hash": "93b7fb163204124fab0f87f8934117b6ca133c2a",
+    "type": "pull_request",
+    "title": "Cap blocks random responses and tighten bootstrap request checks",
+    "author": "pwojcikdev",
+    "body": "A `blocks_random` bootstrap request may name up to 128 hashes, and the server answered with every block it found. The response now stops at 100 blocks (`bootstrap_server::max_random_blocks`); the topology strategy already re-requests any hash a response leaves out, and its `fetch_batch` default now follows the same constant so a full request normally gets a full answer.\n\nWhile covering the other request types, the server suite went from 16 to 30 tests: each type has a test that a response stops at the requested count and one that a count or target outside the allowed range is dropped, plus a disabled server, the per-channel queue limit, pulls by unknown accounts and hashes, and frontiers from past the last account. Byte-level tests pin the blocks random parser at its limit, and two node tests cover responses the client must discard: a payload of the wrong type under a live id, and an unknown id.\n\nTwo checks are tightened on the way. The `start_type` and `target_type` bytes of a request were never validated, and a value outside the enum fell through to an empty or all-zero response; `verify` now drops such a request as invalid. The client's `verify` now also rejects a frontiers page with more entries than requested, as it does for blocks and topo index pages. `static_assert`s keep each response cap within the 16-bit header length field.\n\nEvery setting in `bootstrap_config.hpp` and every declaration in `bootstrap_server.hpp` now carries a one-line comment.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5239,
+    "label": "pwojcikdev:bootstrap-request-limits",
+    "created_at": "2026-10-24T15:42:25Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-27T02:06:48Z",
+    "run_id": null
+  },
+  {
     "hash": "93c704e9d938951b311d82cff0447f4dd0432ad2",
     "type": "commit",
     "author": "Exxenoz",
@@ -55651,6 +55667,22 @@
     "docker_tag": "gr0v1ty/nano-node:fc68d93dba84dc0ec49ddca275d0d32c893847a6",
     "build_started_at": "2026-04-01T15:39:53Z",
     "run_id": "23868269382"
+  },
+  {
+    "hash": "fc6f7df2dffdba6dda13083f8ebf94c844a84237",
+    "type": "pull_request",
+    "title": "Shard the message processor so a channel's messages stay in order",
+    "author": "pwojcikdev",
+    "body": "The message processor drained one fair queue with up to two threads, each taking a batch of 4096 messages round-robin over channels, so two threads could hold consecutive messages of one channel and process them in either order. Any protocol that pairs messages on a channel sees them out of order under load; the vote relay (#5201) sends a request's vote acks followed by an empty terminating ack and has to keep completed requests around to catch acks that overtake the terminator.\n\n## What changes\n\nFirst the routing comes out of the processor: `nano::message_dispatcher` is an interface with one method, `nano::node_message_dispatcher` is the node's implementation holding the visitor over the components, and the processor takes a dispatcher, the stats and the logger at construction. The processor no longer knows the node, and a benchmark or a test can hand it a dispatcher of its own. `put` becomes `enqueue`.\n\nThe processor then holds one shard per configured thread, each with its own fair queue, mutex, condition variable and thread, and a channel always lands in the shard its address hashes to, through `nano::pointer_hash` in the new `nano/lib/hashing.hpp`, whose tests check that addresses laid out at a stride spread over a handful of buckets. One thread drains a shard in arrival order, so the messages of a channel are processed one after another in the order they arrived, whatever their types. The batch size, the per-channel cap (`max_queue`) and the round-robin fairness between the channels of a shard are unchanged, and a shard wakes its single thread with `notify_one` instead of waking every thread for every message. `container_info` lists one entry per shard.\n\n`threads` keeps its meaning. Its default was at most two, one per four cores, because every thread added to the pool contended on its one lock; shards do not contend, so the default is now one thread per two cores, two at least and six at most. Two shards keep one peer's slow handler, a telemetry signature check or a bootstrap reply, from stalling every other peer; beyond six the shards thin out over a few hundred peers and the fullest one holds a storm's drain back for no gain at steady load.\n\nThe receiving side cannot see the traffic type a sender queued a message under, only its message type, so the guarantee is per channel rather than per traffic type, which is the stronger one.\n\n## Benchmark\n\n`nano/benchmarks/message_processing.cpp` drives a `nano::message_processor` of its own with four producer threads handing keepalives over on 256 channels, four per channel in a row as a peer sends them: a storm that fills every channel's queue before the processor starts, steady offered rates of 200k, 1M and 4M messages per second, and a peer sending half of 1M per second, at one, two and four processing threads. The processor dispatches to the benchmark's own dispatcher, so no handler runs: a keepalive carries its channel and its position in its first peer, and the dispatcher records when it arrived, so every wait and every message dispatched after a later one of its channel is seen exactly.\n\nRelease build, medians of 5 repetitions, Apple Silicon with 8 performance cores. \"pool\" is the benchmark at 841e231fbd against the processor before sharding, \"sharded\" the same benchmark at fc6f7df2df. Other work kept the machine at a load average between 4 and 11 during these runs, so the tail latencies are indicative; throughput, drops and the reordering share reproduced across four runs.\n\nStorm of full queues, drained from a standing start:\n\n| | 1 thread | 2 threads | 4 threads |\n|---|---|---|---|\n| pool, million msgs/s | 10.8 | 10.7 | 9.4 |\n| sharded, million msgs/s | 12.0 | 9.2 | 9.6 |\n| pool, messages dispatched after a later one of their channel | 0 | 23% | 53% |\n| sharded, same | 0 | 0 | 0 |\n\nWith no handler behind the dispatcher a message costs the processor under 100 ns, so a drain is bounded by the queues themselves: by the single lock for the pool, and for the sharded processor by its fullest shard, since 256 channels hash into shards unevenly by a few percent. Everything below is where the sharded processor is ahead.\n\nSteady 1M messages per second:\n\n| | 1 thread | 2 threads | 4 threads |\n|---|---|---|---|\n| pool, processed | 0.99M | 0.73M | 0.58M |\n| sharded, processed | 1.00M | 1.00M | 1.00M |\n| pool, wait p50 µs | 42 | 26 | 23 |\n| sharded, wait p50 µs | 25 | 13 | 11 |\n\nProcessed below the offered rate with nothing dropped means the io threads were held up on the processor's lock: the pool gets slower with every thread added. With 4M per second offered the pool handled 1.26M, 0.85M and 0.69M at one, two and four threads, the sharded processor 1.40M, 1.55M and 1.73M, close to what the four producers hand over.\n\nOne peer sending half of 1M messages per second:\n\n| | 1 thread | 2 threads | 4 threads |\n|---|---|---|---|\n| pool, loud peer's messages dropped | 23% | 29% | 33% |\n| sharded, same | 27% | 0.8% | 0.02% |\n| pool, other peers' wait p99 µs | 142 | 130 | 148 |\n| sharded, same | 206 | 77 | 49 |\n\nNo other peer dropped anything with either processor.\n\nThe choice between sharding and per-channel lanes drained by one thread at a time over a shared pool was made on throwaway models of both; that comparison is on the branch `message-processor-strategies` of this fork for reference and is not part of this PR.\n\n## Tests\n\n`message_processor.channel_order` fills a stopped processor with a thousand numbered keepalives on each of 64 channels, starts four threads and checks through a recording dispatcher that no message was dispatched after a later one of its channel; on the pool thousands are. `message_processor.channel_overfill` checks that a channel's queue takes exactly `max_queue` messages, drops and counts the next one, and that another channel served by the same thread still gets in. `hashing.*` pins the mix by reference values and checks that addresses laid out at a stride spread over a handful of buckets.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5240,
+    "label": "pwojcikdev:message-processor-sharding",
+    "created_at": "2026-10-26T20:38:44Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-27T02:06:48Z",
+    "run_id": null
   },
   {
     "hash": "fc83736477487970b4759d70326f3f5f356acc7d",
