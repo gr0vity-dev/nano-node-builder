@@ -7387,6 +7387,22 @@
     "run_id": "39694288259"
   },
   {
+    "hash": "20667639235a6087420c96f800f1dd5b755966f3",
+    "type": "pull_request",
+    "title": "Rework the network tests",
+    "author": "pwojcikdev",
+    "body": "A read of `nano/core_test/network.cpp` and `peer_container.cpp` found that about twenty of their tests never touched `nano::network`, four were `DISABLED` and stale, and none of the current listing, flooding, capacity or handshake functions had a direct test. This PR reworks both files: tests that belong to another component move to that component's file, tests that prove nothing go, the ones that wait for nothing or test the old API are rewritten, and the network's current API gets direct tests. Apart from one signature change that lets a test control the keepalive sweep, described below, it changes only tests; the production changes the rework turned up went in on their own in #5229, #5236, #5237 and #5238.\n\n## Relocations\n\n`peer_container.cpp` becomes `tcp_channels.cpp` first, since there is no `peer_container` class and the file tests the channel container behind `nano::network`; its suites follow the file name. Then tests that belong to another component move to that component's file, under its suite name and with that file's comment style, and nothing else about them changes:\n\n| Tests | New home |\n|---|---|\n| `parse_endpoint.*`, `network.ipv6` | `network_functions.cpp` |\n| `receivable_processor.confirm_insufficient_pos`, `confirm_sufficient_pos` | `election.cpp` |\n| `receivable_processor.send_with_receive`, `network.receive_weight_change` | `wallet.cpp` |\n| `network.send_node_id_handshake_tcp`, `send_insufficient_work`, `filter_invalid_network_bytes`, `filter_invalid_version_using`, `peer_container.depeer_on_outdated_version` | `tcp_server.cpp` |\n| `peer_exclusion.validate` | new `peer_exclusion.cpp` |\n| `network.loopback_channel` | `inproc.cpp` |\n| `network.bandwidth_limiter_with_burst` | new `bandwidth_limiter.cpp` |\n\nThe one behavioural change on the way is in `wallet.send_with_receive`, which fed the same block object to two nodes' block processors; the second node now gets its own copy, which is what TSan was complaining about. The moves keep the tests as they were so that they read as moves; a style pass at the end gives each of them a block description, step comments and current declarations, with the assertion changes described below.\n\n## Deletions\n\nEight tests go: raw boost socket plumbing, boost's own address mapping, a ten-second wait for a port that `stop` zeroes synchronously, a confirm_ack test that sent no confirm_ack, a keepalive discovery test that `peer_discovery_via_peering_only_node` covers, a three-line duplicate of `cleanup_purge`, and the three `DISABLED` tests that have been off since 2024.\n\n## Rewrites\n\nThe survivors that waited for nothing, tested the old fanout formula, or set up state they never used are rewritten against the current code: `fanout` (was `DISABLED_list_fanout`), `reachout` (its reachout-disabling config was never passed to the node), `tcp_no_accept_excluded_peers`, `duplicate_revert_vote` and `no_self_incoming` (timed waits replaced by the stat that marks the event), `flood_block` (folded from two publish tests), `duplicate_revert_publish` and the two `purge_dead_channel` tests (a `disable_bootstrap_listener` flag that has no effect on its own, a debug observer, an unused node). The tests whose behaviour was sound were left alone by the rewrite and brought up to the same style afterwards, so every test in `network.cpp` and `tcp_channels.cpp` now has a block description above it and one-line step comments inside.\n\nWhere the style pass changed what a test asserts: `tcp_server.send_node_id_handshake_tcp` expected two handshake messages on the connecting side, which the two-step handshake gives it only when a second connection in the other direction races in; it now expects two on the accepting side and one on the connecting side, and one keepalive each. `peer_exclusion.validate` also checks that the second strike excludes the peer. `network.send_valid_publish` drops the wallets it never used and checks that the latest block becomes the one published. `network.cleanup_purge` checks that the purged channel is closed, not only counted. `inproc.loopback_channel` runs one node instead of two.\n\n## New tests\n\n`list` (connection order, cut, filter, version form), `send_to_buffer`, `flood_block_initial`, `flood_message_all` with a channel stalled by starving the outbound limiter, `flood_block_many`, `check_capacity` in its three forms, `flood_keepalive`, `fill_keepalive_self` slots 0 and 1 plus `fill_keepalive_self_external`, `syn_cookies`, `verify_handshake_response` through every rejection, `prepare_handshake_response` per handshake version, and `tcp_channels.keepalive_idle` for the keepalive sweep.\n\nBranch coverage of `network.cpp` and `tcp_channels.cpp` from the `network` and `tcp_channels` suites: 85.5% and 82.5%. The branches they leave untaken are mostly flag, configuration, shutdown and defensive checks; the rejections at channel creation of a peer on an outdated protocol version and of peers the test system cannot produce (`not_a_peer`, and the blocklist, which the `peer_blocklist` suite covers); a merge whose connection fails to start; and an empty `flood_block_many`.\n\n## The keepalive sweep takes its cutoff\n\n`tcp_channels::keepalive` computed its idle cutoff from the clock, so the only way for a test to make a channel look idle was to backdate the channel's last send, a timestamp the node's cleanup reads and every other send on the channel overwrites. The sweep now takes the cutoff from its caller, as `purge` already does, and `network::run_keepalive` passes the same `now - keepalive_period` as before. `tcp_channels.keepalive_idle` calls it once with the node's own cutoff and once with a cutoff later than any send the channel can have made, without touching the channel. Each declaration in `tcp_channels.hpp` gets a one-line comment on the way.\n\n## The bandwidth limiter test\n\n`network.bandwidth_limiter_with_burst` sent four publishes over inproc channels and checked that none was dropped. An inproc channel hands its message straight to the destination and never consults the limiter, so the test has passed regardless since the channel traffic rework. Two tests of what the node's limiter adds to the token bucket take its place: one bucket for bootstrap server traffic and one for every other traffic type, each from its own limit and burst ratio, the retry hint on a refused request, and the super rebroadcaster flag lifting the generic limit while the bootstrap limit stays.\n\n## Left for later\n\n- The slow test suite's `peer_container.random_set` keeps its old suite name.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5226,
+    "label": "pwojcikdev:network-fixes",
+    "created_at": "2026-10-22T13:13:30Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-28T14:15:30Z",
+    "run_id": null
+  },
+  {
     "hash": "206759db0f6ea512eab73e6e71964366f89fb2ed",
     "type": "commit",
     "author": "pwojcikdev",
@@ -16937,6 +16953,19 @@
     "docker_tag": "gr0v1ty/nano-node:4bbc7ac68ac678be1f19e3a01a72192b6cef75fb",
     "build_started_at": "2025-05-14T10:21:31Z",
     "run_id": "15018254734"
+  },
+  {
+    "hash": "4bc607d741c97c5db2804ab750951385f90ad2d8",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Keep background reachout out of the blocklist disconnect test (#5242)\n\nThe reachout loops on the dropped node redial its peer every merge\nperiod. One that lands between the test's cleanup and its own\nmerge_peer takes the attempt first, so the test's merge fails. Start\nboth nodes with reachout disabled, so the reconnect the test checks is\nits own.",
+    "pull_request": "5242",
+    "created_at": "2026-10-28T13:32:01Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-28T14:15:30Z",
+    "run_id": null
   },
   {
     "hash": "4bcb3b1a5405398b022daa4ab061656e37ad4cef",
