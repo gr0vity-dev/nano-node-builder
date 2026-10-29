@@ -19248,7 +19248,7 @@
     "label": "pwojcikdev:network-fixes",
     "created_at": "2026-10-22T13:13:30Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-10-27T22:43:17Z",
     "run_id": null
@@ -50793,6 +50793,22 @@
     "docker_tag": "gr0v1ty/nano-node:e64670349edc5b8565d577646aebffc7983853ff",
     "build_started_at": "2025-09-24T14:17:43Z",
     "run_id": "17979614392"
+  },
+  {
+    "hash": "e64e56a9c8fb8eb3b19ebae8b65466283ab657cb",
+    "type": "pull_request",
+    "title": "Keep heavy library headers out of widely included headers",
+    "author": "RickiNano",
+    "body": "Eleven widely included headers pulled in boost.thread, boost.circular_buffer, boost.outcome, boost.iostreams or a large part of asio, though most of the files that include them use only a declaration or two from those headers. With precompiled headers off, the default, **282 of the 438 nano translation units** now compile with fewer headers and about 12% faster, which makes a full rebuild of nano about **11% faster**.\n\n### Changes\n- `threading.hpp`: `thread_attributes::get_default` moves into `thread_runner.cpp`, its only user, so boost.thread leaves the header. The header also drops an unused `utility.hpp`.\n- `stats.hpp`: the private `sampler_entry` is now defined in `stats.cpp`, so `boost::circular_buffer` goes with it.\n- `channel.hpp` no longer includes `tcp_socket.hpp`, which it never used.\n- `testutil.hpp` no longer includes `test_channel.hpp`. `transport/fwd.hpp` forward declares `test_channel` instead.\n- `fair_queue_traits.hpp` is folded into `fair_queue.hpp`, which declares the channel `alive` trait. The trait's definition moves to the new `fair_queue.cpp`, so the queue no longer needs `channel.hpp`. Every channel queue now sees the specialization. Before, a queue whose file missed the traits header would silently fall back to the default trait.\n- `message.hpp` forward declares `shared_const_buffer` instead of including `asio.hpp`.\n- `backend.hpp` drops an unused `result.hpp`. `open_file` moves from `files.hpp` to the new `open_file.hpp`, so boost.outcome only reaches the files that use `nano::result`. `files.hpp` also drops `<fstream>`, which only `open_file` needed.\n- `active_elections` holds its `thread_pool` through a `unique_ptr`, so its header no longer includes `thread_pool.hpp`.\n- `db_val.hpp` forward declares `endpoint_key` and drops an unused `stream.hpp`.\n- `messages/common.hpp` takes `stream` and `object_stream` from `fwd.hpp`.\n- Files that relied on these headers for other declarations now include what they use.\n\n### Testing\n- Rebased onto `develop` at 9ffcd40c8 (#5243). The only conflict was the include list in `core_test/network.cpp`, which `develop` had reworked and which already includes `stream.hpp`, so this PR no longer touches that file.\n- The files the rebase brought in were checked for any use of `test_channel`, `tcp_socket`, `shared_const_buffer`, `nano::result`, `<fstream>`, `thread_pool` or `boost::circular_buffer` that relied on an include this PR removes. Each includes what it uses.\n- Not rebuilt locally. The local build has precompiled headers on, which would hide a missing include.\n- A static check found nothing left that uses the removed `fair_queue_traits.hpp` or `thread_attributes`, and that every caller of `open_file` includes `open_file.hpp`.\n- A scan for use of `std::fstream`, `nano::result` or `boost::circular_buffer` without a direct include found every such file still covered.\n- CI passed on every check for the head before the rebase (Linux gcc and clang with the sanitizers, macOS, Windows, Docker). The Qt wallet, fuzzers, Linux and macOS builds are the most likely places for a missing include to show up, so CI is the check for the rebased head too.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n",
+    "draft": false,
+    "pull_request": 5241,
+    "label": "RickiNano:Trim-header-includes",
+    "created_at": "2026-10-26T20:45:14Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-29T08:53:54Z",
+    "run_id": null
   },
   {
     "hash": "e6512cfd8dd66eb506d7d7a5699340b61bbb3920",
