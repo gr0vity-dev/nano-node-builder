@@ -8711,6 +8711,22 @@
     "run_id": "27380779229"
   },
   {
+    "hash": "27324ec36a399c1b3b60a6c79f68f79034dec183",
+    "type": "pull_request",
+    "title": "Remove the large votes flag and batch hashes at the confirm_req and vote limits",
+    "author": "pwojcikdev",
+    "body": "The vote replier never split its replies. It refused any request larger than `nano::network::confirm_ack_hashes_max`, and `voting_policy::sign` put every hash of a request into one vote per representative, which stayed within `vote::max_hashes` only because a confirm_req carries at most 255 pairs too. The `--disable_large_votes` rollout flag lowered the mutable statics `confirm_req_hashes_max` and `confirm_ack_hashes_max` from 255 to 7 and 12, and with it set a node answered nothing to a peer's confirm_req of 13 to 255 pairs.\n\nThe flag and the statics are gone. The limits now live on the types that own the wire format: the new `confirm_req::max_hashes` for the (hash, root) pairs a request carries, which its header counts in a single byte, and the existing `vote::max_hashes` for the hashes of a vote, and so of a confirm_ack. Both message constructors assert against them instead of a bare 256. Each guard now checks the limit of what it bounds: the vote replier refuses a request past `confirm_req::max_hashes`, the size of the message it answers, and the vote generator asserts that its broadcast batches, which its broadcasters cap at a vote's worth, stay within `vote::max_hashes`. The command line option stays, the way #5237 kept the bootstrap flags: it still parses, `--help` lists it as deprecated, and it has no effect.\n\n`confirm_req::batch_hashes` and `vote::batch_hashes` split a list into the requests or votes it fits, keeping its order, next to the `max_hashes` each one applies. The confirmation solicitor sends one confirm_req per batch instead of running its own push and flush loop. `voting_policy::sign` splits its permits with `vote::batch_hashes` and every representative signs each batch, so a vote never outgrows `vote::max_hashes`, whatever a caller passes. With the replier and generator bounds in place no caller passes more than a vote's worth today, so the replier no longer depends on a full request happening to fit one vote.\n\n`message.confirm_req_batch_hashes_count`, `_exact_fit` and `_serialization`, and the matching `vote.batch_hashes_*` tests, check both functions at their boundaries: no input, a single item, full batches and a remainder in order, an exact fit at the limit against one item more, two batches filled exactly with no empty third, and every batch serializing and reading back with its count in the header. `voting_policy.sign_split_votes` signs more permits than two votes hold for two representatives, as normal and as final votes, and checks that every split vote carries the signing's timestamp, duration and finality. `confirmation_solicitor.batches` now checks that a request's worth of elections fills one confirm_req and one more needs a second, and `vote_replier.request_too_large` became `vote_replier.oversize`, which queues a full confirm_req's worth of pairs and refuses one pair more. The `vote` tests moved out of `vote_processor.cpp` into their own `vote.cpp`, and `cli.deprecated_node_flags` covers `--disable_large_votes`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5245,
+    "label": "pwojcikdev:hash-batching",
+    "created_at": "2026-10-29T00:08:34Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-29T02:39:51Z",
+    "run_id": null
+  },
+  {
     "hash": "274c6714cacc567087a01f954826f498ff560463",
     "type": "commit",
     "author": "dsiganos",
