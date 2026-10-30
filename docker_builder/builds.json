@@ -7335,6 +7335,22 @@
     "run_id": "7971328630"
   },
   {
+    "hash": "201851f2433a9c05c244db65b0e8c2f886b4ed75",
+    "type": "pull_request",
+    "title": "Wipe the stack after key derivation, signing and the KDF",
+    "author": "pwojcikdev",
+    "body": "Key material should stay in memory no longer than it is needed.\nBLAKE2b, ed25519 and argon2 do not clear their stack frames before returning, so copies of the seed, private keys and data derived from the password stay on the stack until later calls happen to overwrite them.\n\nThis adds `nano::secure_wipe_stack`, which zeroes 16 KiB of stack below its caller (32 KiB in debug builds), and calls it after `deterministic_key`, `pub_key`, `sign_message` and `kdf::phs`.\nThe vendored crypto libraries stay untouched.\n\n- `deterministic_key` also wipes its BLAKE2b state, which sits in its own frame where the stack wipe does not reach.\n- The `keypair` constructors derive the public key through `nano::pub_key`, so they get the wipe too.\n- `wallet::deterministic_check_impl` derives public keys with `nano::pub_key` instead of passing each private key through a hex string.\n- `fan` gets a class comment on what its XOR shares do and do not protect against.\n\n16 KiB is nearly three times the deepest of these call chains in a release build, argon2 at about 5.8 KiB.\nDebug builds wipe 32 KiB, because unoptimized, the x86 SSE BLAKE2b alone keeps a frame of about 26 KiB.\nThe wipe costs about 0.2 µs on Apple Silicon, around 2% of a signature or a public key derivation.\n\nThe new `secure_memory` tests copy the stack below the test body right after each operation and check that neither these values nor any other data deeper than the operation's own frame is left there.\nBuilds that keep stack frames elsewhere, such as ASan with fake stacks, skip them.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n",
+    "draft": false,
+    "pull_request": 5244,
+    "label": "pwojcikdev:secure-wipe-stack",
+    "created_at": "2026-10-28T22:22:15Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-10-30T00:15:31Z",
+    "run_id": null
+  },
+  {
     "hash": "202437b3911d480892d3ac12b98d7b0e49c929c9",
     "type": "pull_request",
     "pull_request": 4200,
@@ -16318,6 +16334,22 @@
     "built_at": "2023-02-06T20:36:45Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:49009d77aedbeeacca686f29d7b9b778f7a013db"
+  },
+  {
+    "hash": "4917efaa3f4b2f4cba83d9060d7af163cb4d45ed",
+    "type": "pull_request",
+    "title": "Move signature verification out of the write transaction and parallelize it",
+    "author": "RickiNano",
+    "body": "Block signature verification currently runs serially inside the ledger write transaction: the block processor opens a write tx per batch and each ledger.process() call does its ed25519 checks while holding it. This PR moves that CPU work out of the transaction and onto a small worker pool, so batches are pre-validated in parallel before the write tx is opened.\r\n\r\nBenefits\r\n\r\n- Higher block throughput. Serial signature work now spread across up to 4 threads\r\n- Shorter write transaction hold times. The write tx now spends its time on actual store reads/writes instead of signature validation\r\n- Zero behavioral change. Results are bit-identical to today: same checks, same order of ledger application, same result codes, same notification order. A duplicate block with a bad signature still returns old, forks and rollbacks are untouched.\r\n\r\nHow it works\r\n\r\n- block_context gains a nano::signature_verification result (unknown / valid / valid_epoch / invalid), defaulting to unknown.\r\n- process_batch() fans the batch out across a dedicated nano::thread_pool between next_batch() and tx_begin_write(). Workers verify state blocks (against the account owner first, then the epoch signer for epoch links — the same order the ledger processor uses) and open blocks. Legacy send/receive/change blocks need a frontier lookup to determine the signer, so they stay unknown and are verified inline as today; they are effectively extinct on the live network.\r\n- ledger.process() accepts the verification result (defaulting to unknown, so all existing callers keep today's behavior). Inside ledger_processor, a new validate_signature() helper consumes the pre-computed result where it is conclusive and falls back to validate_message() where it isn't. Debug builds re-verify every skipped check via debug_assert.\r\n- Pre-verified invalid blocks are still rejected at the existing check site inside the transaction (not short-circuited earlier), preserving today's result-code precedence.\r\n\r\nCo-authored with Claude Fable",
+    "draft": false,
+    "pull_request": 5103,
+    "label": "RickiNano:mt-block-processor",
+    "created_at": "2026-07-08T14:57:41Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-30T00:15:31Z",
+    "run_id": null
   },
   {
     "hash": "4920edd3cb6b7b8ede966c2b8719a12ced1ec245",
