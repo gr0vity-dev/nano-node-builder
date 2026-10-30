@@ -16346,7 +16346,7 @@
     "label": "RickiNano:mt-block-processor",
     "created_at": "2026-07-08T14:57:41Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-10-30T00:15:31Z",
     "run_id": null
@@ -20071,6 +20071,22 @@
     "built_at": "2023-10-05T10:50:18Z",
     "build_status": "fail",
     "docker_tag": ""
+  },
+  {
+    "hash": "5a2f5ea2ccb318064973be25ced238062541d644",
+    "type": "pull_request",
+    "title": "Keep heavy library headers out of widely included headers",
+    "author": "RickiNano",
+    "body": "Eleven widely included headers pulled in boost.thread, boost.circular_buffer, boost.outcome, boost.iostreams or a large part of asio, though most of the files that include them use only a declaration or two from those headers. With precompiled headers off, the default, **282 of the 438 nano translation units** now compile with fewer headers and about 12% faster, which makes a full rebuild of nano about **11% faster**.\n\n### Changes\n- `threading.hpp`: `thread_attributes::get_default` moves into `thread_runner.cpp`, its only user, so boost.thread leaves the header. The header also drops an unused `utility.hpp`.\n- `stats.hpp`: the private `sampler_entry` is now defined in `stats.cpp`, so `boost::circular_buffer` goes with it.\n- `channel.hpp` no longer includes `tcp_socket.hpp`, which it never used.\n- `testutil.hpp` no longer includes `test_channel.hpp`. `transport/fwd.hpp` forward declares `test_channel` instead.\n- `fair_queue_traits.hpp` is folded into `fair_queue.hpp`, which declares the channel `alive` trait. The trait's definition moves to the new `fair_queue.cpp`, so the queue no longer needs `channel.hpp`. Every channel queue now sees the specialization. Before, a queue whose file missed the traits header would silently fall back to the default trait.\n- `message.hpp` forward declares `shared_const_buffer` instead of including `asio.hpp`.\n- `backend.hpp` drops an unused `result.hpp`. `open_file` moves from `files.hpp` to the new `open_file.hpp`, so boost.outcome only reaches the files that use `nano::result`. `files.hpp` also drops `<fstream>`, which only `open_file` needed.\n- `active_elections` holds its `thread_pool` through a `unique_ptr`, so its header no longer includes `thread_pool.hpp`.\n- `db_val.hpp` forward declares `endpoint_key` and drops an unused `stream.hpp`.\n- `messages/common.hpp` takes `stream` and `object_stream` from `fwd.hpp`.\n- Files that relied on these headers for other declarations now include what they use.\n\n### Testing\n- Rebased onto `develop` at 9ffcd40c8 (#5243). The only conflict was the include list in `core_test/network.cpp`, which `develop` had reworked and which already includes `stream.hpp`, so this PR no longer touches that file.\n- The files the rebase brought in were checked for any use of `test_channel`, `tcp_socket`, `shared_const_buffer`, `nano::result`, `<fstream>`, `thread_pool` or `boost::circular_buffer` that relied on an include this PR removes. Each includes what it uses.\n- Not rebuilt locally. The local build has precompiled headers on, which would hide a missing include.\n- A static check found nothing left that uses the removed `fair_queue_traits.hpp` or `thread_attributes`, and that every caller of `open_file` includes `open_file.hpp`.\n- A scan for use of `std::fstream`, `nano::result` or `boost::circular_buffer` without a direct include found every such file still covered.\n- CI passed on every check for the head before the rebase (Linux gcc and clang with the sanitizers, macOS, Windows, Docker). The Qt wallet, fuzzers, Linux and macOS builds are the most likely places for a missing include to show up, so CI is the check for the rebased head too.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n",
+    "draft": false,
+    "pull_request": 5241,
+    "label": "RickiNano:Trim-header-includes",
+    "created_at": "2026-10-26T20:45:14Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-30T05:53:44Z",
+    "run_id": null
   },
   {
     "hash": "5a490b732c9642bda976445b453941e125c57e0a",
@@ -53661,6 +53677,19 @@
     "docker_tag": "",
     "build_started_at": "2025-04-11T11:53:31Z",
     "run_id": "14404147602"
+  },
+  {
+    "hash": "f1af0ffb182478b5b821b9f44fb5599a81ca3ac2",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Remove the large votes flag and batch hashes at the confirm_req and vote limits (#5245)\n\n* Remove the large votes rollout flag\n\nThe disable_large_votes flag lowered the mutable nano::network\nstatics confirm_req_hashes_max and confirm_ack_hashes_max from 255\nto 7 and 12. With it set, the vote replier refused any confirm_req\nof more than 12 pairs, so a peer's request of 13 to 255 pairs went\nunanswered. The statics go, and the command line option stays so\nthat existing launch commands still parse: `--help` lists it as\ndeprecated and it has no effect.\n\nThe limits now live on the types that own the wire format:\nconfirm_req::max_hashes for the (hash, root) pairs a request\ncarries, and the existing vote::max_hashes for the hashes of a vote,\nand so of a confirm_ack. Both message constructors assert against\nthem in place of the bare 256. The confirmation solicitor and the\nvote replier bound requests by confirm_req::max_hashes, and the\nvote generator bounds its broadcast batches by vote::max_hashes.\n\n* Batch hashes into confirm_reqs and votes at their limits\n\nconfirm_req::batch_hashes and vote::batch_hashes split a list into\nthe requests or votes it fits, in order, next to the max_hashes\neach one applies.\n\nThe confirmation solicitor sends one confirm_req per batch.\nvoting_policy::sign splits its permits over as many votes as they\nneed and every representative signs each of them, so a vote never\noutgrows vote::max_hashes, whatever a caller passes. The vote\nreplier no longer depends on a full request fitting one vote.\n\nThe vote tests move out of vote_processor.cpp into their own\nvote.cpp, next to the new batching tests.\n\n* Fix the final-vote check in packed_timestamp and test the vote type\n\npacked_timestamp asserted that the maximum timestamp only packs\nwith the final duration, but compared the unmasked argument against\ntimestamp_max, so a timestamp with any low bit set, such as the\nall-ones marker with a lower duration, packed into a non-final vote\nat the maximum timestamp. It now compares the masked timestamp.\nBoth of its checks are release asserts, since a vote signed past\nthem carries a timestamp the whole network ranks above every\ngenuine one, and each says what went wrong and with which exponent.\n\nhashes_string had no callers, operator!= is synthesized from\noperator== since C++20, and operator== compares every member, so it\nis defaulted. The declared copy constructor only suppressed the\nimplicit move.\n\nThe vote suite covered the batching and little else: of vote.cpp it\nran 12 of 22 functions and 11 of 24 branches, and empty_hashes\nasserted nothing. It now covers the wire format round trip,\ntruncated and over-long streams, what the signed hash does and does\nnot cover, validate against each kind of tampering, equality, the\nfinal vote marker, every duration exponent and the JSON form, and\ndeath tests pin both packed_timestamp checks. empty_hashes checks\nthat the empty vote validates, serializes to the fixed part alone\nand reads back equal.\n\nThe vote_uniquer tests move out of conflicts.cpp, where they had\nnothing to do with conflicts, next to the type they test, with\nplain hashes in place of the blocks they built only to hash.\n\n* Add is_debug_build beside the platform predicates\n\nCode and tests can ask whether debug_assert is compiled in through\na consteval predicate, like the sanitizer and platform ones in\nconfig.hpp, instead of testing NDEBUG where it matters. Nothing\nuses it yet.\n\n* Move vote from nano/lib to nano/secure\n\nA vote is a signed statement about blocks, consensus state like the\nledger and the voting policy rather than a plain utility, so it\nlives in secure with them. nano_messages already links secure, and\nnothing in nano_lib used the type.\n\nThe store's db_val converted a database value into a vote for a\nvote table that no longer exists; the conversion had no callers and\ngoes, which keeps the store below secure. The messages forward\nheader takes its declarations from secure/fwd.hpp, which chains to\nlib/fwd.hpp.\n\n* Document the vote class in the one-line header style\n\nGive every function and member of nano::vote a short purpose comment\nand add a class overview covering what the signature spans, how the\ntimestamp packs the duration exponent and where the hash count lives.\nSpell out the error conventions of deserialize () and validate () and\ntell the two digests apart. Drop the cpp comment blocks the header now\ncovers and the TODO on size ().",
+    "pull_request": "5245",
+    "created_at": "2026-10-30T01:00:09Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-30T05:53:44Z",
+    "run_id": null
   },
   {
     "hash": "f1b247f54e059fa5c3f71e8d44ef2be6ae301317",
