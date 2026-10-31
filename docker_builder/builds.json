@@ -21926,7 +21926,7 @@
     "label": "clemahieu:boost-1.88",
     "created_at": "2026-10-30T23:27:50Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-10-31T00:58:25Z",
     "run_id": null
@@ -43958,6 +43958,22 @@
     "docker_tag": "gr0v1ty/nano-node:c678856168246c09967f37d18c07735e1affacee",
     "build_started_at": "2026-05-07T13:43:47Z",
     "run_id": "25499628725"
+  },
+  {
+    "hash": "c699a178a941307bea646964b15bf87110c2a729",
+    "type": "pull_request",
+    "title": "Rework the release pipeline and attest what it publishes",
+    "author": "pwojcikdev",
+    "body": "## Why\n\nThe release pipeline had grown into a web of scripts with no shared structure: a bash build script with a hard-coded Qt path, a PowerShell wrapper around two batch files for Windows, a 170-line Docker library sourced by five one-line wrappers, and a tag generator that force-moved tags and force-pushed the release branch. Eleven of the 58 files under `ci/` had no caller at all. The workflow also created the build tag inside the run that built it, so the run's own commit was the branch head while the packages came from a version commit one step ahead; anything recording the run's commit, including build attestations, would have named the wrong one.\n\n## What changes\n\nThe pipeline is now three workflows and six short scripts under `ci/deploy/`, each doing one thing and printing what it does.\n\n- **Tag Build** (`tag_build.yml`) creates the next build tag for the branch it runs on, on the old schedule or by hand, and starts Build & Deploy on that tag. `next-tag.sh` keeps the tag scheme, DB tags on develop, RC tags and releases on `releases/v<major>`, the version committed into `CMakeLists.txt` first, and takes `--dry-run`.\n- **Build & Deploy** (`build_deploy.yml`) runs on a build tag, so the commit it builds is the commit it records, and can be run by hand on an existing tag to rebuild it. All three platforms build through `ci/build.sh` and `ci/build-packages.sh`, publish with `upload.sh`, and the Docker image goes through `docker-build.sh` and `docker-push.sh` with `docker/login-action`.\n- **Prepare Release** (`prepare_release.yml`) runs `prepare-release.sh`, which opens `releases/v<major>` and the version-bump pull request from the default branch only, refuses to run twice, and names the pull request's repository explicitly so a fork never opens one upstream.\n- **Attestation.** Every package set and every image push is attested with `actions/attest`. The bundle is published next to the packages and the image attestation is pushed to the registry, so a download can be verified with `gh attestation verify`, offline with the bundle, or with cosign.\n- **Packages** are named after their tag by CPack itself, so the file built is the file published; the `.sha256` files now contain the bare file name and pass `sha256sum -c`. Every run also keeps its packages as workflow artifacts named `nano-node-<tag>-<platform>-<network>`.\n- `ci/deploy/README.md` documents the tag scheme, what is published where, each workflow and script, the release procedure, the repository configuration they need and how to verify a download.\n\n## Behaviour to be aware of\n\n- The `is_release_build` text input became a `release` checkbox on Tag Build; the network matrix values are `beta` and `live`.\n- Builds of branches other than develop and the release branch are tagged `V<major>.<minor>-<branch>-<n>` instead of running the branch name into the version.\n- The bucket upload and the Docker Hub push run only when their credentials are present, so a fork can build and verify everything else. Docker Hub's live `latest` tag is still never touched by the pipeline.\n- A failed build of one network no longer cancels the other.\n- Beta packages are Release builds like the live ones. Beta used RelWithDebInfo, which put half a gigabyte of debug information into each Linux beta package. The Docker images keep their debug information.\n- Pull requests opened by Prepare Release get no checks of their own, as before, because the workflow token cannot start workflows.\n\n## Defects in the old pipeline this removes\n\n- The Windows build step never received `NETWORK` or `CI_TAG`, so Windows beta packages were live-network builds reporting a development version.\n- Linux and macOS `.sha256` files embedded the runner's absolute build path.\n- Tags and the release branch were force-pushed by CI, so a collision moved a published tag instead of failing.\n- macOS packaging ran under `sudo` for no reason.\n\n## Left for later\n\nWindows code signing stays disabled as it was. Enabling immutable releases on the repository would add GitHub's own release attestations without any code.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5249,
+    "label": "pwojcikdev:ci-release-pipeline",
+    "created_at": "2026-10-31T01:00:23Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-31T06:41:52Z",
+    "run_id": null
   },
   {
     "hash": "c6a3f4e29f4e959caf66117f540ca8009b1311c3",
