@@ -23189,7 +23189,7 @@
     "label": "pwojcikdev:network-fixes",
     "created_at": "2026-10-22T13:13:30Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-10-27T18:53:59Z",
     "run_id": null
@@ -28955,6 +28955,22 @@
     "docker_tag": "gr0v1ty/nano-node:8041e77f7cef6c26ad57d6b41bdfc8e908a3e1fe",
     "build_started_at": "2024-03-24T12:11:57Z",
     "run_id": "8409177637"
+  },
+  {
+    "hash": "804b526da5156b02cebf023a71ae93af194ab2dc",
+    "type": "pull_request",
+    "title": "Update Boost to 1.88 and move process spawning to Boost.Process v2",
+    "author": "clemahieu",
+    "body": "Boost 1.88 removes `boost/process/v1.hpp` and stops making Process v1 the default namespace. This PR moves our process spawning to Process v2 and then bumps the Boost submodule from 1.87.0 to 1.88.0. There are two commits, and each builds on its own:\n\n1. **Move process spawning to Boost.Process v2** (on Boost 1.87, which already ships the same compiled v2)\n   - `rpc_process` and `load_test` spawn children with `boost::process::v2::process`. Each owns an `io_context` that outlives its handles. Only the blocking calls are used, so the context is never run.\n   - The pid file uses `boost::process::v2::current_pid`. `nano_lib` now links `Boost::process` because `current_pid` lives in the compiled library.\n   - Linux builds define `BOOST_PROCESS_V2_DISABLE_PIDFD_OPEN`. By default v2 opens a pidfd for each child and throws, leaving the child running, where `pidfd_open` is unavailable (kernels before 5.3, pre-20.10 Docker seccomp profiles). We only wait synchronously, so `waitpid` is enough. The define is set before Boost's `add_subdirectory` so the library and nano agree on it.\n   - The `nano/boost/process` wrappers are renamed to match the v2 headers they wrap (`process.hpp`, `pid.hpp`). `nano_node/entry.cpp` drops an include it no longer uses.\n2. **Update Boost to 1.88**: changes only the submodule pointer.\n\n## Behaviour change\nOn POSIX, the v2 launcher closes every inherited file descriptor except stdio before exec. A spawned `nano_rpc` no longer inherits the node's sockets and database file handles. Shutdown is unchanged: as with v1, destroying a still-running handle SIGKILLs and reaps the child, and `rpc_process::stop` keeps its grace period before terminating.\n\n## Testing\n- `nano_node`, `nano_rpc`, `load_test` and `core_test` build against Boost 1.87 at the first commit and against Boost 1.88 at the second (Linux, Clang 22).\n- `load_test -n 2 -s 20` spawns the nodes and RPC servers, processes the sends and passes the replication check. It then hangs at shutdown until the nodes are signalled; develop on Boost 1.87 with Process v1 behaves the same, so this hang is unrelated to this change.\n- Windows and macOS are left to CI.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n",
+    "draft": false,
+    "pull_request": 5247,
+    "label": "clemahieu:boost-1.88",
+    "created_at": "2026-10-30T23:27:50Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-10-31T13:04:14Z",
+    "run_id": null
   },
   {
     "hash": "804dcaceb1ecc558894f09a7092f798c8594a05a",
