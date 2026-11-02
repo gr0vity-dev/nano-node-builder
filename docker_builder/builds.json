@@ -36077,11 +36077,11 @@
     "title": "Give the message processor its own stat type and count every inbound message drop (#5243)\n\n* Count dispatched messages under a message processor stat type\n\nThe message processor counted and traced every message it dispatched\nunder the generic `message` type, although it is a standalone\ncomponent since it was given a dispatcher. It now counts them under\nits own `message_processor_dispatch` type, and the node's dispatcher\ncounts and traces `message` for every inbound message it routes, next\nto the drops it counts under `message_drop`.\n\n* Count every inbound message that goes nowhere as a message drop\n\nThe dispatcher counted a `message_drop` when the block or vote\nprocessor refused a message, but not when the vote replier refused a\nconfirmation request, the bootstrap server an ascending pull request,\nbootstrap a response that answered none of its requests, or telemetry\nan ack that failed verification, and a message the processor's channel\nqueue had no room for left no drop either. `bootstrap_service::process`\nand `telemetry::process` now report whether they took the message,\nevery handler counts the drop when its component refuses, and the\nprocessor counts one next to its own overfill. Requests a node that\ndoes not vote receives, and requests without roots, count under\ndetails of their own.\n\n* Define the dispatcher visitor's handlers below its class\n\nThe visitor's handlers were written inside the class body, a level\ndeeper than method definitions elsewhere in the codebase. The class\nnow only declares them and each handler is defined below it, with no\nchange to what they do.",
     "pull_request": "5243",
     "created_at": "2026-10-28T22:22:33Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-02T00:26:34Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:9ffcd40c8624f1de1a6931f8f5811be7c0da0581",
     "build_started_at": "2026-10-28T23:28:53Z",
-    "run_id": null
+    "run_id": "41364132337"
   },
   {
     "hash": "a00b5dac30cd6d48b2c4c10509e50247eb2f36e2",
