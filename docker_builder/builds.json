@@ -21674,7 +21674,7 @@
     "label": "RickiNano:Trim-header-includes",
     "created_at": "2026-10-26T20:45:14Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-11-03T02:18:44Z",
     "run_id": null
@@ -39624,6 +39624,22 @@
     "docker_tag": "gr0v1ty/nano-node:b0896aa755d8fcbb6c0cef25b31bed8157829c8f",
     "build_started_at": "2024-01-18T14:10:22Z",
     "run_id": "7571212660"
+  },
+  {
+    "hash": "b0a6c0761ed4db1e34a62b596c35f6e50b6dc5f4",
+    "type": "pull_request",
+    "title": "Secure limiter budget before popping bootstrap batches and local broadcasts",
+    "author": "pwojcikdev",
+    "body": "Two consumers took work out of their queues before securing the rate limiter budget to serve it. Both now check the budget first and take only what they can pay for.\n\n**Bootstrap server.** With more than one worker, a worker popped its batch and then waited for limiter tokens with the mutex released, while the other workers kept popping and paying for newer, smaller batches. Tokens refilled at the pace of those single requests never accumulated to the size of the waiting batch, which could stay unserved indefinitely, and the fair queue could no longer protect it once it had left the queue. A deterministic model served 30,000 single requests over a minute without admitting a waiting batch of 16, and a two-worker test reproduces it live. The worker now checks the budget for what it is about to pop, up to `batch_size` or whatever is queued, and waits holding nothing when the budget is short. The pop is bounded by that count, so charging the requests actually popped always succeeds, and requests arriving during the wait keep their fair share at the pop. The default configuration runs one worker and is not affected.\n\n**Local block broadcaster.** A pass collected every due entry, recorded each one as broadcast at once and flooded them one by one, sleeping on the limiter in between. One pass held the only thread for backlog/32 seconds, so a local block submitted meanwhile waited for the pass to end before its first flood, `last_broadcast` claimed sends that had not happened yet, and entries erased by a rollback or cementing during the pass were still flooded from the copy. A pass now takes due entries in schedule order while the limiter grants a token for each, floods them without waiting, and the loop comes back on the limiter's refill hint. A new local block sorts first, so it goes out on the next token ahead of pending rebroadcasts.\n\n**Rate limiter.** `rate_limiter` gains `time_to_consume`, the thread-safe counterpart of the token bucket's query, which both consumers use.\n\n**Tests.** `bootstrap_server.serve_batch_not_starved` pins the two-worker case. The local block broadcaster gets its own suite in `core_test/local_block_broadcaster.cpp`, covering tracking, eviction, rollback, cementing, cleanup, pacing, the growing and capped rebroadcast interval, the disabled state and a new block ahead of a rebroadcast backlog. Typed limiter tests cover `time_to_consume` on both threading variants and the `rate_limit` overload of `reset`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5250,
+    "label": "pwojcikdev:claude/bootstrap-batch-starvation-c8d9a3",
+    "created_at": "2026-11-03T00:02:00Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-03T09:41:07Z",
+    "run_id": null
   },
   {
     "hash": "b0b3753138dab13ff44de0476418f82b87f2d115",
