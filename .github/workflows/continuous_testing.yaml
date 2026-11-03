@@ -150,7 +150,8 @@ jobs:
   testcases:
     needs: [prepare_testing, get_testcases]
     if: ${{ needs.prepare_testing.outputs.COMMIT_HASH != 'null' }}
-    runs-on: ubuntu-latest
+    # Keep the legacy test tooling on a stable runner image.
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.get_testcases.outputs.MATRIX) }}
@@ -172,15 +173,14 @@ jobs:
               exit 1
           fi
 
-          sudo apt-get update
-          sudo apt-get install apt-transport-https ca-certificates gnupg-agent software-properties-common --yes
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-          sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-          sudo apt-get install docker-ce docker-ce-cli containerd.io --yes
+          # GitHub's Ubuntu runner already includes Docker and a running daemon.
+          docker version
+          docker info
 
           # Install docker-compose v1.29 required for cpu limits to be applied in the testcases. docker-compose V2 ignores hardware limits
-          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo curl -fSL --retry 3 "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
           pip install extradict==0.6.0
           pip install git+https://github.com/gr0vity-dev/python-ed25519-blake2b@151ad17b2a50a3329652bd4920c0db25eaeefeb1
           pip install git+https://github.com/gr0vity-dev/nanomock.git@42a67e4a41efaade44d85d8a6dcad40878d8d634
