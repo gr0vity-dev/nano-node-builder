@@ -28613,7 +28613,7 @@
     "label": "pwojcikdev:claude/bootstrap-batch-starvation-c8d9a3",
     "created_at": "2026-11-03T00:02:00Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-11-03T02:18:44Z",
     "run_id": null
@@ -51419,6 +51419,22 @@
     "docker_tag": "",
     "build_started_at": "2024-11-02T19:16:03Z",
     "run_id": "11645302127"
+  },
+  {
+    "hash": "e77c424f5f9489424dd9d29320a820de9ecee172",
+    "type": "pull_request",
+    "title": "Let a forced block join the election already running for its root",
+    "author": "pwojcikdev",
+    "body": "`active_elections::insert` asserted that an election found for the block's root already contains the block. That holds as long as the only thing replacing a root's ledger successor is an election forcing its own winner, which it holds by construction, and the rollback observer deliberately keeps that root's election alive.\n\nThe `process` RPC with `force` breaks the assumption: it forces a block no election has seen. The forced block rolls the successor back, the root's election survives the rollback, and the scheduler then activates a block its election never saw. Debug builds hit the assert; release builds leave the election voting on the rolled back block alone, so the forced block never competes.\n\n#5246's `block_processor.forced_rollback_in_batch` exposed it on the Windows runner: the backlog scan started an election for the ledger successor just before the test forced a fork in.\n\nChanges:\n\n- `insert` no longer asserts that an existing election contains the block.\n- The processed-blocks observer treats a forced block that landed with `progress` like a `fork` result, so `handle_fork` hands it to the running election through the same path. Going through the fork cache also covers an election started for the root in between. The election-driven force is unaffected: its winner is already in the ballot, so the publish is a no-op.\n\n`active_elections.forced_block_joins_existing_election` starts the election for the ledger successor itself, forces a sibling in and checks that the surviving election admits it next to the rolled back block. It aborts with the CI stack on the old code on both backends.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5251,
+    "label": "pwojcikdev:forced-block-existing-election",
+    "created_at": "2026-11-03T20:02:29Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-03T22:21:17Z",
+    "run_id": null
   },
   {
     "hash": "e7810db8d02845100aa27e81f5ceb66c4db7db56",
