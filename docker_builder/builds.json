@@ -828,11 +828,11 @@
     "title": "Run Build & Deploy on the tag it builds\n\nBuild & Deploy used to create the tag in its first job and have the\nbuild jobs check that tag out, so a run's own commit was the branch\nhead it started from while the packages came from the version commit\none step ahead. Anything that records the run's commit, including the\nattestations the next change adds, would have named the wrong one.\n\nTagging moves to its own workflow, Tag Build, which keeps the schedule\nand the manual trigger, creates the tag and then starts Build & Deploy\non it with gh workflow run, the one way a GITHUB_TOKEN may start a\nworkflow. Build & Deploy now runs on a tag ref, checks out that ref as\nany workflow does and takes the tag name from it, so it can also be\nstarted by hand on an existing tag to rebuild it. A first job refuses\nto run on anything but a build tag.\n\nThe upload steps run only when the bucket credentials are present,\nwhich lets a fork build and verify packages without them.",
     "pull_request": "5249",
     "created_at": "2026-10-30T12:49:39Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-04T18:03:12Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:04be2b38e180f9babe6ab1156f521da031cba4e8",
     "build_started_at": "2026-11-04T17:28:40Z",
-    "run_id": null
+    "run_id": "41877850354"
   },
   {
     "hash": "04d7ed5b441408923a150e2704afff0936400a5a",
