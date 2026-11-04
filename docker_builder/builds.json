@@ -822,6 +822,19 @@
     "run_id": "9567060702"
   },
   {
+    "hash": "04be2b38e180f9babe6ab1156f521da031cba4e8",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Run Build & Deploy on the tag it builds\n\nBuild & Deploy used to create the tag in its first job and have the\nbuild jobs check that tag out, so a run's own commit was the branch\nhead it started from while the packages came from the version commit\none step ahead. Anything that records the run's commit, including the\nattestations the next change adds, would have named the wrong one.\n\nTagging moves to its own workflow, Tag Build, which keeps the schedule\nand the manual trigger, creates the tag and then starts Build & Deploy\non it with gh workflow run, the one way a GITHUB_TOKEN may start a\nworkflow. Build & Deploy now runs on a tag ref, checks out that ref as\nany workflow does and takes the tag name from it, so it can also be\nstarted by hand on an existing tag to rebuild it. A first job refuses\nto run on anything but a build tag.\n\nThe upload steps run only when the bucket credentials are present,\nwhich lets a fork build and verify packages without them.",
+    "pull_request": "5249",
+    "created_at": "2026-10-30T12:49:39Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
+  },
+  {
     "hash": "04d7ed5b441408923a150e2704afff0936400a5a",
     "type": "commit",
     "author": "pwojcikdev",
@@ -1009,6 +1022,19 @@
     "docker_tag": "gr0v1ty/nano-node:057cacd6fd2166f12ac48bd290acadca7f7d0596",
     "build_started_at": "2024-10-07T14:43:57Z",
     "run_id": "11218011907"
+  },
+  {
+    "hash": "059ca47cb008cd31e414321d594fc3e254e9ace7",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Let a forced block join the election already running for its root (#5251)\n\nactive_elections::insert asserted that an election found for the block's root already contains the block. That holds while the only thing replacing a root's ledger successor is an election forcing its own winner, but the process RPC can force any block: the forced block rolls the successor back, the rollback observer keeps that root's election, and the scheduler then activates a block its election has never seen. Debug builds hit the assert, release builds leave the election voting on the rolled back block alone.\n\nThe assert goes, and the processed-blocks observer treats a forced block that landed like a fork result, so handle_fork hands it to the running election through the same path and the fork cache covers an election started in between.",
+    "pull_request": "5251",
+    "created_at": "2026-11-04T14:50:56Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
   },
   {
     "hash": "059ceeb3e440dc4999e8329ac884be56b860ab1c",
@@ -3469,6 +3495,19 @@
     "run_id": "8170559965"
   },
   {
+    "hash": "101b33889381ea08a12b0d7586fefdb7f2d1a9ff",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Keep packages as workflow artifacts\n\nThe packages only ever left the runner through the bucket upload, so a\nrun without the bucket secrets, which is every run on a fork, lost what\nit built. The package jobs now attach them to the run as well, which\nkeeps every build inspectable and lets a fork verify the attestation of\nwhat it built.",
+    "pull_request": "5249",
+    "created_at": "2026-10-30T13:59:55Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
+  },
+  {
     "hash": "10206b819da324796e43af971fe63c0741e887f3",
     "type": "commit",
     "created_at": "2023-10-07T20:33:22Z",
@@ -3925,6 +3964,22 @@
     "docker_tag": "gr0v1ty/nano-node:1211e4fc2205666a5eb4a1b4272b52442cb8c1bd",
     "build_started_at": "2026-07-29T16:40:07Z",
     "run_id": "30471777579"
+  },
+  {
+    "hash": "12196a0d2934b88d2ac6b1096f4e2f7b874a13b6",
+    "type": "pull_request",
+    "title": "Match every processed block with the election running for its root",
+    "author": "pwojcikdev",
+    "body": "The processed-blocks observer in `active_elections` handed only `fork` results, and since #5251 forced blocks, to a running election. Every other way an election ends up without the ledger's block for its root was left alone:\n\n- A scheduler that read a block just before a rollback took it along as a dependent still starts an election for it. The replacement that lands for that root afterwards is an ordinary `progress` result and never joined.\n- The next copy of a block an election already lacks comes back as `old` and never joined either.\n\nElections only start from ledger blocks, so the blocks that can meet one are exactly the `progress`, `old` and `fork` results. The processed event now has two observers:\n\n- The first caches `fork` results before anything else sees the batch, so an election started in between reads them from the fork cache, as `insert` relies on.\n- The second resolves the roots of the whole batch under one acquisition of the active mutex and offers each matched block to its election outside it. A block the election already holds is reported as not admitted by the election itself, which subsumes the forced-block gate from #5251.\n\n`election::publish` now owns what used to follow it in `active_elections`: the vote cache trigger, the stat and the debug log, under the `election` stat and log types. With that, `active_elections::publish` had no caller left besides `insert`, which offers cached forks to the election it just created, so `insert` talks to that election directly and the method is gone.\n\nNot covered, and left as a separate decision: an election created from a block read before a rollback that already happened is stale at creation, and only a later `progress` or `old` result for its root repairs it through this observer. Closing that would mean `insert` verifying the ledger successor.\n\nTests:\n\n- `active_elections.progress_block_joins_stale_election` and `active_elections.old_block_joins_stale_election` build the stale election directly from a rolled back block and check that the root's successor joins it, once landing as `progress` and once arriving again as `old`. Both time out without this change.\n- `election.publish_ignores_held_block`, `election.publish_rejected_when_full_clears_filter` and `election.publish_applies_cached_votes` cover `election::publish` on its own: a held block changes nothing, a full election clears a weightless fork from the network filter, and votes cached before a block was published land on the election once it is.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5254,
+    "label": "pwojcikdev:election-match-processed",
+    "created_at": "2026-11-04T15:08:53Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
   },
   {
     "hash": "124421bfefe8add44058caf628b8046a699b9dfe",
@@ -5978,6 +6033,19 @@
     "run_id": "11574910766"
   },
   {
+    "hash": "1a9d9222735e81b2d3dc1aaf50c28526200e8c4a",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rewrite the Docker image build and push\n\nThe image went through a 170-line library sourced by five one-line\nwrappers, with the registry names, the nightly suffix, the tag list and\nthe login spread across it, plus a scan of every local image to decide\nwhat to push. Two scripts replace it: docker-build.sh builds the image\nonce and names it for the registries, docker-push.sh tags and pushes\none repository and reports the digest it got, which the next step needs\nfor attestation. The workflow logs in with docker/login-action and\nspells out each registry's tags, including that only beta gets a latest\ntag on Docker Hub. Whether a live build is a nightly is now read off\nthe tag instead of a separate input.\n\nThe build no longer pulls the previous image as a layer cache; with a\nmulti-stage Dockerfile that cache held only the final stage and saved\nnothing of the compile.",
+    "pull_request": "N/A",
+    "created_at": "2026-10-30T12:32:51Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
+  },
+  {
     "hash": "1a9e6cb22b1578875983d54293faad87d2c4ee76",
     "type": "commit",
     "author": "pwojcikdev",
@@ -6601,6 +6669,22 @@
     "built_at": "2023-03-15T03:16:13Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:1d1d1526969d6917d842cb5da891398acbb2b1e6"
+  },
+  {
+    "hash": "1d1dbfce05d4a9a2a60fde31a77a5c122afc79ee",
+    "type": "pull_request",
+    "title": "Verify block signatures before taking the ledger writer",
+    "author": "pwojcikdev",
+    "body": "Block signature verification used to run inside the ledger write transaction: the block processor opened a write transaction per batch and every `ledger.process ()` call did its ed25519 checks while holding it. This PR verifies the signatures of a batch before the writer is taken, in parallel, and lets the ledger reuse the verdicts. The writer is then held for the ledger updates alone, so other writers such as confirmation processing get it sooner, and the verification work scales with threads.\n\nThis takes the direction of #5103 by @RickiNano, which first moved the checks out of the transaction. It differs in how the verdict is represented and trusted, in covering legacy and epoch blocks, in making the thread count configurable, in the tests around the cases where the ledger's view can change between the two transactions, and in shipping the benchmark.\n\n## How it works\n\n`nano::signed_message` carries a signer, a message and a signature with nothing verified about it. `nano::signature_verification` is the verdict on one and can only be obtained from its static `verify`, the single place that runs the check, or from `dummy`, which exists for tests and asserts the dev network, like `vote_permit::dummy`. A verdict keeps the message it judged.\n\n`nano::signature_verifier` verifies a batch of signed messages, sharing it between the calling thread and a pool of extra threads in shares of at least sixteen. The block processor owns one, sized by the new `verification_threads` key under `[node.block_processor]`, which defaults to a quarter of the CPU threads and at least one; zero verifies on the processing thread alone. The old `signature_checker_threads` key had no consumer left and is removed; configuration files that still carry it keep loading.\n\n`ledger::block_signer` resolves the account the ledger will check a block against: the account for open and state blocks, the epoch signer for a state block that keeps its predecessor's balance under an epoch link, the predecessor's owner for legacy send, receive and change blocks, and nothing when the predecessor is missing. The block processor resolves every signer of a batch under one read transaction, verifies the resolved ones, stores each verdict on the block's `block_context`, and only then opens the write transaction. Blocks whose signer could not be resolved are verified by the ledger as before.\n\n`ledger::process` takes an optional verdict. `ledger_processor::validate_signature` reuses it only when it covers exactly the signer, hash and signature the handler is about to check, and verifies itself otherwise. Two new stats, `signature_checked` and `signer_unresolved`, show how much of a batch was handled ahead of the writer.\n\n## Safety\n\nThe ledger stays the authority. A verdict is a pure function of signer, hash and signature, the ledger compares all three before reusing it, and a mismatch on the signer means the ledger verifies on its own. A verdict about a different hash or signature than the block's is a caller bug and aborts with a `release_assert`, which two death tests cover. In debug builds every accepted signature is still rechecked by the existing `debug_assert` cross-checks in the handlers, so the reuse is verified against the ledger's own computation on every debug run.\n\nThe signer can legitimately differ from what was resolved under the read transaction. An epoch-link state block whose predecessor is rolled back in between, by a forced block earlier in the same batch or by the bounded backlog, lands on the gap path of `validate_epoch_block`, which asks about the account first and the epoch signer second, and at most one of those can match the verdict. Asserting the full match there would have turned that benign race into a node crash, so it falls back instead; the comment in `validate_signature` spells this out and `ledger.process_with_verification_epoch_gap` drives a stale verdict through exactly that sequence.\n\nAn independent review enumerated the ways the ledger's view can diverge between the two transactions, and each one is now a test: a rolled-back predecessor for state, epoch, epoch-link send and legacy blocks, a forced block's own predecessor, a predecessor arriving earlier in the same batch, the same block twice in a batch, an unchecked requeue, epoch open blocks, pruned predecessors, a predecessor inserted by another writer, the burn account, and an account that is itself the epoch signer. On the dev network both epoch signers are the genesis key, which makes epoch assertions on the genesis account vacuous, so the epoch tests run on a second account.\n\nThe verifier and the block processor assert their batching invariants in release builds: one verdict per message, in message order, each verdict covering the block it is handed to, and a context never verified twice.\n\n## Benchmarks\n\n`BM_block_processing` in the benchmarks binary is part of this PR. A dev node with two thousand opened accounts processes rounds of one-raw transfers between neighbouring accounts through the block processor, with elections, backlog scans and the bounded backlog switched off, while a competing thread takes and releases the ledger writer once a millisecond, as confirmation processing would, and records how long each acquisition waited. Release build, 20 cores, load average under 4, medians of five repetitions of 20,000 blocks each, node data on an internal SSD and on a RAM disk.\n\n| run | SSD blocks/s | RAM disk blocks/s | writer wait p50 µs (SSD) | writer wait p99 µs (SSD) | writer acquisitions per run (SSD) |\n|---|---|---|---|---|---|\n| develop | 13,568 | 13,446 | 17,617 | 22,139 | 82 |\n| this PR, 0 extra threads | 13,762 | 13,378 | 1.8 | 11,728 | 655 |\n| this PR, 1 | 18,550 | 17,967 | 2.0 | 11,386 | 345 |\n| this PR, 2 | 18,859 | 20,729 | 4.3 | 13,605 | 240 |\n| this PR, 4 | 20,392 | 23,954 | 13.0 | 14,004 | 161 |\n| this PR, 8 | 22,701 | 24,681 | 8,585 | 13,495 | 104 |\n\nWith no extra threads the throughput is unchanged, but the competing writer's median wait drops from 18 ms to microseconds and it gets the lock eight times as often, because the verification phase of every batch now runs without it. Its p99 is the ledger write phase of a 256-block batch, which this PR does not touch; before, verification sat on top of it under the same lock. Extra threads add up to 67% throughput on the SSD and 84% on the RAM disk, flattening past four as the write phase becomes the bottleneck. At eight threads verification is so short that the lock is held most of the time again, for ledger writes alone, which is why that row's median wait rises.\n\n## Tests\n\nNew suites `signature_verification` and `signature_verifier`, `ledger.block_signer` with a pruned-predecessor variant, nine `ledger.process_with_verification*` tests and two `ledger_DeathTest` cases, and five block processor tests covering mixed legacy and state batches, unresolved signers, duplicates, an unchecked requeue of an epoch block and a forced rollback racing a queued epoch block.\n\n## Left for follow-ups\n\nBlocks already in the ledger, old and duplicate ones, now cost a signature check that the handlers used to skip; the read pass could leave those out. The write batch size is the remaining lever on how long the writer is held.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5246,
+    "label": "pwojcikdev:block-signature-preverification",
+    "created_at": "2026-10-30T14:21:00Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
   },
   {
     "hash": "1d34d857dda6d74046f83aabdd9384799202aac8",
@@ -8474,6 +8558,19 @@
     "docker_tag": "gr0v1ty/nano-node:25901613475936519a8eb2c7f1b7b85b9e8f3cd6",
     "build_started_at": "2026-08-30T18:30:27Z",
     "run_id": "33328254619"
+  },
+  {
+    "hash": "2591a3ab442953b38c5a8a5a8a14f5e0ed42b0e3",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Name package files after the build tag\n\nCPack named packages after the CMake version, nano-node-29.0.0-Linux,\nand the deploy scripts renamed each one to the published name on\nupload. Setting CPACK_PACKAGE_FILE_NAME from the tag gives every\npackage its published name as soon as it is built, which is also the\nname an attestation will record for it. The Windows build gets ZIP\nadded to its CPack generators so one cpack run produces both the\ninstaller and the archive.",
+    "pull_request": "N/A",
+    "created_at": "2026-10-30T12:25:11Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
   },
   {
     "hash": "2597405dff33801ca522b244b043a2654eb677eb",
@@ -14854,6 +14951,19 @@
     "docker_tag": "gr0v1ty/nano-node:429d2c5c60cab5bcb7e44ecdef820ee3a23797cb"
   },
   {
+    "hash": "429f7dc608f2b3bdeb37ccb71fdd406b5b963104",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rework the release pipeline and attest what it publishes (#5249)\n\n* Remove the CI scripts nothing runs anymore\n\nThe release pipeline has accumulated scripts with no caller: the RPM\nbuild and signing tools from before RPM builds were switched off, the\nGitLab configuration, the nano-env image builders that the test\nworkflows stopped using when they moved to ci/prepare, the Windows\ntest wrappers superseded by ci/build.sh, the previous generation of the\ntag generator and the macOS dependency installer. None of them is\nreferenced by a workflow, a Dockerfile or another script.\n\n* Name package files after the build tag\n\nCPack named packages after the CMake version, nano-node-29.0.0-Linux,\nand the deploy scripts renamed each one to the published name on\nupload. Setting CPACK_PACKAGE_FILE_NAME from the tag gives every\npackage its published name as soon as it is built, which is also the\nname an attestation will record for it. The Windows build gets ZIP\nadded to its CPack generators so one cpack run produces both the\ninstaller and the archive.\n\n* Build release packages through ci/build.sh\n\nEach platform had its own way of configuring and building the release\npackages: a bash script with a hard-coded Qt path for Linux and macOS,\nand a PowerShell wrapper around two batch files for Windows, none of\nthem sharing anything with the ci/build.sh the test workflows use.\nci/build-packages.sh now drives ci/build.sh for all three, runs cpack\nand collects the packages in packages/ under their published names.\n\nci/build.sh passes the build type to cmake --build so the Visual Studio\ngenerator builds the requested configuration instead of always Debug,\nand CMakeLists.txt keeps every configuration's binaries in the build\nroot, where the test scripts look for them.\n\nThe Windows build step never received NETWORK or CI_TAG, so its beta\npackages were live-network builds reporting a development version;\nboth are passed now. The commented-out Authenticode signing script and\nits secrets go, as does the SIMD flag, which has no effect on MSVC.\n\n* Upload packages with one script\n\ndeploy.sh and deploy.ps1 did the same job in two languages: hash each\npackage, write the hash beside it and copy both to the download bucket.\nci/deploy/upload.sh does it for every platform from the packages/\ndirectory, which already holds the published names, so the per-platform\nglobs and the renaming on upload are gone, together with the RPM branch\nthat has had no caller since RPM builds were switched off.\n\nThe .sha256 files now contain the bare file name. The Linux ones used\nto embed the runner's absolute build path, which made them useless to\nsha256sum -c.\n\n* Rewrite the Docker image build and push\n\nThe image went through a 170-line library sourced by five one-line\nwrappers, with the registry names, the nightly suffix, the tag list and\nthe login spread across it, plus a scan of every local image to decide\nwhat to push. Two scripts replace it: docker-build.sh builds the image\nonce and names it for the registries, docker-push.sh tags and pushes\none repository and reports the digest it got, which the next step needs\nfor attestation. The workflow logs in with docker/login-action and\nspells out each registry's tags, including that only beta gets a latest\ntag on Docker Hub. Whether a live build is a nightly is now read off\nthe tag instead of a separate input.\n\nThe build no longer pulls the previous image as a layer cache; with a\nmulti-stage Dockerfile that cache held only the final stage and saved\nnothing of the compile.\n\n* Rewrite the tag generator\n\ngenerate_next_git_tag.sh grew its options, globals and output modes\nover several rounds and was hard to reason about: it matched tags with\nan unescaped dot, force-moved tags and force-pushed the release branch,\nand wrote its results to GITHUB_ENV for the workflow to copy into\noutputs. ci/deploy/next-tag.sh keeps the scheme (DB tags on develop,\nRC tags on the release branch, plain release tags on request, versions\ncommitted into CMakeLists.txt and the release commit pushed to its\nbranch) in a third of the lines, with a --dry-run that prints the tag\nit would create. Pushes are no longer forced, so a collision fails\ninstead of moving a published tag, and the outputs go straight to\nGITHUB_OUTPUT.\n\nThe workflow checks out the full history for it: deciding whether the\nlatest tag already covers HEAD needs the commits between them.\n\n* Run Build & Deploy on the tag it builds\n\nBuild & Deploy used to create the tag in its first job and have the\nbuild jobs check that tag out, so a run's own commit was the branch\nhead it started from while the packages came from the version commit\none step ahead. Anything that records the run's commit, including the\nattestations the next change adds, would have named the wrong one.\n\nTagging moves to its own workflow, Tag Build, which keeps the schedule\nand the manual trigger, creates the tag and then starts Build & Deploy\non it with gh workflow run, the one way a GITHUB_TOKEN may start a\nworkflow. Build & Deploy now runs on a tag ref, checks out that ref as\nany workflow does and takes the tag name from it, so it can also be\nstarted by hand on an existing tag to rebuild it. A first job refuses\nto run on anything but a build tag.\n\nThe upload steps run only when the bucket credentials are present,\nwhich lets a fork build and verify packages without them.\n\n* Attest release packages and images\n\nEvery job that publishes something now asks GitHub Actions to attest\nit: actions/attest signs the digests of the packages in packages/ and\nof each pushed image under the workflow's OIDC identity, stores the\nattestation with the repository and, for images, in the registry next\nto the image. A consumer can then check that a download was built by\nthis workflow from the commit it names, which the .sha256 files beside\nthe packages cannot show since they come from the same job.\n\nThe jobs get the id-token and attestations permissions this needs, and\nthe package jobs publish the attestation bundle next to the packages\nso it can be verified without the GitHub API.\n\n* Describe the release pipeline\n\nA short page under ci/deploy for whoever next has to touch a release:\nhow a tag comes about, what Build & Deploy publishes where, and the\ncommands a user runs to verify a download against its attestation.\n\n* Keep packages as workflow artifacts\n\nThe packages only ever left the runner through the bucket upload, so a\nrun without the bucket secrets, which is every run on a fork, lost what\nit built. The package jobs now attach them to the run as well, which\nkeeps every build inspectable and lets a fork verify the attestation of\nwhat it built.\n\n* Rewrite Prepare Release and describe the whole release process\n\nPrepare Release cuts the release branch and moves develop on to the\nnext major. The job did it in six inline steps: it fetched the default\nbranch name over the REST API, bumped the major on a timestamped branch,\nopened the pull request, hard-reset its checkout and only then created\nthe release branch, from the default branch whatever ref it had been\nstarted on, with no permissions block and a typo in a step name.\n\nci/deploy/prepare-release.sh does the same work in the order a reader\nexpects, refuses to run on anything but the default branch or when that\nbranch is not at <major>.0, and takes --dry-run like the tag generator.\nIt shares the version helpers with next-tag.sh through common.sh and\nnames the pull request's repository explicitly, so a fork never opens\none against the upstream repository.\n\nThe README now opens with the release process itself: how development\nbuilds come about, the steps and the order for a release, point\nreleases, rebuilding a tag, and where the workflows stop.\n\n* Let a failed network build finish the other one\n\nThe package and Docker jobs build beta and live as one matrix with\nGitHub's default fail-fast, so a failure in one network cancelled the\nother network's build of the same platform and the run published less\nof the tag than it could have. With fail-fast off every build runs to\nits own result, and the run shows exactly which outputs were published.\n\n* Rewrite the release pipeline README as a reference\n\nThe page told the release as a story: the tag grammar was spread over\nthree paragraphs, the bucket and the registries were used before they\nwere named, workflow names changed form from one mention to the next,\nand the notes a maintainer needs sat as asides inside procedure steps.\nIt was also hard-wrapped at a column.\n\nIt now defines its terms first, gives the tag kinds and the rules the\ntag script applies in one place, lists what Build & Deploy publishes\nwhere with the exact file and image names, describes each workflow and\nscript with its inputs and outputs, and keeps the release procedure,\nrepository configuration, local dry runs and verification as sections\nof their own.\n\n* Build packages without debug information\n\nBeta packages were RelWithDebInfo builds. On Linux the debug\ninformation goes into the binaries themselves, so each beta package\nweighed half a gigabyte against 25 MB for live. macOS and Windows keep\ntheir debug information outside the packaged files, so nothing shipped\nthere changes.\n\nPackages of both networks now build as Release. The symbol table\nstays, so stack traces in the log keep their function names. The\nDocker images are unchanged and keep their debug information.\n\n* Push a release's tag and branch update together\n\nA release pushed its tag first and the version commit to its branch\nsecond. When the branch push was rejected, by a protection rule or a\npush that got in between, the tag stayed published while\nreleases/v<major> was left behind, and a rerun saw HEAD covered by that\ntag and created nothing, so the branch never caught up on its own.\n\nThe two refs now go out in one atomic push: either both land or neither\ndoes, and a rerun starts from an origin that is as it was. Pre-release\nruns still push only their tag.",
+    "pull_request": "5249",
+    "created_at": "2026-11-04T12:49:23Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
+  },
+  {
     "hash": "42e5d00224316fde1e9fdff91a7e96d3b314595c",
     "type": "pull_request",
     "title": "Verify block signatures before taking the ledger writer",
@@ -15940,6 +16050,19 @@
     "built_at": "2023-02-06T20:22:55Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:471a0a347a7f6a3b313f3fce556c5adabcca9bde"
+  },
+  {
+    "hash": "4741663a5e8a3907bcf7544cd269cc113b396b3b",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Upload packages with one script\n\ndeploy.sh and deploy.ps1 did the same job in two languages: hash each\npackage, write the hash beside it and copy both to the download bucket.\nci/deploy/upload.sh does it for every platform from the packages/\ndirectory, which already holds the published names, so the per-platform\nglobs and the renaming on upload are gone, together with the RPM branch\nthat has had no caller since RPM builds were switched off.\n\nThe .sha256 files now contain the bare file name. The Linux ones used\nto embed the runner's absolute build path, which made them useless to\nsha256sum -c.",
+    "pull_request": "N/A",
+    "created_at": "2026-10-30T12:30:39Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
   },
   {
     "hash": "47539ac7181a8ea8d66dc3a04d87282b9176efcf",
@@ -23237,6 +23360,19 @@
     "run_id": "39040769883"
   },
   {
+    "hash": "6700d07d9ab8c44b979c3d1be5ff41822ef7e875",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Let a failed network build finish the other one\n\nThe package and Docker jobs build beta and live as one matrix with\nGitHub's default fail-fast, so a failure in one network cancelled the\nother network's build of the same platform and the run published less\nof the tag than it could have. With fail-fast off every build runs to\nits own result, and the run shows exactly which outputs were published.",
+    "pull_request": "5249",
+    "created_at": "2026-10-30T15:13:14Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
+  },
+  {
     "hash": "6704452691206e13a33d35517e9ff98e718aa63d",
     "type": "pull_request",
     "title": "Use a dedicated thread for tcp listener",
@@ -24300,6 +24436,19 @@
     "docker_tag": "gr0v1ty/nano-node:6ad9aa00e166e6258ee852fc4eb46803c55193dd",
     "build_started_at": "2026-08-13T13:43:13Z",
     "run_id": "31706345423"
+  },
+  {
+    "hash": "6ae737c02aeaa9617ecb767c6f0eaf6f9a1ba36b",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rewrite the release pipeline README as a reference\n\nThe page told the release as a story: the tag grammar was spread over\nthree paragraphs, the bucket and the registries were used before they\nwere named, workflow names changed form from one mention to the next,\nand the notes a maintainer needs sat as asides inside procedure steps.\nIt was also hard-wrapped at a column.\n\nIt now defines its terms first, gives the tag kinds and the rules the\ntag script applies in one place, lists what Build & Deploy publishes\nwhere with the exact file and image names, describes each workflow and\nscript with its inputs and outputs, and keeps the release procedure,\nrepository configuration, local dry runs and verification as sections\nof their own.",
+    "pull_request": "5249",
+    "created_at": "2026-10-30T15:13:24Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
   },
   {
     "hash": "6afdcaeef56430826e6b57798e8e6c4b62f25278",
@@ -28217,6 +28366,19 @@
     "run_id": "7668184498"
   },
   {
+    "hash": "7d13e73328454371c5bab0ffb906d68bda9fab10",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Attest release packages and images\n\nEvery job that publishes something now asks GitHub Actions to attest\nit: actions/attest signs the digests of the packages in packages/ and\nof each pushed image under the workflow's OIDC identity, stores the\nattestation with the repository and, for images, in the registry next\nto the image. A consumer can then check that a download was built by\nthis workflow from the commit it names, which the .sha256 files beside\nthe packages cannot show since they come from the same job.\n\nThe jobs get the id-token and attestations permissions this needs, and\nthe package jobs publish the attestation bundle next to the packages\nso it can be verified without the GitHub API.",
+    "pull_request": "5249",
+    "created_at": "2026-10-30T12:50:41Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
+  },
+  {
     "hash": "7d172cfc3a9b72282eb96769df0c47a99ff46065",
     "type": "pull_request",
     "title": "Multithreaded vote processor",
@@ -29233,6 +29395,22 @@
     "built_at": "2023-02-22T23:39:11Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:80cfe5cd18a70565d914ae565b0893dd9299443b"
+  },
+  {
+    "hash": "8104dcd46d1e562018df96f9702fbf32d38bae7a",
+    "type": "pull_request",
+    "title": "Add vote relay for representatives a node cannot peer with",
+    "author": "pwojcikdev",
+    "body": "A node that cannot peer with enough representatives, typically because it sits behind NAT or a firewall, has no way to ask them for votes. It can only wait for whatever votes other nodes happen to rebroadcast, and a quiet election may never confirm for it. With this change the node asks a peer that can reach those representatives to fetch their votes on its behalf.\n\nThe protocol relies on a channel's messages being processed in the order they were sent, which develop guarantees since #5240.\n\n## How it works\n\nTwo new messages carry the protocol. `vote_relay_req` names the blocks and the representatives whose votes the requester wants, with a flag for whether non-final votes are wanted too. `vote_relay_ack` carries a batch of votes for a request id; the last ack of a request is flagged as completed, and an empty ack terminates the request as well. Both declare their payload length in the header and ignore bytes past the fields they know, as `telemetry_ack` and the ascending bootstrap messages do, so a later version can append fields without breaking older nodes.\n\nServing relay requests is opt-in: a node with `[node.vote_relay] enable = true` advertises the new `vote_relay` capability in the node id handshake and runs a relay thread. Asking is on by default: every node sends relay requests when a capable peer is connected and there are principal representatives it cannot reach itself. A peer that does not advertise the capability never receives the new message types, so older nodes are unaffected.\n\nOn the requesting node:\n\n- Each election loop round, the solicitor lists the principal representatives the rep crawler has no channel for. Those seen voting recently are ranked by weight, heaviest first, since they decide quorum. Those never seen voting get a few rotating slots so every one gets asked eventually. By default 32 representatives go into a request, 28 observed and 4 to explore.\n- Elections still missing votes from the same representatives share one request, split into chunks of 255 hashes and spread over the relays picked for the round (`relay_fanout`, one relay per round by default). Before quorum any vote settles a representative, after quorum only a final one does, and the request says which it wants.\n- An election sends a relay request at most every 30 seconds, a separate and much slower gate than its `confirm_req` cadence, because every relay request costs the relay upstream work. Every election gate, for the winner broadcast, the vote request and the relay request, starts only once the message actually went out: a send a full channel or the relay client refused leaves the election due again next round.\n- Acks are matched to outstanding requests by id and relay channel, anything else is dropped as unsolicited. A request remembers the representatives and blocks it asked for, and a vote from any other representative or for other blocks is dropped as a `mismatch`, so a relay cannot claim to reach representatives it was never asked about. The votes go through the ordinary vote processor under a new `relay` vote source, so they are signature checked and counted by elections like any other vote, but the rep crawler never attributes them to the relay's channel. The ack flagged as completed, or an empty one, closes the request for good: a channel's messages are processed in the order they were sent, so no vote ack can follow it, and one that does is dropped as unsolicited. A terminator flagged as refused closes the request without counting it as answered, and the relay that sent it is left alone for `refusal_cooldown` (5 seconds), so the next rounds ask another one.\n\nOn the relay:\n\n- A request is first served from the vote cache. Every (block, representative) pair the cache cannot answer is registered in an index and the representative is queried with an ordinary `confirm_req` over the relay's own channel to it. Pairs already in flight for an earlier request are not queried again, the vote is shared with every waiter when it arrives. Representatives the relay has no channel to, or whose channel is full, are dropped from the request right away instead of waiting for votes that cannot come.\n- A representative that stays silent is asked again every `requery_interval` (10 seconds). One that has not final-voted yet does not answer a final-vote query, and one that cemented the block as a dependency never broadcasts a vote for it, so a single query could leave a request waiting until it ended idle. The relay thread wakes at least every `requery_tick` (1 second) and gathers the pairs that fell due, so those due together share one `confirm_req` per representative.\n- Votes are forwarded as they come in: a request's unsent votes go out in an ack once there are `flush_threshold` of them (8) or `flush_interval` (3 seconds) after the first arrived, and the request ends with its last ack flagged as completed, empty only when nothing is left to send, once every queried representative answered, after `idle_timeout` (15 seconds) without a new vote, or at `request_timeout` (30 seconds), whatever is still unsent travelling with the terminator.\n- A relay cannot forge votes: each one carries the representative's signature and the requester verifies it. A relay can only withhold or delay.\n\nCaps on both sides keep a request bounded. A relay refuses requests naming more than `max_reps` representatives or no representative at all, holds at most `channel_limit` requests per peer, queued or waiting for votes, tracks at most `max_requests`, and both directions use a dedicated `vote_relay` traffic class, while the relay's own queries to representatives go out as `relay_confirmation_requests`, apart from the node's own vote requests. A refused request is answered right away with the terminator flagged as refused, so the requester frees its slot instead of waiting out its own timeout and can tell the refusal from an answer with no votes; a request the relay accepted but cannot track ends with whatever the cache had. A request whose channel has no room for more acks stays queued under the per-peer cap until it has, other peers are served meanwhile, and a request whose channel closed is discarded. A node with the relay disabled drops requests silently, it never advertised the capability. A requester allows `max_outstanding` unanswered requests per relay and `max_requests` overall, and stops asking a relay until it catches up or its lost requests expire. Both sides default to the same per-peer limit, `vote_relay_config::default_max_outstanding`.\n\n## Reachable stake\n\nThe node remembers the representatives whose votes a relay delivered, for as long as online representatives are remembered, and reports their weight as *relayed* stake. *Reachable* stake is peered and relayed together, each representative counted once. `node.online ()` and the monitor's quorum warning now test reachable stake instead of peered stake, so a node behind NAT that confirms through relays is no longer reported as unable to confirm. The monitor line prints all four figures and `confirmation_quorum` gains `relayed_stake_total` and `reachable_stake_total`.\n\n## Solicitor rewrite\n\n`confirmation_solicitor` is replaced by `vote_solicitor`. A round (`vote_solicitor_round`) is a pure planner that decides, per election, which reachable representatives to ask with `confirm_req`, which to send the winner block to, and which unreachable ones to ask through a relay. The solicitor then sends what the round accumulated. The caps are unchanged: 50 vote requests and fanout / 2 directed broadcasts per election, 30 broadcasts per round, representatives voting for a different block exempt. The planner does no I/O, so its decisions are unit tested directly.\n\n## Configuration\n\n```toml\n[node.vote_relay]\nenable = false           # Serve relay requests and advertise the capability\nrequest_timeout = 30000  # Longest a request is kept open for votes, ms\nidle_timeout = 15000     # Finish a request that got no vote for this long, ms\nflush_interval = 3000    # Longest a received vote waits for others before it is sent, ms\nflush_threshold = 8      # Unsent votes sent without waiting for the interval, must be nonzero\nrequery_interval = 10000 # Ask a representative again when it has not answered a query for this long, ms, must be below idle_timeout\nrequery_tick = 1000      # How often the relay thread wakes for periodic work and gathers the requeries, ms\nmax_requests = 4096      # Requests waiting for representative votes\nchannel_limit = 64       # Requests per peer, queued or waiting for votes, the requester's cap below matches it\nbatch_size = 64          # Requests processed per batch, must be nonzero\nmax_reps = 64            # Representatives per request, larger requests are refused, must be nonzero\n\n[node.vote_relay_client]\nrequest_timeout = 60000  # Give up on a relay that never terminates a request, ms\nmax_requests = 4096\nmax_outstanding = 64     # Unanswered requests per relay, the same constant as the relay's channel_limit\nrefusal_cooldown = 5000  # A relay that refused a request is not asked again, ms\n\n[node.vote_solicitor]\nrelay_fanout = 1         # Relays asked per election loop round, 0 disables relay requests\nrelay_reps = 32          # Representatives per relay request\nrelay_reps_observed = 28 # Slots for representatives seen voting, heaviest first\nrelay_reps_explore = 4   # Slots for representatives not seen voting, rotated\n```\n\n## Other changes\n\n- The magic_enum range of `stat::detail` goes from 512 to 1024. The relay's details would otherwise fall past it and lose their names.\n- The rep crawler returns representatives as a deque, like the node's other channel listings.\n\n## Tests\n\n- `message.vote_relay_*`: serialization of both messages, their limits, the refused and completed flags, splitting votes into acks by count and payload size, and rejected payloads.\n- `deserialize_message*`: relay samples at the minimum and maximum counts, the non-final flag, the empty terminator and the refused and completed acks go through every parser test, including truncation and trailing bytes.\n- `vote_relay_index.*`, `vote_relay.*` and `vote_relay_config.*` in `nano/core_test/vote_relay.cpp`: serving from the cache, the finality filter, querying representatives, deduplicating in-flight queries, flushes by threshold and by interval, the idle timeout and the lifetime, the `max_reps` and per-peer caps, refusals answered with the terminator, representatives behind a full channel, requests waiting behind a full channel or discarded with a dead one, silent representatives asked again on the requery tick, config validation, capability advertisement, and two nodes end to end.\n- `vote_relay_client_index.*` and `vote_relay_client.*`: request and ack matching, unsolicited acks and votes the request did not ask for, timeouts, both caps, lost requests expiring when relays are listed, acks after the terminator being unsolicited, refused terminators and the relay cooldown, relayed representatives and reachable stake.\n- `vote_solicitor_round.*`, `vote_solicitor.*`, `relay_rep_selector.*` and `vote_solicitor_config.*`: round planning and caps, fork exemptions, grouping of relay requests by missing representatives and finality, weight ranking and rotation, config validation, the result a flush reports for sent, refused and dropped messages, and an election confirming through a relay end to end.\n- `node.online`, `node.stake_*`, `election_pacing.relay_request_*`, `rpc.confirmation_quorum`, `network.topology_hidden_nodes`.\n- `nano/slow_test/vote_relay.cpp`: two relays, one public representative, three representatives and two spamming nodes behind NAT, through a spam burst with forks. Once with the relays rebroadcasting votes as usual and once with relay requests as the only path for the hidden representatives' votes. Every node cements everything and agrees on every frontier, the hidden nodes never peer with each other, every one of them receives votes through the relays and no ack is dropped as unsolicited. The test prints the relay counters and the stake figures per node.\n\n## Known limitations, left for follow-ups\n\n- A relay only serves representatives it has a channel to itself. A representative no public node can reach stays unreachable.\n- A vote arriving at the relay between the cache lookup and the registration of the request is missed, the request then ends on the relay's timeout.\n- Requests without a representative filter, votes from anyone on a block, are refused. They are reserved for a vote storage role.\n- Relays are picked at random among capable peers, there is no scoring of how well a relay answers.\n- Relayed votes do not make a representative peered. The rep crawler learns nothing through relays by design, so `peers_stake_total` stays what it was.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n\n",
+    "draft": false,
+    "pull_request": 5201,
+    "label": "pwojcikdev:vote-relay-fable-2",
+    "created_at": "2026-10-01T10:50:17Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
   },
   {
     "hash": "810fbf33780e1606b84037d75b3e49b46d1778ba",
@@ -31338,6 +31516,19 @@
     "docker_tag": "gr0v1ty/nano-node:8b2d330ca0dfd32db5e41316daa0c5933b8115dc",
     "build_started_at": "2026-06-01T16:20:36Z",
     "run_id": "26780561913"
+  },
+  {
+    "hash": "8b3dff4da65458cd2a838f1e9f982d6ec65d49e4",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Split `block_rebroadcaster.cooldown` into suppression and expiry tests (#5253)\n\nblock_rebroadcaster.cooldown pushed a block, waited for the peer to\nstore it and pushed it again, expecting the second push to land inside\na 500 ms cooldown. The cooldown starts when the first push is\nprocessed, so the wait for the peer counted against it: on a Windows\nrunner the peer took longer than that, the second push went out as a\nsecond rebroadcast and the test timed out waiting for it to be\nsuppressed.\n\nEach half is now its own test, set up so that a delay can only help.\ncooldown keeps the suppression check with a 60 s cooldown that no delay\nbetween the pushes can outlast. The new rebroadcasts_after_cooldown\ncovers expiry with a 100 ms cooldown and waits at least that long\nbefore the second push, so a delay only moves the push further past\nexpiry.\n\nWith a 1 s delay injected before the second push, the old test failed\nat the suppression check on both backends and both new tests passed.",
+    "pull_request": "5253",
+    "created_at": "2026-11-04T12:42:15Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
   },
   {
     "hash": "8b5fefde32582d0f30fe3f7db46603f69f4eaa80",
@@ -35664,6 +35855,19 @@
     "run_id": "12458144371"
   },
   {
+    "hash": "9d9d6502b6be0d692bfa55a32c88e9b1f368d689",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rewrite Prepare Release and describe the whole release process\n\nPrepare Release cuts the release branch and moves develop on to the\nnext major. The job did it in six inline steps: it fetched the default\nbranch name over the REST API, bumped the major on a timestamped branch,\nopened the pull request, hard-reset its checkout and only then created\nthe release branch, from the default branch whatever ref it had been\nstarted on, with no permissions block and a typo in a step name.\n\nci/deploy/prepare-release.sh does the same work in the order a reader\nexpects, refuses to run on anything but the default branch or when that\nbranch is not at <major>.0, and takes --dry-run like the tag generator.\nIt shares the version helpers with next-tag.sh through common.sh and\nnames the pull request's repository explicitly, so a fork never opens\none against the upstream repository.\n\nThe README now opens with the release process itself: how development\nbuilds come about, the steps and the order for a release, point\nreleases, rebuilding a tag, and where the workflows stop.",
+    "pull_request": "5249",
+    "created_at": "2026-10-30T14:40:49Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
+  },
+  {
     "hash": "9da00f1a7888b9075227d3f086f7996e9db65d85",
     "type": "commit",
     "created_at": "2024-03-12T18:29:52Z",
@@ -37716,6 +37920,22 @@
     "run_id": "15811470623"
   },
   {
+    "hash": "a790337cfcb06a1d5eaee46e3c6f1dc14d240a7e",
+    "type": "pull_request",
+    "title": "Make fair queue pops scale with the active origins instead of the peer count",
+    "author": "pwojcikdev",
+    "body": "A pop of `nano::fair_queue` sought the next non-empty queue by stepping through the map of every origin, so a request cost a walk past the idle peers between the cursor and its sender, linear in the peer count: 344 ns per request at 200 peers and 17 µs at 5000 when a consumer keeps up with a trickle, and the same walk once per batch under load. Every bulk pop also returned a `std::deque`, two allocations and a 4 KB block whatever the batch size, paid per request in that same trickle. The message processor shards its peers over its threads, so its count is one thread's share; the vote processor, the block processor and the two reply servers see them all.\n\n### Benchmarks\n\n`nano/benchmarks/fair_queue.cpp` measures a fair queue keyed by source and channel over 200 to 5000 peers, without a node. The channel stand-in costs what the tcp channel does, an atomic load for `alive` and a mutex for `max`, behind a virtual call, and the queues are created in random order so the map's nodes are scattered in memory as a node's are. Profiles copy the caps and shares of the message processor, the vote processor and the vote replier. Scenarios: steady arrivals popped one at a time, a backlog drained in one batch, a storm with every queue full, the ready-only pop of the reply servers with a share of the channels out of room, a peer's first contact and the periodic update. Every run reports time and allocations per request.\n\n### Ring of the non-empty queues\n\nThe non-empty queues form a Boost.Intrusive ring in the order they filled. A queue joins the ring with its first request and leaves it when drained, and the cursor walks the ring, so a pop never visits an idle origin. Three things change for a reviewer to weigh: origins are served in the order their queues filled rather than in key order, a drained origin that fills again joins behind the others, and a periodic update no longer restarts the round. Three tests pin those down. The origin is bound by reference in `next` and `next_ready`; a copy there cost two atomic operations per pop.\n\n### Hash lookup\n\nThe queues live in a `boost::unordered_node_map` keyed by a hash of the source and the channel pointer, so a push finds its queue in one probe instead of a tree walk of log2 (peers) comparisons. A node map keeps every entry and its key at a fixed address, which the ring hooks and the key pointers rely on; the order the map kept is not needed since the ring decides the order of service.\n\n### Batches without allocation\n\n`fair_queue::batch` is a `boost::container::small_vector` with room for 256 requests inline, which a larger batch outgrows onto the heap once, reserved up front from the smaller of the limit and the queued count. Both bulk pops return it. The vote replier and the bootstrap server name it as `queue_type::batch`; the other owners take it by `auto`. The alias is named only in declarations in the owners' headers and the vector is instantiated in their sources, where the request types are complete.\n\n### Numbers\n\nRelease build, medians of three repetitions, nanoseconds per request at 200 / 1000 / 5000 peers. The first table is one back-to-back run of the baseline, the ring and the ring with the hash lookup; the second is a later back-to-back run of the ring with the hash lookup and the batch type, with the futile ready scan as the canary that the two binaries were measured alike.\n\n| scenario | baseline | ring | ring + hash |\n|---|---|---|---|\n| steady | 344 / 1500 / 16900 | 109 / 137 / 188 | 100 / 112 / 137 |\n| backlog of 32 | 98 / 227 / 1200 | 72 / 88 / 116 | 48 / 51 / 60 |\n| backlog of 256 | 86 / 140 / 383 | 74 / 92 / 119 | 54 / 52 / 59 |\n| storm | 26 / 30 / 51 | 25 / 28 / 50 | 25 / 27 / 48 |\n| ready, 90 % of channels full | 143 / 179 / 216 | 126 / 160 / 178 | 109 / 130 / 144 |\n| ready, 99 % of channels full | 1300 / 1400 / 1600 | 863 / 1000 / 1100 | 841 / 892 / 1000 |\n| ready, every channel full, per futile scan | 2000 / 13500 / 74900 | 1300 / 10400 / 53200 | 1300 / 8600 / 49300 |\n| first contact | 282 / 292 / 429 | 255 / 272 / 350 | 197 / 205 / 255 |\n| periodic update, per call | 1300 / 11900 / 82600 | 1300 / 13400 / 88100 | 870 / 6800 / 47500 |\n\n| scenario | ring + hash | batch |\n|---|---|---|\n| steady | 102 / 117 / 155 | 64 / 68 / 93 |\n| backlog of 32 | 50 / 53 / 75 | 48 / 53 / 81 |\n| backlog of 256 | 56 / 56 / 68 | 56 / 53 / 68 |\n| storm | 27 / 33 / 49 | 25 / 28 / 49 |\n| first contact | 212 / 211 / 264 | 182 / 192 / 244 |\n| ready, every channel full, per futile scan (200 / 5000) | 1300 / 51500 | 1300 / 51800 |\n\nAllocations per request: a steady request made 2 (4.1 KB) and now makes none, a first contact made 5 (8.3 KB) and now makes 3 (4.2 KB), a storm's share went from 0.02 to 0. The futile ready scan stays at about 10 ns per non-ready origin, which is the channel mutex in `tcp_channel::max` rather than the queue. Not changed here: an idle origin keeps about 4 KB of deque block, so the five owners hold about 20 KB per peer.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5252,
+    "label": "pwojcikdev:fair-queue-ring",
+    "created_at": "2026-11-03T23:26:54Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
+  },
+  {
     "hash": "a7a078cbeda319c8c29f78631dd17095b324495d",
     "type": "pull_request",
     "title": "Modify `nano::locked` to work in const contexts",
@@ -37761,6 +37981,19 @@
     "built_at": "2023-03-20T22:39:07Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:a7b09f81548da43ef93a86a147248636c7d2cf59"
+  },
+  {
+    "hash": "a7b1a2df8f06b2e2354a0050bdbec7e0c8648ddb",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Remove the CI scripts nothing runs anymore\n\nThe release pipeline has accumulated scripts with no caller: the RPM\nbuild and signing tools from before RPM builds were switched off, the\nGitLab configuration, the nano-env image builders that the test\nworkflows stopped using when they moved to ci/prepare, the Windows\ntest wrappers superseded by ci/build.sh, the previous generation of the\ntag generator and the macOS dependency installer. None of them is\nreferenced by a workflow, a Dockerfile or another script.",
+    "pull_request": "N/A",
+    "created_at": "2026-10-30T12:24:24Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
   },
   {
     "hash": "a7bb27a1ec564752261eadf96c773448e7bf702c",
@@ -39965,6 +40198,19 @@
     "docker_tag": "gr0v1ty/nano-node:b2108b71aae62f8dcea0fc7c7a1d47a2cc85459d",
     "build_started_at": "2024-08-27T15:42:11Z",
     "run_id": "10582434201"
+  },
+  {
+    "hash": "b2255267de204331934d500f7cc244f030e11aa2",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Describe the release pipeline\n\nA short page under ci/deploy for whoever next has to touch a release:\nhow a tag comes about, what Build & Deploy publishes where, and the\ncommands a user runs to verify a download against its attestation.",
+    "pull_request": "5249",
+    "created_at": "2026-10-30T12:52:58Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
   },
   {
     "hash": "b225de0ae0958f817ef34a09d3cd5131ba1508e8",
@@ -43627,6 +43873,19 @@
     "docker_tag": ""
   },
   {
+    "hash": "c4082c696cad5aa2fa340ea8eaee7017968b4c90",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Build release packages through ci/build.sh\n\nEach platform had its own way of configuring and building the release\npackages: a bash script with a hard-coded Qt path for Linux and macOS,\nand a PowerShell wrapper around two batch files for Windows, none of\nthem sharing anything with the ci/build.sh the test workflows use.\nci/build-packages.sh now drives ci/build.sh for all three, runs cpack\nand collects the packages in packages/ under their published names.\n\nci/build.sh passes the build type to cmake --build so the Visual Studio\ngenerator builds the requested configuration instead of always Debug,\nand CMakeLists.txt keeps every configuration's binaries in the build\nroot, where the test scripts look for them.\n\nThe Windows build step never received NETWORK or CI_TAG, so its beta\npackages were live-network builds reporting a development version;\nboth are passed now. The commented-out Authenticode signing script and\nits secrets go, as does the SIMD flag, which has no effect on MSVC.",
+    "pull_request": "N/A",
+    "created_at": "2026-10-30T12:28:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
+  },
+  {
     "hash": "c409f5dbc427cac28b133b804752be0deaa4a61f",
     "type": "pull_request",
     "title": "Warn when ledger consistency check is skipped",
@@ -46125,6 +46384,19 @@
     "docker_tag": "gr0v1ty/nano-node:cf35e5d88879475a8da67504372e636e459e29c3",
     "build_started_at": "2024-09-11T11:31:00Z",
     "run_id": "10810737303"
+  },
+  {
+    "hash": "cf6724dcf203641c490daf3417b5883e2dadc598",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rewrite the tag generator\n\ngenerate_next_git_tag.sh grew its options, globals and output modes\nover several rounds and was hard to reason about: it matched tags with\nan unescaped dot, force-moved tags and force-pushed the release branch,\nand wrote its results to GITHUB_ENV for the workflow to copy into\noutputs. ci/deploy/next-tag.sh keeps the scheme (DB tags on develop,\nRC tags on the release branch, plain release tags on request, versions\ncommitted into CMakeLists.txt and the release commit pushed to its\nbranch) in a third of the lines, with a --dry-run that prints the tag\nit would create. Pushes are no longer forced, so a collision fails\ninstead of moving a published tag, and the outputs go straight to\nGITHUB_OUTPUT.\n\nThe workflow checks out the full history for it: deciding whether the\nlatest tag already covers HEAD needs the commits between them.",
+    "pull_request": "5249",
+    "created_at": "2026-10-30T12:46:56Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T17:28:40Z",
+    "run_id": null
   },
   {
     "hash": "cf76cd77cd362d8eb831be71e8d96bf94b47f2a4",
