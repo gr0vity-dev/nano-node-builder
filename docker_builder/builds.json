@@ -10574,7 +10574,7 @@
     "label": "pwojcikdev:fair-queue-ring",
     "created_at": "2026-11-03T23:26:54Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-11-04T02:27:01Z",
     "run_id": null
@@ -16870,6 +16870,22 @@
     "docker_tag": "gr0v1ty/nano-node:4ad3629218a21327ba0d2fcde4366346e7d90ae4",
     "build_started_at": "2024-11-25T16:28:08Z",
     "run_id": "12014750086"
+  },
+  {
+    "hash": "4ad77e7d7058fe2771ea4e1ce37e6cec29df0835",
+    "type": "pull_request",
+    "title": "Split `block_rebroadcaster.cooldown` into suppression and expiry tests",
+    "author": "pwojcikdev",
+    "body": "`block_rebroadcaster.cooldown` failed on the Windows [lmdb] job of #5251 ([log](https://github.com/nanocurrency/nano-node/actions/runs/41708863967/job/126171336527)) at the wait for the second push to be suppressed.\n\nThe test pushed a block, waited for the peer to store it and pushed it again, expecting the second push to land inside a 500 ms cooldown. The cooldown starts when the rebroadcaster thread picks up the first push, so the wait for the peer, ledger commit included, counted against it. When that took longer than 500 ms, the second push went out as a second rebroadcast and `already_rebroadcasted` never moved. Passing Windows [lmdb] runs finish the whole test in about 1.1 s, while the failing run took about 0.9 s longer than usual just to reach the suppression check.\n\nChanges:\n\n- `cooldown` keeps the suppression check with a 60 s cooldown, which no delay between the two pushes can outlast.\n- The new `rebroadcasts_after_cooldown` covers expiry with a 100 ms cooldown. It waits the full cooldown after the first rebroadcast is counted before pushing again. The cooldown's timestamp is taken before that count, so expiry is guaranteed and any extra delay only moves the push further past it.\n\nA delay longer than the old cooldown placed before the second push makes the old test fail at the same assertion as on CI, while both new tests pass with it.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5253,
+    "label": "pwojcikdev:block-rebroadcaster-cooldown-test",
+    "created_at": "2026-11-04T02:37:13Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-04T09:37:38Z",
+    "run_id": null
   },
   {
     "hash": "4ad900ec31abf5245a50da65f30038742479fb27",
