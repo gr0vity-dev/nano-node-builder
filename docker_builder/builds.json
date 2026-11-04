@@ -10133,11 +10133,11 @@
     "title": "Secure limiter budget before popping bootstrap batches and local broadcasts (#5250)\n\n* Secure rate limiter budget before popping a bootstrap batch\n\nWith more than one worker, a worker popped its batch and then waited for the limiter with the mutex released, so the other workers kept popping and paying for newer, smaller batches. Tokens refilled at the pace of those single requests never accumulated to the size of the waiting batch, which could stay unserved indefinitely, and the fair queue could no longer protect it once it had left the queue.\n\nThe worker now checks the budget for what it is about to pop, up to `batch_size` or whatever is queued, and waits with nothing held when the budget is short. The pop is bounded by that count, so charging the requests actually popped always succeeds, and requests arriving during the wait keep their fair share at the pop. `rate_limiter` gains `time_to_consume` for the check.\n\nThe new test runs two workers against a drained bucket, queues a full batch from one channel and a paced stream of single requests from another, and expects the batch to be served while the stream keeps flowing.\n\n* Take local block broadcasts one limiter token at a time\n\nA pass of the local block broadcaster collected every due entry, recorded each one as broadcast on the spot and then flooded them one by one, sleeping on the rate limiter in between. One pass held the only thread for backlog/32 seconds, so a local block submitted meanwhile waited for the pass to end before its first flood, `last_broadcast` claimed sends that had not happened yet, and entries erased by a rollback or cementing during the pass were still flooded from the copy.\n\nA pass now takes due entries in schedule order while the limiter grants a token for each, records only those and floods them without waiting. The rest stay due and the loop comes back on the limiter's refill hint, counted as `cooldown`. A new local block carries an epoch schedule, so it goes out on the next token ahead of pending rebroadcasts.\n\nThe broadcaster gets its own test suite covering tracking, eviction, rollback, cementing, cleanup, pacing, the growing and capped rebroadcast interval, the disabled state and a new block ahead of a rebroadcast backlog. `rate_limiter` gets typed tests for `time_to_consume` on both threading variants and for the `rate_limit` overload of `reset`.",
     "pull_request": "5250",
     "created_at": "2026-11-03T23:21:30Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-04T02:58:35Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:2ce561e8090e40b0338eb52a194a0ff6c1074ce2",
     "build_started_at": "2026-11-04T02:27:01Z",
-    "run_id": null
+    "run_id": "41760807880"
   },
   {
     "hash": "2d04f4bebada9873c893e89e053e6ebeb0d620df",
