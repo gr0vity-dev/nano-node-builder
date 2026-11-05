@@ -1,0 +1,116 @@
+056c6539064b91e75d7dcde759834dee18222908: Pulling from gr0v1ty/nano-node
+7a48b8f0e5c7: Already exists
+37f12b20be87: Pulling fs layer
+db041760a758: Pulling fs layer
+b33df15ee69b: Pulling fs layer
+2971b0b9e337: Pulling fs layer
+06b68cd471e5: Pulling fs layer
+0583e4f07590: Pulling fs layer
+aec0996e587e: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+bfe217b829a2: Pulling fs layer
+17c655ba772f: Pulling fs layer
+2971b0b9e337: Waiting
+aec0996e587e: Waiting
+06b68cd471e5: Waiting
+4f4fb700ef54: Waiting
+0583e4f07590: Waiting
+bfe217b829a2: Waiting
+37f12b20be87: Download complete
+37f12b20be87: Pull complete
+2971b0b9e337: Verifying Checksum
+2971b0b9e337: Download complete
+b33df15ee69b: Verifying Checksum
+b33df15ee69b: Download complete
+06b68cd471e5: Download complete
+0583e4f07590: Verifying Checksum
+0583e4f07590: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+aec0996e587e: Download complete
+17c655ba772f: Verifying Checksum
+17c655ba772f: Download complete
+bfe217b829a2: Verifying Checksum
+bfe217b829a2: Download complete
+db041760a758: Verifying Checksum
+db041760a758: Download complete
+db041760a758: Pull complete
+b33df15ee69b: Pull complete
+2971b0b9e337: Pull complete
+06b68cd471e5: Pull complete
+0583e4f07590: Pull complete
+aec0996e587e: Pull complete
+4f4fb700ef54: Pull complete
+bfe217b829a2: Pull complete
+17c655ba772f: Pull complete
+Digest: sha256:2c62829bb578df40455566458e65f5bd2f41f22795e20dc5c8c23af8ab6031da
+Status: Downloaded newer image for gr0v1ty/nano-node:056c6539064b91e75d7dcde759834dee18222908
+docker.io/gr0v1ty/nano-node:056c6539064b91e75d7dcde759834dee18222908
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_change_dependant.json
+Start Fetching '5n4pr_conf_change_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_change_dependant_config.json'
+Done  Fetching '5n4pr_conf_change_dependant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_change_dependant_config.json'
+Start Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Done  Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+SUCCESS: stop_containers completed with None result.
+SUCCESS: reset_nodes_data completed with None result.
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+Error executing command: nanomock start && nanomock init_wallets
+Error: WARNING: ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4']
+WARNING: RPC http://172.17.0.1:45100 not yet reachable for node nl_genesis: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45100 ssl:default [Connect call failed ('172.17.0.1', 45100)]
+WARNING: RPC http://172.17.0.1:45101 not yet reachable for node nl_pr1: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45101 ssl:default [Connect call failed ('172.17.0.1', 45101)]
+WARNING: RPC http://172.17.0.1:45102 not yet reachable for node nl_pr2: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45102 ssl:default [Connect call failed ('172.17.0.1', 45102)]
+WARNING: RPC http://172.17.0.1:45103 not yet reachable for node nl_pr3: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45103 ssl:default [Connect call failed ('172.17.0.1', 45103)]
+WARNING: RPC http://172.17.0.1:45104 not yet reachable for node nl_pr4: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45104 ssl:default [Connect call failed ('172.17.0.1', 45104)]
+INFO: Nodes ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4'] reachable
+SUCCESS: start_containers completed with None result.
+WARNING: ['nl_genesis']
+WARNING: ['nl_pr1']
+WARNING: ['nl_pr2']
+WARNING: ['nl_pr3']
+WARNING: ['nl_pr4']
+INFO: Nodes ['nl_pr1'] reachable
+INFO: Nodes ['nl_genesis'] reachable
+INFO: Nodes ['nl_pr2'] reachable
+INFO: Nodes ['nl_pr4'] reachable
+INFO: Nodes ['nl_pr3'] reachable
+INFO: WALLET 47560049F5676C7D4308A5B45632A97E8FD471653DDC8E3B2B5F904EBF098AA7 CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h
+INFO: WALLET 80F4412B089E323BD17A96D9D21A80C682E926CB4C7B35578C79A742B9824601 CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p
+INFO: WALLET 070D9E142B19FCEC88B22F9F667E4676D52A598B1016A6A8DEC21C9AA115EB10 CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub
+INFO: WALLET 8B3BF5210789EA490F429E8345E1F94470490E2B002D4EC008112DA0D74987FF CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8
+INFO: WALLET E1E91BA345808775548122FAA3BAB4DCE6D59567B5DFF9BB4C72508ABD97FC43 CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6
+SUCCESS: ['WALLET 47560049F5676C7D4308A5B45632A97E8FD471653DDC8E3B2B5F904EBF098AA7 CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h', 'WALLET 80F4412B089E323BD17A96D9D21A80C682E926CB4C7B35578C79A742B9824601 CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p', 'WALLET 070D9E142B19FCEC88B22F9F667E4676D52A598B1016A6A8DEC21C9AA115EB10 CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub', 'WALLET 8B3BF5210789EA490F429E8345E1F94470490E2B002D4EC008112DA0D74987FF CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8', 'WALLET E1E91BA345808775548122FAA3BAB4DCE6D59567B5DFF9BB4C72508ABD97FC43 CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6']
+....................................................................................................
+
+01:47:40 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+01:47:40 100      | 0        | 9.63     | 9.63     | 0.05       | 0.21       | 0.1       | 0.1       | 0.1       | 0.21      | 5               | 10.39    | 100        | 100          |
+....................................................................................................
+
+01:47:51 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+01:47:51 100      | 0        | 8.99     | 8.99     | 0.05       | 0.41       | 0.1       | 0.1       | 0.1       | 0.41      | 5               | 11.12    | 100        | 100          |
+..........................DEBUG 1 unconfirmed blocks! e.g. E0CD67B1D93121C77AE65839279B82B1161EDC99F5619713A9C88533A08352DB
+..........................................................................
+
+01:48:12 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+01:48:12 99       | 1        | 4.71     | 4.71     | 0.05       | 2.2        | 0.1       | 0.1       | 0.26      | 2.2       | 5               | 21.24    | 100        | 100          |
