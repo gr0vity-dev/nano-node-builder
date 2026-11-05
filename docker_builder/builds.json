@@ -13323,6 +13323,22 @@
     "run_id": "15238552421"
   },
   {
+    "hash": "3af494450bfba0b2a101c2b2908c224af3fea6de",
+    "type": "pull_request",
+    "title": "Keep messages the server rejects or drops out of the duplicate filter",
+    "author": "pwojcikdev",
+    "body": "The duplicate filter takes in a publish or vote as soon as its payload is deserialized, so every path that discards such a message afterwards has to clear it again. Otherwise the same message from any other peer counts as a duplicate until the entry expires. Two paths in the TCP server did not clear it:\n\n- **Before the handshake**, every message was read and deserialized in full, and only then did the handshake reject anything other than `node_id_handshake`. The server now rejects other header types before reading the payload, so nothing reaches the filter until the connection is realtime. The rejection reports `invalid_message_type`, the status a header with an unknown type already gets, and the connection is aborted as before.\n- **When the message processor has no room**, the server dropped the message with its digest still in the filter. It now clears the digest, as the dispatcher already does when the block or vote processor refuses a message.\n\nTests:\n\n- `tcp_server.handshake_skips_duplicate_filter` sends a publish and a vote ahead of any handshake, each on a fresh connection, then checks that the same messages from an established peer are received rather than counted as duplicates.\n- `tcp_server.dropped_message_leaves_duplicate_filter` runs a node whose processor queue holds nothing and checks that a second copy of a dropped publish and vote passes the filter again.\n\nFollow-up: a message dropped at capacity still costs the copies other peers sent while it held the filter entry. Letting the filter admit a few copies of a message before it blocks further ones is planned as a separate change.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5258,
+    "label": "pwojcikdev:tcp-server-duplicate-filter",
+    "created_at": "2026-11-05T19:00:38Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-05T22:54:07Z",
+    "run_id": null
+  },
+  {
     "hash": "3af4bdd9171b6af45c480c08f8c06ba1a524b635",
     "type": "pull_request",
     "title": "Offload vote cache lookup to a separate thread",
@@ -13793,6 +13809,22 @@
     "docker_tag": "gr0v1ty/nano-node:3d72ae91f138fbb4b6bd42fef8f164bd16956696",
     "build_started_at": "2024-10-27T16:26:12Z",
     "run_id": "11542062645"
+  },
+  {
+    "hash": "3d78e8cc80e2fb29d9ee14791604fed89e0d9cc0",
+    "type": "pull_request",
+    "title": "Evict closed channels first from a full telemetry table and size it from the connection limits",
+    "author": "pwojcikdev",
+    "body": "A full telemetry table evicted the entry inserted first. Updates left an entry where it was, so the front of the table held the peer that had been connected the longest, and every new channel pushed out exactly that one. Entries of closed channels stay until the next cleanup pass (every 30 s on the live network), so a run of short-lived connections could fill the table and keep pushing long-lived peers out, each one missing from the `telemetry` RPC until its next broadcast. The cap was also a fixed 1024 entries, below the 4096 connections the default tcp limits allow.\n\n### Changes\n\n- **Cap from the connection limits:** `telemetry_config::max_size` is twice the inbound plus outbound connection limits, 8192 by default. That leaves room for a live channel in every connection slot and as many closed ones awaiting cleanup.\n- **`telemetry_index`:** the table, its eviction and its cleanup move into `telemetry_index`, in the same files. It takes the current time as a parameter and reports what each call did through result values named after the stat details, while the `telemetry` component keeps the mutex, the thread and the stats.\n- **Eviction order:** an update moves its entry to the back, so the table stays in update order. When the table is full, a new channel takes the place of a closed channel's entry if there is one (`erase_dead`), and of the least recently updated entry otherwise (`overfill`). Both also count as `insert`, as an overflowing insert did before.\n\nNothing in consensus reads this table. Its readers are the `telemetry` RPC with an address or with `raw`; the websocket `telemetry` topic is notified on every message and was never affected.\n\n### Tests\n\n- `telemetry.max_size_from_connection_limits`: a node with 1 + 1 connection limits keeps 4 entries and counts the fifth channel as `overfill`.\n- `telemetry_index.update`, `cleanup` and `get_skips_stale`: refreshing an existing entry, cleanup counts for stale and closed entries, and reads skipping stale entries that cleanup has not removed yet.\n- `telemetry_index.overfill_evicts_least_recently_updated` and `overfill_prefers_closed_channel`: the new eviction order. The previous order would have evicted the first entry in both.\n\n### Follow-up\n\nAfter an outbound reconnect, the old and the new channel share an endpoint until cleanup, and `get_telemetry (endpoint)` can return either entry.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5259,
+    "label": "pwojcikdev:telemetry-eviction",
+    "created_at": "2026-11-05T22:47:51Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-05T22:54:07Z",
+    "run_id": null
   },
   {
     "hash": "3d8338763fa8bf931c783da515ac9eba8729835f",
@@ -17275,6 +17307,22 @@
     "docker_tag": "gr0v1ty/nano-node:4bb2db82ddbb3b7133069c6b371fe768a1db8b77",
     "build_started_at": "2024-03-12T11:38:53Z",
     "run_id": "8248150914"
+  },
+  {
+    "hash": "4bb749331f53653890251bfcf93f0e25182e5629",
+    "type": "pull_request",
+    "title": "Match every processed block with the election running for its root",
+    "author": "pwojcikdev",
+    "body": "The processed-blocks observer in `active_elections` handed only `fork` results, and since #5251 forced blocks, to a running election. Every other way an election ends up without the ledger's block for its root was left alone:\n\n- A scheduler that read a block just before a rollback took it along as a dependent still starts an election for it. The replacement that lands for that root afterwards is an ordinary `progress` result and never joined.\n- The next copy of a block an election already lacks comes back as `old` and never joined either.\n\nElections only start from ledger blocks, so the blocks that can meet one are exactly the `progress`, `old` and `fork` results. The processed event now has two observers:\n\n- The first caches `fork` results before anything else sees the batch, so an election started in between reads them from the fork cache, as `insert` relies on.\n- The second resolves the roots of the whole batch under one acquisition of the active mutex and offers each matched block to its election outside it. A block the election already holds is reported as not admitted by the election itself, which subsumes the forced-block gate from #5251.\n\n`election::publish` now owns what used to follow it in `active_elections`: the vote cache trigger, the stat and the debug log, under the `election` stat and log types. With that, `active_elections::publish` had no caller left besides `insert`, which offers cached forks to the election it just created, so `insert` talks to that election directly and the method is gone.\n\nWith `old` results reaching elections, a block an election holds can be refreshed with a copy that came off the wire and has no sideband, so the winner an election reports may lack one. The confirmation consumers read the winner through accessors that need it: the websocket and HTTP callback subtypes call `is_change ()`, the websocket's `include_sideband_info` reads the sideband, and IPC calls `account ()` and `balance ()`. `block_confirmation_info` now carries the confirmed block as the ledger stores it, which `notify_observers` already loads and the `block_confirm` RPC has at hand, and those consumers use it instead of `status.winner`. The election itself reads the first block's sideband only to initialise its account, and no longer keeps that block's height, which only appeared in its trace output.\n\nNot covered, and left as a separate decision: an election created from a block read before a rollback that already happened is stale at creation, and only a later `progress` or `old` result for its root repairs it through this observer. Closing that would mean `insert` verifying the ledger successor.\n\nTests:\n\n- `active_elections.progress_block_joins_stale_election` and `active_elections.old_block_joins_stale_election` build the stale election directly from a rolled back block and check that the root's successor joins it, once landing as `progress` and once arriving again as `old`. Both time out without this change.\n- `election.publish_ignores_held_block`, `election.publish_rejected_when_full_clears_filter` and `election.publish_applies_cached_votes` cover `election::publish` on its own: a held block changes nothing, a full election clears a weightless fork from the network filter, and votes cached before a block was published land on the election once it is.\n- `active_elections.confirmation_carries_ledger_block` lets an `old` copy without a sideband take the place of the block an election holds, confirms the election and checks that confirmation observers get the ledger block with its sideband while `status.winner` has none.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5254,
+    "label": "pwojcikdev:election-match-processed",
+    "created_at": "2026-11-04T15:08:53Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-05T22:54:07Z",
+    "run_id": null
   },
   {
     "hash": "4bbc7ac68ac678be1f19e3a01a72192b6cef75fb",
@@ -43416,6 +43464,22 @@
     "run_id": "10270498572"
   },
   {
+    "hash": "c11093a85e91b1d79e98685586f30d134ac8c118",
+    "type": "pull_request",
+    "title": "Add vote relay messages and the vote_relay node capability",
+    "author": "pwojcikdev",
+    "body": "The wire protocol for vote relay, split out of #5201 so it can be reviewed on its own. A vote relay lets a node that cannot peer with some representatives ask a peer that can reach them to fetch their votes. This PR adds the two messages and the capability bit a relay advertises. Nothing sends, serves or advertises them yet; the relay, its client and the solicitor come in #5201 on top of this.\n\n## Node capabilities\n\n`node_capabilities::vote_relay` takes bit 3 and is advertised in the node id handshake by a node that serves relay requests. Bit 1, the `vote_storage` placeholder that was never set outside tests, stays reserved instead of being reused, and `no_ledger` keeps bit 2, so every bit that tagged builds already advertise keeps its meaning. `channel::has_capability` replaces the `get_flags ().test (...)` calls, and every declaration in `channel.hpp` gets a one-line comment.\n\n## Messages\n\n`vote_relay_req` (type `0x10`) carries a request id, a flags byte, up to 255 (block hash, root) pairs and up to 255 representatives whose votes are wanted, where an empty list means any representative. By default only final votes are wanted; flag `0x01` asks for non-final votes too. `nano::vote_finality { final, any }` names that choice in code and `vote::satisfies` checks a vote against it.\n\n`vote_relay_ack` (type `0x11`) answers under the request id with up to 64 votes, each prefixed with its hash count, after a flags byte of its own. Flag `0x02` marks the last ack of a request, and an ack without votes ends the request as well. Flag `0x01` marks the terminator of a request the relay refused, so the requester can tell a refusal from an answer with no votes. `vote_relay_ack::refusal` and `completion` build the two flagged acks, and `vote_relay_ack::batch_votes` splits a list of votes into the acks they fit, by count and by the 16-bit payload length, keeping their order.\n\nBoth messages store their payload length in the header extensions, and the parser ignores bytes past the fields it knows, as it does for `telemetry_ack` and the ascending bootstrap messages, so a later version can append fields without breaking older nodes. Votes in an ack go through the vote uniquer like those in a `confirm_ack`. Realtime connections accept both types; until a component takes them, the dispatcher counts them under `message_drop` by type.\n\n## Tests\n\n- `message.vote_relay_*`: round trips at the defaults and at the maximum hashes, representatives, vote count and payload size; empty, truncated and oversized payloads rejected; the refused and completed flags; `batch_votes` split by count, by size and at an exact fit of the payload limit.\n- Deserializer samples for both types (minimal, non-final, maximal, and empty, refused, completed and maximal acks) run through the shared truncation and trailing byte checks, and `deserialize_message_payload.uniquers` checks that a relayed vote shares the instance of the same vote from a `confirm_ack`.\n- `vote.satisfies_finality`.\n- `tcp_server.vote_relay_messages_dropped`: both messages pass the realtime filter over TCP and are dropped by type.\n- The handshake, peer pool and handshake serialization tests use `vote_relay` where they used `vote_storage`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5256,
+    "label": "pwojcikdev:vote-relay-messages",
+    "created_at": "2026-11-05T18:02:41Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-05T22:54:07Z",
+    "run_id": null
+  },
+  {
     "hash": "c11def0489757dfffcd9cc4c048d518f0b6b826b",
     "type": "pull_request",
     "title": "Final vote requests/replies only",
@@ -49565,6 +49629,22 @@
     "docker_tag": "gr0v1ty/nano-node:dd08220e2ccdc3092b4594bcc37aecda2007d1c1",
     "build_started_at": "2024-10-21T14:29:40Z",
     "run_id": "11442366931"
+  },
+  {
+    "hash": "dd0bb8065bc0ca8a85ae0e63943236789e1c8a9e",
+    "type": "pull_request",
+    "title": "Test the bootstrap RPCs on a peerless node with fixed account sets",
+    "author": "pwojcikdev",
+    "body": "`rpc.bootstrap_priorities` and `rpc.bootstrap_status` have failed on most macOS Unit Tests jobs since #5248 merged, both of them on the macOS [rocksdb] job of the develop push of #5251 for example ([log](https://github.com/nanocurrency/nano-node/actions/runs/41851672925/job/126649320792)). Both fail at their last assertion: the priority set is already empty when the RPC answers.\n\nThe tests synced a second node from a 61-block ledger, waited for a quarter of it to arrive and expected the bootstrap to still hold priorities. Their `config.bootstrap->rate_limit` setting has been ignored since rate limits became per-strategy, and it was set on the serving node rather than the syncing one. The window stayed open only because the bootstrap server charged a full `batch_size` of limiter budget, 64 of its 500 tokens per second, for every loop, even for a batch of one request. Since #5248 it charges the requests it serves, so nothing throttles these tests any more.\n\nWith a probe of the same setup on develop, the priority set drains about 65 ms after the quarter mark, against 1.8 to 2.0 s with the old per-batch charge patched back in. The RPC came back with 2 to 5 entries left. The macOS runners stretch the test's 10 ms polls to about 40 ms, so their answer arrives after the drain.\n\nChanges:\n\n- The three bootstrap RPC tests run one node without peers, so no response can drain either set.\n- A helper fills the sets: genesis, which the bootstrap prioritizes at startup, two random accounts prioritized next to it, and two accounts blocked by open blocks that arrive as bootstrap traffic without their source.\n- `bootstrap_priorities` compares the listed priorities and the blocked accounts, each with the send it waits on, against those exactly.\n- `bootstrap_status` checks both counts. The sets differ in size, so swapped counts fail.\n- `bootstrap_reset` checks that both sets are empty once the reset is answered, beyond the `success` field.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5257,
+    "label": "pwojcikdev:rpc-bootstrap-tests",
+    "created_at": "2026-11-05T18:04:16Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-05T22:54:07Z",
+    "run_id": null
   },
   {
     "hash": "dd121a84db6329bd428ea89a7cea9c575d8c4b62",
