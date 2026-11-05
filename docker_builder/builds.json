@@ -7573,6 +7573,22 @@
     "run_id": "7821076277"
   },
   {
+    "hash": "208e8c094293bf5c49fc03cd10f31bd22f2cebe7",
+    "type": "pull_request",
+    "title": "Give fair queues a dead origin policy and purge them as they grow",
+    "author": "pwojcikdev",
+    "body": "A request queued under a channel that has since died stayed in its fair queue until it was popped, and the purge of dead origins ran only from the batch pops. The bootstrap server popped every request of a disconnected peer and charged it to the limiter before noticing the channel was gone, so connection churn could hold far more requests than the per channel caps suggest, and a consumer that never popped, as with a cap of zero, never purged at all.\n\nA queue keyed by channels now takes a `nano::dead_origin_policy` at construction. `serve` keeps a dead origin's requests until they are drained and erases the origin afterwards, which is what every consumer did before. `discard` drops the requests with the origin at the next purge. The block, vote and message processors serve, since a peer's blocks and votes are still worth processing once it is gone. The bootstrap server and vote replier discard, since a reply has no one left to go to. The default constructor is constrained to channel-less queues, so a consumer keyed by channels does not compile without stating its policy.\n\nThe purge and the refresh of caps and priorities are paced by `maintenance ()`, which the batch pops call as before and which now also runs when a new origin is created, the one way the queue grows, so it no longer depends on the consumer popping. Its interval is a public `maintenance_interval` member shared by the push and pop paths, set to 5 seconds, and it returns the number of requests it dropped.\n\nTests: the existing purge test states the `serve` contract, a new one shows `discard` dropping a dead origin's requests while live origins are untouched, and another shows a zero-cap queue shedding dead origins from new origins arriving alone.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5255,
+    "label": "pwojcikdev:fair-queue-dead-origin-policy",
+    "created_at": "2026-11-04T18:41:50Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-05T17:46:20Z",
+    "run_id": null
+  },
+  {
     "hash": "208f8de37b3d24999f5246cec59f64843b59e75c",
     "type": "pull_request",
     "title": "Traffic shaping",
@@ -22841,6 +22857,22 @@
     "docker_tag": "gr0v1ty/nano-node:652c0f02d97539b313706786868cf9359fc84aa0",
     "build_started_at": "2024-02-11T18:48:15Z",
     "run_id": "7863990578"
+  },
+  {
+    "hash": "653bdf638691bdbbe93faa3682740e30bca0962e",
+    "type": "pull_request",
+    "title": "Match every processed block with the election running for its root",
+    "author": "pwojcikdev",
+    "body": "The processed-blocks observer in `active_elections` handed only `fork` results, and since #5251 forced blocks, to a running election. Every other way an election ends up without the ledger's block for its root was left alone:\n\n- A scheduler that read a block just before a rollback took it along as a dependent still starts an election for it. The replacement that lands for that root afterwards is an ordinary `progress` result and never joined.\n- The next copy of a block an election already lacks comes back as `old` and never joined either.\n\nElections only start from ledger blocks, so the blocks that can meet one are exactly the `progress`, `old` and `fork` results. The processed event now has two observers:\n\n- The first caches `fork` results before anything else sees the batch, so an election started in between reads them from the fork cache, as `insert` relies on.\n- The second resolves the roots of the whole batch under one acquisition of the active mutex and offers each matched block to its election outside it. A block the election already holds is reported as not admitted by the election itself, which subsumes the forced-block gate from #5251.\n\n`election::publish` now owns what used to follow it in `active_elections`: the vote cache trigger, the stat and the debug log, under the `election` stat and log types. With that, `active_elections::publish` had no caller left besides `insert`, which offers cached forks to the election it just created, so `insert` talks to that election directly and the method is gone.\n\nWith `old` results reaching elections, a block an election holds can be refreshed with a copy that came off the wire and has no sideband, so the winner an election reports may lack one. The confirmation consumers read the winner through accessors that need it: the websocket and HTTP callback subtypes call `is_change ()`, the websocket's `include_sideband_info` reads the sideband, and IPC calls `account ()` and `balance ()`. `block_confirmation_info` now carries the confirmed block as the ledger stores it, which `notify_observers` already loads and the `block_confirm` RPC has at hand, and those consumers use it instead of `status.winner`. The election itself reads the first block's sideband only to initialise its account, and no longer keeps that block's height, which only appeared in its trace output.\n\nNot covered, and left as a separate decision: an election created from a block read before a rollback that already happened is stale at creation, and only a later `progress` or `old` result for its root repairs it through this observer. Closing that would mean `insert` verifying the ledger successor.\n\nTests:\n\n- `active_elections.progress_block_joins_stale_election` and `active_elections.old_block_joins_stale_election` build the stale election directly from a rolled back block and check that the root's successor joins it, once landing as `progress` and once arriving again as `old`. Both time out without this change.\n- `election.publish_ignores_held_block`, `election.publish_rejected_when_full_clears_filter` and `election.publish_applies_cached_votes` cover `election::publish` on its own: a held block changes nothing, a full election clears a weightless fork from the network filter, and votes cached before a block was published land on the election once it is.\n- `active_elections.confirmation_carries_ledger_block` lets an `old` copy without a sideband take the place of the block an election holds, confirms the election and checks that confirmation observers get the ledger block with its sideband while `status.winner` has none.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5254,
+    "label": "pwojcikdev:election-match-processed",
+    "created_at": "2026-11-04T15:08:53Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-05T17:46:20Z",
+    "run_id": null
   },
   {
     "hash": "6542a7851f57edcbec2925d0fe812fb404f437ae",
