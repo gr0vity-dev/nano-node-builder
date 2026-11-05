@@ -1,9 +1,13 @@
-name: Build and publish docker image for each commit in the officiala nanocurrency/nano-node repo
+name: Build and publish nano-node Docker images
 # on: [push, pull_request]
 on:
   schedule:
     - cron: "0/5 * * * *" # "every 30 minutes
   workflow_dispatch:
+
+concurrency:
+  group: docker-builder
+  cancel-in-progress: false
 
 jobs:
   publish_docker_image_on_new_commit:
@@ -16,7 +20,12 @@ jobs:
       - name: Compare commit hash between source and mirror
         id: compare_hash
         working-directory: ./nano-node-builder
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Scheduled runs may have waited while another build updated the queue.
+          git pull --ff-only origin main
+
           # Get the current date in the desired format
           NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           
@@ -76,7 +85,10 @@ jobs:
           docker_builder/builds.json $HOME/latest_commits.json > temp.out && mv temp.out docker_builder/builds.json
 
           # Get all open pull requests and write to disk in JSON format
-          curl -s -H "${GH_API_HEADER}" "${BASE_URL}/pulls?state=open&per_page=100&page=1" | \
+          gh api --paginate --slurp "repos/${REPO}/pulls?state=open&per_page=100" | \
+          jq 'add' > "$RUNNER_TEMP/open_prs.json"
+          jq -e 'type == "array"' "$RUNNER_TEMP/open_prs.json" > /dev/null
+          cat "$RUNNER_TEMP/open_prs.json" | \
           jq --arg NOW "$NOW" '
             map(
               {
@@ -101,8 +113,13 @@ jobs:
           jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' \
           docker_builder/builds.json $HOME/all_prs.json > temp.out && mv temp.out docker_builder/builds.json
 
-          # Get first hash that is not yet built
-          COMMIT_TO_TEST=$(jq -r '.[] | select(.build_status == null) | .hash' docker_builder/builds.json | head -n 1)
+          # Skip superseded/closed PR heads and prioritize recently updated PRs.
+          COMMIT_TO_TEST=$(jq -r -L docker_builder \
+            --slurpfile pull_requests "$RUNNER_TEMP/open_prs.json" '
+            include "current_builds";
+            current_builds($pull_requests[0]) |
+            map(select(.build_status == null)) | .[0].hash // empty
+            ' docker_builder/builds.json)
 
           if [ -z "$COMMIT_TO_TEST" ]; then
               echo "The COMMIT_TO_TEST variable is empty. Exiting..."
@@ -133,9 +150,10 @@ jobs:
               else
                   # User repo for pull requests
                   owner=$(echo "$result" | jq -r '.owner')
-                  branch=$(echo "$result" | jq -r '.branch')
                   echo "owner=$owner" >> $GITHUB_OUTPUT
-                  echo "branch=$branch" >> $GITHUB_OUTPUT
+                  # Build the selected SHA even if the PR branch advances meanwhile.
+                  echo "branch=$COMMIT_TO_TEST" >> $GITHUB_OUTPUT
+                  echo "add_latest=0" >> $GITHUB_OUTPUT
               fi
 
               echo "continue=1" >> $GITHUB_OUTPUT

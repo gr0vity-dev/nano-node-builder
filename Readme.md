@@ -1,6 +1,12 @@
 # nano-node-builder
 
-For each new commit on [nanocurrency/nano-node](https://github.com/nanocurrency/nano-node) this project builds the corresponding docker-image and publishes it to dockerhub  [gr0v1ty/nano-node](https://hub.docker.com/r/gr0v1ty/nano-node/tags)
+This project builds Docker images for [nanocurrency/nano-node](https://github.com/nanocurrency/nano-node) and publishes them to Docker Hub at [gr0v1ty/nano-node](https://hub.docker.com/r/gr0v1ty/nano-node/tags).
+
+For open pull requests, automatic builds and continuous tests only select the current head commit reported by GitHub. Older commits and closed PRs remain in the history but are skipped by both queues. Recently updated PRs take priority over the develop-commit backlog. Each build checks out the exact selected commit, so its Docker tag matches the source that was built.
+
+An already running build or test finishes; the next scheduled run checks the latest PR heads again. The builder polls every five minutes and continuous testing polls every ten minutes. Develop commits remain eligible, and the continuous-testing workflow's manual `build_hash` input can still test an older successful build explicitly.
+
+Queue selection checks: `python3 -m unittest discover -s tests` (requires `jq`).
 
 ## How can I verify you didn't modify the nano_node source code ?
 

@@ -35,6 +35,8 @@ jobs:
 
       - name: Filter and create test file
         id: filter
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Filter entries with built_at > START_DATE, build_status = "pass", and no existing test file
           #!/bin/bash
@@ -44,6 +46,9 @@ jobs:
               REPORT_BRANCH="main"
           fi
           echo "REPORT_BRANCH=$REPORT_BRANCH" >> $GITHUB_OUTPUT
+
+          # Refresh queue and reports after waiting for the preceding test run.
+          git pull origin "$REPORT_BRANCH"
 
           START_DATE=$(date -d '2023-05-15' +%s)
           # Generate a list of all hashes in the continuous_testing directory and save it to a temporary file
@@ -56,8 +61,16 @@ jobs:
               '.[] | select(.hash == $requested_hash and .build_status == "pass")' \
               docker_builder/builds.json | jq --slurp '.[0]')
           else
-            TEST_BUILD=$(jq -r --slurpfile hash_list <(jq -R . < temp_hashes.txt | jq -s .) \
+            # Recheck live heads: a built image may have become obsolete while queued.
+            gh api --paginate --slurp 'repos/nanocurrency/nano-node/pulls?state=open&per_page=100' | \
+              jq 'add' > "$RUNNER_TEMP/open_prs.json"
+            jq -e 'type == "array"' "$RUNNER_TEMP/open_prs.json" > /dev/null
+            TEST_BUILD=$(jq -r -L docker_builder \
+              --slurpfile pull_requests "$RUNNER_TEMP/open_prs.json" \
+              --slurpfile hash_list <(jq -R . < temp_hashes.txt | jq -s .) \
               --argjson START_DATE "$START_DATE" '
+              include "current_builds";
+              current_builds($pull_requests[0]) |
               .[] |
               select(
                 .built_at? != null and
@@ -65,7 +78,7 @@ jobs:
                 .build_status == "pass" and
                 (.hash as $h | $hash_list[0] | index($h) == null)
               )
-            ' docker_builder/builds.json | jq --slurp 'sort_by(.built_at) | .[0]')
+            ' docker_builder/builds.json | jq --slurp '.[0]')
           fi
 
           # Clean up temporary file
@@ -73,7 +86,7 @@ jobs:
 
           if [[ -z "$TEST_BUILD" ]] || [[ "$TEST_BUILD" == "null" ]]; then
               echo "No build found to test"
-              echo "COMMIT_HASH='null'" >> $GITHUB_OUTPUT
+              echo "COMMIT_HASH=null" >> $GITHUB_OUTPUT
               exit 0
           else
               git pull origin "$REPORT_BRANCH"
