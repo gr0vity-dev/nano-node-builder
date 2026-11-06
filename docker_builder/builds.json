@@ -20389,11 +20389,11 @@
     "title": "Give fair queues a dead origin policy and purge them as they grow (#5255)\n\nA request queued under a channel that has since died stayed until it\nwas popped, and the purge of dead origins ran only from the batch\npops. For the bootstrap server that meant every request of a\ndisconnected peer was still popped and charged to the limiter, so\nconnection churn could grow the backlog past the per channel caps\nwith no ceiling. A consumer that never popped, as with a cap of zero,\nnever purged at all.\n\nA queue keyed by channels now takes a nano::dead_origin_policy at\nconstruction: serve keeps a dead origin's requests until they are\ndrained, discard drops them with the origin at the next purge. The\nblock, vote and message processors serve, the bootstrap server and\nvote replier discard. The default constructor is only available to\nchannel-less queues, so no consumer can leave the policy unstated.\n\nThe purge and the refresh of caps and priorities are paced by\nmaintenance (), which also runs when a new origin is created, the one\nway the queue grows, so it no longer depends on the consumer popping.\nIts interval is a public maintenance_interval member shared by the\npush and pop paths, and it returns the number of requests dropped.",
     "pull_request": "5255",
     "created_at": "2026-11-06T00:39:34Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-06T21:12:07Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:5775caf4296959866f6603d5484ab89906d6190a",
     "build_started_at": "2026-11-06T02:56:44Z",
-    "run_id": null,
+    "run_id": "42290012811",
     "landed_at": "2026-11-06T00:39:34Z"
   },
   {
