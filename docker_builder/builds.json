@@ -5516,6 +5516,22 @@
     "run_id": "30362392281"
   },
   {
+    "hash": "1894534b641c72401a068c171989644d2dc7a856",
+    "type": "pull_request",
+    "title": "Count only inbound connections when waiting for accept slots",
+    "author": "pwojcikdev",
+    "body": "The listener's accept loop waits in `wait_available_slots` until there is room for another inbound connection. That wait compared the total connection count, outbound included, against `max_inbound_connections`, so outbound peers alone could hold the loop back while inbound slots were still free. `check_limits` already counts inbound connections only; the wait now uses the same count, and so does the debug assert in `check_limits` that relies on the wait having run first.\n\nThe new test `tcp_listener.max_connections_excludes_outbound` sets the inbound limit to 2, opens 2 outbound connections to a loopback socket that never accepts (the kernel completes the handshakes, so they stay open), and expects 2 inbound connections to be accepted. It needs two inbound clients because the first accept is already pending before the outbound connections exist, so only the second one waits on the gate.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5260,
+    "label": "pwojcikdev:inbound-connection-budget",
+    "created_at": "2026-11-05T22:57:28Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-06T02:56:44Z",
+    "run_id": null
+  },
+  {
     "hash": "18b635c158124dcf668888ba56323d0ada1dd57a",
     "type": "commit",
     "author": "pwojcikdev",
@@ -19661,6 +19677,19 @@
     "docker_tag": "gr0v1ty/nano-node:5762914fbb063fcb36c27beeb040ac0e5978b623",
     "build_started_at": "2026-01-28T08:18:45Z",
     "run_id": "21430527339"
+  },
+  {
+    "hash": "5775caf4296959866f6603d5484ab89906d6190a",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Give fair queues a dead origin policy and purge them as they grow (#5255)\n\nA request queued under a channel that has since died stayed until it\nwas popped, and the purge of dead origins ran only from the batch\npops. For the bootstrap server that meant every request of a\ndisconnected peer was still popped and charged to the limiter, so\nconnection churn could grow the backlog past the per channel caps\nwith no ceiling. A consumer that never popped, as with a cap of zero,\nnever purged at all.\n\nA queue keyed by channels now takes a nano::dead_origin_policy at\nconstruction: serve keeps a dead origin's requests until they are\ndrained, discard drops them with the origin at the next purge. The\nblock, vote and message processors serve, the bootstrap server and\nvote replier discard. The default constructor is only available to\nchannel-less queues, so no consumer can leave the policy unstated.\n\nThe purge and the refresh of caps and priorities are paced by\nmaintenance (), which also runs when a new origin is created, the one\nway the queue grows, so it no longer depends on the consumer popping.\nIts interval is a public maintenance_interval member shared by the\npush and pop paths, and it returns the number of requests dropped.",
+    "pull_request": "5255",
+    "created_at": "2026-11-06T00:39:34Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-06T02:56:44Z",
+    "run_id": null
   },
   {
     "hash": "57769d493784990dd5afd4e01560f0893b879140",
@@ -38590,6 +38619,22 @@
     "run_id": "7596699221"
   },
   {
+    "hash": "a98086f2ef752854833c0d30a8aa445673e14e12",
+    "type": "pull_request",
+    "title": "Keep messages the server rejects or drops out of the duplicate filter",
+    "author": "pwojcikdev",
+    "body": "The duplicate filter takes in a publish or vote as soon as its payload is deserialized, so every path that discards such a message afterwards has to clear it again. Otherwise the same message from any other peer counts as a duplicate until the entry expires. Two paths in the TCP server did not clear it:\n\n- **Before the handshake**, every message was read and deserialized in full, and only then did the handshake reject anything other than `node_id_handshake`. The server now rejects other header types before reading the payload, so nothing reaches the filter until the connection is realtime. The rejection reports `invalid_message_type`, the status a header with an unknown type already gets, and the connection is aborted as before.\n- **When the message processor has no room**, the server dropped the message with its digest still in the filter. It now clears the digest, as the dispatcher already does when the block or vote processor refuses a message.\n\nTests:\n\n- `tcp_server.handshake_skips_duplicate_filter` sends a publish and a vote ahead of any handshake, each on a fresh connection, then checks that the same messages from an established peer are received rather than counted as duplicates.\n- `tcp_server.dropped_message_leaves_duplicate_filter` runs a node whose processor queue holds nothing and checks that a second copy of a dropped publish and vote passes the filter again.\n\nFollow-up: a message dropped at capacity still costs the copies other peers sent while it held the filter entry. Letting the filter admit a few copies of a message before it blocks further ones is planned as a separate change.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5258,
+    "label": "pwojcikdev:tcp-server-duplicate-filter",
+    "created_at": "2026-11-05T19:00:38Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-06T02:56:44Z",
+    "run_id": null
+  },
+  {
     "hash": "a98fc63aacb1ce5218daa5fb750886278e756801",
     "type": "commit",
     "author": "pwojcikdev",
@@ -40253,6 +40298,22 @@
     "docker_tag": "gr0v1ty/nano-node:b12f56702b32ec5d9b7544b84e4763adf1a68c30",
     "build_started_at": "2025-04-22T18:59:45Z",
     "run_id": "14602512112"
+  },
+  {
+    "hash": "b16ea88cca4e0b927b17cb5f104ae0f1aaa648ca",
+    "type": "pull_request",
+    "title": "Match every processed block with the election running for its root",
+    "author": "pwojcikdev",
+    "body": "The processed-blocks observer in `active_elections` handed only `fork` results, and since #5251 forced blocks, to a running election. Every other way an election ends up without the ledger's block for its root was left alone:\n\n- A scheduler that read a block just before a rollback took it along as a dependent still starts an election for it. The replacement that lands for that root afterwards is an ordinary `progress` result and never joined.\n- The next copy of a block an election already lacks comes back as `old` and never joined either.\n\nElections only start from ledger blocks, so the blocks that can meet one are exactly the `progress`, `old` and `fork` results. The processed event now has two observers:\n\n- The first caches `fork` results before anything else sees the batch, so an election started in between reads them from the fork cache, as `insert` relies on.\n- The second resolves the roots of the whole batch under one acquisition of the active mutex and offers each matched block to its election outside it. A block the election already holds is reported as not admitted by the election itself, which subsumes the forced-block gate from #5251.\n\n`election::publish` now owns what used to follow it in `active_elections`: the vote cache trigger, the stat and the debug log, under the `election` stat and log types. With that, `active_elections::publish` had no caller left besides `insert`, which offers cached forks to the election it just created, so `insert` talks to that election directly and the method is gone.\n\nWith `old` results reaching elections, a block an election holds can be refreshed with a copy that came off the wire and has no sideband, so the winner an election reports may lack one. The confirmation consumers read the winner through accessors that need it: the websocket and HTTP callback subtypes call `is_change ()`, the websocket's `include_sideband_info` reads the sideband, and IPC calls `account ()` and `balance ()`. `block_confirmation_info` now carries the confirmed block as the ledger stores it, which `notify_observers` already loads and the `block_confirm` RPC has at hand, and those consumers use it instead of `status.winner`. The election itself reads the first block's sideband only to initialise its account, and no longer keeps that block's height, which only appeared in its trace output.\n\nNot covered, and left as a separate decision: an election created from a block read before a rollback that already happened is stale at creation, and only a later `progress` or `old` result for its root repairs it through this observer. Closing that would mean `insert` verifying the ledger successor.\n\nTests:\n\n- `active_elections.progress_block_joins_stale_election` and `active_elections.old_block_joins_stale_election` build the stale election directly from a rolled back block and check that the root's successor joins it, once landing as `progress` and once arriving again as `old`. Both time out without this change.\n- `election.publish_ignores_held_block`, `election.publish_rejected_when_full_clears_filter` and `election.publish_applies_cached_votes` cover `election::publish` on its own: a held block changes nothing, a full election clears a weightless fork from the network filter, and votes cached before a block was published land on the election once it is.\n- `active_elections.confirmation_carries_ledger_block` lets an `old` copy without a sideband take the place of the block an election holds, confirms the election and checks that confirmation observers get the ledger block with its sideband while `status.winner` has none.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5254,
+    "label": "pwojcikdev:election-match-processed",
+    "created_at": "2026-11-04T15:08:53Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-06T02:56:44Z",
+    "run_id": null
   },
   {
     "hash": "b17107a6d9f906669f5dfd5e03a1b2a7c683c6cd",
@@ -43273,6 +43334,22 @@
     "docker_tag": "gr0v1ty/nano-node:c04f061471274c4b08425d9848103c82b06ba93c",
     "build_started_at": "2024-02-14T12:44:27Z",
     "run_id": "7901382013"
+  },
+  {
+    "hash": "c051600d830f6a3abc44e6048e3a241e61ed9283",
+    "type": "pull_request",
+    "title": "Check vote broadcast capacity outside the broadcaster lock",
+    "author": "pwojcikdev",
+    "body": "The vote generator's broadcaster asked for network capacity while holding its own lock, and the node's capacity check reads the broadcasters' queue sizes when it logs that capacity is short. The broadcaster now releases its lock before calling `check_capacity ()` and takes it again before pulling a batch, as it already does around `broadcast_batch ()`.\n\nNo test reached this path, or any other branch that waits for network capacity: `network::check_capacity ()` always has room on a node without peers, loopback TCP never fills a channel queue, and `test_channel::saturate ()` only reaches components that reply on a channel they are handed, since test channels are not part of `tcp_channels`. To make these branches testable:\n\n- `saturate ()` and `unsaturate ()` move from `test_channel` to the base `channel` as test-only members for dev network runs. `channel::max ()` is no longer virtual: it reports a saturated traffic type as full before asking the channel's own `max_impl ()`, so no channel type can skip it.\n- `nano::test::saturate_network ()` and `unsaturate_network ()` saturate every channel a node has for one traffic type, so a test can congest a real node's network.\n- The base channel's inline bodies move to `channel.cpp`, and its header is grouped and commented.\n\nTests:\n\n- `vote_generator.normal_broadcast_waits_for_capacity` and `vote_generator.final_broadcast_waits_for_capacity` run two nodes with the network saturated for that vote type. The vote is held back while the generator keeps rechecking, then reaches the peer once there is room again.\n- `vote_generator_broadcaster.check_capacity_queries_broadcaster` gives the broadcaster a capacity check that reads the broadcaster's size, and requires the check to be asked again.\n\nFollow-up: the same helper can cover the capacity waits in `vote_rebroadcaster`, `block_rebroadcaster`, `confirmation_solicitor` and `bootstrap::peer_pool`, which no test reaches today.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5262,
+    "label": "pwojcikdev:vote-generator-capacity-check",
+    "created_at": "2026-11-06T01:23:36Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-06T02:56:44Z",
+    "run_id": null
   },
   {
     "hash": "c0562b05e7a0404c50de7615777e48360360c90a",
@@ -56196,6 +56273,22 @@
     "run_id": "9062284520"
   },
   {
+    "hash": "f9d2e046f756ce5ba115a6335221fa8f9f14a4fd",
+    "type": "pull_request",
+    "title": "Count closed connections toward the per IP limit for a cooldown",
+    "author": "pwojcikdev",
+    "body": "The per IP and per subnetwork connection limits of `tcp_listener` counted only the connections currently open, so a connection that closed left the count at the next purge. A closed connection now keeps counting for `node.tcp.reconnect_cooldown`, 60 seconds by default and 1 second on the dev network, so the limits hold over that window rather than per purge tick. Setting the cooldown to 0 restores the previous behaviour.\n\nThe cooldowns live in their own index, looked up by address and by subnetwork, and are not counted toward the inbound connection cap. The check is shared by accepted and initiated connections, so it applies the same way in both directions. Tests cover both directions, and the toml round trip covers the new key.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5261,
+    "label": "pwojcikdev:listener-reconnect-cooldown",
+    "created_at": "2026-11-05T23:15:26Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-06T02:56:44Z",
+    "run_id": null
+  },
+  {
     "hash": "f9d7c76a6824e92f3432a104fc4f29454660af05",
     "type": "pull_request",
     "title": "Extend bootstrap related RPC commands",
@@ -56452,6 +56545,19 @@
     "built_at": "2023-04-19T16:16:59Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:faedb40b565fcbd3ddb807f5325c596d589091c3"
+  },
+  {
+    "hash": "faf48f45858713f9f7fdaaa2fca5e7355d36c059",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Test the bootstrap RPCs on a peerless node with fixed account sets (#5257)\n\nbootstrap_priorities and bootstrap_status synced a second node from a\n61-block ledger and expected priorities to remain once a quarter of it\nhad arrived. Their rate_limit setting is ignored since rate limits\nbecame per-strategy, and it was set on the serving node anyway. The\nwindow stayed open only because the bootstrap server charged a full\nbatch of limiter budget per loop; now that it charges the requests it\nserves, the syncing node drains its priorities within about 65 ms of\nthe quarter mark, before the macOS runners answer the RPC.\n\nThe tests now run one node without peers, so no response can drain\neither set. Genesis is prioritized at startup, two random accounts are\nprioritized next to it and two more are blocked by open blocks arriving\nas bootstrap traffic without their source. The priorities test compares\nthe listed entries with those exactly, the status test checks counts\nthat differ so swapped fields fail, and the reset test checks that both\nsets end up empty.",
+    "pull_request": "5257",
+    "created_at": "2026-11-06T00:30:33Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-06T02:56:44Z",
+    "run_id": null
   },
   {
     "hash": "fafc24c4f3b9b63b08ee40dc864edc5ee46767b4",
