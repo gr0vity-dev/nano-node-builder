@@ -18318,7 +18318,7 @@
     "pull_request": "5260",
     "created_at": "2026-11-06T04:32:25Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-11-06T10:18:54Z",
     "run_id": null,
@@ -19083,6 +19083,22 @@
     "docker_tag": "gr0v1ty/nano-node:51640961a807dd75aee5df063178abf99747fadd",
     "build_started_at": "2024-01-19T17:33:30Z",
     "run_id": "7587193471"
+  },
+  {
+    "hash": "516fc08f51d1b89ae5001d4d8ef3e807b13cd153",
+    "type": "pull_request",
+    "title": "Count closed connections toward the per IP limit for a cooldown",
+    "author": "pwojcikdev",
+    "body": "The per IP and per subnetwork connection limits of `tcp_listener` counted only the connections currently open, so a connection that closed left the count at the next purge. A closed connection now keeps counting for `node.tcp.reconnect_cooldown`, 60 seconds by default and 1 second on the dev network, so the limits hold over that window rather than per purge tick. Setting the cooldown to 0 restores the previous behaviour. The check is shared by accepted and initiated connections, so it applies the same way in both directions.\n\nThe listener's limit bookkeeping moves into `tcp_listener_index`, declared alongside the listener. It keeps the open connections, the outbound connects in flight and the cooldowns together with the caps they are counted against, holds no sockets and no lock, and answers whether one more connection or attempt fits. The listener drives it under its mutex and keeps plain lists of socket and task handles. Connections and cooldowns are hashed by their normalized address and by subnetwork, so the per IP and per subnetwork counts are lookups rather than scans over the connection list. The index has a suite of its own driven with injected time, and the listener tests cover the cooldown in both directions.\n\nA full inbound or outbound cap now counts under its own stat detail instead of `max_attempts`, and the global attempt cap refuses at the cap like every other one. The `tcp_config` settings carry short comments.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5261,
+    "label": "pwojcikdev:listener-reconnect-cooldown",
+    "created_at": "2026-11-05T23:15:26Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-06T19:38:29Z",
+    "run_id": null
   },
   {
     "hash": "5183a3e80bd7b5aeafc75220727f6c8ad02900da",
