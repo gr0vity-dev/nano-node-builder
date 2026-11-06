@@ -32749,11 +32749,11 @@
     "title": "Split `block_rebroadcaster.cooldown` into suppression and expiry tests (#5253)\n\nblock_rebroadcaster.cooldown pushed a block, waited for the peer to\nstore it and pushed it again, expecting the second push to land inside\na 500 ms cooldown. The cooldown starts when the first push is\nprocessed, so the wait for the peer counted against it: on a Windows\nrunner the peer took longer than that, the second push went out as a\nsecond rebroadcast and the test timed out waiting for it to be\nsuppressed.\n\nEach half is now its own test, set up so that a delay can only help.\ncooldown keeps the suppression check with a 60 s cooldown that no delay\nbetween the pushes can outlast. The new rebroadcasts_after_cooldown\ncovers expiry with a 100 ms cooldown and waits at least that long\nbefore the second push, so a delay only moves the push further past\nexpiry.\n\nWith a 1 s delay injected before the second push, the old test failed\nat the suppression check on both backends and both new tests passed.",
     "pull_request": "5253",
     "created_at": "2026-11-04T12:42:15Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-06T22:44:43Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:8b3dff4da65458cd2a838f1e9f982d6ec65d49e4",
     "build_started_at": "2026-11-04T17:28:40Z",
-    "run_id": null,
+    "run_id": "42302882644",
     "landed_at": "2026-11-04T12:42:15Z"
   },
   {
