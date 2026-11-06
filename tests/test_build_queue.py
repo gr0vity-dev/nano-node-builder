@@ -54,10 +54,27 @@ class BuildQueueTests(unittest.TestCase):
     def test_missing_new_head_never_falls_back_to_obsolete_image(self):
         self.assertEqual(queue([build("old", 1, "pass")], [pr(1, "not-built-yet")]), [])
 
-    def test_recently_updated_prs_precede_develop_backlog(self):
+    def test_landed_commits_precede_recently_updated_prs(self):
         builds = [build("develop"), build("older-pr", 1), build("newer-pr", 2)]
         prs = [pr(1, "older-pr"), pr(2, "newer-pr", "2026-11-05T11:00:00Z")]
-        self.assertEqual([b["hash"] for b in queue(builds, prs)], ["newer-pr", "older-pr", "develop"])
+        self.assertEqual([b["hash"] for b in queue(builds, prs)], ["develop", "newer-pr", "older-pr"])
+
+    def test_newest_landed_commit_is_first_and_older_commits_remain_eligible(self):
+        builds = [
+            build("old-landed", created_at="2026-11-01T10:00:00Z"),
+            build("pr-head", 1),
+            build("latest-landed", created_at="2026-11-06T10:00:00Z"),
+        ]
+        self.assertEqual(
+            [b["hash"] for b in queue(builds, [pr(1, "pr-head")])],
+            ["latest-landed", "old-landed", "pr-head"],
+        )
+
+    def test_landing_date_takes_priority_over_original_author_date(self):
+        latest = build("just-landed", created_at="2025-01-01T00:00:00Z")
+        latest["landed_at"] = "2026-11-06T12:00:00Z"
+        older = build("previously-landed", created_at="2026-11-05T10:00:00Z")
+        self.assertEqual(queue([older, latest], []), [latest, older])
 
     def test_built_head_does_not_reactivate_pending_ancestors(self):
         self.assertEqual(

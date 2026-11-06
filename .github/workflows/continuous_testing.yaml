@@ -2,7 +2,11 @@ name: Continuous Testing of Docker Images
 
 on:
   schedule:
-    - cron: "0/10 * * * *" # "every 5 minutes"
+    - cron: "*/10 * * * *" # Every ten minutes as a fallback.
+  workflow_run:
+    workflows: [Build and publish nano-node Docker images]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
     inputs:
       build_hash:
@@ -14,6 +18,10 @@ on:
         required: false
         default: "main"
         type: string
+
+permissions:
+  contents: write
+  actions: read
 
 concurrency:
   group: continuous-testing-${{ github.event.inputs.report_branch || 'main' }}

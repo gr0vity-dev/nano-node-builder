@@ -2,8 +2,12 @@ name: Build and publish nano-node Docker images
 # on: [push, pull_request]
 on:
   schedule:
-    - cron: "0/5 * * * *" # "every 30 minutes
+    - cron: "*/5 * * * *" # Every five minutes; fallback when the queue is idle.
   workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
 
 concurrency:
   group: docker-builder
@@ -44,6 +48,7 @@ jobs:
               title: .commit.message,
               pull_request: (try .commit.message | match("\\(#(\\d{4,})\\)").captures[0].string // "N/A"),
               created_at: .commit.author.date,
+              landed_at: .commit.committer.date,
               built_at: null,
               build_status: null,
               docker_tag: null,
@@ -81,7 +86,13 @@ jobs:
           mv $HOME/updated_commits.json $HOME/latest_commits.json
 
           # Append new commits to existing builds_file and remove duplicates
-          jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' \
+          jq -s '
+            .[0] as $a | .[1] as $b |
+            ($b | map({key: .hash, value: .landed_at}) | from_entries) as $landed |
+            ($a + $b | group_by(.hash) | map(.[0] |
+              if .type == "commit" then
+                .landed_at = ($landed[.hash] // .landed_at // .created_at)
+              else . end))' \
           docker_builder/builds.json $HOME/latest_commits.json > temp.out && mv temp.out docker_builder/builds.json
 
           # Get all open pull requests and write to disk in JSON format
@@ -113,7 +124,7 @@ jobs:
           jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' \
           docker_builder/builds.json $HOME/all_prs.json > temp.out && mv temp.out docker_builder/builds.json
 
-          # Skip superseded/closed PR heads and prioritize recently updated PRs.
+          # Landed commits first, newest first; then current open PR heads.
           COMMIT_TO_TEST=$(jq -r -L docker_builder \
             --slurpfile pull_requests "$RUNNER_TEMP/open_prs.json" '
             include "current_builds";
@@ -193,8 +204,6 @@ jobs:
           docker build --build-arg NANO_TRACING=ON -f docker/node/Dockerfile -t gr0v1ty/nano-node .
           # If build fails, the following part is not executed but the next steps are executed!
 
-          echo "BUILD_STATUS=pass" >> $GITHUB_OUTPUT
-          echo "DOCKER_TAG=gr0v1ty/nano-node:${DOCKER_TAG}" >> $GITHUB_OUTPUT
           # LOGIN to dockerhub
           echo ${{ secrets.DH_PWD }} | docker login -u gr0v1ty --password-stdin
           docker tag gr0v1ty/nano-node gr0v1ty/nano-node:$DOCKER_TAG
@@ -206,6 +215,10 @@ jobs:
             docker push gr0v1ty/nano-node
             docker push gr0v1ty/nano-node:latest
           fi
+
+          # An image is ready for testing only after publishing succeeds.
+          echo "BUILD_STATUS=pass" >> $GITHUB_OUTPUT
+          echo "DOCKER_TAG=gr0v1ty/nano-node:${DOCKER_TAG}" >> $GITHUB_OUTPUT
 
       - name: checkout gr0vity-dev/nano-node-builder
         if: ${{ steps.compare_hash.outputs.continue > 0 }}
@@ -242,3 +255,9 @@ jobs:
           git add .
           git commit -m "Update build status to $BUILD_STATUS for $DOCKER_TAG"
           git push origin main
+
+      - name: Continue the build queue
+        if: ${{ steps.compare_hash.outputs.continue == '1' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run docker_builder.yaml --repo "$GITHUB_REPOSITORY" --ref main

@@ -6,11 +6,11 @@ def current_builds($pull_requests):
       .type != "pull_request" or
       ($heads[(.pull_request | tostring)].head.sha == .hash)
     ))
-  # Give recently updated PRs priority over the develop-commit backlog.
+  # Landed commits always come first, newest first; then current PR heads.
   | sort_by(
-      if .type == "pull_request" then
-        [0, -($heads[(.pull_request | tostring)].updated_at | fromdateiso8601)]
+      if .type == "commit" then
+        [0, -(.landed_at // .created_at | fromdateiso8601)]
       else
-        [1, .created_at]
+        [1, -($heads[(.pull_request | tostring)].updated_at | fromdateiso8601)]
       end
     );
