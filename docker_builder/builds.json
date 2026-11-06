@@ -58474,11 +58474,11 @@
     "title": "Test the bootstrap RPCs on a peerless node with fixed account sets (#5257)\n\nbootstrap_priorities and bootstrap_status synced a second node from a\n61-block ledger and expected priorities to remain once a quarter of it\nhad arrived. Their rate_limit setting is ignored since rate limits\nbecame per-strategy, and it was set on the serving node anyway. The\nwindow stayed open only because the bootstrap server charged a full\nbatch of limiter budget per loop; now that it charges the requests it\nserves, the syncing node drains its priorities within about 65 ms of\nthe quarter mark, before the macOS runners answer the RPC.\n\nThe tests now run one node without peers, so no response can drain\neither set. Genesis is prioritized at startup, two random accounts are\nprioritized next to it and two more are blocked by open blocks arriving\nas bootstrap traffic without their source. The priorities test compares\nthe listed entries with those exactly, the status test checks counts\nthat differ so swapped fields fail, and the reset test checks that both\nsets end up empty.",
     "pull_request": "5257",
     "created_at": "2026-11-06T00:30:33Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-06T21:38:38Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:faf48f45858713f9f7fdaaa2fca5e7355d36c059",
     "build_started_at": "2026-11-06T02:56:44Z",
-    "run_id": null,
+    "run_id": "42294761023",
     "landed_at": "2026-11-06T00:30:33Z"
   },
   {
