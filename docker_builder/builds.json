@@ -16690,11 +16690,11 @@
     "title": "Upload packages with one script\n\ndeploy.sh and deploy.ps1 did the same job in two languages: hash each\npackage, write the hash beside it and copy both to the download bucket.\nci/deploy/upload.sh does it for every platform from the packages/\ndirectory, which already holds the published names, so the per-platform\nglobs and the renaming on upload are gone, together with the RPM branch\nthat has had no caller since RPM builds were switched off.\n\nThe .sha256 files now contain the bare file name. The Linux ones used\nto embed the runner's absolute build path, which made them useless to\nsha256sum -c.",
     "pull_request": "N/A",
     "created_at": "2026-10-30T12:30:39Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-07T03:25:18Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:4741663a5e8a3907bcf7544cd269cc113b396b3b",
     "build_started_at": "2026-11-04T17:28:40Z",
-    "run_id": null,
+    "run_id": "42332017720",
     "landed_at": "2026-10-30T14:20:11Z"
   },
   {
