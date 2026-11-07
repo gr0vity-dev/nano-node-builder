@@ -52017,6 +52017,20 @@
     "docker_tag": "gr0v1ty/nano-node:df590413b96fa2dd9b807df9c09f0c87d7fef43f"
   },
   {
+    "hash": "df6f91a981baf52104bc90778ccb768d9862353d",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add vote relay messages and the vote_relay node capability (#5256)\n\n* Consolidate and document node capability flags\n\nThe handshake capabilities are not in a release yet, so the flags are\nrenumbered without a gap: bit 0 is reserved, no_ledger takes bit 1,\ntopo_index bit 2 and the new vote_relay bit 3. The unused vote_storage\nplaceholder is gone. Channels answer has_capability for a single flag.\n\n* Add vote_relay_req and vote_relay_ack messages\n\nA vote_relay_req asks a peer advertising the vote_relay capability for\nthe votes it knows on up to 255 (block hash, root) pairs, from up to 255\nnamed representatives or from any, and either final votes only or any\nvote, a choice nano::vote_finality names and vote::satisfies checks a\nvote against. The peer answers under the request id with vote_relay_acks of up\nto 64 votes each. An ack flagged completed, or one without votes, ends\nthe answer, and an ack flagged refused tells the requester the peer did\nnot take the request. vote_relay_ack::batch_votes splits votes into the\nacks they fit by count and payload size.\n\nBoth messages store their payload length in the header extensions and\nignore trailing bytes, like telemetry and the asc_pull messages, so\nnewer versions can append fields. Realtime connections accept them; no\ncomponent handles them yet, so they are counted as dropped by type.",
+    "pull_request": "5256",
+    "created_at": "2026-11-07T13:40:44Z",
+    "landed_at": "2026-11-07T13:40:44Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-07T13:53:59Z",
+    "run_id": null
+  },
+  {
     "hash": "dfa6bd26ec605e8a74b1791beba540a66dcd7fcc",
     "type": "pull_request",
     "title": "Extract `vote_rebroadcaster`",
