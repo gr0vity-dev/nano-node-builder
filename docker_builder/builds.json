@@ -45568,11 +45568,11 @@
     "title": "Remove the network code nothing calls (#5238)\n\n`bootstrap_peer` on the network and on the channel container, with the\nbootstrap attempt index and the channel timestamp only it used, went\nunused when legacy bootstrap was removed. `tcp_channels` kept a\n`random_fill` while the network has the one in use, `syn_cookies::validate` lost its caller to\nthe handshake's own validation, and `network::merge_peers` had only a\ntest that could not fail.\n\nThe slow telemetry test read the first channel through a friend\ndeclaration and a `nano::transport` namespace wrapper; `network.list (1)`\ngives it the same channel through the public API, so both friend\ndeclarations go, one of which named a test class that never existed. Two\nstale comments go with them: `flood_block_many` never calls back for an\nempty deque, and the blank keepalive slot has nothing to do with node v19.",
     "pull_request": "5238",
     "created_at": "2026-10-26T16:36:04Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-07T06:20:32Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:c3ae3c9df40edcee810df2e125378d0857551d02",
     "build_started_at": "2026-10-26T19:31:30Z",
-    "run_id": null,
+    "run_id": "42344506242",
     "landed_at": "2026-10-26T16:36:04Z"
   },
   {
