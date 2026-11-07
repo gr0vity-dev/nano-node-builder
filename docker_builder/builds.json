@@ -54411,11 +54411,11 @@
     "title": "Screen out non-principal votes in the router\n\nThe router answered a non-principal vote as unknown only after matching its hashes to elections,\nwith the dev network exempt so that tests can vote with any key, so the match was still announced\nand the node's observer repeated the principal check. The router now skips the election lookup\nfor such a vote, so it never matches, and the observer no longer repeats the check.\n\nThe exemption becomes the node flag `all_reps_principal`, on by default in a dev run only, which\na test can switch off to exercise the real rule. Tests pin that rule at the principal minimum,\nunder the flag and with bootstrap weights.",
     "pull_request": "5202",
     "created_at": "2026-10-11T15:42:35Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-07T11:09:31Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:ea3e793b361779aa76823022ac0a4628891a39b5",
     "build_started_at": "2026-10-14T13:23:35Z",
-    "run_id": null,
+    "run_id": "42365018681",
     "landed_at": "2026-10-11T15:42:35Z"
   },
   {
