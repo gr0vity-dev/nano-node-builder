@@ -47189,6 +47189,22 @@
     "run_id": "18450600398"
   },
   {
+    "hash": "cb55105faed4fc0c23632352a2b215b1cb720725",
+    "type": "pull_request",
+    "title": "Refuse blocks once the block processor stops and drop the queued ones",
+    "author": "pwojcikdev",
+    "body": "`node.rep_self_vote` hung the Unit Tests run on develop (Docker [lmdb], [run 42321624719](https://github.com/nanocurrency/nano-node/actions/runs/42321624719)) and earlier on a branch (Windows [lmdb], [run 41889031127](https://github.com/nanocurrency/nano-node/actions/runs/41889031127)). The hang is in node shutdown, not in the test body.\n\n### Cause\n\n`block_processor::add_blocking` queues the block and waits on its result promise with no timeout. Once the processor has stopped, nothing processes the queue, and the queued context keeps the promise alive, so the caller waits until the processor is destroyed. `node::stop ()` stops the block processor before the wallets, so a wallet receive that reaches `process_local ()` in between blocks the wallet action thread, `wallets::stop ()` waits on its join forever, and the node never finishes stopping.\n\nThread dump of a local reproduction:\n\n- main thread: `~system` → `node::stop ()` → `wallets::stop ()` → `std::thread::join`\n- wallet actions: `wallet::receive_action` → `action_complete` → `node::process_local` → `block_processor::add_blocking` → `future::wait`\n- no block processing thread left\n\nThe test reaches this because its `block0` confirms: `online_weight_minimum` set to the maximum does not keep the two local representatives below quorum, since after `block0` they hold 37.5% and 31.25% of the supply, 68.75% together, above the 67% quorum. `block0` is a send to `rep_big`, which is in the wallet, so the wallet auto-receives it while the test tears down.\n\n`ledger_notifications` has the same gap one step later: processed block contexts, with their result promises, are completed on its thread, and a notification still queued when that thread exits kept its promises pending until destruction.\n\n### Changes\n\n- The block processor checks `stopped` under the lock its pushes take and refuses blocks once it is set, on `add`, `add_many`, `add_blocking` and `force`. A block is either refused or queued before `stop ()` drops the queue, so a blocking add always gets a result or a broken promise and returns `nullopt`.\n- `block_processor::stop ()` drops the blocks still queued after joining its thread, and `ledger_notifications::stop ()` drops the notifications still queued after joining its thread. The block processor is the only source of processed notifications and stops first, so nothing queues one after the drop.\n- Every refused or dropped block and notification is counted as `stopped` under its component's stat type. `add_impl` reports why a push failed, so `force ()` no longer counts a refusal as `force_overfill`.\n\n### Tests\n\n- `block_processor.add_after_stop`: a stopped processor refuses blocks on all four add paths, a blocking add returns `nullopt` at once, and the refusals are counted as `stopped`, not as overfill.\n- `block_processor.add_blocking_released_on_stop`: a blocking add whose block is queued on a processor that never runs returns `nullopt` once the processor stops.\n- `ledger_notifications.stop_drops_queued` (new file): stopping breaks the result promise of a queued processed block.\n- `block_processor.size_per_channel` froze the queue by stopping the processor and adding afterwards, which a stopped processor now refuses. It runs on a processor that is never started instead, shared with the new blocking test.\n\n### Follow-ups\n\n- `node.rep_self_vote` says `online_weight_minimum` keeps its election from confirming, which it does not. With this change the confirmation no longer hangs the teardown, but the test could stop relying on it.\n- `epoch_upgrader` calls `.value ()` on the result of `process_local ()`, which throws when the block is dropped. That was already possible on overfill and now also happens on stop.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5263,
+    "label": "pwojcikdev:block-processor-stop",
+    "created_at": "2026-11-07T14:09:58Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-07T14:27:21Z",
+    "run_id": null
+  },
+  {
     "hash": "cb60b5a90772305b25124dfaec89a87d8feadff6",
     "type": "pull_request",
     "title": "Add `is_originator` flag to publish messages",
