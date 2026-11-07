@@ -37283,11 +37283,11 @@
     "title": "Rewrite Prepare Release and describe the whole release process\n\nPrepare Release cuts the release branch and moves develop on to the\nnext major. The job did it in six inline steps: it fetched the default\nbranch name over the REST API, bumped the major on a timestamped branch,\nopened the pull request, hard-reset its checkout and only then created\nthe release branch, from the default branch whatever ref it had been\nstarted on, with no permissions block and a typo in a step name.\n\nci/deploy/prepare-release.sh does the same work in the order a reader\nexpects, refuses to run on anything but the default branch or when that\nbranch is not at <major>.0, and takes --dry-run like the tag generator.\nIt shares the version helpers with next-tag.sh through common.sh and\nnames the pull request's repository explicitly, so a fork never opens\none against the upstream repository.\n\nThe README now opens with the release process itself: how development\nbuilds come about, the steps and the order for a release, point\nreleases, rebuilding a tag, and where the workflows stop.",
     "pull_request": "5249",
     "created_at": "2026-10-30T14:40:49Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-07T01:10:32Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:9d9d6502b6be0d692bfa55a32c88e9b1f368d689",
     "build_started_at": "2026-11-04T17:28:40Z",
-    "run_id": null,
+    "run_id": "42319790013",
     "landed_at": "2026-10-30T14:58:40Z"
   },
   {
