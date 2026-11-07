@@ -54020,6 +54020,20 @@
     "landed_at": "2024-03-21T10:52:58Z"
   },
   {
+    "hash": "e8d0db009b9c21b7608c86623cbc80178f8e1193",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Count closed connections toward the per IP limit for a cooldown (#5261)\n\n* Count closed connections toward the per IP limit for a cooldown\n\nA connection that closed keeps counting toward the per IP and per\nsubnetwork limits of `tcp_listener` for `tcp.reconnect_cooldown`, 60\nseconds by default, so a peer gets `max_peers_per_ip` connections per\ncooldown rather than per purge tick. Cooldowns do not count toward the\ninbound connection cap.\n\n* Comment the `tcp_config` settings\n\n* Index listener connections by address and subnetwork\n\n`tcp_listener` keeps its connections in a multi_index hashed by the\nnormalized address and the subnetwork, both stored on the entry, so\nthe per IP and per subnetwork counts are index lookups like the\ncooldowns instead of scans over the list.\n\n* Move the listener's limit bookkeeping into `tcp_listener_index`\n\n`tcp_listener_index` is the listener's one table: the open connections\nwith their sockets and servers, the outbound connects in flight with\ntheir tasks, and the cooldowns of closed connections, all counted\nagainst the caps they are subject to. It answers whether one more\nconnection or attempt fits, hands removed entries back so the listener\ncloses them outside its lock, and never touches the handles it carries,\nso the new suite drives it directly with injected time and null handles.\n\n`connection_type` moves to the transport namespace beside `socket_type`\nand `socket_endpoint`, the enum helpers become free functions, and\n`common.cpp` takes the `to_string` bodies that sat in `tcp_socket.cpp`.\n\nA full inbound or outbound cap now counts under its own stat detail\ninstead of `max_attempts`, and the global attempt cap refuses at the\ncap like every other one.",
+    "pull_request": "5261",
+    "created_at": "2026-11-07T01:00:38Z",
+    "landed_at": "2026-11-07T01:00:38Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-07T01:10:46Z",
+    "run_id": null
+  },
+  {
     "hash": "e8d125877ec591ff9d0d83a9f307de5e226717de",
     "type": "commit",
     "author": "pwojcikdev",
