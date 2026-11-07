@@ -39494,11 +39494,11 @@
     "title": "Remove the CI scripts nothing runs anymore\n\nThe release pipeline has accumulated scripts with no caller: the RPM\nbuild and signing tools from before RPM builds were switched off, the\nGitLab configuration, the nano-env image builders that the test\nworkflows stopped using when they moved to ci/prepare, the Windows\ntest wrappers superseded by ci/build.sh, the previous generation of the\ntag generator and the macOS dependency installer. None of them is\nreferenced by a workflow, a Dockerfile or another script.",
     "pull_request": "N/A",
     "created_at": "2026-10-30T12:24:24Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-07T04:54:36Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:a7b1a2df8f06b2e2354a0050bdbec7e0c8648ddb",
     "build_started_at": "2026-11-04T17:28:40Z",
-    "run_id": null,
+    "run_id": "42338560143",
     "landed_at": "2026-10-30T12:24:24Z"
   },
   {
