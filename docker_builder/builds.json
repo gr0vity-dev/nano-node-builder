@@ -53315,11 +53315,11 @@
     "title": "Route a vote of any size without allocating\n\nThe matched elections of a vote sat in a small vector with inline room for 16, the hash count\nof the benchmark votes. A vote carries up to 255 hashes and under load, where the cost of\nrouting matters most, nearly all of them match a live election, so routing such a vote spilled\nthe vector and reallocated it several times.\n\nThe matches now live in a static vector sized by the hash limit of a vote, like the positions\nand result codes beside it. A vote matches at most once per distinct hash, so the vector cannot\noverflow, and routing no longer allocates whatever the size of the vote.",
     "pull_request": "N/A",
     "created_at": "2026-10-09T08:46:52Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-07T12:18:35Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:e5ce854c2ff65a9772dec782de7f6718551bd39e",
     "build_started_at": "2026-10-14T13:23:35Z",
-    "run_id": null,
+    "run_id": "42369423036",
     "landed_at": "2026-10-09T08:46:52Z"
   },
   {
