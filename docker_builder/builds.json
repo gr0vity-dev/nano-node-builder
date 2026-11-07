@@ -29507,11 +29507,11 @@
     "title": "Attest release packages and images\n\nEvery job that publishes something now asks GitHub Actions to attest\nit: actions/attest signs the digests of the packages in packages/ and\nof each pushed image under the workflow's OIDC identity, stores the\nattestation with the repository and, for images, in the registry next\nto the image. A consumer can then check that a download was built by\nthis workflow from the commit it names, which the .sha256 files beside\nthe packages cannot show since they come from the same job.\n\nThe jobs get the id-token and attestations permissions this needs, and\nthe package jobs publish the attestation bundle next to the packages\nso it can be verified without the GitHub API.",
     "pull_request": "5249",
     "created_at": "2026-10-30T12:50:41Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-07T00:41:51Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:7d13e73328454371c5bab0ffb906d68bda9fab10",
     "build_started_at": "2026-11-04T17:28:40Z",
-    "run_id": null,
+    "run_id": "42316424197",
     "landed_at": "2026-10-30T14:58:40Z"
   },
   {
