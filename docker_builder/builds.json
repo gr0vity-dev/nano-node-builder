@@ -51839,11 +51839,11 @@
     "title": "Keep the TOML parser out of the config header (#5214)\n\n* Keep the TOML parser out of the config header\n\n`nano/lib/config.hpp` included `nano/lib/tomlconfig.hpp` only for the helpers that read a config\nfile into a `tomlconfig`, which a dozen files call. Every file that includes the config header, and\nthe logging header that only names `tomlconfig` by reference, got the header-only cpptoml parser\nwith it: 250 of the 417 translation units, so it was parsed far more often than it was used.\n\nThe config file helpers move to `nano/lib/config_file.hpp`, which the files that read config files\ninclude. The logging header uses the forward declaration from `nano/lib/fwd.hpp`. cpptoml now\nreaches 39 translation units.\n\nFiles that implement `serialize_toml` or `deserialize_toml`, and files that relied on cpptoml for\nstandard headers, include those headers themselves.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n* Include what the logging, JSON error and stats sink headers use\n\n`logging.hpp` names `std::function` and `std::string`, `json_error_response.hpp` takes a\n`std::function` and `std::string`, and `stats_sinks.hpp` writes to a `std::ostringstream`, but each\ngot those headers only through other includes. `logging.cpp` implements the TOML serializers and\nnow includes `tomlconfig.hpp` itself rather than through `config_file.hpp`.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
     "pull_request": "5214",
     "created_at": "2026-10-23T13:05:59Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-07T07:16:31Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:dec36317f80e9b4ab9bef9ab23b4833c2166727d",
     "build_started_at": "2026-10-23T16:52:01Z",
-    "run_id": null,
+    "run_id": "42348624823",
     "landed_at": "2026-10-23T13:05:59Z"
   },
   {
