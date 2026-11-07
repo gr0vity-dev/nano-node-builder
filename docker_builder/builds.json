@@ -52791,11 +52791,11 @@
     "title": "Serialize a flood's message once for all its channels\n\nEvery flood serialized its message again for each channel it reached, so a vote broadcast paid the serialization and its allocations once per channel. Channels now accept a message serialized ahead of time through `send_buffer`, counted under the type it was built from, and `network::send_to` serializes once and hands the same buffer to every channel of a flood, the principal representative floods included.\n\nThe TCP, fake and in-process channels work from the buffer directly. The loopback and test channels deliver message objects, so they parse a buffer back into one when they are handed it, which only a flood in a test does.",
     "pull_request": "5217",
     "created_at": "2026-10-15T22:19:07Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-07T08:51:28Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:e31e114e63273e9b2dcfad63ff525d3d9153be0d",
     "build_started_at": "2026-10-21T20:35:10Z",
-    "run_id": null,
+    "run_id": "42354993358",
     "landed_at": "2026-10-15T22:19:07Z"
   },
   {
