@@ -29623,6 +29623,20 @@
     "landed_at": "2026-10-15T13:01:53Z"
   },
   {
+    "hash": "7d8e31cdd7c8483f2cbb1d5cfffa97d6bce188aa",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Refuse blocks once the block processor stops and drop the queued ones (#5263)\n\n* Refuse blocks once the block processor stops and drop the queued ones\n\nA blocking add queued its block and waited on the result promise with\nno timeout. After stop () nothing processes the queue, and the queued\ncontext kept the promise alive, so the caller waited until the\nprocessor was destroyed. node::stop () stops the block processor before\nthe wallets, so a wallet receive that reached process_local () in that\nwindow blocked the wallet action thread, wallets::stop () never got its\njoin back, and the node hung on shutdown. node.rep_self_vote hit it on\nCI: its block0 confirms, and the wallet auto-receives it while the test\ntears down.\n\nadd_impl now checks `stopped` under the lock its pushes take and\nrefuses the block once it is set, and stop () drops whatever is still\nqueued after joining the thread. A blocking add's block is either\nrefused or queued before the drop, so the add always gets a result or a\nbroken promise and returns nullopt. Both are counted as `stopped`.\nBatch adds keep their own path unchanged: nothing waits on them, so a\nbatch queued after stop () only sits there until the processor is\ndestroyed, as before.\n\nblock_processor.size_per_channel froze the queue by stopping the\nprocessor and adding afterwards, which a stopped processor now refuses.\nIt runs on a processor that is never started instead.\n\nAgainst the previous implementation add_after_stop fails at its first\nassertion, add () accepting the block, and add_blocking_released_on_stop\ntimes out waiting for the blocked add to return.\n\n* Drop the ledger notifications still queued when they stop\n\nProcessed block contexts, with the result promises of blocking adds,\nare completed on the ledger notifications thread. A notification still\nqueued when that thread exited kept its promises pending until the\ncomponent was destroyed, the same wait the block processor's queue\ncaused one step earlier. stop () now drops the queue after joining the\nthread, counted as `stopped`. The block processor is the only source of\nprocessed notifications and stops first, so nothing queues one after\nthe drop.\n\nAgainst the previous implementation stop_drops_queued fails: the\npromise is still pending after stop ().",
+    "pull_request": "5263",
+    "created_at": "2026-11-07T22:30:18Z",
+    "landed_at": "2026-11-07T22:30:18Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-07T22:58:44Z",
+    "run_id": null
+  },
+  {
     "hash": "7d96fe779d08a70bb7a1653d63cdd54074509301",
     "type": "pull_request",
     "title": "Rework token bucket rate limiting",
