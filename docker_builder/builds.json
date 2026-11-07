@@ -45632,11 +45632,11 @@
     "title": "Build release packages through ci/build.sh\n\nEach platform had its own way of configuring and building the release\npackages: a bash script with a hard-coded Qt path for Linux and macOS,\nand a PowerShell wrapper around two batch files for Windows, none of\nthem sharing anything with the ci/build.sh the test workflows use.\nci/build-packages.sh now drives ci/build.sh for all three, runs cpack\nand collects the packages in packages/ under their published names.\n\nci/build.sh passes the build type to cmake --build so the Visual Studio\ngenerator builds the requested configuration instead of always Debug,\nand CMakeLists.txt keeps every configuration's binaries in the build\nroot, where the test scripts look for them.\n\nThe Windows build step never received NETWORK or CI_TAG, so its beta\npackages were live-network builds reporting a development version;\nboth are passed now. The commented-out Authenticode signing script and\nits secrets go, as does the SIMD flag, which has no effect on MSVC.",
     "pull_request": "N/A",
     "created_at": "2026-10-30T12:28:43Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-07T03:53:41Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:c4082c696cad5aa2fa340ea8eaee7017968b4c90",
     "build_started_at": "2026-11-04T17:28:40Z",
-    "run_id": null,
+    "run_id": "42333937831",
     "landed_at": "2026-10-30T12:28:43Z"
   },
   {
