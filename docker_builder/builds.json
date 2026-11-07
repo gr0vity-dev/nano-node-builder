@@ -41819,7 +41819,7 @@
     "pull_request": "5249",
     "created_at": "2026-10-30T12:52:58Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-11-04T17:28:40Z",
     "run_id": null,
@@ -52941,6 +52941,22 @@
     "built_at": "2023-05-10T14:55:23Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:e3b3012123a58819c0a741612912264ba4fc440b"
+  },
+  {
+    "hash": "e3cc3b1015f92af5db6c1b125ea6edfdf43f1159",
+    "type": "pull_request",
+    "title": "Add vote relay messages and the vote_relay node capability",
+    "author": "pwojcikdev",
+    "body": "The wire protocol for vote relay, split out of #5201 so it can be reviewed on its own. A vote relay lets a node that cannot peer with some representatives ask a peer that can reach them to fetch their votes. This PR adds the two messages and the capability bit a relay advertises. Nothing sends, serves or advertises them yet; the relay, its client and the solicitor come in #5201 on top of this.\n\n## Node capabilities\n\n`node_capabilities::vote_relay` is advertised in the node id handshake by a node that serves relay requests. The handshake capabilities are not in a release yet, so the flags are renumbered without a gap: bit 0 is reserved, `no_ledger` takes bit 1, `topo_index` bit 2 and `vote_relay` bit 3, and the unused `vote_storage` placeholder is gone. Development builds that advertise the old positions misread the moved bits, so nodes on a beta network should run the same build. `channel::has_capability` replaces the `get_flags ().test (...)` calls.\n\n## Messages\n\n`vote_relay_req` (type `0x10`) carries a request id, a flags byte, up to 255 (block hash, root) pairs and up to 255 representatives whose votes are wanted, where an empty list means any representative. By default only final votes are wanted; flag `0x01` asks for non-final votes too. `nano::vote_finality { final, any }` names that choice in code and `vote::satisfies` checks a vote against it.\n\n`vote_relay_ack` (type `0x11`) answers under the request id with up to 64 votes, each prefixed with its hash count, after a flags byte of its own. Flag `0x02` marks the last ack of a request, and an ack without votes ends the request as well. Flag `0x01` marks the terminator of a request the relay refused, so the requester can tell a refusal from an answer with no votes. `vote_relay_ack::refusal` and `completion` build the two flagged acks, and `vote_relay_ack::batch_votes` splits a list of votes into the acks they fit, by count and by the 16-bit payload length, keeping their order.\n\nBoth messages store their payload length in the header extensions, and the parser ignores bytes past the fields it knows, as it does for `telemetry_ack` and the ascending bootstrap messages, so a later version can append fields without breaking older nodes. Votes in an ack go through the vote uniquer like those in a `confirm_ack`. Realtime connections accept both types; until a component takes them, the dispatcher counts them under `message_drop` by type.\n\n## Tests\n\n- `message.vote_relay_*`: round trips at the defaults and at the maximum hashes, representatives, vote count and payload size; empty, truncated and oversized payloads rejected; the refused and completed flags; `batch_votes` split by count, by size and at an exact fit of the payload limit.\n- Deserializer samples for both types (minimal, non-final, maximal, and empty, refused, completed and maximal acks) run through the shared truncation and trailing byte checks, and `deserialize_message_payload.uniquers` checks that a relayed vote shares the instance of the same vote from a `confirm_ack`.\n- `vote.satisfies_finality`.\n- `tcp_server.vote_relay_messages_dropped`: both messages pass the realtime filter over TCP and are dropped by type.\n- The handshake, peer pool and handshake serialization tests use `vote_relay` where they used `vote_storage`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5256,
+    "label": "pwojcikdev:vote-relay-messages",
+    "created_at": "2026-11-05T18:02:41Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-07T01:35:04Z",
+    "run_id": null
   },
   {
     "hash": "e3d998dcda5dacfc563fe38a9f75f525b761e854",
