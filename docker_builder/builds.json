@@ -48484,11 +48484,11 @@
     "title": "Wait for systest processes to exit before removing data directories (#5211)\n\n* Wait for systest processes to exit before removing data directories\n\nThe shared systest cleanup and the exit trap of bind_failure.sh killed\nthe nodes and removed their data directories right away, while the\nnodes were still shutting down and writing to them. On CI\nbind_failure.sh printed its PASS and then exited 1: `rm -rf` failed\nwith \"Directory not empty\" on the RocksDB directory of the node it had\njust signalled, and `set -e` made that the script's exit status.\n\nThe cleanup now waits for every registered process to exit before it\ndumps log tails and removes data directories, so a dumped tail also\nends with the node's shutdown. A process still running 30 seconds\nafter SIGTERM gets SIGKILL, so a hung process cannot stall CI, and the\ntest result stands either way.\n\n`new_datadir` never registered a directory: scripts call it in a\n`$(...)` subshell, which dropped the list it appended to, so the\ncleanup removed no data directory and dumped no log tail. It now\ncreates the directories inside one temporary directory made when\ncommon.sh is sourced, and the cleanup finds them there.\n\nbind_failure.sh now uses the shared helpers instead of its own exit\ntrap and readiness loop.\n\n* Move the remaining systests onto the shared helpers\n\ndaemon_interrupt.sh, rpc_stop.sh and runtime_files.sh had their own\nexit traps, which removed the data directory without waiting for the\nnode when a test failed while the node was running, and their own\nreadiness loops. cli_wallet_create.sh and node_initialize.sh never\nremoved their data directories at all. They now use `new_datadir`,\n`register_pid` and `wait_for_file` from lib/common.sh, so every\nsystest stops its processes, dumps log tails on failure and removes\nits data directories the same way.\n\nruntime_files.sh now fails at the readiness wait when the node does\nnot come up, where it used to carry on to its later checks.",
     "pull_request": "5211",
     "created_at": "2026-10-15T12:58:17Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-07T10:17:11Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:d0bd70cbc7ba0742b32d08bd4dda78cba4718e98",
     "build_started_at": "2026-10-15T14:10:21Z",
-    "run_id": null,
+    "run_id": "42361540324",
     "landed_at": "2026-10-15T12:58:17Z"
   },
   {
