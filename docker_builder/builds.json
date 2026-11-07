@@ -48210,11 +48210,11 @@
     "title": "Rewrite the tag generator\n\ngenerate_next_git_tag.sh grew its options, globals and output modes\nover several rounds and was hard to reason about: it matched tags with\nan unescaped dot, force-moved tags and force-pushed the release branch,\nand wrote its results to GITHUB_ENV for the workflow to copy into\noutputs. ci/deploy/next-tag.sh keeps the scheme (DB tags on develop,\nRC tags on the release branch, plain release tags on request, versions\ncommitted into CMakeLists.txt and the release commit pushed to its\nbranch) in a third of the lines, with a --dry-run that prints the tag\nit would create. Pushes are no longer forced, so a collision fails\ninstead of moving a published tag, and the outputs go straight to\nGITHUB_OUTPUT.\n\nThe workflow checks out the full history for it: deciding whether the\nlatest tag already covers HEAD needs the commits between them.",
     "pull_request": "5249",
     "created_at": "2026-10-30T12:46:56Z",
-    "built_at": null,
-    "build_status": "building",
-    "docker_tag": null,
+    "built_at": "2026-11-07T02:28:01Z",
+    "build_status": "pass",
+    "docker_tag": "gr0v1ty/nano-node:cf6724dcf203641c490daf3417b5883e2dadc598",
     "build_started_at": "2026-11-04T17:28:40Z",
-    "run_id": null,
+    "run_id": "42327294290",
     "landed_at": "2026-10-30T14:58:40Z"
   },
   {
