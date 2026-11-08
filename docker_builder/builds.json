@@ -39891,6 +39891,22 @@
     "run_id": "14542867046"
   },
   {
+    "hash": "a8d6fcf164b568633dcbb921d77bfa58cf0d5d16",
+    "type": "pull_request",
+    "title": "Replace confirmation_solicitor with vote_solicitor",
+    "author": "pwojcikdev",
+    "body": "Replaces `confirmation_solicitor` with `vote_solicitor`, which the election loop uses to ask principal representatives for votes and to send them the winner block. This is groundwork for vote relay: relay requests will be planned alongside confirm_reqs in the same rounds.\n\n## Structure\n\n- `vote_solicitor_round` plans one round without any I/O: per election it decides which reps get a confirm_req and which get the winner block, batched per channel and bounded by the per election and per round caps.\n- `vote_solicitor`, a node component, prepares a round from the rep crawler's principal representatives and sends what the round planned.\n- `rep_crawler::representatives` and `principal_representatives` return a deque, like the other channel listings.\n\nThe decision rules are unchanged: a rep that voted for a different hash is exempt from the per election caps, and after quorum only a final vote settles a rep.\n\n## Behaviour changes\n\n- **Pacing is stamped only for messages that went out.** `flush` returns which elections a channel accepted a broadcast or confirm_req for, and the election loop stamps `broadcast_sent` / `request_sent` from that. A message a full or closed channel refused leaves its election due next round instead of waiting a whole interval. A broadcast no rep needs counts as done, so its election is not planned again every round.\n- **One request and one broadcast per channel per election.** A peer hosting several representatives used to get the same hash repeated in one confirm_req and the same publish several times, and its duplicates took cap slots from other peers.\n- **Broadcasts no rep needs stay out of the round cap.** They used to take a slot even though they send nothing.\n- **Broadcasts skip channels that are full for block broadcasts**, as requests already did for confirmation requests. If every rep that needs the winner is behind a full channel, the broadcast is not planned and the election stays due.\n- **The caps are network constants:** 50 requests and 3 broadcasts per election, 30 broadcasts per round; 1 and 4 broadcasts on the dev network. The per election broadcast cap used to be half the random flood fanout, which gave about these values on the live and dev networks.\n\n## Observability\n\nA new `vote_solicitor` stat type counts sent requests (with the hashes they carry) and broadcasts, refused ones (`request_failed`, `broadcast_failed`), channels left out because they were full, broadcasts without targets, round cap hits and rounds. Refusals are logged at debug under a new `vote_solicitor` log type.\n\n## Tests\n\n`core_test/vote_solicitor.cpp` replaces the confirmation solicitor tests. It covers the planning rules and caps, quorum handling, full channels, shared channels, flushing with accepted, refused and partially refused messages, broadcasts without targets, the limits taken from the network constants, and the election loop stamping pacing only after a send (including when there are no reps, and asking again after a refusal).\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5265,
+    "label": "pwojcikdev:vote-solicitor-rework",
+    "created_at": "2026-11-08T02:11:22Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-08T08:54:35Z",
+    "run_id": null
+  },
+  {
     "hash": "a8d8d2899e298024ed30fc0126a793ce267dbc2c",
     "type": "commit",
     "created_at": "2023-04-24T20:02:01Z",
@@ -56036,6 +56052,22 @@
     "docker_tag": "",
     "build_started_at": "2024-03-12T12:09:19Z",
     "run_id": "8248523726"
+  },
+  {
+    "hash": "f02893e160e47781c43ef8f4ab5a1b678740e81c",
+    "type": "pull_request",
+    "title": "Rename network_filter to duplicate_filter, rework its interface and keep cryptopp out of its header",
+    "author": "pwojcikdev",
+    "body": "`nano::network_filter` becomes `nano::duplicate_filter` and moves to the conventions of newer code: byte spans instead of a pointer and a count, names that say what each call does, a header that documents the contract, and no cryptopp in the header.\n\n**Name**\nNothing in the class is specific to the network: it reports whether a digest was seen recently, forgets entries as they age or lose their slot, and erases them on request. Its config keys (`duplicate_filter_size`, `duplicate_filter_cutoff`), tests and comments already call it the duplicate filter, so the class, its files, its mutex id and the `deserialize_message` parameter take that name, and its comments describe a generic filter. The network keeps its member as `filter`.\n\n**Interface**\n- `check` is now `contains`, removing one entry is `erase` (by digest, bytes or block), and `update` is `advance`. `clear ()` still empties the whole table.\n- The byte overloads take `std::span<uint8_t const>`. `apply` no longer hands back the digest through a pointer: deserialization calls `hash (buffer)`, applies the digest and keeps it for the message.\n- The serializing template that was only instantiated for `std::shared_ptr<nano::block>` is replaced by `hash` and `erase` overloads taking a block, and the unused `erase` over a vector of digests is gone.\n- The `digest_t` alias is now `digest`, and epochs are plain `uint64_t` without an alias of their own.\n\n**Includes**\nThe SipHash key is a `std::array` wiped in the destructor, as `CryptoPP::SecByteBlock` was, and SipHash is only named in `duplicate_filter.cpp`. The header reaches most of the node through `publish`, `confirm_ack` and `network`, so those files no longer compile the cryptopp headers. `test_common/system.cpp` used `CryptoPP::word32` through that include and now uses `unsigned`, the type `random_pool::generate_word32` takes.\n\n**Expiry stays in epochs**\nEntries still age in epochs that the network's cleanup loop advances rather than in clock time, so an insert never reads the clock; the header now says so. The new `duplicate_filter` benchmarks measure what a clock read per insert would cost (release, macOS arm64, medians of 3 repetitions, filter of the default size):\n\n| per insert, one thread | epochs | with a clock read |\n|---|---|---|\n| hash + apply, 216 B (state block publish) | 258 ns | 306 ns |\n| hash + apply, 136 B (single-hash vote) | 209 ns | 226 ns |\n| apply a precomputed digest | 20.9 ns | 38.8 ns |\n| `steady_clock::now ()` alone | | 16.2 ns |\n\nWith eight threads inserting at once the filter's single mutex dominates, at 3 to 4 µs per insert, and a clock read adds 5 to 15% on top.\n\n**Tests**\n- The `duplicate_filter` suite is renamed into one scheme and described. `erase_block` checks that a block erases the entry its publish went in under, which is how elections let a block they gave up on be received again, and `clear` covers emptying the table.\n- `network.expire_duplicate_filter` checks expiry end to end with the node's own cleanup loop: a resend within the cutoff is still caught, the entry ages out no sooner than the cutoff after the first copy, and a resend after that is dispatched like a new message.\n- `active_elections.fork_filter_cleanup` ended on a polled `apply` that passed whether or not the fork was erased, since the first poll inserts an absent fork and the second reports it as a duplicate. It now enters the fork into the filter as a peer's publish would, lets the full election reject it and waits for the entry to go.\n- `election.evicted_fork_leaves_duplicate_filter` checks that a fork evicted to make room is erased from the filter while the forks the election holds stay filtered. The eviction fixture now sends its forks through the filter.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5264,
+    "label": "pwojcikdev:modernize-network-filter",
+    "created_at": "2026-11-07T15:43:03Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-08T08:54:35Z",
+    "run_id": null
   },
   {
     "hash": "f029329ba50abb9b26b812fc923b1141dc4a5e34",
