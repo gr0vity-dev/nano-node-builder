@@ -38818,6 +38818,22 @@
     "run_id": "21096524948"
   },
   {
+    "hash": "a43d51512adee2aeba49157857a8e01233021c98",
+    "type": "pull_request",
+    "title": "Abort a backend copy once the source has been written to and lock the data directory for writing processes",
+    "author": "pwojcikdev",
+    "body": "Copying a backend table by table with one read transaction per worker is only consistent while nothing commits to the source. Nothing checked or enforced that: an LMDB to RocksDB migration run against a live node silently produced a ledger whose tables disagree with each other, and the same gap let any writing CLI command open the databases of a running node.\n\n### Copy guard\n\n`backend::commit_sequence` exposes a counter that advances with every committed write, LMDB's last transaction id and RocksDB's latest sequence number. `copy_to` reads it before the first table and compares after every table; a change throws and leaves the destination as it is, so the operator sees the failure instead of a plausible but inconsistent copy. A retry runs into the existing \"RocksDB folder already exists\" check.\n\n### Data directory lock\n\n`nano::data_dir_lock` holds an advisory lock on `nano_node.lock` inside the data directory, taken without waiting and released by the operating system when the holder exits (`flock` on a descriptor opened with `O_CLOEXEC`, `LockFileEx` on Windows). The node daemon and the wallet hold it for the lifetime of their node, `node_wrapper` holds it for a node opened for writing, and the migration holds it while it copies. Each of them now fails at once, naming the lock file, when another process has the directory. Read-only commands take no lock and keep working next to a live node.\n\n### Tests\n\n`backend.commit_sequence` and `backend.copy_to_written_source_throws` cover the guard, the latter by writing to the source from the copy's first progress callback. `data_dir_lock.exclusive` and `data_dir_lock.inactive_node` cover the lock and its use by `node_wrapper`, and `migrations.held_data_dir_refused` covers the migration refusing a held directory without leaving a RocksDB folder behind.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5268,
+    "label": "pwojcikdev:data-dir-lock",
+    "created_at": "2026-11-09T18:36:48Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-09T20:53:40Z",
+    "run_id": null
+  },
+  {
     "hash": "a4614215d030cfcb3b39799fd4ded2f72bbb3f63",
     "type": "pull_request",
     "title": "Make election behavior mutable to support dynamic behaviour transition",
@@ -42407,6 +42423,22 @@
     "docker_tag": "gr0v1ty/nano-node:b4ba3e8ddd475662fefc686edd04dcfbf88057b3",
     "build_started_at": "2026-10-16T18:55:29Z",
     "run_id": "39461181849"
+  },
+  {
+    "hash": "b4bb47d0c1b5c5e8e9582dbb4220f54dcb44eae5",
+    "type": "pull_request",
+    "title": "Keep failed LMDB opens retryable and stop backend copies from losing short all-zero keys",
+    "author": "pwojcikdev",
+    "body": "A failed LMDB open left the backend unable to open again, and `backend::copy_to`, which the LMDB to RocksDB migration runs, skipped every all-zero key shorter than 32 bytes without reporting it.\n\n### Failed LMDB opens can be retried\n\n`backend_lmdb::open_impl` stored the new environment in the backend before it opened the schema's tables. When a required table was missing, as on a read-only open of a database that lacks it, the open threw but the environment stayed assigned while the backend reported itself closed, and the next open on the same backend aborted on the \"environment already open\" assert. The environment now stays local until every table has opened and the opening transaction has committed, and is adopted together with the table handles. A failed open closes it on unwinding and leaves the backend closed and retryable, as the RocksDB backend does since #5165.\n\n### Copies no longer skip short all-zero keys\n\n`backend::for_each_par` splits a table at 32 byte keys whose first byte is the partition boundary, and its first partition started at a lower bound of 32 zero bytes. Keys sort bytewise with a shorter prefix first, so an all-zero key shorter than that, like the 8 byte key of an online weight record at timestamp 0, sorted below the first partition and no partition visited it. The first partition now starts at the table's beginning, the way the last one already ends at its end. The boundaries between partitions were not affected: a short key just below one still sorts above the previous one and lands in the partition before it. The ledger views traverse with their own typed partitions and never went through this one.\n\n### Short copies fail\n\n`copy_to` counted each source table but used the count only for progress lines, so the skipped keys went unnoticed and the migration reported success. After each table it now compares the entries it copied with the source count and throws, naming the table and both numbers, when they differ. Tables whose count RocksDB only estimates, pruned and final votes, are not checked; an LMDB source, the one the migration copies from, counts every table exactly.\n\n### Tests\n\n- `backend.open_missing_table_retry` fails a read-only open on a database that lacks the schema's tables, then opens the same backend read-only with the schema the database was created with, and read-write with the full one.\n- `backend.copy_to_short_zero_keys` copies an 8 byte zero key, a 32 byte zero key and an 8 byte one key, and checks that all three arrive.\n- `backend.copy_to_short_copy_throws` makes a copy come up short deterministically: a new `before_count` hook on `nano::test::hooked_backend` deletes a source key after `copy_to` opened the transaction it counts in, so the key is counted but not traversed, and the test checks the error names the table and both counts.\n\n### Not addressed\n\n- When one copy thread fails, the error surfaces only after every other partition has finished, so a failed migration of a large ledger keeps copying before it reports.\n- `backend::create` leaves the backend open read-write when it throws because the database already exists. Its only production caller creates after `fetch_meta` found nothing, so this does not happen in practice.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5267,
+    "label": "pwojcikdev:backend-copy-open-fixes",
+    "created_at": "2026-11-09T18:31:02Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-09T20:53:40Z",
+    "run_id": null
   },
   {
     "hash": "b4bd3967f60a517af8a9ff18612105ae30ef87d1",
@@ -47695,6 +47727,22 @@
     "build_started_at": "2025-09-07T09:48:13Z",
     "run_id": "17527566745",
     "landed_at": "2025-08-31T22:14:01Z"
+  },
+  {
+    "hash": "cd1aeb775db3fb9396322ea2538cbaa7e3b66569",
+    "type": "pull_request",
+    "title": "Check the io_context before joining an async task and refuse overwriting a running one",
+    "author": "pwojcikdev",
+    "body": "`nano::async::task::join ()` waits on a future that is only set when the coroutine's completion runs on the strand. Joining from one of the io_context's own threads can block the very thread that completion needs, and joining after the io_context stopped never returns. The checks against both lived as debug asserts in `tcp_server`, `tcp_socket` and `tcp_channel` `stop ()`, one copy each, and the listener's two join sites had none. The task now release-asserts both in `join ()` itself, through the strand's inner executor, so a release node aborts with a message where it used to hang, and the three copies are gone.\n\nMove assignment overwrote the target's future unchecked, which detached a running coroutine from the only handle that can cancel or join it while the coroutine kept using its owner. It now asserts the target is not running, as the destructor already does.\n\nDeath tests cover every release assert in `async.hpp`: the destructor, move assignment, `ready ()` and `join ()` on a task without a coroutine, the join on an io thread, the join after the io_context stopped, and a moved-from condition.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5266,
+    "label": "pwojcikdev:async-task-join-guards",
+    "created_at": "2026-11-09T17:42:52Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-09T20:53:40Z",
+    "run_id": null
   },
   {
     "hash": "cd20846235a7be84e3c06532c4b5e32eef3a3be5",
@@ -53353,6 +53401,22 @@
     "docker_tag": "gr0v1ty/nano-node:e536ca4cce0d484115e6a92004b92453779be569",
     "build_started_at": "2024-04-22T13:37:39Z",
     "run_id": "8785058957"
+  },
+  {
+    "hash": "e54077488bdc833318da596ea6e1f62001558569",
+    "type": "pull_request",
+    "title": "Rename network_filter to duplicate_filter, rework its interface and keep cryptopp out of its header",
+    "author": "pwojcikdev",
+    "body": "`nano::network_filter` becomes `nano::duplicate_filter` and moves to the conventions of newer code: byte spans instead of a pointer and a count, names that say what each call does, a header that documents the contract, and no cryptopp in the header.\n\n**Name**\nNothing in the class is specific to the network: it reports whether a digest was seen recently, forgets entries as they age or lose their slot, and erases them on request. Its config keys (`duplicate_filter_size`, `duplicate_filter_cutoff`), tests and comments already call it the duplicate filter, so the class, its files, its mutex id and the `deserialize_message` parameter take that name, and its comments describe a generic filter. The network keeps its member as `filter`.\n\n**Interface**\n- `check` is now `contains`, removing one entry is `erase` (by digest, bytes or block), and `update` is `advance`. `clear ()` still empties the whole table.\n- `apply` is now `insert` and returns true when the digest was new and went in, false for a duplicate, as `message_processor::enqueue`, `block_processor::add` and `std::set::insert` do. It used to return true for a duplicate, so `ASSERT_TRUE (filter.apply (bytes))` asserted that the bytes were already there; every caller now checks the same thing through `insert`.\n- The byte overloads take `std::span<uint8_t const>`. `insert` no longer hands back the digest through a pointer: deserialization calls `hash (buffer)`, inserts the digest and keeps it for the message.\n- The serializing template that was only instantiated for `std::shared_ptr<nano::block>` is replaced by `hash` and `erase` overloads taking a block, and the unused `erase` over a vector of digests is gone.\n- The `digest_t` alias is now `digest`, and epochs are plain `uint64_t` without an alias of their own.\n\n**Includes**\nThe SipHash key is a `std::array` wiped in the destructor, as `CryptoPP::SecByteBlock` was, and SipHash is only named in `duplicate_filter.cpp`. The header reaches most of the node through `publish`, `confirm_ack` and `network`, so those files no longer compile the cryptopp headers. `test_common/system.cpp` used `CryptoPP::word32` through that include and now uses `unsigned`, the type `random_pool::generate_word32` takes.\n\n**Expiry stays in epochs**\nEntries still age in epochs that the network's cleanup loop advances rather than in clock time, so an insert never reads the clock; the header now says so. The new `duplicate_filter` benchmarks measure what a clock read per insert would cost (release, macOS arm64, medians of 3 repetitions, filter of the default size):\n\n| per insert, one thread | epochs | with a clock read |\n|---|---|---|\n| hash + insert, 216 B (state block publish) | 258 ns | 306 ns |\n| hash + insert, 136 B (single-hash vote) | 209 ns | 226 ns |\n| insert a precomputed digest | 20.9 ns | 38.8 ns |\n| `steady_clock::now ()` alone | | 16.2 ns |\n\nWith eight threads inserting at once the filter's single mutex dominates, at 3 to 4 µs per insert, and a clock read adds 5 to 15% on top.\n\n**Tests**\n- The `duplicate_filter` suite is renamed into one scheme and described. `erase_block` checks that a block erases the entry its publish went in under, which is how elections let a block they gave up on be received again, and `clear` covers emptying the table.\n- `network.expire_duplicate_filter` checks expiry end to end with the node's own cleanup loop: a resend within the cutoff is still caught, the entry ages out no sooner than the cutoff after the first copy, and a resend after that is dispatched like a new message.\n- `active_elections.fork_filter_cleanup` ended on a polled `apply` that passed whether or not the fork was erased, since the first poll inserts an absent fork and the second reports it as a duplicate. It now enters the fork into the filter as a peer's publish would, lets the full election reject it and waits for the entry to go.\n- `election.evicted_fork_leaves_duplicate_filter` checks that a fork evicted to make room is erased from the filter while the forks the election holds stay filtered. The eviction fixture now takes how each fork reaches the node, with an overload that submits them as live blocks for the election tests that do not care about the filter; only this test sends its forks through the filter.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5264,
+    "label": "pwojcikdev:modernize-network-filter",
+    "created_at": "2026-11-07T15:43:03Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-09T20:53:40Z",
+    "run_id": null
   },
   {
     "hash": "e58e045f5b6ae64d88bcf9794f09cd0447809b51",
