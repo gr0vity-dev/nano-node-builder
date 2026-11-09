@@ -1,0 +1,335 @@
+f1af0ffb182478b5b821b9f44fb5599a81ca3ac2: Pulling from gr0v1ty/nano-node
+7a48b8f0e5c7: Already exists
+c7ad32d927ac: Pulling fs layer
+29a5a239809d: Pulling fs layer
+8670fc7fbc42: Pulling fs layer
+d84ad794a5c9: Pulling fs layer
+a67fe572090f: Pulling fs layer
+ab0fb902e15f: Pulling fs layer
+77892a55d446: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+717f3bf970a1: Pulling fs layer
+5050d190f658: Pulling fs layer
+ab0fb902e15f: Waiting
+77892a55d446: Waiting
+717f3bf970a1: Waiting
+4f4fb700ef54: Waiting
+5050d190f658: Waiting
+d84ad794a5c9: Waiting
+a67fe572090f: Waiting
+c7ad32d927ac: Verifying Checksum
+d84ad794a5c9: Verifying Checksum
+d84ad794a5c9: Download complete
+8670fc7fbc42: Verifying Checksum
+8670fc7fbc42: Download complete
+a67fe572090f: Verifying Checksum
+a67fe572090f: Download complete
+ab0fb902e15f: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+77892a55d446: Verifying Checksum
+77892a55d446: Download complete
+717f3bf970a1: Download complete
+5050d190f658: Verifying Checksum
+5050d190f658: Download complete
+c7ad32d927ac: Pull complete
+29a5a239809d: Verifying Checksum
+29a5a239809d: Download complete
+29a5a239809d: Pull complete
+8670fc7fbc42: Pull complete
+d84ad794a5c9: Pull complete
+a67fe572090f: Pull complete
+ab0fb902e15f: Pull complete
+77892a55d446: Pull complete
+4f4fb700ef54: Pull complete
+717f3bf970a1: Pull complete
+5050d190f658: Pull complete
+Digest: sha256:c0180a48150f805f9911fdabe7a237920080b41a72b13fbf58daa443439a5257
+Status: Downloaded newer image for gr0v1ty/nano-node:f1af0ffb182478b5b821b9f44fb5599a81ca3ac2
+docker.io/gr0v1ty/nano-node:f1af0ffb182478b5b821b9f44fb5599a81ca3ac2
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_10k_bintree.json
+Start Fetching '5n4pr_conf_10k_bintree_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_10k_bintree_config.json'
+Done  Fetching '5n4pr_conf_10k_bintree_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_10k_bintree_config.json'
+Start Fetching '5n4pr_100k_bintree_short.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_100k_bintree_short.json'
+Done  Fetching '5n4pr_100k_bintree_short.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_100k_bintree_short.json'
+Start Fetching '5n4pr_init.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_init.ldb'
+Done  Fetching '5n4pr_init.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_init.ldb'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Start Fetching 'config-node_5n4pr_spam_buffer.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/config-node_5n4pr_spam_buffer.toml'
+Done  Fetching 'config-node_5n4pr_spam_buffer.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/config-node_5n4pr_spam_buffer.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+ERROR: Command failed: docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock build
+ERROR: Error output: Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:f1af0ffb182478b5b821b9f44fb5599a81ca3ac2
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:f1af0ffb182478b5b821b9f44fb5599a81ca3ac2
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 DONE 0.4s
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 DONE 0.2s
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 0.107 /bin/sh: 1: [[: not found
+#7 0.672 Get:1 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+#7 1.023 Get:2 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [2132 kB]
+#7 1.295 Get:3 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [55.6 kB]
+#7 1.295 Get:4 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1557 kB]
+#7 1.319 Get:5 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1425 kB]
+#7 17.45 Get:6 http://archive.ubuntu.com/ubuntu noble InRelease [256 kB]
+#7 18.14 Get:7 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+#7 21.53 Get:8 http://archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+#7 21.69 Get:9 http://archive.ubuntu.com/ubuntu noble/multiverse amd64 Packages [331 kB]
+#7 21.81 Get:10 http://archive.ubuntu.com/ubuntu noble/main amd64 Packages [1808 kB]
+#7 22.10 Get:11 http://archive.ubuntu.com/ubuntu noble/universe amd64 Packages [19.3 MB]
+#7 22.49 Get:12 http://archive.ubuntu.com/ubuntu noble/restricted amd64 Packages [117 kB]
+#7 22.49 Get:13 http://archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [61.7 kB]
+#7 22.49 Get:14 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [2177 kB]
+#7 22.51 Get:15 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1762 kB]
+#7 22.52 Get:16 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [2274 kB]
+#7 25.33 Get:17 http://archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Packages [669 B]
+#7 25.33 Get:18 http://archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [49.0 kB]
+#7 25.34 Get:19 http://archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [36.0 kB]
+#7 25.35 Fetched 33.7 MB in 25s (1354 kB/s)
+#7 25.35 Reading package lists...
+#7 26.01 Reading package lists...
+#7 26.64 Building dependency tree...
+#7 26.78 Reading state information...
+#7 26.91 The following additional packages will be installed:
+#7 26.91   libatm1t64 libbpf1 libcap2-bin libelf1t64 libmnl0 libpam-cap libxtables12
+#7 26.91 Suggested packages:
+#7 26.91   iproute2-doc python3:any
+#7 26.94 The following NEW packages will be installed:
+#7 26.94   iproute2 libatm1t64 libbpf1 libcap2-bin libelf1t64 libmnl0 libpam-cap
+#7 26.94   libxtables12
+#7 57.34 0 upgraded, 8 newly installed, 0 to remove and 3 not upgraded.
+#7 57.34 Need to get 1461 kB of archives.
+#7 57.34 After this operation, 4207 kB of additional disk space will be used.
+#7 57.34 Ign:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libelf1t64 amd64 0.190-1.1ubuntu0.1
+#7 57.34 Ign:2 http://archive.ubuntu.com/ubuntu noble/main amd64 libbpf1 amd64 1:1.3.0-2build2
+#7 57.46 Ign:3 http://archive.ubuntu.com/ubuntu noble/main amd64 libmnl0 amd64 1.0.5-2build1
+#7 57.46 Ign:4 http://archive.ubuntu.com/ubuntu noble/main amd64 libxtables12 amd64 1.8.10-3ubuntu2
+#7 57.58 Ign:5 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libcap2-bin amd64 1:2.66-5ubuntu2.4
+#7 57.70 Ign:6 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 iproute2 amd64 6.1.0-1ubuntu6.4
+#7 57.82 Ign:7 http://archive.ubuntu.com/ubuntu noble/main amd64 libatm1t64 amd64 1:2.5.1-5.1build1
+#7 57.94 Ign:8 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libpam-cap amd64 1:2.66-5ubuntu2.4
+#7 58.35 Ign:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libelf1t64 amd64 0.190-1.1ubuntu0.1
+#7 58.35 Ign:2 http://archive.ubuntu.com/ubuntu noble/main amd64 libbpf1 amd64 1:1.3.0-2build2
+#7 58.47 Ign:3 http://archive.ubuntu.com/ubuntu noble/main amd64 libmnl0 amd64 1.0.5-2build1
+#7 58.47 Ign:4 http://archive.ubuntu.com/ubuntu noble/main amd64 libxtables12 amd64 1.8.10-3ubuntu2
+#7 58.58 Ign:5 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libcap2-bin amd64 1:2.66-5ubuntu2.4
+#7 58.70 Ign:6 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 iproute2 amd64 6.1.0-1ubuntu6.4
+#7 58.82 Ign:7 http://archive.ubuntu.com/ubuntu noble/main amd64 libatm1t64 amd64 1:2.5.1-5.1build1
+#7 58.94 Ign:8 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libpam-cap amd64 1:2.66-5ubuntu2.4
+#7 60.47 Ign:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libelf1t64 amd64 0.190-1.1ubuntu0.1
+#7 60.58 Ign:2 http://archive.ubuntu.com/ubuntu noble/main amd64 libbpf1 amd64 1:1.3.0-2build2
+#7 60.59 Ign:3 http://archive.ubuntu.com/ubuntu noble/main amd64 libmnl0 amd64 1.0.5-2build1
+#7 60.59 Ign:4 http://archive.ubuntu.com/ubuntu noble/main amd64 libxtables12 amd64 1.8.10-3ubuntu2
+#7 60.59 Ign:5 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libcap2-bin amd64 1:2.66-5ubuntu2.4
+#7 60.71 Ign:6 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 iproute2 amd64 6.1.0-1ubuntu6.4
+#7 60.83 Ign:7 http://archive.ubuntu.com/ubuntu noble/main amd64 libatm1t64 amd64 1:2.5.1-5.1build1
+#7 60.95 Ign:8 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libpam-cap amd64 1:2.66-5ubuntu2.4
+#7 64.47 Ign:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libelf1t64 amd64 0.190-1.1ubuntu0.1
+#7 64.59 Err:2 http://archive.ubuntu.com/ubuntu noble/main amd64 libbpf1 amd64 1:1.3.0-2build2
+#7 64.59   Unable to connect to archive.ubuntu.com:80:
+#7 64.59 Err:3 http://archive.ubuntu.com/ubuntu noble/main amd64 libmnl0 amd64 1.0.5-2build1
+#7 64.59   Unable to connect to archive.ubuntu.com:80:
+#7 64.59 Err:4 http://archive.ubuntu.com/ubuntu noble/main amd64 libxtables12 amd64 1.8.10-3ubuntu2
+#7 64.59   Unable to connect to archive.ubuntu.com:80:
+#7 64.60 Ign:5 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libcap2-bin amd64 1:2.66-5ubuntu2.4
+#7 64.81 Get:1 http://security.ubuntu.com/ubuntu noble-updates/main amd64 libelf1t64 amd64 0.190-1.1ubuntu0.1 [57.8 kB]
+#7 64.82 Err:6 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 iproute2 amd64 6.1.0-1ubuntu6.4
+#7 64.82   Unable to connect to archive.ubuntu.com:80:
+#7 64.83 Err:7 http://archive.ubuntu.com/ubuntu noble/main amd64 libatm1t64 amd64 1:2.5.1-5.1build1
+#7 64.83   Unable to connect to archive.ubuntu.com:80:
+#7 64.96 Ign:8 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libpam-cap amd64 1:2.66-5ubuntu2.4
+#7 65.17 Get:5 http://security.ubuntu.com/ubuntu noble-updates/main amd64 libcap2-bin amd64 1:2.66-5ubuntu2.4 [34.1 kB]
+#7 65.21 Get:8 http://security.ubuntu.com/ubuntu noble-updates/main amd64 libpam-cap amd64 1:2.66-5ubuntu2.4 [12.5 kB]
+#7 65.24 Fetched 104 kB in 38s (2727 B/s)
+#7 65.24 E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libb/libbpf/libbpf1_1.3.0-2build2_amd64.deb  Unable to connect to archive.ubuntu.com:80:
+#7 65.24 E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libm/libmnl/libmnl0_1.0.5-2build1_amd64.deb  Unable to connect to archive.ubuntu.com:80:
+#7 65.24 E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/i/iptables/libxtables12_1.8.10-3ubuntu2_amd64.deb  Unable to connect to archive.ubuntu.com:80:
+#7 65.24 E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/i/iproute2/iproute2_6.1.0-1ubuntu6.4_amd64.deb  Unable to connect to archive.ubuntu.com:80:
+#7 65.24 E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/l/linux-atm/libatm1t64_2.5.1-5.1build1_amd64.deb  Unable to connect to archive.ubuntu.com:80:
+#7 65.24 E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+#7 ERROR: process "/bin/sh -c if [[ -z \"$TC_ENABLE\" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi" did not complete successfully: exit code: 100
+------
+ > [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi:
+64.96 Ign:8 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libpam-cap amd64 1:2.66-5ubuntu2.4
+65.17 Get:5 http://security.ubuntu.com/ubuntu noble-updates/main amd64 libcap2-bin amd64 1:2.66-5ubuntu2.4 [34.1 kB]
+65.21 Get:8 http://security.ubuntu.com/ubuntu noble-updates/main amd64 libpam-cap amd64 1:2.66-5ubuntu2.4 [12.5 kB]
+65.24 Fetched 104 kB in 38s (2727 B/s)
+65.24 E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libb/libbpf/libbpf1_1.3.0-2build2_amd64.deb  Unable to connect to archive.ubuntu.com:80:
+65.24 E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/libm/libmnl/libmnl0_1.0.5-2build1_amd64.deb  Unable to connect to archive.ubuntu.com:80:
+65.24 E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/i/iptables/libxtables12_1.8.10-3ubuntu2_amd64.deb  Unable to connect to archive.ubuntu.com:80:
+65.24 E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/i/iproute2/iproute2_6.1.0-1ubuntu6.4_amd64.deb  Unable to connect to archive.ubuntu.com:80:
+65.24 E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/l/linux-atm/libatm1t64_2.5.1-5.1build1_amd64.deb  Unable to connect to archive.ubuntu.com:80:
+65.24 E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+------
+custom_Dockerfile:14
+--------------------
+  13 |     ARG TC_ENABLE=FALSE
+  14 | >>> RUN if [[ -z "$TC_ENABLE" ]] ; \
+  15 | >>>     then echo TC_ENABLE not provided ; \
+  16 | >>>     else apt-get update && apt-get install iproute2 -y; \
+  17 | >>>     fi
+  18 |     
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c if [[ -z \"$TC_ENABLE\" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi" did not complete successfully: exit code: 100
+Service 'nl_genesis' failed to build
+
+ERROR: Return code: 1
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/internal/utils.py", line 198, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+             ^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock build' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/bin/nanomock", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/main.py", line 58, in main
+    asyncio.run(main_async(args))
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/main.py", line 54, in main_async
+    await manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/nanomock_manager.py", line 544, in execute_command
+    await command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/nanomock_manager.py", line 461, in init_containers
+    await self.build_containers()
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/nanomock_manager.py", line 469, in build_containers
+    return None, self.docker_interface.compose_build()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/docker/mixin.py", line 72, in compose_build
+    return self._run_command(cmd)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/docker/mixin.py", line 33, in _run_command
+    subprocess_run_capture_output(base_command)
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/internal/utils.py", line 209, in subprocess_run_capture_output
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: <exception str() failed>
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+Error executing command: nanomock start && nanomock init_wallets
+Error: WARNING: ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4']
+INFO: Nodes ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4'] reachable
+SUCCESS: start_containers completed with None result.
+WARNING: ['nl_genesis']
+WARNING: ['nl_pr1']
+WARNING: ['nl_pr2']
+WARNING: ['nl_pr3']
+WARNING: ['nl_pr4']
+INFO: Nodes ['nl_pr1'] reachable
+INFO: Nodes ['nl_genesis'] reachable
+INFO: Nodes ['nl_pr3'] reachable
+INFO: Nodes ['nl_pr4'] reachable
+INFO: Nodes ['nl_pr2'] reachable
+INFO: WALLET B0EC586AD292143E53BF1A1543E8E6F5C8200F1BB53455C1382140487092BD50 CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub
+INFO: WALLET 827260744874C20CE0B968564538424D3EB510C97712FBEFFE9BBDB78A4CDFFD CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8
+INFO: WALLET 1739A400148E0557E58F3F82EE8BD65B7DB9A11AA0E6D021570AFADF6F9DD956 CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6
+INFO: WALLET 13DC3F074C1D781B33929A004C15CFD52FF131B623BB52FCD36A3A2929342B16 CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p
+INFO: WALLET 582E07F17EF81BF1E4CBC71FAC6CE0F59D11F920863138D686E77776FE990B65 CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h
+SUCCESS: ['WALLET B0EC586AD292143E53BF1A1543E8E6F5C8200F1BB53455C1382140487092BD50 CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub', 'WALLET 827260744874C20CE0B968564538424D3EB510C97712FBEFFE9BBDB78A4CDFFD CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8', 'WALLET 1739A400148E0557E58F3F82EE8BD65B7DB9A11AA0E6D021570AFADF6F9DD956 CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6', 'WALLET 13DC3F074C1D781B33929A004C15CFD52FF131B623BB52FCD36A3A2929342B16 CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p', 'WALLET 582E07F17EF81BF1E4CBC71FAC6CE0F59D11F920863138D686E77776FE990B65 CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h']
+2026-11-09 02:51:35     0 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |      14/     14 @ CPS:       0 (avg    0.00) (  0.00%) | BPS:       0 (avg    0.00) (  0.00%)
+.Connecting to [::ffff:172.17.0.1]:44100
+Connecting to [::ffff:172.17.0.1]:44101
+Connecting to [::ffff:172.17.0.1]:44102
+Connecting to [::ffff:172.17.0.1]:44103
+Connecting to [::ffff:172.17.0.1]:44104
+2026-11-09 02:51:37     1 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |      23/    420 @ CPS:     9.0 (avg    9.00) (  0.09%) | BPS:   406.0 (avg  406.00) (  4.06%)
+.2026-11-09 02:51:38     2 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |      45/    921 @ CPS:    22.0 (avg   15.50) (  0.31%) | BPS:   501.0 (avg  453.50) (  9.07%)
+.2026-11-09 02:51:39     3 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |     266/   1415 @ CPS:   221.0 (avg   84.00) (  2.52%) | BPS:   494.0 (avg  467.00) ( 14.01%)
+.2026-11-09 02:51:40     4 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |     820/   1882 @ CPS:   554.0 (avg  201.50) (  8.06%) | BPS:   467.0 (avg  467.00) ( 18.68%)
+.2026-11-09 02:51:41     5 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    1241/   2401 @ CPS:   421.0 (avg  245.40) ( 12.27%) | BPS:   519.0 (avg  477.40) ( 23.87%)
+.2026-11-09 02:51:42     6 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    1602/   2863 @ CPS:   361.0 (avg  264.67) ( 15.88%) | BPS:   462.0 (avg  474.83) ( 28.49%)
+.2026-11-09 02:51:43     7 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    2029/   3394 @ CPS:   427.0 (avg  287.86) ( 20.15%) | BPS:   531.0 (avg  482.86) ( 33.80%)
+.2026-11-09 02:51:44     8 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    2331/   3886 @ CPS:   302.0 (avg  289.62) ( 23.17%) | BPS:   492.0 (avg  484.00) ( 38.72%)
+.2026-11-09 02:51:46    10 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    2776/   4391 @ CPS:   222.5 (avg  276.20) ( 27.62%) | BPS:   252.5 (avg  437.70) ( 43.77%)
+.2026-11-09 02:51:47    11 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    3296/   4903 @ CPS:   520.0 (avg  298.36) ( 32.82%) | BPS:   512.0 (avg  444.45) ( 48.89%)
+.2026-11-09 02:51:48    12 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    3590/   5388 @ CPS:   294.0 (avg  298.00) ( 35.76%) | BPS:   485.0 (avg  447.83) ( 53.74%)
+.2026-11-09 02:51:49    13 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    4042/   5871 @ CPS:   452.0 (avg  309.85) ( 40.28%) | BPS:   483.0 (avg  450.54) ( 58.57%)
+.2026-11-09 02:51:50    14 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    4303/   6285 @ CPS:   261.0 (avg  306.36) ( 42.89%) | BPS:   414.0 (avg  447.93) ( 62.71%)
+.2026-11-09 02:51:51    15 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    4557/   6857 @ CPS:   254.0 (avg  302.87) ( 45.43%) | BPS:   572.0 (avg  456.20) ( 68.43%)
+.2026-11-09 02:51:52    16 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    5247/   7373 @ CPS:   690.0 (avg  327.06) ( 52.33%) | BPS:   516.0 (avg  459.94) ( 73.59%)
+.2026-11-09 02:51:53    17 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    5654/   7846 @ CPS:   407.0 (avg  331.76) ( 56.40%) | BPS:   473.0 (avg  460.71) ( 78.32%)
+.2026-11-09 02:51:54    18 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    6175/   8356 @ CPS:   521.0 (avg  342.28) ( 61.61%) | BPS:   510.0 (avg  463.44) ( 83.42%)
+.2026-11-09 02:51:56    20 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    6517/   8798 @ CPS:   171.0 (avg  325.15) ( 65.03%) | BPS:   221.0 (avg  439.20) ( 87.84%)
+.2026-11-09 02:51:57    21 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    6822/   9315 @ CPS:   305.0 (avg  324.19) ( 68.08%) | BPS:   517.0 (avg  442.90) ( 93.01%)
+.2026-11-09 02:51:58    22 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    7515/   9808 @ CPS:   693.0 (avg  340.95) ( 75.01%) | BPS:   493.0 (avg  445.18) ( 97.94%)
+.2026-11-09 02:51:59    23 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    8079/  10014 @ CPS:   564.0 (avg  350.65) ( 80.65%) | BPS:   206.0 (avg    0.00) (100.00%)
+.2026-11-09 02:52:00    24 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    8552/  10014 @ CPS:   473.0 (avg  355.75) ( 85.38%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-11-09 02:52:01    25 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |    9262/  10014 @ CPS:   710.0 (avg  369.92) ( 92.48%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-11-09 02:52:02    26 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |   10012/  10014 @ CPS:   750.0 (avg  384.54) ( 99.98%) | BPS:     0.0 (avg    0.00) (100.00%)
+.2026-11-09 02:52:03    27 sec | nl_pr1           | Nano DEV_BUILD f1af0ff |   10014/  10014 @ CPS:     2.0 (avg  370.37) (100.00%) | BPS:     0.0 (avg    0.00) (100.00%)
+.PASS
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44100, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44103, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44101, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44100, 0, 0)): timed out
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44102, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44103. Wait 100ms
+No data from ::ffff:172.17.0.1:44101. Wait 100ms
+No data from ::ffff:172.17.0.1:44100. Wait 100ms
+No data from ::ffff:172.17.0.1:44102. Wait 100ms
+Error reading from socket (peer: ('::ffff:172.17.0.1', 44104, 0, 0)): timed out
+No data from ::ffff:172.17.0.1:44104. Wait 100ms
