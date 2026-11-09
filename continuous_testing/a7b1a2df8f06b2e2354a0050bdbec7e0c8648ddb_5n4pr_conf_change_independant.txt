@@ -1,0 +1,249 @@
+a7b1a2df8f06b2e2354a0050bdbec7e0c8648ddb: Pulling from gr0v1ty/nano-node
+7a48b8f0e5c7: Already exists
+f0b7a30e50bf: Pulling fs layer
+4bf73a8971cc: Pulling fs layer
+ec749bc80f19: Pulling fs layer
+3f151ecfc41c: Pulling fs layer
+ad6a53c8af50: Pulling fs layer
+c3f80bac5f48: Pulling fs layer
+5acbef45b5dd: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+c87e711a6575: Pulling fs layer
+4c14aa7bcc49: Pulling fs layer
+c3f80bac5f48: Waiting
+5acbef45b5dd: Waiting
+4f4fb700ef54: Waiting
+c87e711a6575: Waiting
+4c14aa7bcc49: Waiting
+3f151ecfc41c: Waiting
+ad6a53c8af50: Waiting
+f0b7a30e50bf: Verifying Checksum
+3f151ecfc41c: Verifying Checksum
+3f151ecfc41c: Download complete
+ec749bc80f19: Verifying Checksum
+ec749bc80f19: Download complete
+ad6a53c8af50: Verifying Checksum
+ad6a53c8af50: Download complete
+c3f80bac5f48: Verifying Checksum
+c3f80bac5f48: Download complete
+5acbef45b5dd: Verifying Checksum
+5acbef45b5dd: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+f0b7a30e50bf: Pull complete
+c87e711a6575: Verifying Checksum
+c87e711a6575: Download complete
+4c14aa7bcc49: Verifying Checksum
+4c14aa7bcc49: Download complete
+4bf73a8971cc: Verifying Checksum
+4bf73a8971cc: Download complete
+4bf73a8971cc: Pull complete
+ec749bc80f19: Pull complete
+3f151ecfc41c: Pull complete
+ad6a53c8af50: Pull complete
+c3f80bac5f48: Pull complete
+5acbef45b5dd: Pull complete
+4f4fb700ef54: Pull complete
+c87e711a6575: Pull complete
+4c14aa7bcc49: Pull complete
+Digest: sha256:ce914bd74ae9a2108545a5266255b7e9e33c27bad49923ed84c269fd5c0c1f62
+Status: Downloaded newer image for gr0v1ty/nano-node:a7b1a2df8f06b2e2354a0050bdbec7e0c8648ddb
+docker.io/gr0v1ty/nano-node:a7b1a2df8f06b2e2354a0050bdbec7e0c8648ddb
+https://api.github.com/repos/gr0vity-dev/nanolab-configs/contents/quick_testing/5n4pr_conf_change_independant.json
+Start Fetching '5n4pr_conf_change_independant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_change_independant_config.json'
+Done  Fetching '5n4pr_conf_change_independant_config.json' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/5n4pr_conf_change_independant_config.json'
+Start Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Done  Fetching '5n4pr_bucket0-1-88-90-100_10kaccs.ldb' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_bucket0-1-88-90-100_10kaccs.ldb'
+Start Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Done  Fetching '5n4pr_quicktesting_config.toml' to '/home/runner/work/nano-node-builder/nano-node-builder/testcases/downloads/5n4pr_quicktesting_config.toml'
+Error executing command: nanomock create && nanomock reset
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+ERROR: Command failed: docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock build
+ERROR: Error output: Building nl_genesis
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from custom_Dockerfile
+#1 transferring dockerfile: 551B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/gr0v1ty/nano-node:a7b1a2df8f06b2e2354a0050bdbec7e0c8648ddb
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/4] FROM docker.io/gr0v1ty/nano-node:a7b1a2df8f06b2e2354a0050bdbec7e0c8648ddb
+#4 DONE 0.0s
+
+#5 [2/4] RUN groupadd -g 1001 nanolocal
+#5 DONE 0.4s
+
+#6 [3/4] RUN if [ "1001" != "0" ] && [ "1001" != "1000" ];     then useradd -u 1001 -g nanolocal -s /bin/sh -m nanolocal ;     fi
+#6 DONE 0.2s
+
+#7 [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi
+#7 0.110 /bin/sh: 1: [[: not found
+#7 0.925 Get:1 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+#7 1.747 Get:2 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [2132 kB]
+#7 2.508 Get:3 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1425 kB]
+#7 2.582 Get:4 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [55.6 kB]
+#7 2.583 Get:5 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1557 kB]
+#7 30.88 Ign:6 http://archive.ubuntu.com/ubuntu noble InRelease
+#7 31.02 Ign:7 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+#7 31.16 Ign:8 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+#7 31.89 Ign:6 http://archive.ubuntu.com/ubuntu noble InRelease
+#7 32.02 Ign:7 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+#7 32.30 Ign:8 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+#7 33.89 Ign:6 http://archive.ubuntu.com/ubuntu noble InRelease
+#7 34.03 Ign:7 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+#7 34.31 Ign:8 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+#7 38.03 Err:6 http://archive.ubuntu.com/ubuntu noble InRelease
+#7 38.03   Could not connect to archive.ubuntu.com:80 (91.189.90.11), connection timed out
+#7 38.03 Err:7 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+#7 38.03   Unable to connect to archive.ubuntu.com:80:
+#7 38.45 Err:8 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+#7 38.45   Unable to connect to archive.ubuntu.com:80:
+#7 38.46 Fetched 5295 kB in 38s (139 kB/s)
+#7 38.46 Reading package lists...
+#7 38.57 W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/noble/InRelease  Could not connect to archive.ubuntu.com:80 (91.189.90.11), connection timed out
+#7 38.57 W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/noble-updates/InRelease  Unable to connect to archive.ubuntu.com:80:
+#7 38.57 W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/noble-backports/InRelease  Unable to connect to archive.ubuntu.com:80:
+#7 38.57 W: Some index files failed to download. They have been ignored, or old ones used instead.
+#7 38.58 Reading package lists...
+#7 38.68 Building dependency tree...
+#7 38.69 Reading state information...
+#7 38.70 Package iproute2 is not available, but is referred to by another package.
+#7 38.70 This may mean that the package is missing, has been obsoleted, or
+#7 38.70 is only available from another source
+#7 38.70 
+#7 38.70 E: Package 'iproute2' has no installation candidate
+#7 ERROR: process "/bin/sh -c if [[ -z \"$TC_ENABLE\" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi" did not complete successfully: exit code: 100
+------
+ > [4/4] RUN if [[ -z "FALSE" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi:
+38.57 W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/noble-backports/InRelease  Unable to connect to archive.ubuntu.com:80:
+38.57 W: Some index files failed to download. They have been ignored, or old ones used instead.
+38.58 Reading package lists...
+38.68 Building dependency tree...
+38.69 Reading state information...
+38.70 Package iproute2 is not available, but is referred to by another package.
+38.70 This may mean that the package is missing, has been obsoleted, or
+38.70 is only available from another source
+38.70 
+38.70 E: Package 'iproute2' has no installation candidate
+------
+custom_Dockerfile:14
+--------------------
+  13 |     ARG TC_ENABLE=FALSE
+  14 | >>> RUN if [[ -z "$TC_ENABLE" ]] ; \
+  15 | >>>     then echo TC_ENABLE not provided ; \
+  16 | >>>     else apt-get update && apt-get install iproute2 -y; \
+  17 | >>>     fi
+  18 |     
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c if [[ -z \"$TC_ENABLE\" ]] ;     then echo TC_ENABLE not provided ;     else apt-get update && apt-get install iproute2 -y;     fi" did not complete successfully: exit code: 100
+Service 'nl_genesis' failed to build
+
+ERROR: Return code: 1
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/internal/utils.py", line 198, in subprocess_run_capture_output
+    result = subprocess.run(cmd,
+             ^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'docker-compose -f /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml -p nanomock build' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/bin/nanomock", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/main.py", line 58, in main
+    asyncio.run(main_async(args))
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/main.py", line 54, in main_async
+    await manager.execute_command(args.command, args.nodes, args.payload)
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/nanomock_manager.py", line 544, in execute_command
+    await command_func(**filtered_command_args)
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/nanomock_manager.py", line 461, in init_containers
+    await self.build_containers()
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/internal/utils.py", line 57, in async_wrapper
+    result = await func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/nanomock_manager.py", line 469, in build_containers
+    return None, self.docker_interface.compose_build()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/docker/mixin.py", line 72, in compose_build
+    return self._run_command(cmd)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/docker/mixin.py", line 33, in _run_command
+    subprocess_run_capture_output(base_command)
+  File "/opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/nanomock/internal/utils.py", line 209, in subprocess_run_capture_output
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: <exception str() failed>
+The network 'nl_nano-local' already exists.
+Error executing command: nanomock create
+Error: INFO: nanomock data has been copied to your current working directory.
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+INFO: Log level : default
+SUCCESS: Docker Compose file created at /home/runner/work/nano-node-builder/nano-node-builder/nano_nodes/docker-compose.yml
+SUCCESS: None
+SUCCESS: init_containers completed with None result.
+Error executing command: nanomock start && nanomock init_wallets
+Error: WARNING: ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4']
+WARNING: RPC http://172.17.0.1:45100 not yet reachable for node nl_genesis: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45100 ssl:default [Connect call failed ('172.17.0.1', 45100)]
+WARNING: RPC http://172.17.0.1:45101 not yet reachable for node nl_pr1: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45101 ssl:default [Connect call failed ('172.17.0.1', 45101)]
+WARNING: RPC http://172.17.0.1:45102 not yet reachable for node nl_pr2: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45102 ssl:default [Connect call failed ('172.17.0.1', 45102)]
+WARNING: RPC http://172.17.0.1:45103 not yet reachable for node nl_pr3: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45103 ssl:default [Connect call failed ('172.17.0.1', 45103)]
+WARNING: RPC http://172.17.0.1:45104 not yet reachable for node nl_pr4: All 1 retries exhausted for _request. Last error: Cannot connect to host 172.17.0.1:45104 ssl:default [Connect call failed ('172.17.0.1', 45104)]
+INFO: Nodes ['nl_genesis', 'nl_pr1', 'nl_pr2', 'nl_pr3', 'nl_pr4'] reachable
+SUCCESS: start_containers completed with None result.
+WARNING: ['nl_genesis']
+WARNING: ['nl_pr1']
+WARNING: ['nl_pr2']
+WARNING: ['nl_pr3']
+WARNING: ['nl_pr4']
+INFO: Nodes ['nl_genesis'] reachable
+INFO: Nodes ['nl_pr1'] reachable
+INFO: Nodes ['nl_pr2'] reachable
+INFO: Nodes ['nl_pr3'] reachable
+INFO: Nodes ['nl_pr4'] reachable
+INFO: WALLET AB99BD4C576CC7AB845329AA80BA65C5D4B21D328552F5E35013B238901F95F1 CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p
+INFO: WALLET DB2F2451E2D53E73E6662BD6F0EDC66D327D8871E5DC4FB05A5AB75073261A46 CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h
+INFO: WALLET AFC6950D2FE465D875EA29904F10DFD82B8A9ECFFE54C968EF0762E90A5D3338 CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8
+INFO: WALLET A09ACAE36D363A06F69BA97EADABD90A86EAF72FFE6FE3D0E7DF08E403EB8091 CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub
+INFO: WALLET 22466FE3ED076C02FDCAAF251FBA4127503809B3DDC5008DFB3957873F3ECF61 CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6
+SUCCESS: ['WALLET AB99BD4C576CC7AB845329AA80BA65C5D4B21D328552F5E35013B238901F95F1 CREATED FOR nl_genesis WITH ACCOUNT nano_1fzwxb8tkmrp8o66xz7tcx65rm57bxdmpitw39ecomiwpjh89zxj33juzt6p', 'WALLET DB2F2451E2D53E73E6662BD6F0EDC66D327D8871E5DC4FB05A5AB75073261A46 CREATED FOR nl_pr3 WITH ACCOUNT nano_3z93fykzixk7uoswh8fmx7ezefdo7d78xy8sykarpf7mtqi1w4tpg7ejn18h', 'WALLET AFC6950D2FE465D875EA29904F10DFD82B8A9ECFFE54C968EF0762E90A5D3338 CREATED FOR nl_pr4 WITH ACCOUNT nano_137xfpc4ynmzj3rsf3nej6mzz33n3f7boj6jqsnxpgqw88oh8utqcq7nska8', 'WALLET A09ACAE36D363A06F69BA97EADABD90A86EAF72FFE6FE3D0E7DF08E403EB8091 CREATED FOR nl_pr1 WITH ACCOUNT nano_1ge7edbt774uw7z8exomwiu19rd14io1nocyin5jwpiit3133p9eaaxn74ub', 'WALLET 22466FE3ED076C02FDCAAF251FBA4127503809B3DDC5008DFB3957873F3ECF61 CREATED FOR nl_pr2 WITH ACCOUNT nano_3sz3bi6mpeg5jipr1up3hotxde6gxum8jotr55rzbu9run8e3wxjq1rod9a6']
+....................................................................................................
+
+02:43:09 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+02:43:09 100      | 0        | 9.99     | 9.99     | 0.05       | 0.15       | 0.1       | 0.1       | 0.1       | 0.15      | 5               | 10.01    | 100        | 100          |
+....................................................................................................
+
+02:43:19 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+02:43:19 100      | 0        | 9.98     | 9.98     | 0.05       | 0.15       | 0.1       | 0.1       | 0.1       | 0.15      | 5               | 10.02    | 100        | 100          |
+....................................................................................................
+
+02:43:29 confs    | timeouts | bps      | cps      | min_conf_s | max_conf_s | perc_50_s | perc_75_s | perc_90_s | perc_99_s | block_timeout_s | total_s  | new_blocks | new_cemented |
+02:43:29 100      | 0        | 9.98     | 9.98     | 0.05       | 0.15       | 0.1       | 0.1       | 0.1       | 0.15      | 5               | 10.02    | 100        | 100          |
