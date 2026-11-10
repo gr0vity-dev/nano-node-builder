@@ -2,9 +2,9 @@
 
 This project builds Docker images for [nanocurrency/nano-node](https://github.com/nanocurrency/nano-node) and publishes them to Docker Hub at [gr0v1ty/nano-node](https://hub.docker.com/r/gr0v1ty/nano-node/tags).
 
-Landed commits on `develop` take priority in both the build and test queues, newest first. Every discovered landed commit remains eligible. For open pull requests, automatic builds and continuous tests only select the current head commit reported by GitHub. Older PR commits and closed PRs remain in the history but are skipped by both queues. Each build checks out the exact selected commit, so its Docker tag matches the source that was built.
+Builds and tests use one queue, newest first, regardless of type: landed commits use their landing date, and open PR heads use the PR's latest update date. Every discovered landed commit remains eligible. For open pull requests, automatic builds and continuous tests only select the current head commit reported by GitHub. Older PR commits and closed PRs remain in the history but are skipped by both queues. Each build checks out the exact selected commit, so its Docker tag matches the source that was built.
 
-An already running build or test finishes. After publishing an image and saving its status, the builder queues another build run and continuous testing starts automatically. The build queue stops when no eligible unbuilt commit remains. Five-minute build and ten-minute test schedules remain as fallbacks. Images are marked ready only after Docker publishing succeeds. The continuous-testing workflow's manual `build_hash` input can still test an older successful build explicitly.
+An already running build or test finishes. After publishing an image and saving its status, the builder dispatches continuous testing and the next build. Each automatic test run dispatches the next test after saving its report. Each queue stops when no eligible work remains. Five-minute build and ten-minute test schedules remain as fallbacks. Images are marked ready only after Docker publishing succeeds. The continuous-testing workflow's manual `build_hash` input can still test an older successful build explicitly without starting more test runs.
 
 Queue selection checks: `python3 -m unittest discover -s tests` (requires `jq`).
 

@@ -54,10 +54,10 @@ class BuildQueueTests(unittest.TestCase):
     def test_missing_new_head_never_falls_back_to_obsolete_image(self):
         self.assertEqual(queue([build("old", 1, "pass")], [pr(1, "not-built-yet")]), [])
 
-    def test_landed_commits_precede_recently_updated_prs(self):
+    def test_recent_pr_heads_precede_older_landed_commits(self):
         builds = [build("develop"), build("older-pr", 1), build("newer-pr", 2)]
         prs = [pr(1, "older-pr"), pr(2, "newer-pr", "2026-11-05T11:00:00Z")]
-        self.assertEqual([b["hash"] for b in queue(builds, prs)], ["develop", "newer-pr", "older-pr"])
+        self.assertEqual([b["hash"] for b in queue(builds, prs)], ["newer-pr", "older-pr", "develop"])
 
     def test_newest_landed_commit_is_first_and_older_commits_remain_eligible(self):
         builds = [
@@ -67,7 +67,7 @@ class BuildQueueTests(unittest.TestCase):
         ]
         self.assertEqual(
             [b["hash"] for b in queue(builds, [pr(1, "pr-head")])],
-            ["latest-landed", "old-landed", "pr-head"],
+            ["latest-landed", "pr-head", "old-landed"],
         )
 
     def test_landing_date_takes_priority_over_original_author_date(self):
@@ -75,6 +75,27 @@ class BuildQueueTests(unittest.TestCase):
         latest["landed_at"] = "2026-11-06T12:00:00Z"
         older = build("previously-landed", created_at="2026-11-05T10:00:00Z")
         self.assertEqual(queue([older, latest], []), [latest, older])
+
+    def test_both_build_and_test_queues_can_select_pr_before_commit(self):
+        prs = [pr(1, "new-pr")]
+        pending = [build("old-commit"), build("new-pr", 1)]
+        self.assertEqual(
+            queue(pending, prs, 'map(select(.build_status == null)) | .[0].hash'),
+            "new-pr",
+        )
+        ready = [dict(b, build_status="pass") for b in pending]
+        self.assertEqual(
+            queue(ready, prs, 'map(select(.build_status == "pass")) | .[0].hash'),
+            "new-pr",
+        )
+
+    def test_unbuilt_newest_pr_does_not_block_ready_images(self):
+        builds = [build("new-pr", 1), build("ready-commit", status="pass")]
+        self.assertEqual(
+            queue(builds, [pr(1, "new-pr")],
+                  'map(select(.build_status == "pass")) | .[0].hash'),
+            "ready-commit",
+        )
 
     def test_built_head_does_not_reactivate_pending_ancestors(self):
         self.assertEqual(

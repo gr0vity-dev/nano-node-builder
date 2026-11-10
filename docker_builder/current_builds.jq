@@ -6,11 +6,12 @@ def current_builds($pull_requests):
       .type != "pull_request" or
       ($heads[(.pull_request | tostring)].head.sha == .hash)
     ))
-  # Landed commits always come first, newest first; then current PR heads.
+  # One queue for both types: newest landing or PR update first.
   | sort_by(
-      if .type == "commit" then
-        [0, -(.landed_at // .created_at | fromdateiso8601)]
-      else
-        [1, -($heads[(.pull_request | tostring)].updated_at | fromdateiso8601)]
-      end
+      -(if .type == "commit" then
+          .landed_at // .created_at
+        else
+          $heads[(.pull_request | tostring)].updated_at
+        end | fromdateiso8601),
+      .hash
     );

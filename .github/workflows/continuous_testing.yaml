@@ -3,10 +3,6 @@ name: Continuous Testing of Docker Images
 on:
   schedule:
     - cron: "*/10 * * * *" # Every ten minutes as a fallback.
-  workflow_run:
-    workflows: [Build and publish nano-node Docker images]
-    types: [completed]
-    branches: [main]
   workflow_dispatch:
     inputs:
       build_hash:
@@ -21,7 +17,7 @@ on:
 
 permissions:
   contents: write
-  actions: read
+  actions: write
 
 concurrency:
   group: continuous-testing-${{ github.event.inputs.report_branch || 'main' }}
@@ -395,3 +391,9 @@ jobs:
               sleep 5
             fi
           done
+
+      - name: Continue the test queue
+        if: ${{ needs.prepare_testing.outputs.COMMIT_HASH != '' && needs.prepare_testing.outputs.COMMIT_HASH != 'null' && needs.prepare_testing.outputs.REPORT_BRANCH == 'main' && !github.event.inputs.build_hash }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run continuous_testing.yaml --repo "$GITHUB_REPOSITORY" --ref main

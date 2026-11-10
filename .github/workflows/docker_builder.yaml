@@ -124,7 +124,7 @@ jobs:
           jq -s '.[0] as $a | .[1] as $b | ($a + $b | group_by(.hash) | map(.[0]))' \
           docker_builder/builds.json $HOME/all_prs.json > temp.out && mv temp.out docker_builder/builds.json
 
-          # Landed commits first, newest first; then current open PR heads.
+          # Latest landed commit or current PR update first, regardless of type.
           COMMIT_TO_TEST=$(jq -r -L docker_builder \
             --slurpfile pull_requests "$RUNNER_TEMP/open_prs.json" '
             include "current_builds";
@@ -256,8 +256,13 @@ jobs:
           git commit -m "Update build status to $BUILD_STATUS for $DOCKER_TAG"
           git push origin main
 
-      - name: Continue the build queue
+      - name: Continue build and test queues
         if: ${{ steps.compare_hash.outputs.continue == '1' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run docker_builder.yaml --repo "$GITHUB_REPOSITORY" --ref main
+          BUILD_STATUS: ${{ steps.docker_build.outputs.BUILD_STATUS }}
+        run: |
+          if [[ "$BUILD_STATUS" == "pass" ]]; then
+            gh workflow run continuous_testing.yaml --repo "$GITHUB_REPOSITORY" --ref main
+          fi
+          gh workflow run docker_builder.yaml --repo "$GITHUB_REPOSITORY" --ref main
