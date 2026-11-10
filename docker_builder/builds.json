@@ -33049,6 +33049,20 @@
     "run_id": "9945447878"
   },
   {
+    "hash": "8c173d9ecabd301755979bcfb7ac0267993d7ce2",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Guard `async::task` joins and move assignment (#5266)\n\nJoining a running task from an io thread of its own io_context, or after\nthat context stopped, never returns. The debug asserts against this lived\nin `tcp_server`, `tcp_socket` and `tcp_channel` `stop ()`, one copy each,\nand the listener's join sites had none. `task::join ()` now release\nasserts both through the strand's inner executor whenever it would have\nto wait, so a release node aborts with a message instead of hanging, and\nthe copies are gone. A finished task still joins from any thread, any\nnumber of times, even after shutdown.\n\nMove assignment overwrote the target's future unchecked, which detached a\nrunning coroutine from the only handle that can cancel or join it. It now\nasserts the target is not running, as the destructor does.\n\nDeath tests cover the join and move guards, the destructor, the empty\ntask and a moved-from condition; plain tests cover joining finished tasks\nafter the context stopped and from an io thread.",
+    "pull_request": "5266",
+    "created_at": "2026-11-10T21:59:40Z",
+    "landed_at": "2026-11-10T21:59:40Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-10T23:38:41Z",
+    "run_id": null
+  },
+  {
     "hash": "8c1d36bcc387ae6920fa52deca181abcbf910369",
     "type": "pull_request",
     "pull_request": 4348,
