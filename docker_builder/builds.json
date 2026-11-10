@@ -12360,6 +12360,22 @@
     "run_id": "11147129485"
   },
   {
+    "hash": "34c0ebc22312151690f4259ebe6b31ec858793d5",
+    "type": "pull_request",
+    "title": "Abort a backend copy once the source has been written to and lock the data directory for writing processes",
+    "author": "pwojcikdev",
+    "body": "Copying a backend table by table with one read transaction per worker is only consistent while nothing commits to the source. Nothing checked or enforced that: an LMDB to RocksDB migration run against a live node silently produced a ledger whose tables disagree with each other, and the same gap let any writing CLI command open the databases of a running node.\n\n### Copy guard\n\n`backend::commit_sequence` exposes a counter that advances with every committed write, LMDB's last transaction id and RocksDB's latest sequence number. `copy_to` reads it before the first table and compares after every table; a change throws and leaves the destination as it is, so the operator sees the failure instead of a plausible but inconsistent copy. A retry runs into the existing \"RocksDB folder already exists\" check.\n\n### Data directory lock\n\n`nano::data_dir_lock` holds an advisory lock on `nano_node.lock` inside the data directory, taken without waiting and released by the operating system when the holder exits (`flock` on a descriptor opened with `O_CLOEXEC`, `LockFileEx` on Windows). The node daemon and the wallet hold it for the lifetime of their node, `node_wrapper` holds it for a node opened for writing, and the migration holds it while it copies. Each of them now fails at once, naming the lock file, when another process has the directory. Read-only commands take no lock and keep working next to a live node.\n\n### Tests\n\n`backend.commit_sequence` and `backend.copy_to_written_source_throws` cover the guard, the latter by writing to the source from the copy's first progress callback. `data_dir_lock.exclusive` and `data_dir_lock.inactive_node` cover the lock and its use by `node_wrapper`, and `migrations.held_data_dir_refused` covers the migration refusing a held directory without leaving a RocksDB folder behind.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5268,
+    "label": "pwojcikdev:data-dir-lock",
+    "created_at": "2026-11-09T18:36:48Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-10T03:01:42Z",
+    "run_id": null
+  },
+  {
     "hash": "34c76330c520035ce296f435d193da2a96713456",
     "type": "commit",
     "author": "pwojcikdev",
@@ -23338,6 +23354,20 @@
     "docker_tag": "gr0v1ty/nano-node:632b73e3e38219b9a5cf12a41db44c5ace44399a",
     "build_started_at": "2023-12-12T13:01:51Z",
     "run_id": "7181829523"
+  },
+  {
+    "hash": "634229949f905c41c67746843e10f64d5e9eb6c4",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Rename network_filter to duplicate_filter, rework its interface and keep cryptopp out of its header (#5264)\n\n* Rename network_filter to duplicate_filter\n\nNothing in the class is specific to the network: it reports whether a\ndigest was seen recently, forgets entries as they age or lose their\nslot, and erases them on request. Its config keys, tests and comments\nalready call it the duplicate filter. The class, its files, its mutex\nid and the deserialize_message parameter take that name; the network\nkeeps its member as filter.\n\n* Rename duplicate_filter::digest_t to digest\n\nThe filter's digest type is now plain digest. The entry spells its\ndigest member's type qualified, since GCC rejects a member declared\nwith an unqualified type of the same name.\n\n* Use uint64_t for duplicate_filter epochs instead of epoch_t\n\nThe alias added a name to look up without adding meaning, since an epoch\nis just a count the owner advances. The age cutoff, the current epoch,\neach entry's epoch and the call that advances them now use uint64_t\ndirectly.\n\n* Rename duplicate_filter check, clear and update to contains, erase and advance\n\ncheck () becomes contains (), the clear () overloads that remove one\ndigest become erase (), and update () becomes advance (). Removing an\nentry no longer shares its name with clear (), which empties the whole\ntable, and the epoch step says what it moves. Callers change their\ncalls only.\n\n* Return true from duplicate_filter::insert when the digest is new\n\napply () returned whether the digest was already in the filter, so a\ncall that went through read as a failure: ASSERT_TRUE (filter.apply\n(bytes)) asserted a duplicate. It becomes insert () and returns true\nwhen the digest was new and went in, as message_processor::enqueue,\nblock_processor::add and std::set::insert do; false marks a duplicate.\nThe new name makes every caller change along with the meaning, and each\none keeps checking what it checked before.\n\n* Take byte spans in duplicate_filter and drop the digest out-parameter\n\nThe byte overloads take std::span<uint8_t const> instead of a pointer\nand a count, and insert () no longer hands back the digest through a\npointer: deserialization hashes the payload with hash (), inserts the\ndigest and keeps it for the message. The serializing template that was\nonly instantiated for std::shared_ptr<nano::block> becomes hash () and\nerase () overloads taking a block, and the unused erase () over a\nvector of digests goes.\n\nThe header is regrouped and its comments state each member's contract,\nincluding why entries age in epochs rather than clock time: it spares\nevery insert a clock read. The tests are renamed and described, and new\nones cover clear () and a block erasing the entry its publish went in\nunder.\n\n* Keep cryptopp out of the duplicate_filter header\n\nThe SipHash key is now a std::array filled from the random pool and\nwiped in the destructor, as CryptoPP::SecByteBlock did, and SipHash is\nonly named in duplicate_filter.cpp. The header reaches most of the node\nthrough the publish and confirm_ack messages and the network, so those\nfiles no longer compile the cryptopp headers. test_common/system.cpp\nspelled CryptoPP::word32 through that include and now uses unsigned,\nthe type random_pool::generate_word32 takes.\n\n* Benchmark duplicate_filter inserts with and without a clock read\n\nEntries age in epochs rather than clock time so that inserts never read\nthe clock. The benchmarks measure what that saves: they insert payloads\nthe size of a single-hash vote and of a state block publish to a filter\nof the node's default size, with and without a steady clock read before\neach insert, and the table side alone with precomputed digests, from\none thread and from eight.\n\n* Check end to end that a filtered message passes again after the cutoff\n\nnetwork.expire_duplicate_filter watched the entry leave the table but\nnever sent the message again. It now resends the vote within the\ncutoff, where it must still be caught, checks that the entry ages out\nno sooner than the cutoff after the first copy was sent, and resends it\nonce more, where it must be dispatched like a new message. The node's\nown cleanup loop advances the filter throughout.\n\n* Check that elections erase rejected and evicted forks from the filter\n\nactive_elections.fork_filter_cleanup ended on a polled insert () that\npasses whether or not the fork was erased: when the fork is absent, the\nfirst poll inserts it and the second reports a duplicate. The test now\nruns on one node, enters the fork into the duplicate filter as a peer's\npublish of it would, lets the full election reject it and waits for\nthe entry to go.\n\nNothing checked the filter when an election evicts a fork to make room.\nThe eviction fixture now takes how each fork reaches the node, with an\noverload that submits them as live blocks for the tests that do not\ncare, and election.evicted_fork_leaves_duplicate_filter sends its forks\nthrough the filter and checks that the evicted fork is erased while\nthe forks the election holds stay filtered.",
+    "pull_request": "5264",
+    "created_at": "2026-11-10T01:15:28Z",
+    "landed_at": "2026-11-10T01:15:28Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-10T03:01:42Z",
+    "run_id": null
   },
   {
     "hash": "6352f1aca7095fb3de9bcd82cab8d67acb926c41",
@@ -43249,6 +43279,22 @@
     "docker_tag": "gr0v1ty/nano-node:b833f88c376ec296841a373fd61ffee24f14ae7f",
     "build_started_at": "2024-04-26T19:18:33Z",
     "run_id": "8853234691"
+  },
+  {
+    "hash": "b83855e175127ca1cd30b3ae1b67717bbbe22814",
+    "type": "pull_request",
+    "title": "Replace confirmation_solicitor with vote_solicitor",
+    "author": "pwojcikdev",
+    "body": "Replaces `confirmation_solicitor` with `vote_solicitor`, which the election loop uses to ask principal representatives for votes and to send them the winner block. This is groundwork for vote relay: relay requests will be planned alongside confirm_reqs in the same rounds.\n\n## Structure\n\n- `vote_solicitor_round` plans one round without any I/O: per election it decides which reps get a confirm_req and which get the winner block, batched per channel and bounded by the per election and per round caps.\n- `vote_solicitor`, a node component, prepares a round from the rep crawler's principal representatives and sends what the round planned.\n- `rep_crawler::representatives` and `principal_representatives` return a deque, like the other channel listings.\n\nThe decision rules are unchanged: a rep that voted for a different hash is exempt from the per election caps, and after quorum only a final vote settles a rep.\n\n## Behaviour changes\n\n- **Pacing is stamped only for messages that went out.** `flush` returns which elections a channel accepted a broadcast or confirm_req for, and the election loop stamps `broadcast_sent` / `request_sent` from that. A message a full or closed channel refused leaves its election due next round instead of waiting a whole interval. A broadcast no rep needs counts as done, so its election is not planned again every round.\n- **One request and one broadcast per channel per election.** A peer hosting several representatives used to get the same hash repeated in one confirm_req and the same publish several times, and its duplicates took cap slots from other peers.\n- **Broadcasts no rep needs stay out of the round cap.** They used to take a slot even though they send nothing.\n- **Broadcasts skip channels that are full for block broadcasts**, as requests already did for confirmation requests. If every rep that needs the winner is behind a full channel, the broadcast is not planned and the election stays due.\n- **The caps are network constants:** 50 requests and 3 broadcasts per election, 30 broadcasts per round; 1 and 4 broadcasts on the dev network. The per election broadcast cap used to be half the random flood fanout, which gave about these values on the live and dev networks.\n\n## Observability\n\nA new `vote_solicitor` stat type counts sent requests (with the hashes they carry) and broadcasts, refused ones (`request_failed`, `broadcast_failed`), channels left out because they were full, broadcasts without targets, round cap hits and rounds. Refusals are logged at debug under a new `vote_solicitor` log type.\n\n## Tests\n\n`core_test/vote_solicitor.cpp` replaces the confirmation solicitor tests. It covers the planning rules and caps, quorum handling, full channels, shared channels, flushing with accepted, refused and partially refused messages, broadcasts without targets, the limits taken from the network constants, and the election loop stamping pacing only after a send (including when there are no reps, and asking again after a refusal).\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5265,
+    "label": "pwojcikdev:vote-solicitor-rework",
+    "created_at": "2026-11-08T02:11:22Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-10T03:01:42Z",
+    "run_id": null
   },
   {
     "hash": "b8459e9cecaf3ffb901dc355134139e9ceb0d6d3",
