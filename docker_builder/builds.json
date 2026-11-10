@@ -26299,6 +26299,22 @@
     "run_id": null
   },
   {
+    "hash": "6ef3d47098715d98a5eaa9a0a6ab271e7c6b21a3",
+    "type": "pull_request",
+    "title": "Check the io_context before joining an async task and refuse overwriting a running one",
+    "author": "pwojcikdev",
+    "body": "`nano::async::task::join ()` waits on a future that is only set when the coroutine's completion runs on the strand. Joining from one of the io_context's own threads can block the very thread that completion needs, and joining after the io_context stopped never returns. The checks against both lived as debug asserts in `tcp_server`, `tcp_socket` and `tcp_channel` `stop ()`, one copy each, and the listener's two join sites had none. The task now release-asserts both in `join ()` itself, through the strand's inner executor, so a release node aborts with a message where it used to hang, and the three copies are gone.\n\nMove assignment overwrote the target's future unchecked, which detached a running coroutine from the only handle that can cancel or join it while the coroutine kept using its owner. It now asserts the target is not running, as the destructor already does.\n\nDeath tests cover every release assert in `async.hpp`: the destructor, move assignment, `ready ()` and `join ()` on a task without a coroutine, the join on an io thread, the join after the io_context stopped, and a moved-from condition.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5266,
+    "label": "pwojcikdev:async-task-join-guards",
+    "created_at": "2026-11-09T17:42:52Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-10T18:29:28Z",
+    "run_id": null
+  },
+  {
     "hash": "6ef44cdac5cc280a4f4a711e5c5660856b476f43",
     "type": "pull_request",
     "title": "Do not wait for cancellation signal",
@@ -58885,6 +58901,20 @@
     "built_at": "2023-10-09T16:21:26Z",
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:fb3007fa89adaedebf2d42c132b61d736bef7e3b"
+  },
+  {
+    "hash": "fb528ae4e8bd810c852937205f1acea59a6af44f",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Keep failed LMDB opens retryable and stop backend copies from losing short all-zero keys (#5267)\n\n* Keep a failed LMDB open from leaving its environment behind\n\nbackend_lmdb::open_impl stored the new environment in the backend\nbefore it opened the schema's tables. When a required table was\nmissing, such as on a read-only open of a database that lacks it,\nopen_table threw and the environment stayed assigned while the\nbackend reported itself closed. Retrying the open on the same backend\nthen aborted on the \"environment already open\" assert.\n\nThe environment now stays local until every table has opened and the\nopening transaction has committed, and is adopted together with the\ntable handles. A failed open closes it on unwinding, after aborting\nthe transaction, and leaves the backend closed and retryable, as the\nRocksDB backend already does.\n\n* Start the first parallel traversal partition at the table's beginning\n\nbackend::for_each_par split a table into partitions at 32 byte keys\nwhose first byte is the partition boundary, and the first partition\nstarted at a lower bound of 32 zero bytes. Keys sort bytewise with a\nshorter prefix first, so an all-zero key shorter than 32 bytes sorts\nbelow that bound and no partition visited it. copy_to traverses every\ntable this way, so a migration dropped such keys without an error:\nan online weight record at timestamp 0, whose key is 8 zero bytes,\nnever reached the destination.\n\nThe first partition now starts at begin (), the way the last one\nalready ends at end (). The boundaries between partitions were not\naffected: a short key just below one still sorts above the previous\none and lands in the partition before it.\n\n* Fail copy_to when a table copies fewer entries than its source holds\n\ncopy_to counted each source table up front, but used the count only\nfor progress reports. When the traversal visited fewer entries, as it\ndid for all-zero keys shorter than 32 bytes, the copy finished\nwithout an error and the destination stayed short, so the LMDB to\nRocksDB migration reported success over lost records.\n\nAfter each table, copy_to now compares the entries it copied with the\nsource count and throws when they differ, naming the table and both\nnumbers. Tables whose backend only estimates its count, the RocksDB\npruned and final vote tables, are not checked; an LMDB source, the\none the migration copies from, counts every table exactly.\n\nThe test makes the traversal miss a key through a new before_count\nhook on hooked_backend: it deletes a source key after copy_to opened\nthe transaction it counts in, so the key is counted but no longer\ntraversed. Without the check the copy completes on both backends.",
+    "pull_request": "5267",
+    "created_at": "2026-11-10T17:45:14Z",
+    "landed_at": "2026-11-10T17:45:14Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-10T18:29:28Z",
+    "run_id": null
   },
   {
     "hash": "fb5bb88002133f166af75f7a2c34432fc9b9d37b",
