@@ -11418,6 +11418,22 @@
     "landed_at": "2026-10-27T20:03:04Z"
   },
   {
+    "hash": "306cfec51de8b41a6e17941665ba279ac04adcc8",
+    "type": "pull_request",
+    "title": "Generate work through a new work_generator with configurable local generation and a time limit for work peers",
+    "author": "pwojcikdev",
+    "body": "Work generation for the node moves from `distributed_work` and its factory to a new `work_generator`. It asks the configured work peers, generates on the node's own work pool, or both, as a new config section says, and ends every request exactly once.\n\n## Configuration\n\n```toml\n[node.work_generator]\nlocal_generation = \"fallback\"   # \"fallback\", \"delayed\", \"always\" or \"never\"\nlocal_delay = 5000              # milliseconds, used by \"delayed\"\npeer_selection = \"all\"          # \"all\" or \"one\"\npeer_delay = 15000              # milliseconds, used by \"one\"\npeer_timeout = 30000            # milliseconds\nwork_timeout = 60000            # milliseconds\n```\n\n- `local_generation` says when the node generates work itself for a request that work peers can serve as well. `fallback` leaves the work to the work peers and joins once every one of them has failed for the request or has not answered within `peer_timeout`; a work peer that rests after failing for another request counts as failed too. `delayed` does the same and also joins once `local_delay` has passed without work, while the work peers keep working. `always` generates alongside the work peers from the start. `never` leaves all work to the work peers. Without work peers the node generates the work itself, unless the mode is `never`. Once the node generates, the work peers keep being asked and the first work that arrives is used.\n- `peer_selection` says how the work peers are asked. `all` asks every work peer at once and uses the first work that arrives. `one` asks one work peer at first, and each new request starts with the next work peer of its group in turn, the primary and the secondary work peers each taking their own turns. The next one is asked as well when a work peer fails or `peer_delay` has passed without work; a work peer that was asked keeps working, and the first work that arrives is used. With `local_generation = \"fallback\"` the node joins only after the request has gone through every work peer this way and each of them has failed or run out of `peer_timeout`.\n- `peer_timeout` is the time one work peer gets to answer one attempt. A work peer that has not answered by then counts as failed for the attempt, rests and is asked again.\n- `work_timeout` is the time after which a request without work fails. It applies on a node that does not generate work itself, by `local_generation = \"never\"` or for lack of work threads and an OpenCL device. A node that generates work itself does not fail a request over time: it starts generating as `local_generation` says, and the work peers keep being asked for as long as the request runs.\n\n`work_peers`, `secondary_work_peers`, `work_threads` and `max_work_generate_multiplier` keep their meaning, and so does the work RPC spoken to work peers.\n\n## How it works\n\n- `work_generator_index` holds the requests in progress, their exchanges with work peers, their local generation and the work peers. It decides what each request does next from the time it is given, and holds no lock, clock or socket, so its tests run without any of them.\n- `work_generator` drives the index from one coroutine on a strand. The work peers of a request's group are asked as `peer_selection` says, and the first work that reaches the difficulty ends the request. A work peer that failed is left alone for a time that doubles with each failure in a row, then asked again. A work peer that is left while it works on a request, or whose connection ends after the request went out and before an answer came, is sent `work_cancel`, unless another request has it working on the same root.\n- `work_peer_client` runs one exchange with one work peer as a coroutine, with a deadline on resolving, connecting, sending and reading, and reports the outcome as a status that is also counted in the stats.\n- `work_pool::generate` returns an id and `work_pool::cancel_item (id)` cancels that one request, which is how the generator ends its own local generation. The pool runs callbacks outside its mutex, and `stop ()` answers the requests still queued.\n\n## What changes for operators\n\n- RPC `work_generate` answers a request that ended as failed with the work generation error. A cancelled request is still answered with \"Cancelled\".\n- RPC `work_peer_add`, `work_peers` and `work_peers_clear` act on the generator's list of work peers. Adding a work peer that is already listed has no effect.\n- A work peer given by host name is connected to at the first address that takes the connection, each address getting an equal part of the connect time that is left.\n- The websocket `work` topic sends one message per request, when the request ends.\n- New stats under `work_generator` and `work_generator_peer`, and the log type `work_generator` in place of `distributed_work`.\n- `stat::detail` gets a reflection range of 1024, since the new details take it past 512.\n\n## Tests\n\n- `work_generator_index.*` cover the decisions with an injected clock: the four local generation modes, both ways of asking the work peers, retries and the two time limits, cancelling, stopping, a work peer list that changes while requests run, and when a work peer is sent `work_cancel`.\n- `work_generator.*` run the generator without a node against `nano::test::fake_work_peer`, a scriptable work server that generates on a pool of its own: work peers that deliver, answer with errors, answer slowly or not at all, or close the connection without answering, cancelling and stopping in different states, and callbacks that call back into the generator.\n- `work_peer_client.*` cover each outcome of an exchange.\n- `work.*` gain tests for cancelling a single request and for stopping the pool.\n- `rpc.work_peer_one` and `rpc.work_peer_many` are enabled again.\n\n## Not included\n\n- Work peers are not sent `work_cancel` when the node stops.\n- Concurrent requests for the same root are not merged into one.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5272,
+    "label": "pwojcikdev:work-generator",
+    "created_at": "2026-11-12T01:09:02Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-12T22:11:40Z",
+    "run_id": null
+  },
+  {
     "hash": "3070280aa8418735760f8b6272e5a83ad5d39666",
     "type": "pull_request",
     "title": "Add comment/warning to node::block_confirmed_or_being_confirmed functions",
@@ -21115,6 +21131,22 @@
     "landed_at": "2023-02-21T18:39:16Z"
   },
   {
+    "hash": "59e798204742974a3f9ca9ed9257ecf8a1e3df3e",
+    "type": "pull_request",
+    "title": "Deduplicate network messages through `transport::message_filter`",
+    "author": "pwojcikdev",
+    "body": "`nano::network` held a `nano::duplicate_filter` directly and `deserialize_message_payload` consulted it, so the rules for deduplicating network messages were spread over the generic filter, the deserializer and their callers. This gathers them in one place.\n\n## What changes\n\n- **`nano::transport::message_filter`** is now the network's duplicate filter, a front for `nano::duplicate_filter`. It says which messages are deduplicated (`deduplicates (message_type)`, publishes and votes), hashes a payload together with what its header says the payload is, offers the block overloads elections use to let a block be received again, and does the locking.\n- **`nano::duplicate_filter`** is a generic table of digests: it takes bytes and a `uint64_t` domain the caller picks, knows nothing of blocks or messages and is no longer synchronized.\n- **Digests** cover the message type and, for a publish, the block type along with the payload, so two kinds of message with equal payloads are two entries. Header flags and versions are left out, so a rebroadcast vote stays a duplicate of the vote.\n- **The check** moves from `deserialize_message_payload` into `tcp_server`, the only caller that filtered. The deserializer takes the digest to put on the message, and `deserialize_message` no longer takes a filter.\n- **Config:** `[node.network] duplicate_filter_enable` (default `true`) turns deduplication off.\n\n## Tests\n\n- `message_filter` has its own suite: insert and erase, digests per kind of message, header flags and versions leaving a digest unchanged, the block overloads, ageing, and which message types are deduplicated.\n- `tcp_server` gains end-to-end cases for messages with equal payloads, a message type that is not deduplicated, and the config switch.\n- `duplicate_filter` gains a case for domains, and `deserialize_message_payload.duplicates` goes with the deserializer's filter parameter.\n- The filter benchmark runs on `message_filter`, as it shares one filter between threads.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5277,
+    "label": "pwojcikdev:transport-message-filter",
+    "created_at": "2026-11-12T19:29:25Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-12T22:11:40Z",
+    "run_id": null
+  },
+  {
     "hash": "59e874bf1ba45e9b15695c7caf4b4481cf7f00cc",
     "type": "pull_request",
     "title": "migrate_database_lmdb_to_rocksdb improvements",
@@ -26468,6 +26500,22 @@
     "docker_tag": "gr0v1ty/nano-node:6f53c505b35c243ebf6c841deb1dac344b66a8d3",
     "build_started_at": "2025-02-20T13:33:11Z",
     "run_id": "13436480467"
+  },
+  {
+    "hash": "6f5cebc2f02893647331d3c13b5238930053c720",
+    "type": "pull_request",
+    "title": "Keep the handshake cookie in `tcp_server` instead of a shared table",
+    "author": "pwojcikdev",
+    "body": "A node id handshake cookie belongs to one connection, so the connection's `tcp_server` now holds it. `nano::syn_cookies`, the table in `nano::network` that kept the cookies per endpoint next to the connections, is removed.\n\n**Cookie**\n- `tcp_server::handshake_cookie` is set when the connection sends its query and taken when a response arrives, so a cookie is good for one response. It is only touched on the server's strand and needs no lock.\n- A connection sends one query: the side that opened it in its request, the side that accepted it next to its response.\n- `network::prepare_handshake_query ()` no longer takes an endpoint and always returns a query with a fresh cookie. `network::verify_handshake_response ()` takes the cookie of the connection the response arrived on and still counts `missing_cookie` when the connection has none waiting.\n\n**Removed**\n- `nano::syn_cookies` with its mutex, its two maps and its purge in the network's cleanup loop.\n- `network_constants::syn_cookie_cutoff`, which only the purge read.\n- The `syn_cookies` node in the network's container info.\n- The `syn_cookies` stat and log types, which nothing used. A log config that still lists `syn_cookies` under `[log.levels]` loads with the usual warning about an unknown logger name.\n\n**Behaviour**\n- A cookie lasts as long as its connection's handshake, so `handshake_timeout` is what bounds it. The table purged cookies older than 5 seconds, well inside that timeout.\n- A new connection to an endpoint asks with a cookie of its own whatever became of an earlier connection there. The table kept one cookie per endpoint until the next purge, so a connection made shortly after one that ended mid handshake went out without a query.\n- The listener's per IP connection limit is the one bound on handshakes per IP, and `disable_max_peers_per_ip` now applies to them as well. The table counted cookies per IP against `max_peers_per_ip` on its own.\n- The wire format is unchanged.\n\n**Tests**\n- `tcp_server.handshake_response_without_query`: a peer that opens with a response is refused as `missing_cookie` and disconnected.\n- `tcp_server.handshake_cookie_per_connection`: two connections from one IP are each asked with a different cookie, a response over the other connection's cookie is refused, and one over the connection's own completes the handshake.\n- `tcp_server.handshake_query_after_reconnect`: a second connection to an endpoint whose first one ended mid handshake opens with a query again.\n- `network.prepare_handshake_query` checks that queries carry different cookies, `network.verify_handshake_response` is rewritten for the cookie parameter, and `network.syn_cookies` goes with the class.\n- Two `peer_blocklist` tests no longer purge cookies by hand before reconnecting, and the two `tcp_listener` tests that borrowed a cookie from the table prepare a query instead.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5278,
+    "label": "pwojcikdev:handshake-cookie-per-connection",
+    "created_at": "2026-11-12T19:44:24Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-12T22:11:40Z",
+    "run_id": null
   },
   {
     "hash": "6f5e53a08411bf34afc7c5ea7319d505bdf62d19",
