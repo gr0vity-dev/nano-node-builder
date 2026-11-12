@@ -20793,6 +20793,22 @@
     "landed_at": "2026-10-27T14:42:02Z"
   },
   {
+    "hash": "58cc57474ffe58bff58d23175f0bbb2b8cb832bd",
+    "type": "pull_request",
+    "title": "Add block_sideband to_json",
+    "author": "uxuxs82",
+    "body": "Fixes #4390",
+    "draft": false,
+    "pull_request": 5270,
+    "label": "uxuxs82:block-sideband-to-json",
+    "created_at": "2026-11-11T19:56:49Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-12T00:15:55Z",
+    "run_id": null
+  },
+  {
     "hash": "58d368cb95676ee5e0729197c701ecce23f664c9",
     "type": "commit",
     "author": "pwojcikdev",
@@ -30536,6 +30552,22 @@
     "landed_at": "2026-02-12T19:05:59Z"
   },
   {
+    "hash": "807c53e753b1d40882018687c774236baf3b5bdd",
+    "type": "pull_request",
+    "title": "Print nano_wallet help to stdout",
+    "author": "uxuxs82",
+    "body": "Fixes #4681",
+    "draft": false,
+    "pull_request": 5269,
+    "label": "uxuxs82:fix/nano-wallet-help-stdout",
+    "created_at": "2026-11-11T19:46:56Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-12T00:15:55Z",
+    "run_id": null
+  },
+  {
     "hash": "807e9f4bd2d9bb9602a26f2ac8e57ba7ef92e839",
     "type": "pull_request",
     "title": "Fix two boost dependency issues",
@@ -35540,6 +35572,22 @@
     "docker_tag": "gr0v1ty/nano-node:9629cae8b2a614a800f497aa23cf8d7925c9ccda",
     "build_started_at": "2026-07-14T19:04:34Z",
     "run_id": "29360417060"
+  },
+  {
+    "hash": "963064179ecc6e1ccb8e00db914c1ef757f381df",
+    "type": "pull_request",
+    "title": "Replace confirmation_solicitor with vote_solicitor",
+    "author": "pwojcikdev",
+    "body": "Replaces `confirmation_solicitor` with `vote_solicitor`, which the election loop uses to ask principal representatives for votes and to send them the winner block. This is groundwork for vote relay: relay requests will be planned alongside confirm_reqs in the same rounds.\n\n## Structure\n\n- `vote_solicitor_round` plans one round without any I/O. It groups the reps by channel once, ranked by each channel's heaviest rep, and per election decides which channels get a confirm_req and which get the winner block, bounded by the per election caps and each channel's budget for the round.\n- `vote_solicitor`, a node component, prepares a round from the rep crawler's principal representatives and sends what the round planned.\n- The caps live in a new `solicitation_constants` group in `network_params`, next to the other component groups.\n- `rep_crawler::representatives` and `principal_representatives` return a deque, like the other channel listings.\n\nA rep that voted for a different hash is exempt from the per election caps, and after quorum only a final vote settles a rep, as before.\n\n## Behaviour changes\n\n- **Pacing is stamped only for messages that went out.** `flush` returns which elections a channel accepted a broadcast or confirm_req for, and the election loop stamps `broadcast_sent` / `request_sent` from that. A message a full or closed channel refused leaves its election due next round instead of waiting a whole interval. A broadcast no rep needs counts as done, so its election is not planned again every round.\n- **Planning is per channel.** A channel gets one request and one broadcast per election whatever number of reps it hosts, and takes the strongest decision among them: a channel with a fork voter behind it is messaged without taking a cap slot, whichever of its reps ranks first. A peer hosting several representatives used to get the same hash repeated in one confirm_req and the same publish several times, with its duplicates taking cap slots from other peers.\n- **Fork voters are reached past the caps.** The old solicitor stopped at the per election cap, so a rep on the losing fork ranked after enough ordinary reps was never asked again nor sent the winner.\n- **Directed winner broadcasts go to random reps.** The broadcast slots go to channels picked at random among those missing the block, weight plays no part. Every node used to send its copy to the same few heaviest reps on an election's first tick, while most of the weight never got one. Vote requests keep the weight order, a lagging or forked node collects quorum from the heaviest reps.\n- **The directed broadcast waits after an election's first flood.** An election's first broadcast only floods the winner through the block rebroadcaster. The winner is due for the reps again after `block_broadcast_delay` (5 s, 125 ms on the dev network), and the directed broadcast then goes only to reps that still lack a vote; an election that confirmed in the meantime sends none. Later broadcasts follow the block interval as before and a new winner is due at once.\n- **Each channel gets a message budget per round.** The round asks each channel for room once when it starts and gives it 32 messages per traffic type, what a channel queue takes while below its max threshold; a channel already at max gets nothing that round. Requests spend the budget in confirm_req messages packed to the hash limit, broadcasts in winner blocks, and a channel whose budget is spent is skipped without taking a slot of the per election cap. If every rep that needs the winner is behind a spent channel, the broadcast is not planned and the election stays due. The old solicitor asked a channel for room for every rep of every election and dropped a full channel's reps for the rest of the round; broadcasts did not check room at all.\n- **No per round cap on winner broadcasts.** The cap of 30 elections per round kept one round from flooding the channels with publishes, which the per channel budget now bounds where it arises.\n- **The random flood no longer depends on the directed broadcast.** The election loop queues the winner for the block rebroadcaster whenever the election asks for a broadcast and only then plans the directed one, so a winner whose directed broadcast cannot be planned still reaches the flood. The old loop skipped the flood whenever the round cap refused the broadcast.\n- **The per election caps are network constants:** 50 requests and 3 broadcasts per election, 1 broadcast on the dev network. The per election broadcast cap used to be half the random flood fanout, so its value depended on the peer count.\n\n## Observability\n\nA new `vote_solicitor` stat type counts sent requests (with the hashes they carry) and broadcasts, refused ones (`request_failed`, `broadcast_failed`), channels at max when a round starts (`channel_full`), channels skipped over a spent budget (`exhausted`), broadcasts without targets and rounds. Refusals are logged at debug under a new `vote_solicitor` log type. The election stats count an election's first flood as `broadcast_block_initial` and the directed broadcasts after it as `broadcast_block_repeat`.\n\n## Tests\n\n`core_test/vote_solicitor.cpp` replaces the confirmation solicitor tests. It covers the planning rules and per election caps, quorum handling, channels at max, the request and broadcast budgets including reps sharing a channel, fork voters past the caps and channels hosting both an ordinary rep and a fork voter in either order, the random broadcast targets and their spread over many rounds, flushing with accepted, refused and partially refused messages, broadcasts without targets, the caps taken from `network_params`, the election loop stamping pacing only after a send (including when there are no reps, and asking again after a refusal), the random flood going out when the directed broadcast cannot, and the directed broadcast waiting for the delay. `core_test/election_pacing.cpp` covers the flood only first broadcast and the delay.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5265,
+    "label": "pwojcikdev:vote-solicitor-rework",
+    "created_at": "2026-11-08T02:11:22Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-12T00:15:55Z",
+    "run_id": null
   },
   {
     "hash": "963570e8e19da751ffe17860540864878f1c0b12",
@@ -53071,6 +53119,22 @@
     "build_started_at": "2024-05-21T09:45:29Z",
     "run_id": "9172636825",
     "landed_at": "2024-05-20T20:57:02Z"
+  },
+  {
+    "hash": "e367b1f1af6c2c912af32da0b7985a75828c8824",
+    "type": "pull_request",
+    "title": "Add version parameter to changelog script",
+    "author": "uxuxs82",
+    "body": "Fixes #3672",
+    "draft": false,
+    "pull_request": 5271,
+    "label": "uxuxs82:changelog-version",
+    "created_at": "2026-11-11T20:08:38Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-12T00:15:55Z",
+    "run_id": null
   },
   {
     "hash": "e369583e3473360dd5711adb7b37666c9dbbc31b",
