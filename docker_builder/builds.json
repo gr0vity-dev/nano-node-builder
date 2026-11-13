@@ -17045,6 +17045,22 @@
     "run_id": "34277697724"
   },
   {
+    "hash": "48509d6dd8c5b69643dc986d2d68ac66faf6b090",
+    "type": "pull_request",
+    "title": "Interrupt systest nodes with a console Ctrl+C on Windows and fix the other Windows systest failures",
+    "author": "pwojcikdev",
+    "body": "On Windows, `daemon_interrupt.sh` and `ledger_extended_index_daemon.sh` never stopped their nodes. Both waited out the 300 s systest timeout and left the node running until the job's orphan process cleanup, so the System Tests step took about 10 minutes on every Windows job instead of seconds. `rpc_child_process_terminate.sh` and `runtime_files.sh` failed there too, which is why the Windows step carries `continue-on-error`.\n\n## Interrupting a node on Windows\n\nA non-interactive bash starts background commands with SIGINT ignored. On Linux and macOS the node installs its own handler over that. On Windows the PID that `$!` reports belongs to Git Bash's stand-in for the native process, the ignore lives there, and the stand-in drops the signal instead of forwarding it to `nano_node.exe`.\n\n`interrupt_process ()` in `systest/lib/common.sh` sends SIGINT through Git for Windows' `kill -f` on Windows, which injects a console Ctrl+C into the native process. The node takes its normal SIGINT shutdown and `wait` still returns the node's own exit code. If the injection fails, `kill -f` ends the process with exit code 130, so the test fails instead of hanging. The three systests that interrupt a node use it.\n\n## Other Windows failures\n\n- `runtime_files.sh` compared the PID file, which holds the Windows PID, with Git Bash's PID. It now compares against `native_pid ()`, which reads `/proc/<pid>/winpid` on Windows. Its peering port check used `nc`, which neither Git Bash nor the windows-2022 image provides, and now opens bash's `/dev/tcp` instead.\n- `rpc_child_process_terminate.sh` is skipped on Windows. Windows delivers no SIGTERM to a console program (Git Bash turns it into an injected `ExitProcess`), and the Ctrl+C that `kill -f` sends reaches the whole process tree, so the RPC child would exit on its own rather than be terminated by the node.\n\n## Step timeout\n\nEvery System Tests step now has `timeout-minutes: 30`, so a hung step fails with its log kept rather than running until the job timeout.\n\n## Follow-up\n\nThe Windows step keeps `continue-on-error` until a Windows run passes all systests.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5279,
+    "label": "pwojcikdev:windows-systests",
+    "created_at": "2026-11-13T01:32:28Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-13T02:37:30Z",
+    "run_id": null
+  },
+  {
     "hash": "485a104a30e1be447063ed4fbfb64136a012a00a",
     "type": "pull_request",
     "title": "Fix unit test bootstrap_processor.lazy_pruning_missing_block",
