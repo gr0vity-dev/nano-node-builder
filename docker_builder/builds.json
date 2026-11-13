@@ -14702,6 +14702,22 @@
     "run_id": "10835342737"
   },
   {
+    "hash": "3f2286767da152b5ce6fae9fec92be77d9c5281c",
+    "type": "pull_request",
+    "title": "Reject a channel whose endpoint is already registered",
+    "author": "pwojcikdev",
+    "body": "The channel registry keys its entries by remote IP and port, but `tcp_channels::check ()` only treated a new channel as a duplicate when it came from the same IP under the same node ID. A channel at an endpoint that is already registered under a different node ID passed the check and then failed to insert. Debug builds stopped on `debug_assert (inserted)`, and release builds returned the channel as accepted without registering it.\n\n`check ()` now also rejects a channel whose endpoint is already registered, as `channel_result::duplicate`, counted under the new `channel_duplicate_endpoint` stat. This applies whether the registered channel is alive or dead. A dead channel keeps its endpoint until `purge` removes it, which is how a reconnect under the same node ID is already handled. Replacing the dead entry inside `create ()` instead would close its channel and server on the io thread `create ()` runs on, which the close path does not allow. Since the endpoint is checked under the same lock as the insert, the insert can no longer fail, and a `release_assert` now guards it.\n\nThe new test `tcp_channels.create_endpoint_in_use` connects several sockets to a listener that never accepts, so they all share one remote endpoint, and calls `create ()` directly with a fresh node ID each time. It checks that the first channel is admitted, a second one is rejected while the first is alive and again after it is closed, and a new one is admitted once a purge removes the dead entry.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5280,
+    "label": "pwojcikdev:channel-endpoint-registration",
+    "created_at": "2026-11-13T14:30:14Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-13T17:28:51Z",
+    "run_id": null
+  },
+  {
     "hash": "3f26816b98214c971552263fde8851e844da1654",
     "type": "pull_request",
     "pull_request": 4372,
@@ -21661,6 +21677,20 @@
     "build_started_at": "2024-10-27T11:28:44Z",
     "run_id": "11540147782",
     "landed_at": "2024-10-22T13:54:35Z"
+  },
+  {
+    "hash": "5bdac0ca50ed25b60594bdd664c5d3e9d6a4bfbe",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Keep the handshake cookie in `tcp_server` instead of a shared table (#5278)\n\nA handshake cookie belongs to one connection, so the server of that\nconnection now holds it: `handshake_cookie` is set when the connection\nsends its query and taken when a response arrives. A connection sends\none query, the side that opened it in its request and the side that\naccepted it next to its response.\n\n`nano::syn_cookies`, which kept the cookies per endpoint next to the\nconnections and counted them per IP, is removed together with its purge\nin the cleanup loop, `syn_cookie_cutoff`, its container info and the\nunused `syn_cookies` stat and log types. `prepare_handshake_query ()`\nno longer takes an endpoint and always returns a query, and\n`verify_handshake_response ()` takes the cookie of the connection the\nresponse arrived on.\n\nA cookie now lasts as long as its connection's handshake, so the\nhandshake timeout bounds it. A new connection to an endpoint asks with\na cookie of its own whatever became of an earlier connection there,\nand the listener's per IP limit is the one bound on handshakes per IP,\nwhich also makes `disable_max_peers_per_ip` apply to them.\n\nThe `tcp_server` tests cover a response on a connection that sent no\nquery, two connections from one IP getting separate cookies, and a\nsecond connection to an endpoint whose first one ended mid handshake.",
+    "pull_request": "5278",
+    "created_at": "2026-11-13T14:37:53Z",
+    "landed_at": "2026-11-13T14:37:53Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-13T17:28:51Z",
+    "run_id": null
   },
   {
     "hash": "5be0924c8242d12a83a04fd02edbf5c0592b5675",
@@ -40916,6 +40946,22 @@
     "run_id": "21797456004"
   },
   {
+    "hash": "ac28577b73330bbb6afa308091353bff3c250018",
+    "type": "pull_request",
+    "title": "Tune election pacing and block rebroadcast fanout",
+    "author": "pwojcikdev",
+    "body": "Two tuning changes to how blocks and vote requests propagate, from a study of block flooding in a network simulator.\n\n### Block rebroadcast fanout\n\nA node passes a block on once, when its election starts, by flooding it to `network::fanout ()` random peers: ceil (ln (peer count)), at least `minimum_fanout`. The share of node/block pairs such a push gossip never reaches is about e^-fanout, and a node the flood misses has no fetch path until bootstrap finds the block. Block rebroadcasts now flood to 1.5 times the fanout, set by the new `block_rebroadcaster.fanout_scale` config key (rejected when not positive), and the rebroadcaster's capacity check uses the same scale. Initial broadcasts of a node's own blocks, which already go to every principal representative, and vote and keepalive floods keep the unscaled fanout. With about 300 peers the rebroadcast fanout goes from 6 to 9.\n\n### Election pacing\n\n- An election that started with cached votes, which is most of them, listened for five base latencies before requesting any votes, so a node left short of final quorum by the vote flood waited 5 s. The passive phase is now `election_passive_duration`, 1 s.\n- Vote requests back off: the gap after each request that went out starts at one base latency and doubles up to `election_request_interval`, 15 s, for every election behavior (gaps of 1, 2, 4, 8, then 15 s). An election whose first request reached the representatives before they held final votes retries after 1 s instead of 5. A stuck election sends five requests in its first 15 s, then one every 15 s; over its 5 minute life a priority election sends about 24 requests instead of 60, an optimistic one 5 instead of about 15.\n- Winner floods get their own `block_flood_interval`, apart from the directed broadcast's `block_broadcast_interval`, and both are 30 s. The block rebroadcaster's 60 s cooldown still limits how often one node floods the same block.\n- The base latency moves into `network_constants` as `election_base_latency`, and `election_pacing` is built from the network constants directly.\n\n### Simulation\n\nNodes over loopback TCP with every timing scaled from its live value, so traffic and link capacity keep their live ratio. Each build runs its own live timings. Two seeds per scenario, means shown. Scenarios: 24 nodes with 16 representatives on uniform links at 5 relayed blocks/s; 40 nodes with 10 representatives at 4 blocks/s made by wallets; the 24 node network with 10 forks, 3 node restarts and a 60 s partition; the 24 node network on starved uplinks at 8 blocks/s. \"Flood never reaches\" is the share of node/block pairs no flood ever delivered. \"Confirmation\" is per node and block, from the block entering the node's ledger until it is cemented there. \"Latency to every node\" is per block, from publishing until the last node cemented it, over blocks published outside disruptions. \"Clean cementing\" is the same over the blocks every node received in time.\n\nDevelop against this PR:\n\n| scenario | flood never reaches node/block | confirmation p99 | clean cementing p99 | p99 latency to every node | publish per block | confirm_req per block | bytes |\n|---|---|---|---|---|---|---|---|\n| 24 nodes, 16 reps | 1.21% -> 0.36% | 5.23 s -> 1.23 s | 5.49 s -> 1.48 s | 12.7 s -> 7.1 s | 96 -> 120 | 55 -> 58 | +0% |\n| 40 nodes, 10 reps, wallet blocks | 0.92% -> 0.10% | 0.08 s -> 0.12 s (max 5.4 s -> 1.3 s) | 5.33 s -> 1.31 s | 10.4 s -> 2.5 s | 174 -> 254 | 105 -> 108 | -1% |\n| forks, restarts, partition | 1.30% -> 0.42% | 5.22 s -> 1.24 s (max 90 s -> 49 s) | 5.77 s -> 1.47 s | 56.2 s -> 20.5 s | 96 -> 120 | 55 -> 66 | -1% |\n| starved uplinks | 1.55% -> 0.56% | 18.5 s -> 19.0 s | 47.1 s -> 54.3 s | 50.9 s -> 55.6 s | 94 -> 116 | 85 -> 77 | -5% |\n\nEach change alone:\n\n| scenario | metric | develop | fanout only | pacing only | both |\n|---|---|---|---|---|---|\n| 24 nodes, 16 reps | flood never reaches node/block | 1.21% | 0.33% | 1.22% | 0.36% |\n| | clean cementing p99 | 5.49 s | 5.47 s | 1.47 s | 1.48 s |\n| | p99 latency to every node | 12.7 s | 6.4 s | 14.7 s | 7.1 s |\n| 40 nodes, 10 reps, wallet blocks | flood never reaches node/block | 0.92% | 0.11% | 0.92% | 0.10% |\n| | clean cementing p99 | 5.33 s | 5.33 s | 1.35 s | 1.31 s |\n| | p99 latency to every node | 10.4 s | 5.3 s | 10.4 s | 2.5 s |\n| forks, restarts, partition | flood never reaches node/block | 1.30% | 0.37% | 1.27% | 0.42% |\n| | clean cementing p99 | 5.77 s | 5.53 s | 1.47 s | 1.47 s |\n| | p99 latency to every node | 56.2 s | 26.1 s | 29.1 s | 20.5 s |\n| starved uplinks | flood never reaches node/block | 1.55% | 0.59% | 1.64% | 0.56% |\n| | clean cementing p99 | 47.1 s | 50.4 s | 51.0 s | 54.3 s |\n| | median latency to every node | 5.6 s | 7.8 s | 5.2 s | 9.7 s |\n\nThe fanout change brings the coverage and most of the gain in latency to every node; the pacing change brings the confirmation latency and leaves vote requests per block unchanged on healthy networks. Together they cut the worst confirmation in the disrupted network from 90 s to 49 s, against 82 s and 83 s for each alone. Publish messages per block rise 23-46%, total bytes stay within a few percent because votes dominate the traffic.\n\nOn starved uplinks the extra publish traffic costs latency: the median latency to every node rose from 5.6 s to 9.7 s and clean cementing p99 from 47 s to 54 s, in both seeds. In the 40 node network the pacing change raises confirmation p99 by a few tens of milliseconds while the worst case drops by 4 s. The simulated fanouts are 4 -> 5 and 4 -> 6; the live network runs at a higher fanout than a simulation on one machine reaches.\n\nThe harness and the scripts that built and compared these commits are on [election-pacing-tuning-sim](https://github.com/pwojcikdev/nano-node/tree/election-pacing-tuning-sim), kept out of this PR.\n\n### Tests\n\n`election_pacing` tests cover the separate flood and directed intervals, the request backoff sequence, its cap, that a request that did not go out leaves the interval as it was, and pacing built from the network constants. `election.passive_duration` checks the passive phase, `block_rebroadcaster.floods_scaled_fanout` that a rebroadcast reaches the scaled fanout and no more, and `toml_config.daemon_config_deserialize_errors` the rejected scale.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5281,
+    "label": "pwojcikdev:election-pacing-tuning",
+    "created_at": "2026-11-13T15:05:29Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-13T17:28:51Z",
+    "run_id": null
+  },
+  {
     "hash": "ac4c77370f813a33e7a22223d34153955d8a1092",
     "type": "pull_request",
     "title": "Do not wait for cancellation signal",
@@ -41750,6 +41796,22 @@
     "build_started_at": "2024-03-24T12:11:57Z",
     "run_id": "8409177637",
     "landed_at": "2024-03-15T18:40:17Z"
+  },
+  {
+    "hash": "b03fe13d8445fbb8037f3cd7e3e821ada6e4f324",
+    "type": "pull_request",
+    "title": "Generate work through a new work_generator with configurable local generation and a time limit for work peers",
+    "author": "pwojcikdev",
+    "body": "Work generation for the node moves from `distributed_work` and its factory to a new `work_generator`. It asks the configured work peers, generates on the node's own work pool, or both, as a new config section says, and ends every request exactly once.\n\n## Configuration\n\n```toml\n[node.work_generator]\nlocal_generation = \"fallback\"   # \"fallback\", \"delayed\", \"always\" or \"never\"\nlocal_delay = 5000              # milliseconds, used by \"delayed\"\npeer_selection = \"all\"          # \"all\" or \"one\"\npeer_delay = 15000              # milliseconds, used by \"one\"\npeer_timeout = 30000            # milliseconds\nwork_timeout = 60000            # milliseconds\n```\n\n- `local_generation` says when the node generates work itself for a request that work peers can serve as well. `fallback` leaves the work to the work peers and joins once every one of them has failed for the request or has not answered within `peer_timeout`; a work peer that rests after failing for another request counts as failed too. `delayed` does the same and also joins once `local_delay` has passed without work, while the work peers keep working. `always` generates alongside the work peers from the start. `never` leaves all work to the work peers. Without work peers the node generates the work itself, unless the mode is `never`. Once the node generates, the work peers keep being asked and the first work that arrives is used.\n- `peer_selection` says how the work peers are asked. `all` asks every work peer at once and uses the first work that arrives. `one` asks one work peer at first, and each new request starts with the next work peer of its group in turn, the primary and the secondary work peers each taking their own turns. The next one is asked as well when a work peer fails, also while another one is still working, or when `peer_delay` has passed without work; a work peer that was asked keeps working, and the first work that arrives is used. With `local_generation = \"fallback\"` the node joins only after the request has gone through every work peer this way and each of them has failed or run out of `peer_timeout`.\n- `peer_timeout` is the time one work peer gets to answer one attempt. A work peer that has not answered by then counts as failed for the attempt, rests and is asked again.\n- `work_timeout` is the time after which a request without work fails. It applies on a node that does not generate work itself, by `local_generation = \"never\"` or for lack of work threads and an OpenCL device. A node that generates work itself does not fail a request over time: it starts generating as `local_generation` says, and the work peers keep being asked for as long as the request runs.\n\n`work_peers`, `secondary_work_peers`, `work_threads` and `max_work_generate_multiplier` keep their meaning, and so does the work RPC spoken to work peers.\n\n## How it works\n\n- `work_generator_index` holds the requests in progress, their exchanges with work peers, their local generation and the work peers. It decides what each request does next from the time it is given, and holds no lock, clock or socket, so its tests run without any of them.\n- `work_generator` drives the index from one coroutine on a strand. The work peers of a request's group are asked as `peer_selection` says, and the first work that reaches the difficulty ends the request. A work peer that failed is left alone for a time that doubles with each failure in a row, then asked again. A work peer that is left while it works on a request, or whose connection ends after the request went out and before an answer came, is sent `work_cancel`, unless another request has it working on the same root. The cancel goes to the address that took the request, not to a new lookup of the work peer's name.\n- `work_peer_client` runs one exchange with one work peer as a coroutine, with a deadline on resolving, connecting, sending and reading, and reports the outcome as a status that is also counted in the stats.\n- `work_pool::generate` returns an id and `work_pool::cancel_item (id)` cancels that one request, which is how the generator ends its own local generation. The pool runs callbacks outside its mutex, and `stop ()` answers the requests still queued.\n\n## What changes for operators\n\n- RPC `work_generate` answers a request that ended as failed with the work generation error. A cancelled request is still answered with \"Cancelled\".\n- RPC `work_peer_add`, `work_peers` and `work_peers_clear` act on the generator's list of work peers. Adding a work peer that is already listed has no effect.\n- A work peer given by host name is connected to at the first address that takes the connection, each address getting an equal part of the connect time that is left.\n- The websocket `work` topic sends one message per request, when the request ends.\n- New stats under `work_generator` and `work_generator_peer`, and the log type `work_generator` in place of `distributed_work`.\n- `stat::detail` gets a reflection range of 1024, since the new details take it past 512.\n\n## Tests\n\n- `work_generator_index.*` cover the decisions with an injected clock: the four local generation modes, both ways of asking the work peers, retries and the two time limits, cancelling, stopping, a work peer list that changes while requests run, and when a work peer is sent `work_cancel`.\n- `work_generator.*` run the generator without a node against `nano::test::fake_work_peer`, a scriptable work server that generates on a pool of its own: work peers that deliver, answer with errors, answer slowly or not at all, or close the connection without answering, cancelling and stopping in different states, and callbacks that call back into the generator.\n- `work_peer_client.*` cover each outcome of an exchange.\n- `work.*` gain tests for cancelling a single request and for stopping the pool.\n- `rpc.work_peer_one` and `rpc.work_peer_many` are enabled again.\n\n## Not included\n\n- Work peers are not sent `work_cancel` when the node stops.\n- Concurrent requests for the same root are not merged into one.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5272,
+    "label": "pwojcikdev:work-generator",
+    "created_at": "2026-11-12T01:09:02Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-13T17:28:51Z",
+    "run_id": null
   },
   {
     "hash": "b04a13dcad192c178548a13e1c66bf55fbb5c597",
@@ -47927,6 +47989,20 @@
     "build_started_at": "2024-05-08T12:49:19Z",
     "run_id": "9002109348",
     "landed_at": "2024-05-08T12:10:33Z"
+  },
+  {
+    "hash": "ccc864d80e5a9f3f86788e0c7e47948b7d1f4b63",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Interrupt systest nodes with a console Ctrl+C on Windows and fix the other Windows systest failures (#5279)\n\n* Interrupt systest nodes with a console Ctrl+C on Windows\n\nA non-interactive bash starts background commands with SIGINT ignored.\nOn Linux and macOS the node replaces that with its own handler, but on\nWindows the ignore sits in Git Bash's stand-in for the native process,\nwhich drops the signal. daemon_interrupt and\nledger_extended_index_daemon waited out their timeout there and left\ntheir nodes running until the job ended.\n\n`interrupt_process ()` sends SIGINT through Git Bash's `kill -f` on\nWindows, which delivers it to the native process as a console Ctrl+C.\n\n* Time out the System Tests steps after 30 minutes\n\nA hung systest step fails with its log kept instead of running until\nthe job's own timeout.\n\n* Check the runtime files systest against the Windows PID and without nc\n\nOn Windows the PID file holds the PID Windows knows the node by, while\n`$!` in Git Bash is the MSYS one, and Git Bash has no nc for the peering\nport probe. `native_pid ()` maps the PID through /proc/<pid>/winpid and\nthe probe opens bash's /dev/tcp instead.\n\n* Skip the RPC child termination systest on Windows\n\nWindows delivers no SIGTERM to a console program, and the Ctrl+C Git\nBash sends in its place reaches the RPC child as well, which then exits\non its own instead of being terminated by the node.",
+    "pull_request": "5279",
+    "created_at": "2026-11-13T14:42:48Z",
+    "landed_at": "2026-11-13T14:42:48Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-13T17:28:51Z",
+    "run_id": null
   },
   {
     "hash": "ccc8d2e81685bb6065cb03950720dfadda9384a3",
@@ -58660,6 +58736,22 @@
     "build_started_at": "2024-03-26T12:23:37Z",
     "run_id": "8435869528",
     "landed_at": "2024-03-26T11:58:16Z"
+  },
+  {
+    "hash": "f943afb333aea83c93522d201960d87a3095b8dc",
+    "type": "pull_request",
+    "title": "Deduplicate network messages through `transport::message_filter`",
+    "author": "pwojcikdev",
+    "body": "`nano::network` held a `nano::duplicate_filter` directly and `deserialize_message_payload` consulted it, so the rules for deduplicating network messages were spread over the generic filter, the deserializer and their callers. This gathers them in one place.\n\n## What changes\n\n- **`nano::transport::message_filter`** is now the network's duplicate filter, a front for `nano::duplicate_filter`. It says which messages are deduplicated (`deduplicates (message_type)`, publishes and votes), hashes a payload together with what its header says the payload is, offers the block overloads elections use to let a block be received again, and does the locking.\n- **`nano::duplicate_filter`** is a generic table of digests: it takes bytes and a `uint64_t` domain the caller picks, knows nothing of blocks or messages and is no longer synchronized.\n- **Digests** cover the message type and, for a publish, the block type along with the payload, so two kinds of message with equal payloads are two entries. Header flags and versions are left out, so a rebroadcast vote stays a duplicate of the vote.\n- **The check** moves from `deserialize_message_payload` into `tcp_server`, the only caller that filtered. The deserializer takes the digest to put on the message, and `deserialize_message` no longer takes a filter.\n- **Config:** `[node.network] duplicate_filter_enable` (default `true`) turns deduplication off.\n\n## Tests\n\n- `message_filter` has its own suite: insert and erase, digests per kind of message, header flags and versions leaving a digest unchanged, the block overloads, ageing, and which message types are deduplicated.\n- `tcp_server` gains end-to-end cases for messages with equal payloads, a message type that is not deduplicated, and the config switch.\n- `duplicate_filter` gains a case for domains, and `deserialize_message_payload.duplicates` goes with the deserializer's filter parameter.\n- The filter benchmark runs on `message_filter`, as it shares one filter between threads.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5277,
+    "label": "pwojcikdev:transport-message-filter",
+    "created_at": "2026-11-12T19:29:25Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-13T17:28:51Z",
+    "run_id": null
   },
   {
     "hash": "f954a5f3de6134fd83b09266ef2fa3023e968bfb",
