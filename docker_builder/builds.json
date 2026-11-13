@@ -59967,6 +59967,20 @@
     "run_id": null
   },
   {
+    "hash": "fe4397213eb8fcf80f59c6e2f0a614b03cf449ee",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Deduplicate network messages through `transport::message_filter` (#5277)\n\n`nano::transport::message_filter` is now what the network holds as its\nduplicate filter. It says which messages are deduplicated, publishes\nand votes, hashes a payload together with what its header says the\npayload is, and does the locking. `nano::duplicate_filter` under it is\na plain table of digests: it takes bytes and a domain the caller\npicks, knows nothing of blocks or messages and holds no lock.\n\nA digest covers the message type and, for a publish, the block type\nalong with the payload, so two kinds of message with equal payloads\nare two entries. Header flags and versions stay out of it, which keeps\na rebroadcast vote a duplicate of the vote.\n\nThe check moves from `deserialize_message_payload` to `tcp_server`,\nwhich reads the header and the payload and was the only caller that\nfiltered. The deserializer takes the digest to put on the message\ninstead of the filter, and `deserialize_message` no longer takes one.\n\n`duplicate_filter_enable` in the network config turns deduplication\noff.\n\n`message_filter` has its own test suite, one case of which has several\nthreads insert the same digest at once, and the `tcp_server` tests\ncover messages with equal payloads, messages that are not\ndeduplicated, a publish the block processor refuses and the config\nswitch. The filter benchmark measures both classes: the plain filter\non one thread, as it holds no lock, and `message_filter` on 1 to 16\nthreads, with the inserts all threads make per second. Its clock\nscenarios go.",
+    "pull_request": "5277",
+    "created_at": "2026-11-13T23:35:52Z",
+    "landed_at": "2026-11-13T23:35:52Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-13T23:46:58Z",
+    "run_id": null
+  },
+  {
     "hash": "fe4d47d08ddfc406666cf6cf6ead9aa256f642ca",
     "type": "pull_request",
     "title": "Move write database queue",
