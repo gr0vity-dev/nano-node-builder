@@ -44174,6 +44174,22 @@
     "run_id": "22077858537"
   },
   {
+    "hash": "baa353f130c5b395301cac08f759bf8e85c3dc34",
+    "type": "pull_request",
+    "title": "Bind an ephemeral peering port without SO_REUSEADDR",
+    "author": "pwojcikdev",
+    "body": "The peering listener binds `[::]:0` with `SO_REUSEADDR` whenever no port is configured, which is how test nodes start. On macOS and BSD that bind only avoids exact-match conflicts, so the kernel can hand it a port that another socket already listens on with a specific address, for example `[::1]:P`. Connections to `[::1]:P` then go to the more specific listener. A test node advertises `[::1]:P`, so its peer occasionally connects to an unrelated local server, the handshake fails on a garbage header, and `system::add_node` times out with `Assertion '!ec' failed`.\n\nThe failures were rare and looked random because how often they happen depends on how many local services listen on loopback ports in the ephemeral range. Developer tools such as language servers and IDE helpers commonly do. Parallel test runs add more, since other `core_test` processes hold `[::1]:0` acceptors.\n\nAn ephemeral port is never in `TIME_WAIT`, so `SO_REUSEADDR` is now set only for a configured port. Without it the kernel picks a port that is not held. The Windows exclusion moves from `#ifndef _WIN32` to `nano::is_windows_build ()`.\n\nThe same rule now applies in two other places:\n- The IPC TCP transport, which tests also start on port 0 and reach over `[::1]`. Its acceptor came from asio's bind-and-listen constructor, which sets `SO_REUSEADDR` before binding, so the `set_option` after it had no effect. The constructor now gets the option only for a configured TCP port and never on Windows, matching the peering listener. Domain sockets have no port and no longer set it.\n- The test helper that picks a free port for `network.construction_with_specified_port`. It could report a port held on a specific address as free. It is renamed to `nano::test::pick_free_port ()`, binds without `SO_REUSEADDR`, and uses the IPv6 wildcard the node listens on.\n\nThere is no regression test. The failure depends on which port the kernel hands out, so a test could only make it likely by holding many loopback ports while starting many nodes.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5283,
+    "label": "pwojcikdev:tcp-listener-ephemeral-reuse",
+    "created_at": "2026-11-14T03:31:15Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-14T15:55:29Z",
+    "run_id": null
+  },
+  {
     "hash": "baabcca4260566d02815106f4d625f4771cca3df",
     "type": "commit",
     "created_at": "2023-02-02T15:14:26Z",
