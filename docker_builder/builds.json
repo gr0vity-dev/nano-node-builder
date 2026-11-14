@@ -36125,6 +36125,22 @@
     "landed_at": "2024-01-16T17:35:28Z"
   },
   {
+    "hash": "9780725ecbe55bb20c8b3c2472e8f465df9b2463",
+    "type": "pull_request",
+    "title": "Bind an ephemeral peering port without SO_REUSEADDR",
+    "author": "pwojcikdev",
+    "body": "The peering listener binds `[::]:0` with `SO_REUSEADDR` whenever no port is configured, which is how test nodes start. On macOS and BSD that bind only avoids exact-match conflicts, so the kernel can hand it a port that another socket already listens on with a specific address, for example `[::1]:P`. Connections to `[::1]:P` then go to the more specific listener. A test node advertises `[::1]:P`, so its peer occasionally connects to an unrelated local server, the handshake fails on a garbage header, and `system::add_node` times out with `Assertion '!ec' failed`.\n\nThe failures were rare and looked random because how often they happen depends on how many local services listen on loopback ports in the ephemeral range. Developer tools such as language servers and IDE helpers commonly do. Parallel test runs add more, since other `core_test` processes hold `[::1]:0` acceptors.\n\nAn ephemeral port is never in `TIME_WAIT`, so `SO_REUSEADDR` is now set only for a configured port. Without it the kernel picks a port that is not held. The Windows exclusion moves from `#ifndef _WIN32` to `nano::is_windows_build ()`.\n\nThere is no regression test. The failure depends on which port the kernel hands out, so a test could only make it likely by holding many loopback ports while starting many nodes.\n\nFollow-ups:\n- The IPC TCP transport binds `tcp::v6 ()` on port 0 in tests the same way. Its acceptor is built with asio's constructor, which sets `SO_REUSEADDR` before binding, so it needs a separate change.\n- `nano::test::speculatively_choose_a_free_tcp_bind_port` binds with `SO_REUSEADDR` and can return a port that is already held on a specific address.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5283,
+    "label": "pwojcikdev:tcp-listener-ephemeral-reuse",
+    "created_at": "2026-11-14T03:31:15Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-14T09:26:02Z",
+    "run_id": null
+  },
+  {
     "hash": "97822348a45e0861da74ef9940313a2e3ef32e48",
     "type": "pull_request",
     "pull_request": 4476,
