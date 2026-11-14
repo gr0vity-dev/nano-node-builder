@@ -16827,6 +16827,22 @@
     "run_id": "8895630731"
   },
   {
+    "hash": "477e4065f5db0741f536a927941e1d6eb0e99131",
+    "type": "pull_request",
+    "title": "Make `duplicate_filter` lock-free with an atomic word per entry",
+    "author": "pwojcikdev",
+    "body": "The duplicate filter is on the path of every inbound publish and vote, and `transport::message_filter` kept one mutex around its table. With several IO threads inserting at once they queue on that mutex, and total throughput falls as threads are added. This change makes the table itself safe to share, so the facade needs no lock.\n\n## What changes\n\n- **`nano::duplicate_filter`** keeps each entry in one atomic 64-bit word: a 48-bit tag from the upper half of the digest over the low 16 bits of the epoch the entry went in at. The lower half of the digest picks the slot. Insert, erase and contains read the word and replace it with a compare and swap, so of several threads inserting one digest at once exactly one is told it is new. A slot takes 8 bytes where it took 32.\n- **`nano::transport::message_filter`** drops its mutex and forwards to the table.\n- **Identity of an entry.** Two inputs count as the same when they share a slot and the 48-bit tag, where the whole 128-bit digest was compared before. A message never seen is taken for a duplicate only when it lands in a slot whose entry has the same tag, a chance of 2^-48 per insert. The hash (SipHash-2-4-128, keyed at random per filter) and the digest type are unchanged.\n- **Epochs.** An entry's age is the difference of the low 16 bits of the epoch, which is exact for one lap of those bits. `advance ()` returns true when they wrap, and the network's cleanup loop then clears the filter, so no entry is left to read as recent a lap later. An insert that runs alongside the clear may be lost to it, which only lets that message through once more.\n- **Config.** `duplicate_filter_cutoff` is bounded by what 16 epoch bits can tell apart: a value above 65535 is rejected when the config is read, and the filter's constructor asserts the same bound.\n\n## Benchmarks\n\n`BM_message_filter_insert/136` from `nano/benchmarks/duplicate_filter.cpp`: hashing a 136-byte payload (a vote with one hash) and inserting its digest, on 1 to 16 threads sharing the filter. Release build on an Apple Silicon Mac, medians of 5 repetitions, develop against this branch.\n\n| Threads | develop, per insert | this PR, per insert | develop, total | this PR, total |\n|---|---|---|---|---|\n| 1 | 245 ns | 212 ns | 4.1 M/s | 4.7 M/s |\n| 2 | 593 ns | 227 ns | 3.4 M/s | 8.8 M/s |\n| 4 | 2.03 µs | 218 ns | 2.0 M/s | 18.4 M/s |\n| 8 | 3.58 µs | 225 ns | 2.2 M/s | 35.6 M/s |\n| 16 | 6.38 µs | 228 ns | 2.5 M/s | 70.2 M/s |\n\nThe table alone, with the digest computed ahead (`BM_message_filter_insert_digest`), goes from 23.4 ns to 3.7 ns per insert on one thread and from 368 ns to 10 ns on eight. What is left of an insert is the hash.\n\n## Tests\n\n- `duplicate_filter.advance_wrap`: `advance ()` reports the wrap, for single epochs and for steps that cross it.\n- `duplicate_filter_DeathTest.age_cutoff`: a cutoff beyond the bound is refused.\n- `message_filter.advance_wrap`: an entry left in the table reads as recent after a lap, and clearing lets its message in as new.\n- `network.wrap_duplicate_filter`: the cleanup loop clears a node's filter when the epoch wraps.\n- `toml_config.daemon_config_deserialize_errors`: a cutoff above the bound is a config error.\n- `message_filter.concurrent_insert`, already there, is what holds the table to telling exactly one of several racing threads that a digest is new.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5285,
+    "label": "pwojcikdev:duplicate-filter-lock-free",
+    "created_at": "2026-11-14T16:37:39Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-14T16:45:42Z",
+    "run_id": null
+  },
+  {
     "hash": "47889a2ffa97d1a4265d0f175d5a79e63f3e4fc3",
     "type": "pull_request",
     "pull_request": 4267,
