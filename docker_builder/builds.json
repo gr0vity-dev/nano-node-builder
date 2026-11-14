@@ -8369,6 +8369,20 @@
     "landed_at": "2026-03-19T22:05:37Z"
   },
   {
+    "hash": "229e5a040a4a2c59ccc9d0d013fe8118e0c69ec4",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Bind an ephemeral peering port without SO_REUSEADDR (#5283)\n\n* Bind an ephemeral peering port without SO_REUSEADDR\n\nOn macOS and BSD, a port 0 wildcard bind with SO_REUSEADDR can be\nhanded a port another socket already listens on with a specific\naddress, such as [::1]. Connections to that address then reach the\nother socket instead of the node. Test nodes advertise [::1]:port, so\na peer occasionally handshakes with an unrelated local server and\nsystem::add_node times out.\n\nAn ephemeral port is never in TIME_WAIT, so it needs no SO_REUSEADDR.\nThe Windows exclusion moves from #ifndef _WIN32 to is_windows_build ().\n\n* Rename the free test port helper to pick_free_port and drop SO_REUSEADDR\n\nWith SO_REUSEADDR, a port 0 bind on macOS and BSD can return a port\nanother socket already holds on a specific address, so the helper\ncould report a held port as free. It now binds the IPv6 wildcard, the\nfamily the node listens on, and lets the acceptor close itself.\n\n* Bind an ephemeral IPC TCP port without SO_REUSEADDR\n\nThe IPC acceptor came from asio's bind-and-listen constructor, which\nsets SO_REUSEADDR before binding, so the set_option after it had no\neffect. On macOS and BSD a port 0 wildcard bind with SO_REUSEADDR can\nbe handed a port another socket holds on [::1], and IPC clients that\nconnect to [::1] then reach that socket.\n\nThe constructor now gets SO_REUSEADDR only for a configured TCP port\nand never on Windows, as the peering listener does. Domain sockets\nhave no port and no longer set it.",
+    "pull_request": "5283",
+    "created_at": "2026-11-14T16:00:30Z",
+    "landed_at": "2026-11-14T16:00:30Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-14T16:21:57Z",
+    "run_id": null
+  },
+  {
     "hash": "22abd717a4b8671c0924d5471b012a6efdf6452c",
     "type": "commit",
     "author": "pwojcikdev",
@@ -23524,6 +23538,22 @@
     "landed_at": "2024-10-10T12:28:29Z"
   },
   {
+    "hash": "63652d0cef482cfe58af4100b946d70e3cbbad81",
+    "type": "pull_request",
+    "title": "Add a test peer that stands in for a remote node and drive the transport tests through it",
+    "author": "pwojcikdev",
+    "body": "Tests of the TCP server, the listener and the network had three ways to put a remote node in front of the node under test: write to a `nano::transport::tcp_socket` borrowed from that node, parse handshakes by hand, or start a second full node only to have something send a message. A borrowed socket runs on the node's io threads and counts into the node's stats. A second node brings traffic of its own: keepalives, reachout, rebroadcasts. Tests built on either waited on fixed pauses and asserted `>=` where an exact count was meant.\n\n`nano::test::peer`, in `nano/test_common/peer.hpp`, is a plain asio connection with a node id and nothing behind it. It connects to the node's listener, completes the handshake when the test calls `handshake ()`, and sends only what the test tells it to: `send` takes a message, `send_bytes` takes input that no message serializes to. A thread of its own reads everything the node sends and parses it with the production deserializer; `received<Message> ()` returns those messages by type, and `alive ()` turns false once either side closes the connection. `peer_options` set the node id, protocol version and capabilities the peer presents, and `handshake_response (cookie)` lets a test run the handshake by hand.\n\n`nano::test::peer_listener` covers the connections the node opens. It listens on a loopback port that the test points the node at, through `merge_peer`, `start_tcp` or `tcp_listener.connect`, and `accept ()` hands out each connection as a peer. A listener nobody accepts from still holds the node's connections open, which replaces the bare acceptors some tests set up.\n\n57 tests now run through the peer or the listener, with no change to production code:\n\n- **`tcp_server`**: every test except `send_node_id_handshake_tcp`, which stays on two real nodes. The raw socket tests lose their per-test connect and serialization setup, and the fifty lines of handshake parsing in `handshake_records_remote_protocol_version` become one option. The tests that used a second node as a sender now assert exact counts.\n- **`tcp_listener`**: the limit, handshake timeout and reconnect cooldown tests.\n- **`network`**: the duplicate filter tests, `last_contacted`, `cleanup_purge`, both `purge_dead_channel` tests and `tcp_no_accept_excluded_peers`.\n- **`peer_blocklist`**: the seven tests that refuse or drop a connection.\n- **`telemetry`** and **`rep_crawler`**: `dos_tcp`, `max_possible_size` and `ignore_rebroadcasted`.\n\nProblems fixed along the way:\n\n- `rep_crawler.ignore_rebroadcasted` sent one identical vote in a loop, so the duplicate filter let only the first copy through. It now sends one rebroadcasted vote, waits until it is processed, and then shows that a vote sent as the peer's own is taken as the answer.\n- `network.last_contacted` needed three keepalives and a second node that refused inbound connections to get around that node's traffic. It sends one keepalive and counts one.\n- `network.duplicate_revert_publish` set its digest by hand and never checked that the publish was refused. The half that carries a digest now comes from a peer, and both halves assert the refusal.\n- `tcp_server.handshake_outdated_protocol_version` and `handshake_wrong_network_id` appended a whole message, header included, as the payload of a hand-made header.\n- The two listener handshake timeout tests built their config from scratch, only checked that the connection count fell to zero, and one built a `tcp_channel` by hand. They assert the `handshake_timeout` count.\n- The duplicate filter tests used `ASSERT_ALWAYS_EQ (100ms, 0, ...)` to show that a first copy was not a duplicate. They wait for the copy to be dispatched and assert exact counts.\n\nTests renamed, merged, replaced or added:\n\n- `tcp_server.handshake_deserialization_failure` is now `handshake_unknown_message_type`, and `handshake_invalid_message_type_aborts` is `handshake_non_handshake_message`. Both assert the `invalid_message_type` count, which neither did.\n- `tcp_server.depeer_on_outdated_version` repeated `filter_invalid_version_using` with one other assertion and is folded into it.\n- `tcp_server.rejects_publish_without_block_type` sends its header on a realtime connection, where that check is the only one in its way.\n- `tcp_listener.max_peers_per_ip` tested the flag that disables the limit and is now `max_connections_per_ip_disabled`. `timeout_empty` and `timeout_node_id_handshake` are `handshake_timeout` and `handshake_timeout_after_query`.\n- `tcp_listener.node_id_handshake` read part of a reply and asserted only that no error occurred. `tcp_server.handshake_query_answered` replaces it and checks the node's signature over the cookie, its genesis and its own query.\n- `tcp_listener.asc_pull_oversized_payload_no_crash` sent its header before a handshake, where the type check refuses it before any payload is read. `tcp_server.realtime_largest_payload` replaces it and sends the whole payload on a realtime connection.\n- `network.duplicate_revert_rejected_fork` is new: a peer publishes one fork more than an election holds, the election turns it away and erases it from the duplicate filter, and the peer's next copy is received again, while a second copy of a held fork is caught as a duplicate.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5284,
+    "label": "pwojcikdev:test-peer",
+    "created_at": "2026-11-14T16:11:37Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-14T16:21:57Z",
+    "run_id": null
+  },
+  {
     "hash": "63692b2de3d3063cb4eafbb40501e6c8b9878943",
     "type": "commit",
     "author": "pwojcikdev",
@@ -23931,6 +23961,20 @@
     "docker_tag": "gr0v1ty/nano-node:6542a7851f57edcbec2925d0fe812fb404f437ae",
     "build_started_at": "2024-10-17T18:13:22Z",
     "run_id": "11390634897"
+  },
+  {
+    "hash": "6574123a8fceac265d01008892872d004eac05a0",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Reject a channel whose endpoint is already registered (#5280)\n\n* Reject a channel whose endpoint is already registered\n\nThe channel registry holds one entry per remote IP and port, but\ncheck () only treated a new channel as a duplicate when it came from\nthe same IP under the same node ID. A channel at a registered\nendpoint under another node ID passed the check and then failed to\ninsert: debug builds stopped on an assert, release builds returned it\nas accepted without registering it.\n\ncheck () now rejects such a channel as a duplicate, counted under its\nown stat, whether the registered channel is alive or dead. A dead\nchannel keeps its endpoint until purge removes it, as it already does\nfor a reconnect under the same node ID, so create () never closes a\nchannel on the io thread it runs on. With the endpoint checked under\nthe same lock the insert cannot fail, and a release assert guards it.\n\n* Check the endpoint is free before building a channel\n\ncreate () now looks the endpoint up again right before it builds the\nchannel, under the same lock as the insert, so the insert cannot fail\nand its release assert stays unreachable. A channel built for a\nregistered endpoint could not be dropped there: its destructor joins\nits tasks, and create () runs on an io thread.\n\nThe accepted stat, the log line and the reachout attempt erase now\nfollow the insert.",
+    "pull_request": "5280",
+    "created_at": "2026-11-14T15:59:33Z",
+    "landed_at": "2026-11-14T15:59:33Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-14T16:21:57Z",
+    "run_id": null
   },
   {
     "hash": "65822d42a3892121273d7f14e64a301f85b95abb",
@@ -53611,6 +53655,22 @@
     "build_started_at": "2025-06-23T09:58:41Z",
     "run_id": "15821706986",
     "landed_at": "2025-06-04T16:34:15Z"
+  },
+  {
+    "hash": "e3ed2d5e375d7ed3b28db4886cf3de99fcec68be",
+    "type": "pull_request",
+    "title": "Tune election pacing and block rebroadcast fanout",
+    "author": "pwojcikdev",
+    "body": "Two tuning changes to how blocks and vote requests propagate, from a study of block flooding in a network simulator.\n\n### Block rebroadcast fanout\n\nA node passes a block on once, when its election starts, by flooding it to `network::fanout ()` random peers: ceil (ln (peer count)), at least `minimum_fanout`. The share of node/block pairs such a push gossip never reaches is about e^-fanout, and a node the flood misses has no fetch path until bootstrap finds the block. Block rebroadcasts now flood to 1.5 times the fanout, set by the new `block_rebroadcaster.fanout_scale` config key, and the rebroadcaster's capacity check uses the same scale. Initial broadcasts of a node's own blocks, which already go to every principal representative, and vote and keepalive floods keep the unscaled fanout. With about 300 peers the rebroadcast fanout goes from 6 to 9.\n\n### Election pacing\n\n- An election that started with cached votes, which is most of them, listened for five base latencies before requesting any votes, so a node left short of final quorum by the vote flood waited 5 s. The passive phase is now `election_passive_duration`, 1 s.\n- Vote requests back off: the gap after each request that went out starts at one base latency and doubles up to `election_request_interval`, 15 s, for every election behavior (gaps of 1, 2, 4, 8, then 15 s). An election whose first request reached the representatives before they held final votes retries after 1 s instead of 5. A stuck election sends five requests in its first 15 s, then one every 15 s; over its 5 minute life a priority election sends about 24 requests instead of 60, an optimistic one 5 instead of about 15.\n- Winner floods get their own `block_flood_interval`, apart from the directed broadcast's `block_broadcast_interval`, and both are 30 s. The block rebroadcaster's 60 s cooldown still limits how often one node floods the same block.\n- The base latency moves into `network_constants` as `election_base_latency`, and `election_pacing` is built from the network constants directly.\n\n### Simulation\n\nNodes over loopback TCP with every timing scaled from its live value, so traffic and link capacity keep their live ratio. Each build runs its own live timings. Two seeds per scenario, means shown. Scenarios: 24 nodes with 16 representatives on uniform links at 5 relayed blocks/s; 40 nodes with 10 representatives at 4 blocks/s made by wallets; the 24 node network with 10 forks, 3 node restarts and a 60 s partition; the 24 node network on starved uplinks at 8 blocks/s. \"Flood never reaches\" is the share of node/block pairs no flood ever delivered. \"Confirmation\" is per node and block, from the block entering the node's ledger until it is cemented there. \"Latency to every node\" is per block, from publishing until the last node cemented it, over blocks published outside disruptions. \"Clean cementing\" is the same over the blocks every node received in time.\n\nDevelop against this PR:\n\n| scenario | flood never reaches node/block | confirmation p99 | clean cementing p99 | p99 latency to every node | publish per block | confirm_req per block | bytes |\n|---|---|---|---|---|---|---|---|\n| 24 nodes, 16 reps | 1.21% -> 0.36% | 5.23 s -> 1.23 s | 5.49 s -> 1.48 s | 12.7 s -> 7.1 s | 96 -> 120 | 55 -> 58 | +0% |\n| 40 nodes, 10 reps, wallet blocks | 0.92% -> 0.10% | 0.08 s -> 0.12 s (max 5.4 s -> 1.3 s) | 5.33 s -> 1.31 s | 10.4 s -> 2.5 s | 174 -> 254 | 105 -> 108 | -1% |\n| forks, restarts, partition | 1.30% -> 0.42% | 5.22 s -> 1.24 s (max 90 s -> 49 s) | 5.77 s -> 1.47 s | 56.2 s -> 20.5 s | 96 -> 120 | 55 -> 66 | -1% |\n| starved uplinks | 1.55% -> 0.56% | 18.5 s -> 19.0 s | 47.1 s -> 54.3 s | 50.9 s -> 55.6 s | 94 -> 116 | 85 -> 77 | -5% |\n\nEach change alone:\n\n| scenario | metric | develop | fanout only | pacing only | both |\n|---|---|---|---|---|---|\n| 24 nodes, 16 reps | flood never reaches node/block | 1.21% | 0.33% | 1.22% | 0.36% |\n| | clean cementing p99 | 5.49 s | 5.47 s | 1.47 s | 1.48 s |\n| | p99 latency to every node | 12.7 s | 6.4 s | 14.7 s | 7.1 s |\n| 40 nodes, 10 reps, wallet blocks | flood never reaches node/block | 0.92% | 0.11% | 0.92% | 0.10% |\n| | clean cementing p99 | 5.33 s | 5.33 s | 1.35 s | 1.31 s |\n| | p99 latency to every node | 10.4 s | 5.3 s | 10.4 s | 2.5 s |\n| forks, restarts, partition | flood never reaches node/block | 1.30% | 0.37% | 1.27% | 0.42% |\n| | clean cementing p99 | 5.77 s | 5.53 s | 1.47 s | 1.47 s |\n| | p99 latency to every node | 56.2 s | 26.1 s | 29.1 s | 20.5 s |\n| starved uplinks | flood never reaches node/block | 1.55% | 0.59% | 1.64% | 0.56% |\n| | clean cementing p99 | 47.1 s | 50.4 s | 51.0 s | 54.3 s |\n| | median latency to every node | 5.6 s | 7.8 s | 5.2 s | 9.7 s |\n\nThe fanout change brings the coverage and most of the gain in latency to every node; the pacing change brings the confirmation latency and leaves vote requests per block unchanged on healthy networks. Together they cut the worst confirmation in the disrupted network from 90 s to 49 s, against 82 s and 83 s for each alone. Publish messages per block rise 23-46%, total bytes stay within a few percent because votes dominate the traffic.\n\nOn starved uplinks the extra publish traffic costs latency: the median latency to every node rose from 5.6 s to 9.7 s and clean cementing p99 from 47 s to 54 s, in both seeds. In the 40 node network the pacing change raises confirmation p99 by a few tens of milliseconds while the worst case drops by 4 s. The simulated fanouts are 4 -> 5 and 4 -> 6; the live network runs at a higher fanout than a simulation on one machine reaches.\n\nThe harness and the scripts that built and compared these commits are on [election-pacing-tuning-sim](https://github.com/pwojcikdev/nano-node/tree/election-pacing-tuning-sim), kept out of this PR.\n\n### Tests\n\n`election_pacing` tests cover the separate flood and directed intervals, the request backoff sequence, its cap, that a request that did not go out leaves the interval as it was, and pacing built from the network constants. `election.passive_duration` checks the passive phase and `block_rebroadcaster.floods_scaled_fanout` that a rebroadcast reaches the scaled fanout and no more.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+    "draft": false,
+    "pull_request": 5281,
+    "label": "pwojcikdev:election-pacing-tuning",
+    "created_at": "2026-11-13T15:05:29Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-14T16:21:57Z",
+    "run_id": null
   },
   {
     "hash": "e404a81e6ffd9d5d5969f9ed93e44db80f9d7af6",
