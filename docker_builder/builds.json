@@ -34116,6 +34116,20 @@
     "landed_at": "2023-04-20T20:37:30Z"
   },
   {
+    "hash": "8f12e40d7fc6391c0d844dc2ac51bc96692b4d98",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Make `duplicate_filter` lock-free with an atomic word per entry (#5285)\n\nThe filter is on the path of every inbound publish and vote, and\n`transport::message_filter` kept one mutex around its table, so IO\nthreads inserting at once queued on it.\n\nAn entry is now a single atomic 64-bit word: a 48-bit tag from the upper\nhalf of the digest over the low 16 bits of the epoch it went in at, with\nthe lower half of the digest picking the slot. Insert, erase and\ncontains replace the word with a compare and swap, and `message_filter`\ndrops its mutex.\n\nThe filter may let a repeat through in a rare race, such as an insert\nrunning alongside an advance or a clear, since whatever follows it has\nto cope with repeats anyway. It does not hold back an input it has not\nseen.\n\nAn entry tells its age for one lap of its 16 epoch bits. `advance ()`\nreports when they wrap and the network's cleanup loop then clears the\nfilter. `duplicate_filter_cutoff` is bounded accordingly: values above\n65535 are rejected when the config is read.",
+    "pull_request": "5285",
+    "created_at": "2026-11-16T22:48:53Z",
+    "landed_at": "2026-11-16T22:48:53Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-16T23:02:44Z",
+    "run_id": null
+  },
+  {
     "hash": "8f2c2b4530085bae99971dc084aaf0f9a3b858b2",
     "type": "pull_request",
     "title": "Move signature verification out of the write transaction and parallelize it",
@@ -56029,7 +56043,7 @@
     "label": "pwojcikdev:fair-queue-ring",
     "created_at": "2026-11-03T23:26:54Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-11-16T20:28:14Z",
     "run_id": null
