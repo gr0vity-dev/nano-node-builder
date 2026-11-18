@@ -47560,6 +47560,22 @@
     "run_id": "9044543556"
   },
   {
+    "hash": "c8fb366beca4351870168da5221c714ad0074ea5",
+    "type": "pull_request",
+    "title": "Hold up to max_voters voters in a vote cache entry",
+    "author": "pwojcikdev",
+    "body": "A vote cache entry adds the voter of each new representative and, once full, keeps its heaviest voters. The step that drops the lightest voter ran as soon as the list reached `max_voters` rather than when it would go past it, so an entry held at most `max_voters - 1` voters: 63 at the default and none at a limit of one. The comparison against the lightest voter of a full entry was never reached for a limit above zero. At a limit of zero it was reached with an empty list, and its `release_assert` stopped the node on the first cached vote.\n\nA full entry now decides before it adds:\n\n- A voter lighter than all the voters the entry holds is turned away.\n- Otherwise the lightest voter, the earliest among equally light ones, is dropped and the new one added.\n\nAn entry holds up to `max_voters` voters and never grows past the room it reserves for them on its fifth voter. A limit of zero is a valid setting under which entries keep no voters. A voter that is turned away no longer counts as a tally change, so it neither recounts the tally nor resets the entry's age for `age_cutoff`.\n\nTwo smaller fixes in the same path:\n\n- **Saturating tallies.** Each cached weight is the one read when its vote arrived, so delegation that moves between two votes counts the moved weight twice and the sum can pass the largest `uint128` value. Both tallies now stop there instead of wrapping to a small value that the hinted scheduler would pass over.\n- **Checked vote result positions.** `vote_results::set` compares the position with the hashes of the vote before writing. The bound check of the vector holding the codes is compiled out of release builds, where a stray position went into unused capacity or past the buffer. The router only passes positions from its own loops over the hashes, and the check holds the setter to that contract for any caller.\n\nTests:\n\n- `vote_cache.entry_keeps_heaviest_voters` now expects four voters at a limit of four; its tie case uses a second voter as light as the lightest one.\n- `vote_cache.entry_zero_voter_limit`, `vote_cache.entry_rejected_voter_changes_nothing` and `vote_cache.entry_tally_saturates` are new.\n- `vote_results_DeathTest.set_outside_vote` is new, in its own `vote_results.cpp`.\n",
+    "draft": false,
+    "pull_request": 5290,
+    "label": "pwojcikdev:vote-cache-voter-limit",
+    "created_at": "2026-11-18T20:01:39Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-18T20:15:43Z",
+    "run_id": null
+  },
+  {
     "hash": "c8fb3a5c4a04776abedba9a060ef67e3136e3d23",
     "type": "commit",
     "title": "Merge pull request #4547 from clemahieu/tsan_fix\n\nFixes TSAN issues.",
