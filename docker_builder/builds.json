@@ -5998,6 +5998,22 @@
     "run_id": "10405184773"
   },
   {
+    "hash": "196b47707673b6022c204507f9da941ee5f84e56",
+    "type": "pull_request",
+    "title": "Return transport socket errors as nano::io_result instead of throwing them",
+    "author": "pwojcikdev",
+    "body": "The TCP transport used exceptions as control flow. `tcp_server` turned every failed read or handshake write into a `boost::system::system_error` and threw it to a catch at the top of its coroutine, and the listener's accept and connect let asio throw. A peer disconnecting is how every connection ends, so the normal end of a connection went through an exception. Socket errors now travel as values.\n\n## `nano::io_result`\n\n`nano/lib/io_result.hpp` adds `nano::io_result<T>`, an alias of `boost::system::result<T>`: the value of an I/O operation, or the error code it failed with. `nano::io_success ()` is the result of an operation that produces no value.\n\n`nano::async::as_result` is a completion token adapter, modelled on asio's `as_tuple`, that hands the wrapped token one `nano::io_result` instead of an error code and a value. `nano::async::use_result` is that adapter applied to `use_awaitable`:\n\n```cpp\nauto accepted = co_await acceptor.async_accept (nano::async::use_result);\nif (!accepted)\n{\n\tco_return accepted.error ();\n}\n```\n\nCancelling the awaiting coroutine still cancels the operation, which then completes with `operation_aborted`. Asio still throws at the next `co_await` of a cancelled coroutine, so the per-peer transport tasks await their coroutine through `nano::async::settle`, which reports that throw as `operation_aborted`.\n\n## Transport\n\n- `tcp_socket`: `co_read` and `co_write` return `nano::io_result<void>`. A read or write completes only once the whole buffer is transferred, so they no longer report a byte count; a completed read is checked to have filled the buffer. The callback and blocking adapters hand on only the error code.\n- `tcp_server`: the handshake functions return `nano::io_result<handshake_status>`, `receive_message` an `io_result` of the parsed message, and the handshake senders and `run_realtime` an `io_result<void>`. A new `run ()` performs the handshake and then the realtime loop, and `start_impl` reports a failed run once, with the same stat and log line as before.\n- `tcp_listener`: accept and connect return the connected socket together with its remote endpoint, read through the error code overload since the peer may already be gone. Stopping the listener cancels its pending accept, which now ends the accept loop instead of being counted as an accept error.\n- `tcp_channel`: when a write failed or the channel was closed, the queued sends and the rest of the batch being written were left behind. Their callbacks never ran and the closed channel kept their buffers. Every send that will not be written is now failed with `operation_aborted` and counted as `tcp_channel/drop_closed`, and a send that arrives after that is refused.\n- `channel::callback_t` is now `nano::transport::send_callback`, next to `connect_callback` in the transport common header.\n- `send_handshake_response` counted every response twice, before and after the write. It now counts a response once it is sent.\n- An unexpected exception in per-peer code now closes that connection instead of aborting the node. The server, channel and socket checkup tasks and the socket's callback adapters await their coroutine through the new `nano::async::settle`, which reports how it ended instead of letting an exception through. Anything other than a cancellation is logged at error level and debug asserted. The server and channel used to release assert, and the checkup let the exception escape, leaving the socket open without its timeouts. The listener's accept loop runs once per node and keeps its release assert.\n\n## Removed\n\n- The legacy bootstrap switch: `tcp_server::to_bootstrap_connection`, the bootstrap handshake status, `socket_type::bootstrap`, `tcp_listener::bootstrap_count` and the monitor's bootstrap peer count, which was always zero. The `bootstrap_connections_max` config key only fed that switch and is retired; a config file that still sets it loads as before.\n- The `bootstrap_connections` and `bootstrap_initiator_threads` config keys, which configured the legacy bootstrap and were no longer read by anything, are retired the same way, together with the `bootstrap_connections` thread role.\n- `transport/block_deserializer`, `throw_if_error`, `tcp_socket::co_connect` and the `socket_functions` subnet helpers, which had no callers outside their own tests, and the two disabled socket tests of a write queue the socket no longer has.\n\n## Tests\n\n- `async.settle_returned`, `settle_cancelled` and `settle_unexpected` for the new helper.\n- An `io_result` suite for the token: values, a failed connect returned as a value instead of thrown, cancellation of a pending operation, and `as_result` with a future.\n- `tcp_channel` tests that close a channel stalled on bandwidth and close its socket under it, and check that every send is reported once. A new `tcp_channel_queue` suite covers its per type limits, the order within a type, the turns each type gets, and the lower priority of block broadcasts and vote rebroadcasts.\n- `tcp_server`: `realtime_socket_error`, `handshake_messages_counted_once`, `realtime_ignores_handshake` and `handshake_empty_rejected`.\n- `tcp_listener`: `stop_cancels_accept`, `max_attempts_per_ip`, and `connect_timeout`. The last one needs an address that swallows connects and skips itself where the network refuses them at once.\n- The socket timeout tests are reworked. `socket_timeout.connect` no longer depends on an unroutable address: a socket's connect timeout runs from its creation, so a socket that never connects shows it. The others take the test peer's listener as the far end and assert exact counts.\n\nThe new tests go through `nano::test::peer` wherever a remote node is involved.\n\n## Left for follow-ups\n\n- `nano::async::cancelled ()` cannot return true while asio throws at the `co_await` of a cancelled coroutine, so the loops in `tcp_channel`, `tcp_socket` and `tcp_server` that use it as their condition end through that exception, not the condition.\n",
+    "draft": false,
+    "pull_request": 5286,
+    "label": "pwojcikdev:transport-io-result",
+    "created_at": "2026-11-16T23:47:07Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-18T02:15:24Z",
+    "run_id": null
+  },
+  {
     "hash": "19977dd837cfac7400a3c36466fd057c5e41d069",
     "type": "commit",
     "author": "pwojcikdev",
@@ -46426,6 +46442,22 @@
     "run_id": "8552900898"
   },
   {
+    "hash": "c3ebd112bf31a81a9d3d10dcd872016933954f24",
+    "type": "pull_request",
+    "title": "Replace start_stop_guard with SCOPED_START",
+    "author": "pwojcikdev",
+    "body": "Replaces `nano::test::start_stop_guard` with a `SCOPED_START` macro, modelled on gtest's `SCOPED_TRACE`:\n\n```cpp\nSCOPED_START (queue);\n```\n\nIt starts the component and stops it when the enclosing scope ends, also when an `ASSERT_*` returns early. The old guard hid the start inside a declaration (`nano::test::start_stop_guard guard{ queue };`), and with several components it stopped them in the order it had started them.\n\n- The macro expands to `nano::test::start (component)`, which returns a `nano::test::scoped_start` guard that can't be copied or moved. `start` is `[[nodiscard]]`, so a call whose guard is dropped right away fails the build instead of stopping the component again on the same line.\n- Besides a component it takes a raw pointer, `std::shared_ptr` or `std::unique_ptr` to one. The guard refers to the component itself, which has to outlive the scope; temporaries don't compile.\n- A test can still stop a component earlier by calling its `stop ()`. The guard calls it a second time at scope end, which the components started this way tolerate.\n- Several components get one `SCOPED_START` each and stop in reverse order.\n- It lives in `nano/test_common/scoped_start.hpp`, included from `testutil.hpp`.\n\nAll `start_stop_guard` users are switched over. The two `message_processor` tests that called `processor.start ()` and `processor.stop ()` by hand use it as well: a failed assert before the stop left the shard threads running into the destructor's `debug_assert`, which aborted the whole test binary. The unused `stop_guard` helper is removed.\n",
+    "draft": false,
+    "pull_request": 5288,
+    "label": "pwojcikdev:scoped-start",
+    "created_at": "2026-11-18T02:01:43Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-18T02:15:24Z",
+    "run_id": null
+  },
+  {
     "hash": "c3f09c10d2be416155fc18b58e5c2616306e37f6",
     "type": "commit",
     "author": "clemahieu",
@@ -51548,6 +51580,20 @@
     "docker_tag": "gr0v1ty/nano-node:d9f96473da3f3ea80ddacc2f72c858999dff040b",
     "build_started_at": "2026-06-29T17:30:38Z",
     "run_id": "28488206205"
+  },
+  {
+    "hash": "da14f14e230b6694c262492c61e4a4c391e5a80a",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Wipe the stack after key derivation, signing and the KDF (#5244)\n\nKey material should stay in memory no longer than it is needed.\nBLAKE2b, ed25519 and argon2 do not clear their stack frames before\nreturning, so copies of the seed, private keys and data derived from\nthe password remain on the stack until later calls overwrite them.\n\nAdd nano::secure_wipe_stack, which zeroes a fixed span of the stack\nbelow its caller, and call it after deterministic_key, pub_key,\nsign_message and kdf::phs. The wipe is best effort: unoptimized builds\ncan keep frames deeper than it reaches. deterministic_key also wipes\nits hash state, which sits in its own frame. The keypair constructors\nnow derive the public key through nano::pub_key, and the wallet's\ndeterministic account check derives public keys directly instead of\npassing each private key through a hex string. The fan class comment\nnow says what its XOR shares do not protect against.\n\nThe secure_memory tests check that secure_wipe_memory zeroes exactly\nthe bytes it is given and that secure_wipe_stack clears what an\nearlier callee left on the stack.",
+    "pull_request": "5244",
+    "created_at": "2026-11-17T22:13:08Z",
+    "landed_at": "2026-11-17T22:13:08Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-18T02:15:24Z",
+    "run_id": null
   },
   {
     "hash": "da1739e1b35b6296c127a163a73f8f48d765ddbd",
