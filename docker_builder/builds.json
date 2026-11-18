@@ -7576,6 +7576,22 @@
     "landed_at": "2023-12-01T10:07:47Z"
   },
   {
+    "hash": "1f0059d33bf5587504c414f9b0edfbebcdab3d4a",
+    "type": "pull_request",
+    "title": "Replace start_stop_guard with the START macro",
+    "author": "pwojcikdev",
+    "body": "Replaces `nano::test::start_stop_guard` with a `START` macro:\n\n```cpp\nSTART (queue);\n```\n\nIt starts the component and stops it when the enclosing scope ends, also when an `ASSERT_*` returns early. The old guard hid the start inside a declaration (`nano::test::start_stop_guard guard{ queue };`), and with several components it stopped them in the order it had started them.\n\n- Like gtest's `SCOPED_TRACE`, the macro declares a guard the test never names: it expands to `nano::test::start (component)`, which returns a `nano::test::scoped_start` that can't be copied or moved. `start` is `[[nodiscard]]`, so a call whose guard is dropped right away fails the build instead of stopping the component again on the same line.\n- Besides a component it takes a raw pointer, `std::shared_ptr` or `std::unique_ptr` to one. The guard refers to the component itself, which has to outlive the scope; temporaries don't compile.\n- A test can still stop a component earlier by calling its `stop ()`. The guard calls it a second time at scope end, which the components started this way tolerate.\n- Several components get one `START` each and stop in reverse order.\n- It lives in `nano/test_common/scoped_start.hpp`, included from `testutil.hpp`.\n\nAll `start_stop_guard` users are switched over. The two `message_processor` tests that called `processor.start ()` and `processor.stop ()` by hand use it as well: a failed assert before the stop left the shard threads running into the destructor's `debug_assert`, which aborted the whole test binary. The unused `stop_guard` helper is removed.\n",
+    "draft": false,
+    "pull_request": 5288,
+    "label": "pwojcikdev:scoped-start",
+    "created_at": "2026-11-18T02:01:43Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-18T02:40:04Z",
+    "run_id": null
+  },
+  {
     "hash": "1f09f21a2def27b78ca7107296f928bb996f8972",
     "type": "commit",
     "created_at": "2023-12-25T21:35:09Z",
