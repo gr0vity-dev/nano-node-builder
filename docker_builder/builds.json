@@ -53765,6 +53765,20 @@
     "landed_at": "2024-10-21T07:29:19Z"
   },
   {
+    "hash": "e12f1c376f06704ff00809e745793d26540cf3be",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Expire deferred cementing entries while the loop is idle (#5292)\n\n* Comment the cleanup step of the cementing set loop\n\n* Expire deferred cementing entries while the loop is idle\n\nThe cementing loop waited without a timeout when nothing was queued,\nand only evicts deferred entries at the top of each pass. An entry that\nfailed to cement stayed deferred past its age cutoff until new work\narrived, so cementing_failed did not fire and the hash kept counting as\nbeing confirmed. The idle wait now wakes up every 5 seconds, every\nsecond on dev, so expired entries are evicted and reported on time.\n\nThe new test defers a missing hash with a one second cutoff and checks\nthat it is evicted and reported without anything else being added.",
+    "pull_request": "5292",
+    "created_at": "2026-11-21T00:25:23Z",
+    "landed_at": "2026-11-21T00:25:23Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-21T01:49:27Z",
+    "run_id": null
+  },
+  {
     "hash": "e152bf2c29931b6031e2097be29a6a619006eba8",
     "type": "pull_request",
     "title": "Final vote requests/replies only",
