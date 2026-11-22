@@ -19353,6 +19353,20 @@
     "run_id": "7587193471"
   },
   {
+    "hash": "5165c262f203580b4c90d3270760d2017b42b9db",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Serve a tcp channel's outbound queue with the fair queue's round robin (#5289)\n\n* Benchmark the queue a tcp channel holds its outbound messages in\n\nMeasures queuing, the sender's batch pops and the limit check under\nthe channel's mutex, for a channel that only relays votes and for one\ncarrying a spread of traffic types, plus the allocations a channel\nkeeps once it has carried every type.\n\n* Extract the fair queue's round robin into fair_ring and fair_lane\n\nThe ring of non-empty queues, the cursor, the share count and the\nserve-then-decide pop move out of fair_queue into a class template of\ntheir own. A fair_lane is one origin's requests with its cap and share,\nstored by the owner where it never moves; the fair_ring links the lanes\nholding requests and keeps the total. fair_queue keeps its origins, its\nhash map of lanes and its maintenance, and serves exactly as before.\n\nA lane now carries a copy of its origin instead of a pointer to the\nmap's key, and refuses to be destroyed while its ring still serves it.\nThe ring gets a suite of its own, including a seeded model check that\nbounds how many requests another lane may give while a lane waits.\n\n* Let a fair queue's owner set the inline capacity of its batches\n\nfair_queue takes the number of requests a batch holds inline as a\ntemplate parameter, defaulting to the 256 every owner uses now, so an\nowner that keeps its batches somewhere long-lived, such as a coroutine\nframe, can ask for fewer.\n\n* Add enum_fair_queue, a fair queue over the values of an enum\n\nEvery value of the enum has its lane from the start, with the cap and\nthe share per turn asked once at construction from the queries the\nowner passes in, so a push is an array index and there is nothing to\nlook up, create or clean up later. The lanes are served by a fair_ring,\nin the order they filled. Batches hold 256 requests inline by default,\nas fair_queue's do, and an owner popping small batches can ask for\nfewer.\n\n* Queue a tcp channel's outbound messages in an enum_fair_queue\n\ntcp_channel_queue was an older copy of fair_queue's round robin that\nhad drifted from it: it walked every traffic type to find the next\nqueue and returned its batches in a std::deque. The channel now holds a\nnano::transport::traffic_queue, an enum_fair_queue over traffic types\nwhose shares come from traffic_priority, and pops up to eight messages\nat a time without allocating. The caps stay at 32 for max () and 128\nfor dropping, now named on tcp_channel.\n\nWithin a round the traffic types are served in the order their queues\nfilled rather than in the enum's order, and a type's turn is decided\nafter it is served, as in fair_queue.",
+    "pull_request": "5289",
+    "created_at": "2026-11-22T19:42:16Z",
+    "landed_at": "2026-11-22T19:42:16Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-22T22:02:04Z",
+    "run_id": null
+  },
+  {
     "hash": "516fc08f51d1b89ae5001d4d8ef3e807b13cd153",
     "type": "pull_request",
     "title": "Count closed connections toward the per IP limit for a cooldown",
