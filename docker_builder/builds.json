@@ -8870,6 +8870,22 @@
     "run_id": "8267419205"
   },
   {
+    "hash": "24e83e81cbcca50bf7f91f884758bb8bf35c3b76",
+    "type": "pull_request",
+    "title": "Add a shared gate test helper and park node threads with it",
+    "author": "pwojcikdev",
+    "body": "Adds `nano::test::shared_gate` to `nano/test_common/shared_values.hpp`, next to the other shared test values. A test captures it by value into a node callback to park a node thread at a known point. All copies share one state: callers block in `wait ()` until the test calls `open ()`, and `waiting ()` reports how many callers are blocked right now, so the test can tell that a callback has reached the gate before it goes on.\n\n`wait ()` gives up after a timeout, 30 s by default, and returns whether the gate was opened. A test that fails an assertion before it opens the gate therefore cannot leave a node thread parked for good: the callback returns and the node's teardown can join its threads, instead of the test binary hanging. The callbacks expect the wait to have opened, so a gate that times out fails the test rather than letting the callback carry on as if it had been released. The timeout stretches with the deadline scale like every `ASSERT_TIMELY`, so a slow run that still meets its deadlines does not time out at the gate first.\n\nThe gate replaces the hand-rolled promise and shared future waits in `active_elections.fork_cached_before_publish`, `cementing_set.notification_backpressure` and `cementing_set.stop_during_cementing`. In `fork_cached_before_publish` its count of waiting callers also replaces an atomic flag the callback captured by reference, which the node could still write after the test body returned.\n\nThe deadline scale moves into `nano::test::deadline_scaling_factor ()`, read through `nano::env::get`, and its environment variable is renamed from `DEADLINE_SCALE_FACTOR` to `NANO_TEST_DEADLINE_SCALE_FACTOR` to match the other test-only variables. The CI workflows and the docker test script set it under the new name.\n\nSplit out of #5293 so it can land on its own; #5286 uses it as well.\n",
+    "draft": false,
+    "pull_request": 5295,
+    "label": "pwojcikdev:shared-gate-test-helper",
+    "created_at": "2026-11-23T17:31:37Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-23T23:27:47Z",
+    "run_id": null
+  },
+  {
     "hash": "24f62ce930809f6d16d83523838495b1b52e3d3d",
     "type": "pull_request",
     "title": "Fix bootstrap <-> blockprocessor notifications",
@@ -53907,6 +53923,20 @@
     "docker_tag": "gr0v1ty/nano-node:e174edf18c4acbe487db9fd089bfb7232ca64772",
     "build_started_at": "2023-11-07T12:44:02Z",
     "run_id": "6784644337"
+  },
+  {
+    "hash": "e1762adf59fce2cf2583dd1f5209993bdf6d4632",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Retire ci/test.sh and TEST_USE_ROCKSDB (#5296)\n\nci/test.sh predates the per-suite scripts in ci/tests, and only the\ncoverage_tests target still ran it. It was the last reader of\nTEST_USE_ROCKSDB, which picked its per-binary timeout, and it tried to\nrun qt_test, which all_tests does not build. The coverage target now\nruns the core, rpc and system test scripts the unit test jobs use.\n\nThe tests themselves pick their backend from NANO_BACKEND, so the\nworkflows and the docker test script stop setting TEST_USE_ROCKSDB.",
+    "pull_request": "5296",
+    "created_at": "2026-11-23T23:11:41Z",
+    "landed_at": "2026-11-23T23:11:41Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-23T23:27:47Z",
+    "run_id": null
   },
   {
     "hash": "e1a4fcbec52448c92452d4fc5bb12fc6f8b36be3",
