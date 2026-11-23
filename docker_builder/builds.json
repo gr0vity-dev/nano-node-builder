@@ -9515,6 +9515,22 @@
     "landed_at": "2026-07-29T23:48:14Z"
   },
   {
+    "hash": "280143b09030ae51e05f652c5635a2fe2b4f9725",
+    "type": "pull_request",
+    "title": "Add a shared gate test helper and park node threads with it",
+    "author": "pwojcikdev",
+    "body": "Adds `nano::test::shared_gate` to `nano/test_common/shared_values.hpp`, next to the other shared test values. A test captures it by value into a node callback to park a node thread at a known point. All copies share one state: callers block in `wait ()` until the test calls `open ()`, and `waiting ()` reports how many callers are blocked right now, so the test can tell that a callback has reached the gate before it goes on.\n\n`wait ()` gives up after a timeout, 30 s by default, and returns whether the gate was opened. A test that fails an assertion before it opens the gate therefore cannot leave a node thread parked for good: the callback returns and the node's teardown can join its threads, instead of the test binary hanging. The callbacks expect the wait to have opened, so a gate that times out fails the test rather than letting the callback carry on as if it had been released. The timeout stretches with the deadline scale like every `ASSERT_TIMELY`, so a slow run that still meets its deadlines does not time out at the gate first.\n\nThe gate replaces the hand-rolled promise and shared future waits in `active_elections.fork_cached_before_publish`, `cementing_set.notification_backpressure` and `cementing_set.stop_during_cementing`. In `fork_cached_before_publish` its count of waiting callers also replaces an atomic flag the callback captured by reference, which the node could still write after the test body returned.\n\nThe deadline scale moves into `nano::test::deadline_scaling_factor ()`, read through `nano::env::get`, and its environment variable is renamed from `DEADLINE_SCALE_FACTOR` to `NANO_TEST_DEADLINE_SCALE_FACTOR` to match the other test-only variables. The CI workflows and the docker test script set it under the new name.\n\nSplit out of #5293 so it can land on its own; #5286 uses it as well.\n",
+    "draft": false,
+    "pull_request": 5295,
+    "label": "pwojcikdev:shared-gate-test-helper",
+    "created_at": "2026-11-23T17:31:37Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-23T22:33:49Z",
+    "run_id": null
+  },
+  {
     "hash": "2807ceecb4a1bc19afcb29f96da392998227538e",
     "type": "pull_request",
     "pull_request": 4158,
@@ -12458,6 +12474,22 @@
     "docker_tag": "gr0v1ty/nano-node:34829fe535b301314d1d39d1aea6563b5e136d8a",
     "build_started_at": "2024-03-15T11:30:48Z",
     "run_id": "8295505347"
+  },
+  {
+    "hash": "348d8576c01e76fbafa7fc9ba96f87b656715f54",
+    "type": "pull_request",
+    "title": "Retire ci/test.sh and TEST_USE_ROCKSDB",
+    "author": "pwojcikdev",
+    "body": "Retires `ci/test.sh`, the all-in-one test runner from before the per-suite scripts in `ci/tests`. Its only remaining caller was the `coverage_tests` CMake target that the coverage workflow builds. That target now runs `run-core-tests.sh`, `run-rpc-tests.sh` and `run-system-tests.sh`, the scripts the unit test jobs use, and still ignores their exit codes so that a failing suite leaves coverage data to report. `qt_test` is left out: `all_tests` does not build it, so the old script's run of it could only fail.\n\n`ci/test.sh` was also the last reader of `TEST_USE_ROCKSDB`, which only picked its per-binary timeout. The tests choose their backend from `NANO_BACKEND`, so the workflows and the docker test script stop setting it.\n\nThe coverage job loses the old per-binary timeouts, so a suite that hangs runs into the step's own time limit instead. The coverage workflow runs on pushes to develop, so this PR's checks do not exercise the target.\n",
+    "draft": false,
+    "pull_request": 5296,
+    "label": "pwojcikdev:retire-test-use-rocksdb",
+    "created_at": "2026-11-23T21:31:04Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-23T22:33:49Z",
+    "run_id": null
   },
   {
     "hash": "34919df0499068a320e072c8da211abe0bcf2807",
@@ -42916,6 +42948,22 @@
     "docker_tag": "gr0v1ty/nano-node:b2db447c2b5fd51463abddfb5804a8e2349aa28e",
     "build_started_at": "2024-02-28T15:16:10Z",
     "run_id": "8082702965"
+  },
+  {
+    "hash": "b2de21c61a1ae2b12babac7df894ddf9441a0afb",
+    "type": "pull_request",
+    "title": "Return transport socket errors as nano::io_result instead of throwing them",
+    "author": "pwojcikdev",
+    "body": "The TCP transport used exceptions as control flow. `tcp_server` turned every failed read or handshake write into a `boost::system::system_error` and threw it to a catch at the top of its coroutine, and the listener's accept and connect let asio throw. A peer disconnecting is how every connection ends, so the normal end of a connection went through an exception. Socket errors now travel as values.\n\n## `nano::io_result`\n\n`nano/lib/io_result.hpp` adds `nano::io_result<T>`, an alias of `boost::system::result<T>`: the value of an I/O operation, or the error code it failed with. `nano::io_success ()` is the result of an operation that produces no value.\n\n`nano::async::as_result` is a completion token adapter, modelled on asio's `as_tuple`, that hands the wrapped token one `nano::io_result` instead of an error code and a value. It keeps the wrapped handler's associated properties, so it stacks with other token adapters. `nano::async::use_result` is that adapter applied to `use_awaitable`:\n\n```cpp\nauto accepted = co_await acceptor.async_accept (nano::async::use_result);\nif (!accepted)\n{\n\tco_return accepted.error ();\n}\n```\n\nCancelling the awaiting coroutine still cancels the operation, which then completes with `operation_aborted`. Asio still throws at the next `co_await` of a cancelled coroutine, so the per-peer transport tasks await their coroutine through `nano::async::settle`, which reports that throw as `operation_aborted`.\n\n## Transport\n\n- `tcp_socket`: `co_read` and `co_write` return `nano::io_result<void>`. A read or write completes only once the whole buffer is transferred, so they no longer report a byte count; a completed read is checked to have filled the buffer. The callback and blocking adapters hand on only the error code.\n- `tcp_server`: the handshake functions return `nano::io_result<handshake_status>`, `receive_message` an `io_result` of the parsed message, and the handshake senders and `run_realtime` an `io_result<void>`. A new `run ()` performs the handshake and then the realtime loop, and `start_impl` reports a failed run once, with the same stat and log line as before.\n- `tcp_listener`: accept and connect return the connected socket together with its remote endpoint, read through the error code overload since the peer may already be gone. The `tcp_socket` built on it takes that endpoint instead of reading it a second time, which left it unspecified when the peer reset the connection in between. Stopping the listener cancels its pending accept, which now ends the accept loop instead of being counted as an accept error.\n- `tcp_channel`: `send_one` and the sending loop return `nano::io_result<void>`, and the reason sending stopped is logged at debug level.\n- A connection's server and channel run on its socket's strand. Each had a strand of its own, so every read and write hopped to the socket's strand and back. `co_read` and `co_write` now assert the socket's strand instead of dispatching to it.\n- `channel::callback_t` is now `nano::transport::send_callback`, next to `connect_callback` in the transport common header. It reports only whether the whole message was written; the byte count it used to carry was read by no caller.\n- `send_handshake_response` counted every response twice, before and after the write. It now counts a response once it is sent.\n- An unexpected exception in per-peer code now closes that connection instead of aborting the node. The server, channel and socket checkup tasks and the socket's callback adapters await their coroutine through the new `nano::async::settle`, which reports how it ended instead of letting an exception through, with the error code of a Boost or standard library system error. Anything other than a cancellation is logged at error level and debug asserted. The server and channel used to release assert, and the checkup let the exception escape, leaving the socket open without its timeouts. The listener's accept loop runs once per node and keeps its release assert.\n\n## Removed\n\n- The legacy bootstrap switch: `tcp_server::to_bootstrap_connection`, the bootstrap handshake status, `socket_type::bootstrap`, `tcp_listener::bootstrap_count` and the monitor's bootstrap peer count, which was always zero. The `bootstrap_connections_max` config key only fed that switch and is retired; a config file that still sets it loads as before.\n- The `bootstrap_connections` and `bootstrap_initiator_threads` config keys, which configured the legacy bootstrap and were no longer read by anything, are retired the same way, together with the `bootstrap_connections` thread role.\n- `transport/block_deserializer`, `throw_if_error`, `tcp_socket::co_connect` and the `socket_functions` subnet helpers, which had no callers outside their own tests, and the two disabled socket tests of a write queue the socket no longer has.\n\n## Tests\n\n- `async.settle_returned`, `settle_cancelled` and `settle_unexpected` for the new helper.\n- An `io_result` suite for the token: values, a failed connect returned as a value instead of thrown, cancellation of a pending operation, and `as_result` with a future.\n- `tcp_server`: `realtime_socket_error`, `handshake_messages_counted_once`, `realtime_ignores_handshake` and `handshake_empty_rejected`.\n- `tcp_socket.remote_endpoint_after_reset` builds a socket over a connection its peer has already reset, where the endpoint can no longer be read, and checks it reports the one it was given.\n- `tcp_listener`: `stop_cancels_accept`, `max_attempts_per_ip`, and `connect_timeout`. The last one needs an address that swallows connects and skips itself where the network refuses them at once.\n- The socket timeout tests are reworked. `socket_timeout.connect` no longer depends on an unroutable address: a socket's connect timeout runs from its creation, so a socket that never connects shows it. The others take the test peer's listener as the far end and assert exact counts.\n\nThe new tests go through `nano::test::peer` wherever a remote node is involved.\n\n## Left for follow-ups\n\n- `nano::async::cancelled ()` cannot return true while asio throws at the `co_await` of a cancelled coroutine, so the loops in `tcp_channel`, `tcp_socket` and `tcp_server` that use it as their condition end through that exception, not the condition.\n\n\n\n\n",
+    "draft": false,
+    "pull_request": 5286,
+    "label": "pwojcikdev:transport-io-result",
+    "created_at": "2026-11-16T23:47:07Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-23T22:33:49Z",
+    "run_id": null
   },
   {
     "hash": "b2e265186bf0db06660ea8bda1ee611483cda629",
