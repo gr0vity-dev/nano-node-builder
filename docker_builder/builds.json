@@ -15377,6 +15377,20 @@
     "run_id": "25033055186"
   },
   {
+    "hash": "40ecc5991528fb4127acda5aa52800be7852e563",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Add a shared gate test helper and park node threads with it (#5295)\n\n* Add a shared gate test helper\n\nA copyable gate in nano::test, next to the other shared values, that\nholds the callbacks waiting on it until the test opens it and counts\nthe callers it holds. Tests use it to park a node thread at a known\npoint. A wait gives up after a timeout, so a test that fails before\nopening the gate cannot hang the node's teardown.\n\n* Park node threads in tests with the shared gate\n\nThe tests that held a node callback on a promise and a shared future\nnow use nano::test::shared_gate. Its count of waiting callers replaces\nthe flag fork_cached_before_publish captured by reference, which the\nnode could still write after the test body returned.\n\n* Scale the shared gate's timeout like test deadlines\n\nThe gate gave up after 30 s however far DEADLINE_SCALE_FACTOR\nstretched the test's deadlines, so a slow run that still met them\ncould see a parked callback resume early and fail its check of the\nwait. The wait now multiplies its timeout by the same factor, which\nmoves into nano::test::deadline_scaling_factor () so the test system\nand the gate read it from one place.\n\n* Rename DEADLINE_SCALE_FACTOR to NANO_TEST_DEADLINE_SCALE_FACTOR\n\nThe deadline scale only affects tests, so it takes the NANO_TEST_\nprefix the other test environment variables carry. The CI workflows\nand the docker test script set it under the new name, and the tests\nread it through nano::env::get.",
+    "pull_request": "5295",
+    "created_at": "2026-11-24T01:54:39Z",
+    "landed_at": "2026-11-24T01:54:39Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-24T06:20:05Z",
+    "run_id": null
+  },
+  {
     "hash": "40f53a94e6dc02daa681486561d05705f84c1594",
     "type": "commit",
     "author": "pwojcikdev",
@@ -24145,6 +24159,22 @@
     "built_at": "2023-10-05T17:33:48Z",
     "build_status": "fail",
     "docker_tag": ""
+  },
+  {
+    "hash": "649b310b0b6b21aec835df11ce6b40ada32bb0f8",
+    "type": "pull_request",
+    "title": "Give sanitizer test waits and Linux core suites more time",
+    "author": "pwojcikdev",
+    "body": "The sanitizer jobs use the same deadline scale as the unit test jobs (1 on lmdb, 2 on rocksdb), although sanitizer builds run several times slower. Waits sized for normal builds end up close to their limit. On the macOS lmdb jobs, `rpc.work_generate_difficulty` passes in up to about 5 s against an unscaled 5 s wait, and `rpc.block_count_pruning` passes in up to about 5.2 s against its 5 s wait for confirmation. Both fail now and then. The scale goes to 2 on lmdb and 3 on rocksdb in the Linux and macOS sanitizer jobs. Fixed-length waits (`WAIT`, `ASSERT_NEVER`, `ASSERT_ALWAYS`) scale too, which adds about a minute per job.\n\nThe Linux rocksdb core suites under ASAN, ASAN_INT and LEAK need roughly 36 to 56 minutes, so the 45 minute kill cuts many runs short. The step continues on error, so the job still shows green and the tests after the cut never run. The Linux core test limit goes to 75 minutes; the lmdb suites finish in about 7 to 12 minutes, well inside either limit. With the slowest builds seen (about 46 minutes) and the 20 minute RPC step, this still fits the 150 minute job limit.\n\nThe macOS sanitizer jobs keep their 45 minute limit. macOS TSAN on rocksdb gets through about half of the core suite before the kill, and a full run would need roughly 80 to 110 minutes on top of a build of about 30 minutes, which does not fit the job limit. The macOS runners are also the bottleneck of the workflow, so a longer job there delays every run queued behind it. macOS ASAN on rocksdb sits right at the limit, and the higher scale makes the kill slightly more likely there. Fixing the macOS rocksdb jobs needs a different approach, such as splitting the suite across jobs or running it outside pull requests, which this PR does not attempt.\n",
+    "draft": false,
+    "pull_request": 5297,
+    "label": "pwojcikdev:sanitizer-test-timeouts",
+    "created_at": "2026-11-24T02:24:19Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-24T06:20:05Z",
+    "run_id": null
   },
   {
     "hash": "64e753abff63f3991ddbf36f811c89e46394abb8",
@@ -42468,6 +42498,22 @@
     "run_id": "43483317855"
   },
   {
+    "hash": "b045f9187a77ebf22db85018106c6e63544704ca",
+    "type": "pull_request",
+    "title": "Return transport socket errors as nano::io_result instead of throwing them",
+    "author": "pwojcikdev",
+    "body": "The TCP transport used exceptions as control flow. `tcp_server` turned every failed read or handshake write into a `boost::system::system_error` and threw it to a catch at the top of its coroutine, and the listener's accept and connect let asio throw. A peer disconnecting is how every connection ends, so the normal end of a connection went through an exception. Socket errors now travel as values.\n\n## `nano::io_result`\n\n`nano/lib/io_result.hpp` adds `nano::io_result<T>`, an alias of `boost::system::result<T>`: the value of an I/O operation, or the error code it failed with. `nano::io_success ()` is the result of an operation that produces no value.\n\n`nano::async::as_result` is a completion token adapter, modelled on asio's `as_tuple`, that hands the wrapped token one `nano::io_result` instead of an error code and a value. It keeps the wrapped handler's associated properties, so it stacks with other token adapters. `nano::async::use_result` is that adapter applied to `use_awaitable`:\n\n```cpp\nauto accepted = co_await acceptor.async_accept (nano::async::use_result);\nif (!accepted)\n{\n\tco_return accepted.error ();\n}\n```\n\nCancelling the awaiting coroutine still cancels the operation, which then completes with `operation_aborted`. Asio still throws at the next `co_await` of a cancelled coroutine, so the per-peer transport tasks await their coroutine through `nano::async::settle`, which reports that throw as `operation_aborted`.\n\n## Transport\n\n- `tcp_socket`: `co_read` and `co_write` return `nano::io_result<void>`. A read or write completes only once the whole buffer is transferred, so they no longer report a byte count; a completed read is checked to have filled the buffer. The callback and blocking adapters hand on only the error code.\n- `tcp_server`: the handshake functions return `nano::io_result<handshake_status>`, `receive_message` an `io_result` of the parsed message, and the handshake senders and `run_realtime` an `io_result<void>`. A new `run ()` performs the handshake and then the realtime loop, and `start_impl` reports a failed run once, with the same stat and log line as before.\n- `tcp_listener`: accept and connect return the connected socket together with its remote endpoint, read through the error code overload since the peer may already be gone. The `tcp_socket` built on it takes that endpoint instead of reading it a second time, which left it unspecified when the peer reset the connection in between. Stopping the listener cancels its pending accept, which now ends the accept loop instead of being counted as an accept error.\n- `tcp_channel`: `send_one` and the sending loop return `nano::io_result<void>`, and the reason sending stopped is logged at debug level.\n- A connection's server and channel run on its socket's strand. Each had a strand of its own, so every read and write hopped to the socket's strand and back. `co_read` and `co_write` now assert the socket's strand instead of dispatching to it.\n- `channel::callback_t` is now `nano::transport::send_callback`, next to `connect_callback` in the transport common header. It reports only whether the whole message was written; the byte count it used to carry was read by no caller.\n- `send_handshake_response` counted every response twice, before and after the write. It now counts a response once it is sent.\n- An unexpected exception in per-peer code now closes that connection instead of aborting the node. The server, channel and socket checkup tasks and the socket's callback adapters await their coroutine through the new `nano::async::settle`, which reports how it ended instead of letting an exception through, with the error code of a Boost or standard library system error. Anything other than a cancellation is logged at error level and debug asserted. The server and channel used to release assert, and the checkup let the exception escape, leaving the socket open without its timeouts. The listener's accept loop runs once per node and keeps its release assert.\n\n## Removed\n\n- The legacy bootstrap switch: `tcp_server::to_bootstrap_connection`, the bootstrap handshake status, `socket_type::bootstrap`, `tcp_listener::bootstrap_count` and the monitor's bootstrap peer count, which was always zero. The `bootstrap_connections_max` config key only fed that switch and is retired; a config file that still sets it loads as before.\n- The `bootstrap_connections` and `bootstrap_initiator_threads` config keys, which configured the legacy bootstrap and were no longer read by anything, are retired the same way, together with the `bootstrap_connections` thread role.\n- `transport/block_deserializer`, `throw_if_error`, `tcp_socket::co_connect` and the `socket_functions` subnet helpers, which had no callers outside their own tests, and the two disabled socket tests of a write queue the socket no longer has.\n\n## Tests\n\n- `async.settle_returned`, `settle_cancelled` and `settle_unexpected` for the new helper.\n- An `io_result` suite for the token: values, a failed connect returned as a value instead of thrown, cancellation of a pending operation, and `as_result` with a future.\n- `tcp_server`: `realtime_socket_error`, `handshake_messages_counted_once`, `realtime_ignores_handshake` and `handshake_empty_rejected`.\n- `tcp_socket.remote_endpoint_after_reset` builds a socket over a connection its peer has already reset, where the endpoint can no longer be read, and checks it reports the one it was given.\n- `tcp_listener`: `stop_cancels_accept`, `max_attempts_per_ip`, and `connect_timeout`. `max_attempts_per_ip` holds its first attempt in the attempt's callback with the shared gate, so the cleanup cannot purge it before the second connect. `connect_timeout` dials a documentation address (RFC 5737) that no network assigns, and skips itself where the network refuses the connect at once.\n- The socket timeout tests are reworked. `socket_timeout.connect` no longer depends on an unroutable address: a socket's connect timeout runs from its creation, so a socket that never connects shows it. The others take the test peer's listener as the far end and assert exact counts.\n\nThe new tests go through `nano::test::peer` wherever a remote node is involved.\n\n## Left for follow-ups\n\n- `nano::async::cancelled ()` cannot return true while asio throws at the `co_await` of a cancelled coroutine, so the loops in `tcp_channel`, `tcp_socket` and `tcp_server` that use it as their condition end through that exception, not the condition.\n\n\n\n\n\n",
+    "draft": false,
+    "pull_request": 5286,
+    "label": "pwojcikdev:transport-io-result",
+    "created_at": "2026-11-16T23:47:07Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-24T06:20:05Z",
+    "run_id": null
+  },
+  {
     "hash": "b04a13dcad192c178548a13e1c66bf55fbb5c597",
     "type": "pull_request",
     "title": "Add to_json() and serialize_json() to block_sideband",
@@ -57168,6 +57214,22 @@
     "docker_tag": "gr0v1ty/nano-node:ef0268d3f9c72da75c550d979153e48d8ced587d",
     "build_started_at": "2024-06-27T10:55:01Z",
     "run_id": "9695300760"
+  },
+  {
+    "hash": "ef0ba13f37e876f6171f3b526eaedf761fa3479c",
+    "type": "pull_request",
+    "title": "Wait for cached votes to be recorded in fork_replacement_tally",
+    "author": "pwojcikdev",
+    "body": "`active_elections.fork_replacement_tally` fails intermittently on CI at its last check, which expects the genesis vote among the election's votes. A fork that a full ballot admits on the weight of its cached votes counts none of that weight until the vote cache processor thread records the votes, after `active_elections::publish` triggers it. The two waits before the last check, for `send_last` to be held and for 8 retained representative forks, both pass the moment the block is admitted, so reading `election->votes ()` right after them can come before the genesis vote is recorded.\n\nThe representative loop had the same gap: it published each fork without waiting for the previous fork's vote to be recorded. The ballot picks the block to evict from recorded votes only, so a fork still at zero weight could be evicted by the next one, after which its cached vote no longer reaches the election and the loop ends with fewer than 9 retained representative forks.\n\nThe test now waits:\n- after each representative fork, until the election records that representative's vote;\n- at the end, until the election records the genesis vote, instead of reading the votes once.\n",
+    "draft": false,
+    "pull_request": 5298,
+    "label": "pwojcikdev:fork-replacement-tally-cached-votes",
+    "created_at": "2026-11-24T03:01:51Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-24T06:20:05Z",
+    "run_id": null
   },
   {
     "hash": "ef0dde689ea7c585787f5f721573e357b465c3dc",
