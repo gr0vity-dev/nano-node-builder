@@ -30621,6 +30621,22 @@
     "run_id": "12623471501"
   },
   {
+    "hash": "7e448e1f4fb115eb6ee9fdddd35235b1aecbb76b",
+    "type": "pull_request",
+    "title": "Report the winner tally and per-block final tallies in confirmation_info",
+    "author": "pwojcikdev",
+    "body": "`confirmation_info` reported the winner's `final_tally` but not its total `tally`, and each block's `tally` but not its `final_tally`. This adds both, and makes every weight in the response come from one consistent snapshot.\n\n### Response changes\n\n- New top-level `tally`: the winner's total vote weight, next to `final_tally`.\n- New `final_tally` in every `blocks` entry: the weight of the final votes behind that block, next to its `tally`. Blocks without votes report `0`.\n- The top-level `final_tally` now comes from the same snapshot as the block entries instead of the election's last evaluation, so it always matches the winner's own entry.\n- With `representatives=true`, voter weights come from that snapshot too instead of a second ledger read per voter, so a block's `representatives` always add up to its `tally` and its `representatives_final` to its `final_tally`.\n\n### How it works\n\nThe election ballot already computed the total and the final-only weight behind every voted-for hash, but only the totals were exposed, through the ordered tally. That pair is now a public `nano::block_weight`, and `election_ballot::weights ()` lists every held block by hash with both weights. An overload, `weights (votes)`, sums votes that `votes_with_weight ()` already weighed, without another weight query.\n\nThe extended election status takes its votes from `votes_with_weight ()` and its block weights from those same votes, in place of the vote map and the ordered tally, all under the election mutex. Per-vote and per-block weights therefore come from a single weight query and cannot disagree, even if a delegation changes while the request runs. `confirmation_info` was the only reader of the ordered tally and looks blocks up by hash, so the handler no longer rebuilds a hash map from it. `election_ballot::tally ()`, `tally_key` and `evaluate ()` are unchanged.\n\n`vote_info::final ()` is renamed to `is_final ()`, and `vote_with_weight_info` gains the same `is_final ()`. The extended status written to the election logs now lists votes with their weights, and `weights` by hash with `amount` and `final_amount` instead of `tally` ordered by weight.\n\n### Tests\n\n- `election_ballot.weights_per_held_block` covers how normal and final votes count, zero weight for a held block without votes, unheld hashes being left out, the single weight query, and agreement with the winner's final weight from `evaluate`.\n- `election_ballot.weights_from_weighed_votes` covers summing already weighed votes without a weight query, keeping the weights they were read with after a rep's weight changes, and `vote_with_weight_info::is_final ()`.\n- `rpc.confirmation_info` and `rpc.confirmation_info_empty` check the new fields.\n",
+    "draft": false,
+    "pull_request": 5300,
+    "label": "pwojcikdev:confirmation-info-tally-fields",
+    "created_at": "2026-11-24T16:15:58Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-24T18:26:29Z",
+    "run_id": null
+  },
+  {
     "hash": "7e45f2c6294f9219b1a912c84e1f5bf35b17cd14",
     "type": "pull_request",
     "title": "Refactor election ballot, vote routing, and confirmation reporting",
