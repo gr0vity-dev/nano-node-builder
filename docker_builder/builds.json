@@ -9030,6 +9030,22 @@
     "run_id": "29110033273"
   },
   {
+    "hash": "2556b1c18f530a9451ac6dc38bdda47c6e4a8c6b",
+    "type": "pull_request",
+    "title": "Order deferred cementing entries by the time they were added",
+    "author": "pwojcikdev",
+    "body": "A deferred cementing entry that is requeued and fails again keeps the timestamp from when it was first added, but was appended to the back of the sequenced `deferred` index. `cleanup` stops at the first entry that has not expired, so an expired retry waited behind fresher entries and `cementing_failed` fired for it late. If the block kept being rolled back and requeued before those entries expired, it went to the back again each time, so its failure report could be postponed indefinitely.\n\n`deferred` now has its own container type, ordered by timestamp with the hash index next to it, so its iteration order matches the age that `deferred_age_cutoff` is measured against. A failed batch entry is inserted in timestamp order, and `cleanup` walks from the oldest entry and keeps its early stop. The `max_deferred` overflow also evicts the oldest entry by timestamp, not the one deferred longest ago. `set` keeps its sequenced type.\n\nThe new test `cementing_set.deferred_age_eviction_retried` defers a block, defers a second block after it, then requeues the first without adding it to the ledger, so it fails again and is deferred behind the second. It checks that the retried block is still evicted and reported first.\n",
+    "draft": false,
+    "pull_request": 5303,
+    "label": "pwojcikdev:cementing-set-deferred-expiry-order",
+    "created_at": "2026-11-25T02:57:22Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-25T03:23:08Z",
+    "run_id": null
+  },
+  {
     "hash": "2586877120267acc5a07aca1ce4c73a5c40d034f",
     "type": "commit",
     "author": "pwojcikdev",
@@ -14266,6 +14282,20 @@
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:3bffc6990eebdb68a196ecdd4632a12f97089593",
     "landed_at": "2023-02-15T10:03:08Z"
+  },
+  {
+    "hash": "3c0d0786288b4f0bb8a1afb93ba9fbab2566c82e",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Report the winner tally and per-block final tallies in confirmation_info (#5300)\n\n* Rename vote_info::final () to is_final ()\n\nName the predicate like nano::vote::is_final_timestamp, which it wraps.\n\n* Expose per-block vote weights from the election ballot\n\nThe ballot already computes both the total and the final-only vote\nweight behind every voted-for hash, but only the totals left it, through\nthe ordered tally. Make that pair a public nano::block_weight and add\nelection_ballot::weights (), which lists every held block and every\nvoted-for hash with both weights, including hashes the ballot does not\nhold. Its overload sums votes that votes_with_weight () already weighed,\nwithout another weight query.\n\nThe extended election status takes its votes from votes_with_weight ()\nand its block weights from those same votes, in place of the vote map\nand the ordered tally, so a block's weight is always exactly what its\nvoters carry. confirmation_info lists voters with these weights instead\nof reading each rep's weight from the ledger again, which could\ndisagree with the block's tally if weights moved in between, and looks\nblocks up by hash instead of rebuilding a hash map from the tally.\n\n* Report the winner tally and per-block final tallies in confirmation_info\n\nconfirmation_info reported the winner's final tally but not its total\ntally, and each block's total tally but not its final one. Add a\ntop-level tally next to final_tally, and a final_tally to every block\nentry next to its tally.\n\nBoth top-level values now come from the winner's entry in the same\nsnapshot as the blocks and their voters, rather than from the\nelection's last evaluation, so every number in the response agrees.\n\n* List voted-for hashes the election does not hold in confirmation_info\n\nAn election records votes for forks it has not received, and their\nweight decides the leader, yet confirmation_info showed only the held\nblocks. List every hash from the snapshot's weights instead: each entry\ngains a held flag, and an unheld one has its tallies and voters but no\ncontents. total_tally now includes the weight behind unheld hashes.",
+    "pull_request": "5300",
+    "created_at": "2026-11-25T03:03:51Z",
+    "landed_at": "2026-11-25T03:03:51Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-25T03:23:08Z",
+    "run_id": null
   },
   {
     "hash": "3c2282e02a6ae2dcb10a6db75ae7c4938966480a",
