@@ -19037,6 +19037,22 @@
     "run_id": "8190540931"
   },
   {
+    "hash": "4f3d7e1ccfd2876f28af2b3f028b28bd93f0df6c",
+    "type": "pull_request",
+    "title": "Release locally refused reachouts at once and back off failed ones",
+    "author": "pwojcikdev",
+    "body": "A connect that the listener refused locally, for example because the address was still on its reconnect cooldown, left its reachout record in place until the five minute cleanup cutoff. An address that was only cooling down could not be reached out to again for five minutes.\n\n## Changes\n\n**The connect callback reports the whole attempt.** `tcp_listener::connect` and `tcp_channels::start_tcp` return nothing. The callback is optional and is called exactly once, when the attempt is over: at once when this node refuses the attempt or the TCP connect fails, after the handshake otherwise. An empty error code now means a channel was made.\n\n- A refusal by this node carries a `nano::error_network` code, with new `max_attempts` and `max_attempts_per_ip` codes for the attempt limits.\n- A handshake that ends without a channel carries a new `nano::error_handshake` code that names the reason: wrong network, outdated version, the node's own id, genesis mismatch, invalid signature, duplicate channel and so on. `network::verify_handshake_response` became `check_handshake_response` and returns that reason.\n- A handshake cut short by a socket error carries that error.\n- The preconfigured peer log reports the reason, and reports a connection only once the handshake made a channel.\n- The callback never runs inside the call, and a node shutdown does not lose it: refusals still waiting to be reported are reported by `tcp_listener::stop`, and a connect on a listener that has already stopped reports before it returns, the one case where the callback runs inside the call.\n\n**A timed out socket says so.** `tcp_socket` fails a connect, read or write with `timed_out` once the socket has timed out, where it used to report the abort its own close caused. The listener's handshake sweep closes through a new `tcp_socket::timeout_async`, so a handshake that ran out of time reaches the connect callback as `timed_out`. The socket's error stats count such operations as `timed_out` as well.\n\n**Reachouts move into `nano::transport::reachout_index`** (`transport/reachout_index.hpp/.cpp`), a time-injected index owned by `tcp_channels`:\n\n- `track` hands out a handle for the connection attempt. The attempt reports how it ended on that handle only, the first outcome stands, and releasing the handle without one counts as a failure. No call resolves a reachout by endpoint.\n- A reachout holds its endpoint while its attempt runs, and for `reachout_cooldown` from the dial after that. The hold doubles after each reachout in a row that ends without a channel, up to `reachout_cooldown_max`.\n- A channel clears the doubling but does not end the hold early, so an endpoint that keeps dropping its channel is dialled at most once per hold.\n- `merge_peer`'s callback owns the handle: a channel marks it connected, a refusal by this node drops it, which frees the endpoint at once and leaves its failure count unchanged, and any other outcome is a failure.\n- Expired records are kept for their failure count until `reachout_cooldown_max` has passed once more. The table is capped at 16k records, and evictions count as `tcp_channels / reachout_evicted`. A record whose attempt still runs is neither forgotten nor evicted.\n\n**Reachout limits.** The per IP and per subnetwork checks in `tcp_channels::track_reachout` count channels and holding reachouts separately: channels cap the connections to a host, holding reachouts cap how many of its endpoints are dialled per hold. The blocklist, exclusion and realtime gates move up into `network::track_reachout`.\n\n**Config.** New network keys `reachout_cooldown` (10 s) and `reachout_cooldown_max` (5 min), both 5 s on the dev network.\n\n**Network loops follow the maintenance pattern** of `bootstrap_context`:\n\n- `run_maintenance` runs one maintenance round that purges idle channels and ages the duplicate filter.\n- `run_keepalive` runs one `keepalive ()` round.\n- `network::cleanup` is now `purge`, and the node flag `disable_connection_cleanup` is now `disable_connection_purge`.\n- `channel_purge_cutoff` replaces `cleanup_period` and `cleanup_cutoff ()`. The unused `cleanup_period_half ()` and `idle_timeout` are gone.\n\n**Smaller changes.** `tcp_listener_index::update` is renamed `purge`. The `merge_peer_failed` stat is removed, since it counted the same refusals as the listener's `connect_rejected`.\n\n## Tests\n\n- New `reachout_index` suite: track and hold, a pending attempt holding past its expiry, release as failure, backoff and its cap, `mark_connected`, `drop`, the first outcome standing against late reports, per IP and per subnetwork counts, purge, size limit, a purge that spares running attempts and a disabled cooldown.\n- New network tests:\n  - `merge_peer_refused_locally`: a local refusal frees the endpoint at once.\n  - `merge_peer_failed_on_network`: a failed connect keeps it held.\n  - `merge_peer_holds_after_channel`: a connect that ended in a channel holds the endpoint until the hold runs out.\n  - `merge_peer_holds_during_handshake`: a handshake still open past the hold is not dialled a second time.\n- The listener's connect callback tests cover success after the handshake and each kind of failure: a dead port, the node's own id, a handshake timeout, another network, a duplicate channel and a peer that hangs up. Two more cover shutdown: a refusal still waiting to be reported when the node stops, and a connect made after it stopped.\n- `socket_timeout.read` and `socket_timeout.write` also check that the operation fails as `timed_out`.\n- `tcp_listener.max_attempts_per_ip` holds its first attempt with a connect to a closed port, since the callback of a connect that reaches the peer now waits for the handshake.\n\n## Follow-ups\n\n- Until a peer reports its listening port, its channel's peering endpoint is the remote ephemeral port, and `random_fill` advertises that. Nodes then dial ports nobody listens on, and each such reachout holds its endpoint.\n- `track_reachout` matches existing channels by remote endpoint, so a peer that connected to us is still reached out to on its listening port and refused as a duplicate during the handshake.\n- A channel made without a reachout, for a preconfigured peer or an inbound connection, does not reset the endpoint's failure count.\n- `peer_reachout` and `cached_peer_reachout` only switch their loops on and off. Both loops pace on `merge_period`, so the toml description \"Time between attempts\" is wrong.\n- Reachout records are purged inside the channel purge, so `disable_connection_purge` stops that purge as well.\n- A connect attempt the listener cancels at `connect_timeout` still reports `operation_canceled`, while a timed out handshake now reports `timed_out`.\n\n",
+    "draft": false,
+    "pull_request": 5287,
+    "label": "pwojcikdev:reachout-index",
+    "created_at": "2026-11-17T16:45:33Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-25T20:07:58Z",
+    "run_id": null
+  },
+  {
     "hash": "4f450ae5119094800e58b44b109584cacf6f2f05",
     "type": "commit",
     "author": "clemahieu",
@@ -50042,6 +50058,20 @@
     "docker_tag": "gr0v1ty/nano-node:d0888547e50721a39fe7fd96453e358f61101450",
     "build_started_at": "2026-01-26T01:46:07Z",
     "run_id": "21343572096"
+  },
+  {
+    "hash": "d08b60c6c788de710b83ed4c95f64211c6e73e6b",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Order deferred cementing entries by the time they were added (#5303)\n\nA deferred entry that is requeued and fails again keeps the timestamp\nfrom when it was added, but was appended to the back of the sequenced\ndeferred index. Cleanup stops at the first fresh entry, so the expired\nretry waited behind fresher entries and its failure was reported late,\nor later still if it kept failing.\n\nIndex deferred entries by timestamp, so age expiry and the max_deferred\noverflow both evict the oldest entry first.",
+    "pull_request": "5303",
+    "created_at": "2026-11-25T15:18:03Z",
+    "landed_at": "2026-11-25T15:18:03Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-25T20:07:58Z",
+    "run_id": null
   },
   {
     "hash": "d09940f645541ad14173affb3c6773e10b250548",
