@@ -3845,6 +3845,22 @@
     "run_id": "21339194883"
   },
   {
+    "hash": "10c7d1c1b26e2bd92a3eaf6457ff9a981487c2a8",
+    "type": "pull_request",
+    "title": "End a channel's bandwidth wait once its socket closes",
+    "author": "pwojcikdev",
+    "body": "A channel short of outbound bandwidth waits for the limiter before it writes its next message. That wait went on after the channel's socket had closed, until the bandwidth returned or connection cleanup closed the channel, and only then did the send fail on a write to the closed socket. With a starved limiter the send's callback stayed pending all that time. When the channel itself was closed during the wait, the callback never ran at all.\n\n## Changes\n\n- The bandwidth wait is its own coroutine, `wait_bandwidth`, awaited only when the bandwidth left over from earlier sends does not cover the next one. It fails with `operation_aborted` once the socket is closed, and the send is reported with that error like a failed write.\n- A cancelled wait fails the same way. Closing a channel cancels its sending coroutine before the socket closes, and the wait swallowed that cancellation, so the coroutine's next wait threw and the waiting send was never reported.\n- `send_one` checks the allocation again before taking the send's bytes out of it. A shortfall there is a bug: it debug asserts and fails the send rather than let it past the limiter. It returns at the first failure, and the sending loop reports each send's outcome to its callback at one place.\n- A channel keeps one bandwidth allocation per limiter. Generic traffic and bootstrap responses are charged to separate limiters but shared one allocation, so bandwidth one limiter granted could be spent on traffic charged to the other without asking it. `nano::bandwidth_limit_type` names the limiters, and `to_bandwidth_limit_type` says which one a traffic type is charged to.\n- The allocations are plain `size_t` values, since only the sending coroutine on the socket's strand touches them.\n- The amount a channel takes from a limiter at once, a hard coded 128 KiB, is now the `node.tcp.bandwidth_allocation` setting with the same default. A wait takes at least what the send still lacks, so an allocation smaller than a message, or 0, still makes progress instead of asking the limiter forever.\n\nSends queued behind a failed one are left as before.\n\n## Tests\n\nThe `tcp_channel` tests run on a channel the node has not registered, so the test's own sends are the only traffic on it.\n\n- `socket_close_ends_bandwidth_wait` and `close_ends_bandwidth_wait` hold one send in the bandwidth wait, close the socket or the channel, and check that the send's callback runs once with `operation_aborted` and nothing is written.\n- `bandwidth_kept_per_limiter` leaves a channel with a generic allocation and checks that a bootstrap response then waits for its own limiter.\n- `zero_bandwidth_allocation` sends with an allocation of 0.\n- The `toml` tests cover the new setting.\n",
+    "draft": false,
+    "pull_request": 5301,
+    "label": "pwojcikdev:tcp-channel-bandwidth-wait",
+    "created_at": "2026-11-24T16:25:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-25T03:47:33Z",
+    "run_id": null
+  },
+  {
     "hash": "10ce90d99ba1621c089aa0d74a0c84813daaacbf",
     "type": "commit",
     "created_at": "2023-02-03T20:34:16Z",
