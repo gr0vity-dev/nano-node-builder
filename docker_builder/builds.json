@@ -23984,6 +23984,20 @@
     "run_id": "8038646568"
   },
   {
+    "hash": "638d8cdae69a26790364f07a8c25abd6dc81afee",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Keep four freed coroutine frames and handlers per io thread (#5302)\n\nasio reuses the memory of its coroutine frames, handlers and\ncancellation slots through a per-thread cache that holds two freed\nblocks of each kind. A message written through a tcp channel keeps\nthree coroutine frames alive at once: send_one's, the socket's\nco_write and the one awaiting the async_write. Two of them went back\nto malloc on every message, so BOOST_ASIO_RECYCLING_ALLOCATOR_CACHE_SIZE\nraises the cache to four. asio keeps only blocks of up to about 1 KB,\nso an io thread holds a few KB more at most.\n\nThe value changes the layout of asio's per-thread state, so it is set\nbefore Boost is added and every library compiled here sees the same\none.",
+    "pull_request": "5302",
+    "created_at": "2026-11-24T22:44:28Z",
+    "landed_at": "2026-11-24T22:44:28Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-25T01:52:24Z",
+    "run_id": null
+  },
+  {
     "hash": "63927631176a10db34ce881956bf06679964bcd1",
     "type": "pull_request",
     "title": "Bucketing component",
@@ -25357,6 +25371,22 @@
     "built_at": null,
     "build_status": "fail",
     "docker_tag": null
+  },
+  {
+    "hash": "687c736af41a3aa1cb8bd941484d1fa692b9faf8",
+    "type": "pull_request",
+    "title": "Report the winner tally and per-block final tallies in confirmation_info",
+    "author": "pwojcikdev",
+    "body": "`confirmation_info` reported the winner's `final_tally` but not its total `tally`, and each block's `tally` but not its `final_tally`. This adds both, lists the forks an election has votes for but has not received, and makes every weight in the response come from one consistent snapshot.\n\n### Response changes\n\n- New top-level `tally`: the winner's total vote weight, next to `final_tally`.\n- New `final_tally` in every `blocks` entry: the weight of the final votes behind that block, next to its `tally`. Blocks without votes report `0`.\n- `blocks` now also lists hashes the election has votes for but does not hold, which helps when debugging forks. Every entry gets a `held` flag; an unheld entry has its tallies and, with `representatives=true`, its voters, but no `contents`. `total_tally` now includes the weight behind these hashes.\n- The top-level `final_tally` now comes from the same snapshot as the block entries instead of the election's last evaluation, so it always matches the winner's own entry.\n- With `representatives=true`, voter weights come from that snapshot too instead of a second ledger read per voter, so a block's `representatives` always add up to its `tally` and its `representatives_final` to its `final_tally`.\n\n### How it works\n\nThe election ballot already computed the total and the final-only weight behind every voted-for hash, but only the totals were exposed, through the ordered tally. That pair is now a public `nano::block_weight`, and `election_ballot::weights ()` lists every held block and every voted-for hash with both weights, including hashes the ballot does not hold. An overload, `weights (votes)`, sums votes that `votes_with_weight ()` already weighed, without another weight query.\n\nThe extended election status takes its votes from `votes_with_weight ()` and its block weights from those same votes, in place of the vote map and the ordered tally, all under the election mutex. Per-vote and per-block weights therefore come from a single weight query and cannot disagree, even if a delegation changes while the request runs. `confirmation_info` was the only reader of the ordered tally; it now walks this weight map and looks each hash up among the held blocks for its contents. `election_ballot::tally ()`, `tally_key` and `evaluate ()` are unchanged.\n\n`vote_info::final ()` is renamed to `is_final ()`, and `vote_with_weight_info` gains the same `is_final ()`. The extended status written to the election logs now lists votes with their weights, and `weights` by hash with `amount` and `final_amount` instead of `tally` ordered by weight.\n\n### Tests\n\n- `election_ballot.weights_per_hash` covers how normal and final votes count, zero weight for a held block without votes, an unheld hash listed with its weight, the single weight query, and agreement with the winner's final weight from `evaluate`.\n- `election_ballot.weights_from_weighed_votes` covers summing already weighed votes without a weight query, keeping the weights they were read with after a rep's weight changes, and `vote_with_weight_info::is_final ()`.\n- `rpc.confirmation_info` and `rpc.confirmation_info_empty` check the new fields; `rpc.confirmation_info` also has a rep vote for a fork the election never received and checks its unheld entry.\n",
+    "draft": false,
+    "pull_request": 5300,
+    "label": "pwojcikdev:confirmation-info-tally-fields",
+    "created_at": "2026-11-24T16:15:58Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-25T01:52:24Z",
+    "run_id": null
   },
   {
     "hash": "687e5f3e7675501635f73c6269e0c841a325a1fe",
@@ -34443,6 +34473,22 @@
     "docker_tag": "gr0v1ty/nano-node:8e78f5d5ff4dcdf4d2e5b2bb90b29ec19cb33a4d",
     "build_started_at": "2024-04-12T17:27:05Z",
     "run_id": "8665765611"
+  },
+  {
+    "hash": "8e7b7ca7af79e820a52ea4e8a4faae23786c6a7d",
+    "type": "pull_request",
+    "title": "End a channel's bandwidth wait once its socket closes",
+    "author": "pwojcikdev",
+    "body": "A channel short of outbound bandwidth waits for the limiter before it writes its next message. That wait went on after the channel's socket had closed, until the bandwidth returned or connection cleanup closed the channel, and only then did the send fail on a write to the closed socket. With a starved limiter the send's callback stayed pending all that time. When the channel itself was closed during the wait, the callback never ran at all.\n\n## Changes\n\n- The bandwidth wait is its own coroutine, `wait_bandwidth`, awaited only when the bandwidth left over from earlier sends does not cover the next one. It fails with `operation_aborted` once the socket is closed, and the send is reported with that error like a failed write.\n- A cancelled wait fails the same way. Closing a channel cancels its sending coroutine before the socket closes, and the wait swallowed that cancellation, so the coroutine's next wait threw and the waiting send was never reported.\n- `send_one` checks the allocation again before taking the send's bytes out of it. A shortfall there is a bug: it debug asserts and fails the send rather than let it past the limiter. It returns at the first failure, and the sending loop reports each send's outcome to its callback at one place.\n- A channel keeps one bandwidth allocation per limiter. Generic traffic and bootstrap responses are charged to separate limiters but shared one allocation, so bandwidth one limiter granted could be spent on traffic charged to the other without asking it. `nano::bandwidth_limit_type` names the limiters, and `to_bandwidth_limit_type` says which one a traffic type is charged to.\n- The allocations are plain `size_t` values, since only the sending coroutine on the socket's strand touches them.\n- The amount a channel takes from a limiter at once, a hard coded 128 KiB, is now the `node.tcp.bandwidth_allocation` setting with the same default. A wait takes at least what the send still lacks, so an allocation smaller than a message, or 0, still makes progress instead of asking the limiter forever.\n\nSends queued behind a failed one are left as before.\n\n## Tests\n\nThe `tcp_channel` tests run on a channel the node has not registered, so the test's own sends are the only traffic on it.\n\n- `socket_close_ends_bandwidth_wait` and `close_ends_bandwidth_wait` hold one send in the bandwidth wait, close the socket or the channel, and check that the send's callback runs once with `operation_aborted` and nothing is written.\n- `bandwidth_kept_per_limiter` leaves a channel with a generic allocation and checks that a bootstrap response then waits for its own limiter.\n- `zero_bandwidth_allocation` sends with an allocation of 0.\n- The `toml` tests cover the new setting.\n",
+    "draft": false,
+    "pull_request": 5301,
+    "label": "pwojcikdev:tcp-channel-bandwidth-wait",
+    "created_at": "2026-11-24T16:25:19Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-25T01:52:24Z",
+    "run_id": null
   },
   {
     "hash": "8e8509de2ae6e5f9cdefa3e1e022210e2861ba77",
