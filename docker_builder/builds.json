@@ -7881,6 +7881,20 @@
     "run_id": "21381236710"
   },
   {
+    "hash": "200a88787c8272a04702d45b908819f96b5765df",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Stop answering and accepting version 1 of the node id handshake (#5304)\n\nEvery peer at or above the minimum protocol version announces v2 or v3\nin its queries and answers in the version it is asked for, which leaves\nv1 unused between supported nodes.\n\nThe network now gives no response to a query that asks for v1 and fails\na v1 response, each under its own stat, and the tcp server aborts the\nhandshake on either verdict. The node_id_handshake message still parses\nand serializes v1.\n\nThe stat detail enum reached its magic_enum range, which grows to the\nsize the counters array already has.",
+    "pull_request": "5304",
+    "created_at": "2026-11-26T16:47:35Z",
+    "landed_at": "2026-11-26T16:47:35Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-26T20:28:35Z",
+    "run_id": null
+  },
+  {
     "hash": "2016dffc8263c75037d6fa9eb2fce5bc91833eb0",
     "type": "pull_request",
     "pull_request": 4345,
@@ -15789,6 +15803,22 @@
     "docker_tag": "gr0v1ty/nano-node:41f9706b493504fb1d3ae3ae4fa0e8fd5cedb73e"
   },
   {
+    "hash": "41fda79bebcf0817fbc199001263b1e25ce2c4f8",
+    "type": "pull_request",
+    "title": "Publish AMD64 and ARM64 node images together under write-once tags",
+    "author": "pwojcikdev",
+    "body": "## Changes\n\nBuild the Nano node image for Linux AMD64 and ARM64 on native GitHub runners for both live and beta. Each runner starts the node with `--version` and uploads its image as a workflow artifact. Once both builds pass, the publish job assembles a single image index and makes the release tag visible after both platform images have uploaded.\n\nThe publisher checks all destination tags before writing to GHCR or Docker Hub. A matching version digest makes retries idempotent. A conflicting version tag fails the deployment, and an existing `latest` stays in place. New version tags are required to distribute a different build. Deployments for the same image name are serialized. Registry-side tag immutability is needed to enforce this policy for independent writers.\n\n## Verification\n\n- Exercised the publish workflow with AMD64 and ARM64 fixture images and two local registries. Verified both platform digests, retry behavior, and preservation of existing tags.\n- Verified that a missing platform, a conflicting version at the second registry, or a failed tag lookup blocks publication. Confirmed zero registry write requests for existing tags.\n- Validated the workflow YAML against the GitHub Actions schema and checked the deployment scripts with ShellCheck.\n\nFull native Nano node builds and production publication run through the tagged Build & Deploy workflow.",
+    "draft": false,
+    "pull_request": 5294,
+    "label": "nanocurrency:ci/multiarch-node-images",
+    "created_at": "2026-11-20T18:18:06Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-26T20:28:35Z",
+    "run_id": null
+  },
+  {
     "hash": "41feb779b90b704ba67c0ab8e4540ef80000271b",
     "type": "commit",
     "created_at": "2023-09-18T23:27:30Z",
@@ -22691,6 +22721,22 @@
     "run_id": "11539654240"
   },
   {
+    "hash": "5e2453cdde1ded59ea36816992a6442e9246e5b3",
+    "type": "pull_request",
+    "title": "Report cancellation to a task's coroutine instead of throwing it",
+    "author": "pwojcikdev",
+    "body": "asio throws `operation_aborted` from the next `co_await` of a cancelled coroutine. A wait that is already suspended when the cancellation arrives returns the same error as its result instead, so every transport coroutine had to expect a cancellation in two forms, and anything that must happen after a wait, such as reporting a send to its callback, needed a try block. A cancellation is now only ever a result.\n\n## Changes\n\n- `nano::async::task` turns asio's cancellation throw off for its coroutine and everything it awaits. A cancelled task gets `operation_aborted` from the wait it was suspended in and `true` from `nano::async::cancelled ()`, which never returned it before, and has to return on its own. The class comment spells this out.\n- With the throw off, a cancellation only reaches the wait in progress when it arrives. One that arrives just after a wait completed, before the coroutine resumed, is not delivered to the next wait. `nano::async::sleep_for` therefore looks for an earlier cancellation before it starts and returns `operation_aborted` at once.\n- The listener's accept does the same. Nothing else would end an accept started after a missed cancellation, since `stop ()` joins the accept loop before it closes the acceptor.\n- Every caller of `sleep_for` handles its result. The accept loop's pause and its wait for a free inbound slot, which now returns a `nano::io_result`, end the loop when cancelled, and a socket's checkup stops before advancing its clock for an interval that did not pass.\n- The handling of thrown cancellations is removed: the try block around `send_one` in the channel's sending loop that #5301 added, and the one around the listener's accept loop, which took any `boost::system::system_error` for a cancellation and was left open in #5299.\n- `nano::async::settle` treats every exception as unexpected, a thrown `operation_aborted` included, so a coroutine that still throws one is logged and its connection closed like any other bug.\n- The `cancelled ()` conditions of the sending, receiving and checkup loops now end those loops, as they were written to, which #5286 listed as a follow-up. A channel cancelled while idle ends its sending loop without an error.\n\nSocket reads and writes do not look for an earlier cancellation. After a missed one a server can still read the payload of a message whose header it has, and a channel writes the rest of its batch, each bounded by the socket closing or its io timeout.\n\n## Tests\n\n- `async.task_cancel_not_thrown` cancels a task in a wait and checks that the wait returns `operation_aborted`, `cancelled ()` returns true and the coroutine runs to its end.\n- `async.sleep_for_after_cancel` checks that a sleep started after the cancellation returns `operation_aborted` without waiting.\n- `tcp_listener.stop_after_slot_wait_expires` stops the node while a connect callback holds the listener's strand, so the cancellation arrives after the slot wait's timer has expired, and checks that the stop returns. If the stop gets stuck in the accept, a rescue connection frees it and the test fails instead of hanging.\n- `async.settle_cancelled` now cancels a coroutine that returns the cancellation, and `async.settle_unexpected` covers a thrown one.\n- `tcp_channel.close_after_bandwidth_timer_expires` still covers the late cancellation of a bandwidth wait, now through the check in `sleep_for`.\n",
+    "draft": false,
+    "pull_request": 5307,
+    "label": "pwojcikdev:task-cancellation-result",
+    "created_at": "2026-11-26T18:59:16Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-26T20:28:35Z",
+    "run_id": null
+  },
+  {
     "hash": "5e38a0051b7905a3e7f3cd44482b792c76c160e1",
     "type": "pull_request",
     "title": "Introduce generic `store::crawler` template for database iteration",
@@ -27489,6 +27535,22 @@
     "build_started_at": "2026-09-29T18:15:46Z",
     "run_id": "36638803542",
     "landed_at": "2026-09-29T13:35:30Z"
+  },
+  {
+    "hash": "7094ee1f525aa52955a247c9d05842b2ad7e1448",
+    "type": "pull_request",
+    "title": "Check a block's signature and work before reporting it as a fork",
+    "author": "pwojcikdev",
+    "body": "A block that does not follow its account's head is reported as a fork. This makes that result carry the same guarantees for every block type: the account signed the block and the block has the work it needs, so only its position is in question.\n\n## Signature\n\nSend, receive and change blocks compared their predecessor with the account head before validating the signature, while open, state and epoch blocks validate the signature first. The legacy handlers now use the same order. The block processor already resolves the signer of these blocks and verifies them ahead of the write, so the verdict is at hand and nothing is verified twice.\n\n## Work\n\nThe work check is the last one a block passes, because the threshold depends on what the block does and in which epoch. A state or epoch block that does not follow the head never got that far. It is now reported as a fork only with the work it needs, and as having insufficient work otherwise, which is the result the same block gets once it follows the head.\n\nEvery state block is classified against the account as its predecessor left it, which tells whether it sends or receives and in which epoch. For a block that follows the head that is the account's entry, as before. For any other block the head belongs to the competing block, so the predecessor block is read instead. The same classification and the same work check then apply to both, and only after them is a block that does not follow the head reported as a fork.\n\n- A receive that does not follow the head is not checked against what the account can receive, since that depends on the competing block. It takes only the epoch of its source, read from the receivable entry or, when that is gone, from the source block. With neither in the ledger the threshold cannot be told and the block is still reported as a fork.\n- An epoch block's threshold follows from its link alone, so it is worked out once, before the account is looked at.\n- A block that follows the head no longer has its predecessor looked up separately, since the head comparison already answers that. Off the head the predecessor is read once, and that read also tells whether it is missing.\n\nLegacy blocks need no change here: their threshold does not depend on the ledger and is the one already applied where blocks enter the node.\n\n## Tests\n\n- `ledger.fail_send_fork_bad_signature`, `fail_receive_fork_bad_signature` and `fail_change_fork_bad_signature`: a signed block for an occupied root is a fork, and the same block with another signature fails on the signature.\n- `ledger.fork_work_*`: one case per kind of state block (send, change, receive, open, epoch). Each block is processed again after the competing block is rolled back, to show that both paths ask for the same work.\n- `fork_work_send` and `fork_work_receive` use balances that would classify the block differently against the head, and `fork_work_send_predecessor_epoch` does the same for the epoch.\n- `fork_work_receive_source_epoch` and `fork_work_receive_unknown_source` cover where the epoch of a receive's source comes from.\n- `active_elections.fork_copy_bad_signature` and `fork_copy_insufficient_work` run the same cases through the block processor with an election active on the root.\n- `ledger.process_with_verification_fork_rollback` additionally checks that a verdict handed in with a block is used when the block does not follow the head.\n",
+    "draft": false,
+    "pull_request": 5305,
+    "label": "pwojcikdev:ledger-fork-checks",
+    "created_at": "2026-11-26T14:56:26Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-26T20:28:35Z",
+    "run_id": null
   },
   {
     "hash": "70a5592f963e5e2a0f5d5b2440f53f10be013ef8",
@@ -39986,6 +40048,22 @@
     "run_id": "42697256337"
   },
   {
+    "hash": "a44bc65d3570903bbfde618675786669a32883a7",
+    "type": "pull_request",
+    "title": "Pin the signatures the ed25519 verifier accepts and test the burn account checks",
+    "author": "pwojcikdev",
+    "body": "Which signatures verify is a consensus rule: every node has to give the same answer for the same key, message and signature. The ed25519 verifier the node uses is more lenient than stricter implementations in a few ways, and no test stated them, so a change of library or a tightening of the checks could alter them unnoticed. This adds tests that state the behaviour, and tests for the burn account checks that depend on it. There is no production code change.\n\n## Verifier behaviour\n\nA new `ed25519` suite in `nano/core_test/ed25519.cpp`, going through `nano::validate_message`:\n\n- `scalar_above_group_order`: the scalar half of a signature is taken modulo the group order and only has to stay below 2^253, so the scalar plus the order verifies as well, and plus twice the order does not.\n- `small_order_key`: public keys of small order are accepted. A signature made without a private key (the identity point and a zero scalar) verifies for every message under the identity key, and for some messages but not all under the all-zero key, which is a point of order four.\n- `non_canonical_encoding`: a public key may be a non-canonical encoding of its point, while the point half of a signature is compared against the canonical encoding.\n- `signing`: the suite's existing test, moved out of `block.cpp` and rewritten to also cover another key, another message and a flipped bit in either half of the signature.\n\n## Burn account checks\n\nSince the all-zero key takes a keyless signature for about one message in four, the signature check does not protect the burn account, the explicit checks do. Only the epoch block check had a test. The new tests carry a signature that verifies under the zero key, found by varying a free field of the block or vote, so the signature check passes and the explicit check is what refuses:\n\n- `ledger.burn_account_open_legacy`: a legacy open block receiving into the burn account is refused as `opened_burn_account`.\n- `ledger.burn_account_open_state`: the same for a state block.\n- `message_dispatcher.confirm_ack_zero_account`: a vote in the zero account's name is dropped ahead of the vote processor and counted as `confirm_ack_zero_account`.\n\nThe keyless signature is a test helper, `nano::test::keyless_signature ()`.\n",
+    "draft": false,
+    "pull_request": 5306,
+    "label": "pwojcikdev:ed25519-verification-tests",
+    "created_at": "2026-11-26T18:51:19Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-26T20:28:35Z",
+    "run_id": null
+  },
+  {
     "hash": "a4614215d030cfcb3b39799fd4ded2f72bbb3f63",
     "type": "pull_request",
     "title": "Make election behavior mutable to support dynamic behaviour transition",
@@ -48203,6 +48281,20 @@
     "build_started_at": "2025-12-31T15:35:39Z",
     "run_id": "20622312463",
     "landed_at": "2025-12-29T22:35:58Z"
+  },
+  {
+    "hash": "c94d7c15f9b942afe8c55eb79a29ac8cdbbf9f16",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "End a channel's bandwidth wait once its socket closes (#5301)\n\n* End a channel's bandwidth wait once its socket closes\n\nA channel short of outbound bandwidth kept waiting for the limiter after\nits socket closed, until the bandwidth returned or the channel was\ncleaned up, and only then failed the send with a write to the closed\nsocket. The wait is now its own coroutine, awaited only when the\nallocation left over from earlier sends does not cover the next one,\nand it fails with operation_aborted once the socket closes.\n\nA cancelled wait fails the same way. Closing a channel cancels its\nsending coroutine before the socket closes, and nano::async::sleep_for\nswallowed that cancellation, so the coroutine's next wait threw and the\nsend it was waiting for was never reported. sleep_for now returns a\nnano::io_result that holds operation_aborted when it was cancelled.\n\nsend_one checks the allocation again before taking the send's bytes\nout of it. A shortfall there is a bug: it debug asserts and fails the\nsend rather than let it past the limiter. It returns at the first\nfailure, and the sending loop reports each send's outcome to its\ncallback at one place. The allocation is a plain size_t, since only\nthe sending coroutine on the socket's strand touches it.\n\nThe new tcp_channel tests hold one send in the bandwidth wait of a\nchannel the node has not registered, then close its socket or the\nchannel, and check the send's callback runs once with\noperation_aborted and nothing is written. A new async test covers\nboth results of sleep_for.\n\n* Make the outbound bandwidth allocation a tcp setting\n\nA channel takes outbound bandwidth from the limiter in larger amounts so\nthat not every send has to ask it. The amount was a hard coded 128 KiB;\nit is now node.tcp.bandwidth_allocation with the same default. The wait\ntakes at least what the send still lacks, so an allocation smaller than\na message, or 0, still makes progress instead of asking the limiter\nforever.\n\nA new tcp_channel test sends with an allocation of 0.\n\n* Keep a channel's bandwidth allocation with the limiter that granted it\n\nGeneric traffic and bootstrap responses are charged to separate\nlimiters, but a channel kept one allocation for both. Bandwidth left\nover from an allocation the generic limiter granted was spent on\nbootstrap responses, and the other way round, without asking the\nlimiter that traffic is charged to. A larger bandwidth_allocation\nsetting would widen that.\n\nThe limiters now have a name, nano::bandwidth_limit_type, and\nto_bandwidth_limit_type says which one a traffic type is charged to.\nThe limiter selects by it and a channel keeps one allocation per\nlimiter.\n\nThe new tcp_channel test leaves a channel with a generic allocation,\nthen checks that a bootstrap response waits for its own limiter.\n\n# Conflicts:\n#\tnano/node/transport/tcp_channel.cpp\n\n# Conflicts:\n#\tnano/node/transport/tcp_channel.cpp\n\n* Report a channel's send when its cancellation is thrown\n\nA bandwidth wait's timer that expires just before the channel is closed\ncan no longer be cancelled, so the wait resumes with success. The\ncoroutine is cancelled all the same, and its next wait throws\noperation_aborted past the sending loop, which never ran the send's\ncallback.\n\nThe sending loop now catches a cancellation thrown out of send_one and\nreports it to the callback like one that was returned. Any other\nexception still reaches settle as unexpected.\n\nThe new tcp_channel test holds the channel's strand until the wait's\ntimer has expired and closes the channel, so the cancellation arrives\ntoo late to cancel the timer. Without the catch it failed on both\nbackends, with the callback never run.",
+    "pull_request": "5301",
+    "created_at": "2026-11-26T14:28:28Z",
+    "landed_at": "2026-11-26T14:28:28Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-26T20:28:35Z",
+    "run_id": null
   },
   {
     "hash": "c95420e28af65a33f2b6c0454a13c97b8afbf66e",
