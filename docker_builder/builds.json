@@ -9076,6 +9076,20 @@
     "landed_at": "2024-03-07T15:38:50Z"
   },
   {
+    "hash": "254b732a2aae56fabfe740cd1c22edd92b5055c0",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Handle pruned blocks and validate indexes in wallet RPCs (#5312)",
+    "pull_request": "5312",
+    "created_at": "2026-11-27T23:16:39Z",
+    "landed_at": "2026-11-27T23:16:39Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T23:27:04Z",
+    "run_id": null
+  },
+  {
     "hash": "254bd00e4c454b2e5456abaaaab104a4fd1e8e5a",
     "type": "pull_request",
     "title": "End a channel's bandwidth wait once its socket closes",
@@ -26383,6 +26397,20 @@
     "landed_at": "2023-03-07T21:15:33Z"
   },
   {
+    "hash": "6bb15513fdd2ed033d07c7ecc77977e0e94e53dd",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Republish only retained blocks from wallet history\n\nEnd the walk at the first missing block body. Report and broadcast the retained suffix in ledger order.",
+    "pull_request": "5312",
+    "created_at": "2026-11-25T20:01:23Z",
+    "landed_at": "2026-11-26T19:02:16Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T23:27:04Z",
+    "run_id": null
+  },
+  {
     "hash": "6bbe905d08e2fe55a08f1dd290b6e2ac14bcf7d4",
     "type": "commit",
     "author": "pwojcikdev",
@@ -30477,6 +30505,20 @@
     "build_started_at": "2025-06-26T14:57:06Z",
     "run_id": "15906528369",
     "landed_at": "2025-06-22T22:51:43Z"
+  },
+  {
+    "hash": "7cd01e650cd7496d95cc6867a6da056cca04b618",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Stop wallet history traversal at a pruned predecessor\n\nReturn the retained history for each wallet account when older block bodies are unavailable.",
+    "pull_request": "5312",
+    "created_at": "2026-11-25T15:32:10Z",
+    "landed_at": "2026-11-26T19:02:12Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T23:27:04Z",
+    "run_id": null
   },
   {
     "hash": "7cd86ccf62d67842d083cd0b8932362d9e4868da",
@@ -46393,6 +46435,20 @@
     "run_id": "23297944873"
   },
   {
+    "hash": "bf32515e37fe3b14778df35f7e56681e1fc59b84",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Pin the signatures the ed25519 verifier accepts and test the burn account checks (#5306)\n\n* Pin the signatures the ed25519 verifier accepts\n\nWhich signatures verify is a consensus rule, and the verifier is more\nlenient than stricter ed25519 implementations: it takes a scalar at or\nabove the group order as long as it stays below 2^253, public keys of\nsmall order and public keys in a non-canonical encoding, while the\npoint half of a signature has to be canonical. A change of library or a\ntightening of the checks would make nodes disagree about valid blocks\nand votes, so the ed25519 suite now states each of these in a test,\nwith fixed inputs and the verdict expected for each.\n\nThe suite moves out of the block tests into its own file with its one\nold test rewritten, and the signature that takes no private key to make\nbecomes a test helper.\n\n* Test the burn account checks with signatures that verify\n\nThe all-zero key of the burn account is a point of small order, so a\nsignature made without any private key verifies under it for about one\nmessage in four. The explicit checks are what keep the account closed,\nand only the epoch block one had a test. The legacy open block, the\nstate block and the vote the message dispatcher drops now each have a\ntest that carries such a signature, the blocks with the work they need\nas well, so nothing but the check under test refuses them.",
+    "pull_request": "5306",
+    "created_at": "2026-11-27T23:20:14Z",
+    "landed_at": "2026-11-27T23:20:14Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T23:27:04Z",
+    "run_id": null
+  },
+  {
     "hash": "bf76d042aa90e2ddfac244f5079ac29c3e9affb5",
     "type": "pull_request",
     "title": "Block checker",
@@ -56719,6 +56775,20 @@
     "run_id": "8156183169"
   },
   {
+    "hash": "eac41d96238ba374ca82960dbd2c235cec45a856",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Keep the genesis account prioritized across a bootstrap reset (#5314)\n\nA new node starts with the genesis account in its priority set, the\none account every ledger holds and can start pulling from. Resetting\nbootstrap cleared the priority set without putting that account back,\nso a reset node had no account to pull until one of the scans found\none.\n\nThe constructor and reset now seed the set the same way. After the\nbootstrap_reset RPC the priority set therefore holds the genesis\naccount instead of being empty.",
+    "pull_request": "5314",
+    "created_at": "2026-11-27T23:09:31Z",
+    "landed_at": "2026-11-27T23:09:31Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T23:27:04Z",
+    "run_id": null
+  },
+  {
     "hash": "eac55321425f89a875c013b1d268b38820d77121",
     "type": "pull_request",
     "pull_request": 4294,
@@ -58895,6 +58965,20 @@
     "docker_tag": "gr0v1ty/nano-node:f30ffa3eba61099a6d8f66d247ec937cd60a358a",
     "build_started_at": "2026-06-16T17:29:13Z",
     "run_id": "27645708106"
+  },
+  {
+    "hash": "f3169bb0e56a7839da6ce496bc6f6fc094974f5e",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Include amounts and epochs in wallet receivable version requests\n\nUse the shared receivable collector for wallet queries. Cover both wallet_receivable and wallet_pending with min_version on its own.",
+    "pull_request": "5312",
+    "created_at": "2026-11-25T20:01:22Z",
+    "landed_at": "2026-11-26T19:02:23Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T23:27:04Z",
+    "run_id": null
   },
   {
     "hash": "f32261d317149ff65d0dec097c0c3997b66fc601",
