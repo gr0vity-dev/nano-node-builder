@@ -10728,6 +10728,22 @@
     "landed_at": "2024-11-04T20:27:23Z"
   },
   {
+    "hash": "2c0740cf040c4960024234bfe56b2f8657bb0472",
+    "type": "pull_request",
+    "title": "Keep the genesis account prioritized across a bootstrap reset",
+    "author": "pwojcikdev",
+    "body": "`bootstrap_context::reset` cleared the priority set without restoring the genesis account that the constructor seeds. A new node starts from that account, the one every ledger holds and can pull from, but a reset node had no account to pull until one of the scans found one.\n\nThe constructor and `reset` now both call `seed_accounts`. This changes what the `bootstrap_reset` RPC leaves behind: the priority set holds the genesis account afterwards instead of being empty, and the blocked set is empty as before.\n\nThe new test `bootstrap.reset_keeps_genesis_seed` prioritizes a second account on a node without peers, resets, and checks that only the genesis account remains prioritized. `rpc.bootstrap_reset` expected an empty priority set and now expects the genesis account alone.\n",
+    "draft": false,
+    "pull_request": 5314,
+    "label": "pwojcikdev:bootstrap-reset-seed",
+    "created_at": "2026-11-27T16:24:51Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T21:02:14Z",
+    "run_id": null
+  },
+  {
     "hash": "2c27c1f06ea6e54e4e2b075942d68088e71ffec1",
     "type": "pull_request",
     "title": "Write the responses in flight before rpc_host::stop stops the IO threads",
@@ -14897,6 +14913,22 @@
     "build_status": "pass",
     "docker_tag": "gr0v1ty/nano-node:3de22489d4a19d5dc03158f2c4701f236a15c23c",
     "landed_at": "2023-03-14T21:02:30Z"
+  },
+  {
+    "hash": "3dfc8ae338ad866999f0dee60604d0974ea28fec",
+    "type": "pull_request",
+    "title": "Stop only elections with nothing left to elect on cleanup and rollback",
+    "author": "pwojcikdev",
+    "body": "The election loop's cleanup and the rollback observer both erased elections by root while acting on a view that could be stale by then, so an election that had taken the root in the meantime, or one that could still decide the root, was erased.\n\n**Loop cleanup.** `tick_elections` lists the due elections under the mutex, ticks them unlocked and erased finished ones by root. An election erased elsewhere while listed (by the `process` RPC with `force`, or by a rollback) reaches its tick cancelled, since `erase_election` seals it first, and its cleanup then erased whatever election a scheduler had started at that root since. A new private `erase (std::shared_ptr<nano::election> const &)` checks `index.exists (election)` under the mutex before calling `erase_election`, and the cleanup goes through it.\n\n**Rollback observer.** Rollback notifications are delivered on the ledger notifications thread after the rollback commits, and the observer erased whatever election sat at the root of each rolled back block by then. That took down an election a scheduler had started since for a new block, the election of a block that was already back in the ledger, and an election that had moved its winner to another fork and was waiting for that block to land. The observer now stops an election only when it has nothing left to elect: the rolled back block is the only block it holds and is not back in the ledger. `election::cancel_if_only_block` checks that and cancels under the election's mutex, so no fork can join in between, and the election is then erased by identity. An election that holds another block is left: when that block gets the quorum the election forces it into the freed root and confirms it, and when the rolled back block is processed again the election carries on with it. The rollback root is left alone as before: its election is deciding that root, and #5251 hands it the forced block.\n\n**Checkup.** The checkup cancelled every election whose root holds no block, which would stop an election the observer left about a second later. Over an empty root it now cancels only an election with a single block, through the same call.\n\n**Insert.** `active_elections::insert` returned the election already running at a root without telling it about the block. An election can now outlive the block it was started for, so `insert` hands the block to that election: the block the ledger holds at the root competes there and its votes are counted.\n\nAn election left this way keeps its winner until votes move it, and a node only votes for a block in its ledger, so while the winner is a rolled back block the node casts no vote at that root, until the votes of others move the winner, the block returns or the election reaches its time to live. This is confined to roots that have forks; an election with a single block is stopped at once, as before.\n\nNew `active_elections` stats: `rollback_stopped`, `rollback_returned` and `rollback_spared` for the three outcomes of a rollback at a root that has an election, and `insert_joined`.\n\n**Tests**\n- `active_elections.cleanup_keeps_replacement` arranges a round of the election loop from `election_erased` observers, which run on the loop thread: three elections are lined up, and the middle one is erased and replaced between the cleanups of the other two.\n- The rollback tests hold the ledger notifications thread on a gate, so the rollback notification waits while the test arranges the state it will find:\n  - `rollback_keeps_replacement`: the root of a rolled back receive got a new block and an election; the election of a rolled back dependent is stopped and the new one is kept.\n  - `rollback_stops_only_block`: the election holds only the rolled back block and another block took the root; it is stopped and the root is free.\n  - `rollback_keeps_returned_block`: the block is processed again before the notification is handled; its election is kept.\n  - `rollback_keeps_moved_winner`: the election has moved its winner to a fork whose forced block has not landed; it is kept and the block lands.\n  - `rollback_held_fork_wins`: the election holds a fork and the root is empty; the fork gets the quorum afterwards, is forced in and confirmed.\n  - `rollback_landed_fork_wins`: the fork has already taken the root; the election is kept, moves to the fork and confirms it.\n  - `rollback_returned_block_wins`: the election holds a fork and is kept; the rolled back block is processed again afterwards and the same election confirms it.\n- `checkup_cancels_only_block` and `checkup_spares_held_fork` cover the checkup over an empty root.\n- `insert_joins_existing_election` covers a block inserted at the root of an election that has never held it.\n- `election.cancel_if_only_block` covers the new election call.\n",
+    "draft": false,
+    "pull_request": 5293,
+    "label": "pwojcikdev:election-erase-by-identity",
+    "created_at": "2026-11-20T16:08:01Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T21:02:14Z",
+    "run_id": null
   },
   {
     "hash": "3e0d54f7f7544d0d42cc0d79806598db42831f2c",
@@ -33560,6 +33592,22 @@
     "docker_tag": "gr0v1ty/nano-node:89c461c6b955b41f96eea681e8f1bf7870434f4b"
   },
   {
+    "hash": "89cc0b1ebf6ec208c1387be91a1fb04b8880990c",
+    "type": "pull_request",
+    "title": "Check a block's signature, work and predecessor before reporting it as a fork",
+    "author": "pwojcikdev",
+    "body": "A block that does not follow its account's head is reported as a fork. This makes that result carry the same guarantees for every block type: the account signed the block, the block has the work it needs and it follows a block of its own account, so only which block comes next is in question.\n\n## Signature\n\nSend, receive and change blocks compared their predecessor with the account head before validating the signature, while open, state and epoch blocks validate the signature first. The legacy handlers now use the same order. The block processor already resolves the signer of these blocks and verifies them ahead of the write, so the verdict is at hand and nothing is verified twice.\n\n## Work\n\nThe work check is the last one a block passes, because the threshold depends on what the block does and in which epoch. A state or epoch block that does not follow the head never got that far. It is now reported as a fork only with the work it needs, and as having insufficient work otherwise, which is the result the same block gets once it follows the head.\n\nEvery state block is classified against the account as its predecessor left it, which tells whether it sends or receives and in which epoch. For a block that follows the head that is the account's entry, and nothing changes for such a block. For any other block the head belongs to the competing block, so the predecessor block is read instead. The same classification and the same work check then apply to both, and only after them is a block that does not follow the head reported as a fork.\n\n- A receive that does not follow the head is not checked against what the account can receive, since that depends on the competing block. Below the last epoch it takes the epoch of its source, read from the receivable entry or, when that is gone, from the source block.\n- When the source is in neither place and was not pruned, the receive waits for it like a receive that follows the head does (`gap_source`), and is processed again once the source arrives.\n- When the source was pruned and is no longer receivable, its epoch is not known, and the block is reported as a fork as before. This can only happen on a pruning node, for an account below the last epoch.\n- At the last epoch the work a receive needs does not depend on its source, so it is checked without looking the source up.\n- An epoch block's threshold follows from its link alone, so it is worked out once, before the account is looked at.\n\nLegacy blocks need no change here: their threshold does not depend on the ledger and is the one already applied where blocks enter the node.\n\n## Position\n\nA state block whose previous block belongs to another account can never follow that block. It was reported as a fork and is now reported as being in the wrong position (`block_position`). The predecessor is read for the work check anyway, so the comparison adds no lookup.\n\nAn epoch block for an account that is not open yet has no previous block. The state handler already asks that of a first block; the epoch handler did not and now reports `block_position`, since a previous block that is in the ledger belongs to another account. The ledger validation in `nano_node --debug_validate_blocks` already treats a first block with a previous block as an error.\n\n## Tests\n\n- `ledger.fail_send_fork_bad_signature`, `fail_receive_fork_bad_signature` and `fail_change_fork_bad_signature`: a signed block for an occupied root is a fork, the same block with another signature fails on the signature, and a verdict handed in with the block decides either way.\n- `ledger.fork_work_*`: one case per kind of state block (send, change, receive, open, epoch, epoch block opening an account, send to an epoch link). Each block is processed again after the competing block is rolled back, to show that both paths ask for the same work.\n- `fork_work_send` and `fork_work_receive` use balances that would classify the block differently against the head, and `fork_work_send_predecessor_epoch` does the same for the epoch.\n- `fork_work_receive_source_epoch`, `fork_work_open_received_source_epoch`, `fork_work_receive_absent_source`, `fork_work_receive_absent_source_last_epoch`, `fork_work_receive_pruned_source` and `fork_work_receive_pruned_source_receivable` cover each place the epoch of a receive's source can come from, and the cases where it cannot be told.\n- `ledger.state_predecessor_missing`, `state_predecessor_pruned_head`, `state_predecessor_other_account` and `state_predecessor_other_account_epoch_open`: a previous block that is not in the ledger, one that was the head and is no longer stored, one that belongs to another account, and one named by an epoch block for an account that is not open yet.\n- `active_elections.fork_copy_bad_signature`, `fork_copy_insufficient_work`, `fork_predecessor_other_account` and `fork_waits_for_source` run the same cases through the block processor with an election active on the root.\n- `ledger.process_with_verification_fork_rollback` additionally checks that a verdict handed in with a block is used when the block does not follow the head.\n",
+    "draft": false,
+    "pull_request": 5305,
+    "label": "pwojcikdev:ledger-fork-checks",
+    "created_at": "2026-11-26T14:56:26Z",
+    "built_at": null,
+    "build_status": "building",
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T21:02:14Z",
+    "run_id": null
+  },
+  {
     "hash": "89e9afaf00cb238c5bcd135fcfbf7943b2c83236",
     "type": "pull_request",
     "title": "Cleanup `tcp_config` class",
@@ -35107,6 +35155,22 @@
     "build_started_at": "2024-10-21T13:38:33Z",
     "run_id": "11441382668",
     "landed_at": "2024-10-21T13:19:53Z"
+  },
+  {
+    "hash": "903fa95fa0a38cba7b06fe9481b55e751f8b6942",
+    "type": "pull_request",
+    "title": "Report blocks refused for their work apart from overfill and hold unchecked_map's flag by value",
+    "author": "pwojcikdev",
+    "body": "`block_processor::add_many` reported blocks with too little work and blocks its queue had no room for as one `dropped` count. The bootstrap submission counted that number as `overfill` and guarded it with a `debug_assert`. Pull answers are not checked for work before they are submitted, so the count is not only about queue capacity. `add_many_result` now carries `overfill` and `insufficient_work`, and the bootstrap submission counts each under its own `bootstrap` stat. The topology strategy keeps logging the sum of the two.\n\n`unchecked_map` kept a reference to its `disable_delete` constructor argument. The node passes a member of its flags, but the tests passed a literal, and one test helper kept a member alive only to give the reference something to bind to. The flag never changes after construction, so the map now keeps a copy. The header named the parameter `do_delete`, the opposite of what it means, and now matches the definition.\n\nThe new test `bootstrap.pulled_block_insufficient_work` hands the client a pull answer whose second block carries no work and checks that it is counted under `insufficient_work`, not `overfill`, and that the client keeps pulling. The `block_processor` tests that read `dropped` now check the two counts.\n",
+    "draft": false,
+    "pull_request": 5315,
+    "label": "pwojcikdev:block-processor-refused-counts",
+    "created_at": "2026-11-27T16:24:53Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T21:02:14Z",
+    "run_id": null
   },
   {
     "hash": "90427b2e05276e18db2ec8ec698fdc2f4ccdc2eb",
@@ -41376,6 +41440,22 @@
     "run_id": "21950834751"
   },
   {
+    "hash": "a96d5b71e7ca65b800a7f7cfecfb0613a067706b",
+    "type": "pull_request",
+    "title": "Pin the signatures the ed25519 verifier accepts and test the burn account checks",
+    "author": "pwojcikdev",
+    "body": "Which signatures verify is a consensus rule: every node has to give the same answer for the same key, message and signature. The ed25519 verifier the node uses is more lenient than stricter implementations in a few ways, and no test stated them, so a change of library or a tightening of the checks could alter them unnoticed. This adds tests that state the behaviour, and tests for the burn account checks that depend on it. There is no production code change.\n\n## Verifier behaviour\n\nA new `ed25519` suite in `nano/core_test/ed25519.cpp`, going through `nano::validate_message`, with fixed inputs and the verdict expected for each:\n\n- `scalar_above_group_order`: the scalar half of a signature is taken modulo the group order, so the scalar plus the order verifies as well. Shown on the dev genesis block's own signature.\n- `scalar_cutoff`: the scalar has to stay below 2^253. Under the identity key, where the scalar can be chosen, 2^253 - 1 verifies and 2^253 does not, although its point verifies with the scalar reduced modulo the order.\n- `small_order_key`: public keys of small order are accepted. A signature made without a private key (the identity point and a zero scalar) verifies for every message under the identity key, and under the all-zero key, a point of order four, for exactly the messages whose digest reduced modulo the group order is a multiple of four. The test lists those for a fixed run of messages.\n- `non_canonical_encoding`: a public key may be a non-canonical encoding of its point, while the point half of a signature is compared against the canonical encoding.\n- `signing`: the suite's existing test, moved out of `block.cpp` and rewritten to also cover another key, another message and a flipped bit in either half of the signature.\n\n## Burn account checks\n\nSince the all-zero key takes a keyless signature for about one message in four, the signature check does not protect the burn account, the explicit checks do. Only the epoch block check had a test. The new tests carry a signature that verifies under the zero key, found by varying a free field of the block or vote, and the blocks carry the work they need, so the explicit check is the only thing that refuses them:\n\n- `ledger.burn_account_open_legacy`: a legacy open block receiving into the burn account is refused as `opened_burn_account`.\n- `ledger.burn_account_open_state`: the same for a state block.\n- `message_dispatcher.confirm_ack_zero_account`: a vote in the zero account's name is dropped ahead of the vote processor and counted as `confirm_ack_zero_account`.\n\nThe keyless signature is a test helper, `nano::test::keyless_signature ()`.\n",
+    "draft": false,
+    "pull_request": 5306,
+    "label": "pwojcikdev:ed25519-verification-tests",
+    "created_at": "2026-11-26T18:51:19Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T21:02:14Z",
+    "run_id": null
+  },
+  {
     "hash": "a97b47d4a194da7246ad0dccbea18694b986cc9b",
     "type": "commit",
     "author": "pwojcikdev",
@@ -46746,6 +46826,22 @@
     "landed_at": "2023-04-07T14:02:28Z"
   },
   {
+    "hash": "c13edeb5f296428481f8432c43271dff947b9aa9",
+    "type": "pull_request",
+    "title": "Publish AMD64 and ARM64 node images together under write-once tags",
+    "author": "pwojcikdev",
+    "body": "## Changes\n\nBuild the Nano node image for Linux AMD64 and ARM64 on native GitHub runners for both live and beta. Each runner starts the node with `--version` and uploads its image as a workflow artifact. Once both builds pass, the publish job assembles a single image index and makes the release tag visible after both platform images have uploaded.\n\nThe publisher checks all destination tags before writing to GHCR or Docker Hub. A matching version digest makes retries idempotent. A conflicting version tag fails the deployment, and an existing `latest` stays in place. New version tags are required to distribute a different build. Deployments for the same image name are serialized. Registry-side tag immutability is needed to enforce this policy for independent writers.\n\n## Verification\n\n- Exercised the publish workflow with AMD64 and ARM64 fixture images and two local registries. Verified both platform digests, retry behavior, and preservation of existing tags.\n- Verified that a missing platform, a conflicting version at the second registry, or a failed tag lookup blocks publication. Confirmed zero registry write requests for existing tags.\n- Validated the workflow YAML against the GitHub Actions schema and checked the deployment scripts with ShellCheck.\n\nFull native Nano node builds and production publication run through the tagged Build & Deploy workflow.",
+    "draft": false,
+    "pull_request": 5294,
+    "label": "nanocurrency:ci/multiarch-node-images",
+    "created_at": "2026-11-20T18:18:06Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T21:02:14Z",
+    "run_id": null
+  },
+  {
     "hash": "c14163649b6adec31017d94d2827bb6f6f84ad40",
     "type": "commit",
     "created_at": "2024-03-23T19:17:15Z",
@@ -51453,6 +51549,22 @@
     "build_started_at": "2024-11-29T15:39:54Z",
     "run_id": "12088872876",
     "landed_at": "2024-11-29T15:32:35Z"
+  },
+  {
+    "hash": "d6505b19797029da84ccf4655c442914d444eff6",
+    "type": "pull_request",
+    "title": "Back off dependency walker retries, treat originator blocks as live and pick bootstrap work before reserving a peer",
+    "author": "pwojcikdev",
+    "body": "A set of fixes to the bootstrap client that came out of work on fetching missing blocks. Each is independent of the others.\n\n**Dependency walker retries.** When a peer answered that it does not know the block a blocked account waits for, the walker changed nothing and picked the same entry again on its next pass. A dependency that no peer knows was asked for as fast as answers came back until the entry expired, and used up the dependency rate limit that the entries behind it needed. On loopback a single such dependency drew about 2,760 requests in 5 seconds. The account sets now put a dependency on a cooldown each time it is asked for: `account_sets_index::dependency_requested` records the request, and `next_blocking` offers entries in the order they become due, so one that was never asked for comes before one that keeps failing. The cooldown starts at the new `node.bootstrap.account_sets.dependency_cooldown` (1 s) and doubles with every request until it is as long as `blocking_decay`.\n\n**Blocks received from their originator.** A block that a peer created and sent to this node directly arrives as `block_source::live_originator`, which the block processor treats like `live`. The account feedback in `bootstrap_context::inspect` only knew `live`, so the progress of such a block raised the priority of its account and prioritized the destination of a send, which cost pulls that returned nothing, and a missing predecessor did not mark the account as behind. The feedback decision moves out of `inspect` into `classify_feedback` in `account_feedback.{hpp,cpp}`, where both sources map to the same origin through `classify_origin`. The other block sources keep their behaviour.\n\n**Work before peer.** The dependency, frontier and database strategies reserved a peer and spent a rate limit token before they knew what to request, and held the peer slot while they waited for work. On a synced node the dependency walker waited that way for as long as no account was blocked, and then sent its next request over the channel it had been handed at the start of the wait. All three now wait for their work first and for a peer second, as the priority strategy does.\n\n**Smaller changes.** The strategy to rate limiter mapping, duplicated in `wait_channel` and `wait_channels`, moves into `bootstrap_context::limiter`. The comment on `wait_channels` now matches what the function does on a round that excludes peers.\n\n**Tests.** `bootstrap_account_feedback` checks the feedback for every block result against every block source, and the mapping from source to origin. `account_sets` gains tests for the cooldown, its doubling and its limit, the order in which entries become due, accounts that share a dependency, and dependency accounts being synced into the priority set. In `bootstrap`, `dependency_request_cooldown` has a peer answer that it does not know a dependency and checks that a single request goes out, and `dependency_walker_idle_without_peer` checks that an idle walker waits for no peer.\n",
+    "draft": false,
+    "pull_request": 5313,
+    "label": "pwojcikdev:bootstrap-strategy-fixes",
+    "created_at": "2026-11-27T15:52:01Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T21:02:14Z",
+    "run_id": null
   },
   {
     "hash": "d65463b294366dca6b10b133711b9e3ff26947d1",
@@ -61167,6 +61279,20 @@
     "docker_tag": "gr0v1ty/nano-node:fd1afe2ab7ebce00fd6ec039a24a219c962ba17a",
     "build_started_at": "2024-11-25T16:00:15Z",
     "run_id": "12013923566"
+  },
+  {
+    "hash": "fd2499d021a5ae58500aa777ea2c6795cc66d563",
+    "type": "commit",
+    "author": "pwojcikdev",
+    "title": "Report cancellation to a task's coroutine instead of throwing it (#5307)\n\n* Handle the result of sleep_for in the listener and socket loops\n\nThe accept loop's pause, its wait for a free inbound slot and the\nsocket's checkup interval ignored how their sleep ended. A cancelled\nsleep now ends each of them: wait_available_slots returns\nnano::io_result and the accept loop stops on its error, and the checkup\nstops before it advances its clock for an interval that did not pass.\n\n* Report cancellation to a task's coroutine instead of throwing it\n\nasio throws operation_aborted from the next co_await of a cancelled\ncoroutine, so code after a wait had to expect a cancellation both as\nthat wait's result and as an exception. nano::async::task now turns the\nthrow off for its coroutine and everything it awaits. A cancelled task\ngets operation_aborted from the wait it was suspended in and true from\nnano::async::cancelled (), and has to return on its own.\n\nWith the throw off, a cancellation only reaches the wait in progress\nwhen it arrives. One that arrives just after a wait completed, before\nthe coroutine resumed, is not delivered to the next wait. sleep_for\ntherefore looks for an earlier cancellation before it starts, and so\ndoes the listener's accept, which nothing else would end: stop joins\nthe accept loop before it closes the acceptor.\n\nThe new async tests cancel a task and check that its coroutine runs on\npast the cancelled wait, sees cancelled () and has a later sleep return\nat once; both fail without the change. The new tcp_listener test stops\nthe node while a connect callback holds the listener's strand, so the\ncancellation arrives after the slot wait's timer expired; with the\naccept's check removed the stop stays in the accept until the test's\nrescue connection frees it.\n\n* Drop the handling of thrown cancellations from transport coroutines\n\nA task's coroutine no longer has a cancellation thrown into it, so the\nplaces that caught one have nothing left to catch. The try block around\nsend_one in the channel's sending loop and the one around the\nlistener's accept loop are removed, and nano::async::settle treats\nevery exception as unexpected, a thrown operation_aborted included.",
+    "pull_request": "5307",
+    "created_at": "2026-11-27T17:22:43Z",
+    "landed_at": "2026-11-27T17:22:43Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T21:02:14Z",
+    "run_id": null
   },
   {
     "hash": "fd3815950d5ec5005530b388cde2cd26873b6c10",
