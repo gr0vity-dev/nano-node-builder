@@ -10738,7 +10738,7 @@
     "label": "pwojcikdev:bootstrap-reset-seed",
     "created_at": "2026-11-27T16:24:51Z",
     "built_at": null,
-    "build_status": null,
+    "build_status": "building",
     "docker_tag": null,
     "build_started_at": "2026-11-27T21:02:14Z",
     "run_id": null
@@ -60728,6 +60728,22 @@
     "docker_tag": "gr0v1ty/nano-node:facabfa4ff8507d6e82755e85957ab795666c7ca",
     "build_started_at": "2024-01-16T19:13:11Z",
     "run_id": "7546413500"
+  },
+  {
+    "hash": "fad631844cbefea576dd4aabf4006b47187a99c3",
+    "type": "pull_request",
+    "title": "Publish AMD64 and ARM64 node images together under write-once tags",
+    "author": "pwojcikdev",
+    "body": "## Changes\n\nBuild the Nano node image for Linux AMD64 and ARM64 on native GitHub runners for both live and beta. Each runner starts the node with `--version` and uploads its image as a workflow artifact. Once both builds pass, the publish job assembles a single image index and makes the release tag visible after both platform images have uploaded.\n\nThe publisher checks all destination tags before writing to GHCR or Docker Hub. A matching version digest makes retries idempotent. A conflicting version tag fails the deployment, and an existing `latest` stays in place. New version tags are required to distribute a different build. Deployments for the same image name are serialized. Registry-side tag immutability is needed to enforce this policy for independent writers.\n\n## Verification\n\n- Exercised the publish workflow with AMD64 and ARM64 fixture images and two local registries. Verified both platform digests, retry behavior, and preservation of existing tags.\n- Verified that a missing platform, a conflicting version at the second registry, or a failed tag lookup blocks publication. Confirmed zero registry write requests for existing tags.\n- Validated the workflow YAML against the GitHub Actions schema and checked the deployment scripts with ShellCheck.\n\nFull native Nano node builds and production publication run through the tagged Build & Deploy workflow.",
+    "draft": false,
+    "pull_request": 5294,
+    "label": "nanocurrency:ci/multiarch-node-images",
+    "created_at": "2026-11-20T18:18:06Z",
+    "built_at": null,
+    "build_status": null,
+    "docker_tag": null,
+    "build_started_at": "2026-11-27T23:00:38Z",
+    "run_id": null
   },
   {
     "hash": "faedb40b565fcbd3ddb807f5325c596d589091c3",
